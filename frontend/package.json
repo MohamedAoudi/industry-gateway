@@ -1,0 +1,33 @@
+{
+  "name": "startup-hub-react",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "axios": "^1.14.0",
+    "framer-motion": "^12.28.1",
+    "i18next": "^23.10.0",
+    "lucide-react": "^0.562.0",
+    "react": "^18.2.0",
+    "react-countup": "^6.5.3",
+    "react-dom": "^18.2.0",
+    "react-hot-toast": "^2.6.0",
+    "react-i18next": "^13.5.0",
+    "react-intersection-observer": "^10.0.2",
+    "react-router-dom": "^6.22.3",
+    "recharts": "^3.7.0",
+    "swiper": "^12.0.3"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^5.1.2",
+    "autoprefixer": "^10.4.18",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1",
+    "vite": "^5.1.4"
+  }
+}

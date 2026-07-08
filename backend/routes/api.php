@@ -1,0 +1,89 @@
+<?php
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\registerResearcherController;
+use App\Http\Controllers\registerCompanyController;
+use App\Http\Controllers\OffersController;
+use App\Http\Controllers\ResearcherController;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\OfferController;
+use App\Http\Controllers\AIResearcherController;
+use App\Http\Controllers\AICompanieController;
+use App\Http\Controllers\PaysController;
+use App\Http\Controllers\ScientificResearchInnovationCentersController;
+use App\Http\Controllers\CentersExcellenceArtificialIntelligenceController;
+use App\Http\Controllers\MinistriesHigherEducationScientificResearchController;
+use App\Http\Controllers\IndustrialPropertyPatentOfficesController;
+use App\Http\Controllers\SupportingBodiesScientificResearchController;
+
+
+
+
+
+Route::post('/tokens/create', function (Request $request) {
+    $token = $request->user()->createToken($request->token_name);
+ 
+    return ['token' => $token->plainTextToken];
+});
+
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::get('/pays', [PaysController::class, 'index']); 
+
+Route::get('/scientificResearchInnovationCenters', [ScientificResearchInnovationCentersController::class, 'index']);
+
+Route::get('/centersExcellenceArtificialIntelligence', [CentersExcellenceArtificialIntelligenceController::class, 'index']);
+
+Route::get('/ministriesHigherEducationScientificResearch', [MinistriesHigherEducationScientificResearchController::class, 'index']);
+
+Route::get('/industrialPropertyPatentOffices', [IndustrialPropertyPatentOfficesController::class, 'index']);
+
+Route::get('/supportingBodiesScientificResearch', [SupportingBodiesScientificResearchController::class, 'index']);
+
+
+Route::post('/register-researcher', [registerResearcherController::class, 'registerResearcher']);
+Route::post('/register-company', [registerCompanyController::class, 'registerCompany']);
+Route::get('/researchers', [ResearcherController::class, 'index']);
+
+Route::get('/companies', [CompanyController::class, 'index']);
+Route::get('/companies/pending', [CompanyController::class, 'getPendingRequests']);
+Route::put('/companies/{id}/status', [CompanyController::class, 'updateStatus']);
+Route::delete('/companies/{id}', [CompanyController::class, 'destroy']);
+
+
+Route::get('/offers', [OfferController::class, 'index']);
+Route::post('/offers', [OfferController::class, 'store']);
+Route::delete('/offers/{id}', [OfferController::class, 'destroy']);
+Route::patch('/offers/{id}/status', [OfferController::class, 'updateStatus']);
+
+Route::post('/researchers/import-ai', [AIResearcherController::class, 'import']);
+Route::post('/companies/import-ai', [AICompanieController::class, 'importCompanie']);
+
+// Routes privées (Nécessitent un Token valide dans le Header)
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::post('/scientificResearchInnovationCenters', [ScientificResearchInnovationCentersController::class, 'store']);
+    Route::match(['put', 'patch', 'post'], '/scientificResearchInnovationCenters/{id}', [ScientificResearchInnovationCentersController::class, 'update']);
+    Route::delete('/scientificResearchInnovationCenters/{id}', [ScientificResearchInnovationCentersController::class, 'destroy']);
+
+    Route::post('/centersExcellenceArtificialIntelligence', [CentersExcellenceArtificialIntelligenceController::class, 'store']);
+    Route::match(['put', 'patch', 'post'], '/centersExcellenceArtificialIntelligence/{id}', [CentersExcellenceArtificialIntelligenceController::class, 'update']);
+    Route::delete('/centersExcellenceArtificialIntelligence/{id}', [CentersExcellenceArtificialIntelligenceController::class, 'destroy']);
+
+    Route::post('/ministriesHigherEducationScientificResearch', [MinistriesHigherEducationScientificResearchController::class, 'store']);
+    Route::match(['put', 'patch', 'post'], '/ministriesHigherEducationScientificResearch/{id}', [MinistriesHigherEducationScientificResearchController::class, 'update']);
+    Route::delete('/ministriesHigherEducationScientificResearch/{id}', [MinistriesHigherEducationScientificResearchController::class, 'destroy']);
+
+    Route::post('/industrialPropertyPatentOffices', [IndustrialPropertyPatentOfficesController::class, 'store']);
+    Route::match(['put', 'patch', 'post'], '/industrialPropertyPatentOffices/{id}', [IndustrialPropertyPatentOfficesController::class, 'update']);
+    Route::delete('/industrialPropertyPatentOffices/{id}', [IndustrialPropertyPatentOfficesController::class, 'destroy']);
+
+    Route::post('/supportingBodiesScientificResearch', [SupportingBodiesScientificResearchController::class, 'store']);
+    Route::match(['put', 'patch', 'post'], '/supportingBodiesScientificResearch/{id}', [SupportingBodiesScientificResearchController::class, 'update']);
+    Route::delete('/supportingBodiesScientificResearch/{id}', [SupportingBodiesScientificResearchController::class, 'destroy']);
+
+    Route::get('/me', [AuthController::class, 'me']);
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
