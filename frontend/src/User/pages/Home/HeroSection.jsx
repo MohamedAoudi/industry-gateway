@@ -1010,9 +1010,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { Search, ChevronDown, MapPin, Building2, ArrowLeft, Check, Sparkles, Cpu, Globe2 } from "lucide-react";
+import { Search, ChevronDown, MapPin, Building2, ArrowLeft, Check, Sparkles } from "lucide-react";
 
-import platformMockup from '../../assets/images/bg/hero.jpeg'; 
+import backgroundVideo from '../../assets/videos/bg home.mp4';
 
 const countries = [
   { name: "المملكة الأردنية الهاشمية", code: "jo", flag: "https://flagcdn.com/w40/jo.png" },
@@ -1089,13 +1089,18 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative min-h-screen w-full overflow-hidden flex items-center justify-center select-none font-sans">
+    <section className="relative h-[80vh] w-full overflow-hidden flex items-center justify-center select-none font-sans">
       
-      {/* ======================= IMAGE EN PLEIN ÉCRAN ======================= */}
+      {/* ======================= VIDÉO EN PLEIN ÉCRAN ======================= */}
       <div className="absolute inset-0 z-0">
-        <img 
-          src={platformMockup} 
-          alt="Background" 
+        <video
+          src={backgroundVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="metadata"
+          aria-hidden="true"
           className="w-full h-full object-cover"
         />
         {/* Overlay sombre cinématique pour forcer le contraste du texte */}
@@ -1108,80 +1113,90 @@ const HeroSection = () => {
         
         {/* ======================= COLONNE GAUCHE : TEXTE & RECHERCHE ======================= */}
         <motion.div 
-          className="lg:col-span-8 flex flex-col justify-center text-right items-start w-full mx-auto"
+          className={`lg:col-span-8 flex flex-col justify-center items-start w-full mx-auto ${isRtl ? "text-right" : "text-left"}`}
+          dir={isRtl ? "rtl" : "ltr"}
           variants={containerVariants}
           initial="hidden"
           animate="visible"
         >
           {/* Badge */}
-          <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 border border-white/20 shadow-sm rounded-full mb-8 backdrop-blur-md">
-            <span className="flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+          <motion.div
+            variants={itemVariants}
+            className="inline-flex items-center gap-3 px-4 py-2.5 mb-7 rounded-full border border-emerald-300/25 bg-slate-950/35 shadow-[0_10px_35px_rgba(0,0,0,0.18)] backdrop-blur-xl"
+          >
+            <span className="grid h-7 w-7 place-items-center rounded-full bg-emerald-400/15 ring-1 ring-emerald-300/25">
+              <Sparkles size={14} className="text-emerald-300" />
             </span>
-            <span className="text-xs font-bold text-white tracking-wide">المنصة العربية الأولى للابتكار والبحث العلمي</span>
+            <span className={`text-[10px] md:text-[11px] font-bold text-white/90 ${isRtl ? "tracking-normal" : "uppercase tracking-[0.16em]"}`}>
+              المنصة العربية الأولى للابتكار والبحث العلمي
+            </span>
           </motion.div>
 
-          {/* Titre Blanc Masse */}
+          {/* Titre éditorial */}
           <motion.h1 
             variants={itemVariants}
-            className="text-4xl md:text-5xl lg:text-[4.5rem] font-extrabold text-white mb-6 leading-[1.1] tracking-tighter drop-shadow-lg"
+            className="max-w-4xl mb-6 text-[clamp(2.1rem,4.8vw,4.5rem)] font-black leading-[1.08] tracking-[-0.03em] [text-shadow:0_8px_35px_rgba(0,0,0,0.55)]"
           >
-            {t("hero.title")} <br />
-            <span className="bg-gradient-to-l from-emerald-400 via-teal-300 to-cyan-300 bg-clip-text text-transparent">
-              {t("hero.title1")}
+            <span className="block text-white/95">{t("hero.title")}</span>
+            <span className="relative mt-2 inline-block pb-3">
+              <span className="relative z-10 bg-gradient-to-l from-emerald-300 via-teal-200 to-cyan-200 bg-clip-text text-transparent">
+                {t("hero.title1")}
+              </span>
+              <span className="absolute inset-x-0 bottom-0 h-[3px] rounded-full bg-gradient-to-l from-emerald-400 via-teal-300 to-transparent opacity-80" />
             </span>
           </motion.h1>
 
           <motion.p 
             variants={itemVariants}
-            className="text-slate-200/80 text-md md:text-lg mb-10 leading-relaxed max-w-2xl font-medium drop-shadow"
+            className="max-w-2xl mb-9 text-sm md:text-base font-normal leading-[1.8] text-slate-100/80 [text-shadow:0_2px_15px_rgba(0,0,0,0.45)]"
           >
             {t("hero.description")}
             {t("hero.description1")}
           </motion.p>
 
-          {/* BARRE DE RECHERCHE : GLASSMORPHISM SOMBRE */}
+          {/* BARRE DE RECHERCHE : CARTE CLAIRE FLOTTANTE */}
           <motion.div
             ref={searchBarRef}
             variants={itemVariants}
-            className="w-full bg-white/10 backdrop-blur-xl rounded-[1.5rem] shadow-[0_10px_50px_rgba(0,0,0,0.3)] border border-white/20 p-3 transition-all duration-500 hover:bg-white/15"
+            className="w-full rounded-[1.75rem] border border-white/70 bg-white/90 p-2.5 shadow-[0_24px_70px_rgba(2,12,27,0.28)] backdrop-blur-2xl"
             dir={isRtl ? "rtl" : "ltr"}
           >
-            <form onSubmit={handleSearch} className="flex flex-col md:flex-row items-stretch md:items-center justify-between w-full relative gap-2">
+            <form onSubmit={handleSearch} className="relative flex w-full flex-col items-stretch gap-2 md:flex-row md:items-center">
               
               {/* Champ 1 : Input texte */}
-              <div className="flex-grow flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-white/10 transition-colors group/field">
-                <Search size={20} className="text-white/40 group-focus-within/field:text-emerald-300 transition-colors shrink-0" />
+              <div className="group/field flex min-h-[64px] flex-grow items-center gap-3 rounded-2xl border border-transparent bg-slate-50/90 px-4 py-2.5 transition-all hover:border-slate-200 hover:bg-white focus-within:border-emerald-400/50 focus-within:bg-white focus-within:shadow-[0_0_0_4px_rgba(52,211,153,0.1)]">
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-emerald-50 text-emerald-600 transition-colors group-focus-within/field:bg-emerald-500 group-focus-within/field:text-white">
+                  <Search size={18} />
+                </span>
                 <div className="flex flex-col text-start w-full min-w-[120px]">
-                  <span className="text-[10px] text-white/50 font-bold uppercase tracking-wider mb-0.5">{t("hero.search_label", "ابحث عن")}</span>
+                  <span className="mb-0.5 text-[9px] font-extrabold uppercase tracking-[0.12em] text-slate-400">{t("hero.search_label", "ابحث عن")}</span>
                   <input 
                     type="text" 
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder={t("hero.search_placeholder", "اسم المؤسسة...")}
-                    className="w-full bg-transparent border-none outline-none focus:ring-0 text-white font-bold text-sm p-0 placeholder:text-white/40"
+                    className="w-full border-none bg-transparent p-0 text-sm font-bold text-slate-800 outline-none placeholder:text-slate-400 focus:ring-0"
                   />
                 </div>
               </div>
-
-              <div className="hidden md:block h-10 w-px bg-white/10 shrink-0"></div>
 
               {/* Champ 2 : Type d'institution */}
               <div className="relative md:min-w-[180px]">
                 <div 
                   onClick={() => toggleDropdown('database')}
-                  className="flex items-center gap-3 px-4 py-2.5 cursor-pointer group/select select-none rounded-xl hover:bg-white/10 transition-colors h-full"
+                  className={`group/select flex min-h-[64px] h-full cursor-pointer select-none items-center gap-3 rounded-2xl border px-4 py-2.5 transition-all ${activeDropdown === 'database' ? 'border-emerald-400/50 bg-emerald-50/70 shadow-[0_0_0_4px_rgba(52,211,153,0.08)]' : 'border-transparent bg-slate-50/90 hover:border-slate-200 hover:bg-white'}`}
                 >
-                  <Building2 size={18} className={`transition-colors duration-300 shrink-0 ${activeDropdown === 'database' ? 'text-emerald-300' : 'text-white/40 group-hover/select:text-emerald-300'}`} />
+                  <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl transition-colors ${activeDropdown === 'database' ? 'bg-emerald-500 text-white' : 'bg-emerald-50 text-emerald-600'}`}>
+                    <Building2 size={18} />
+                  </span>
                   <div className="flex flex-col text-start w-full">
-                    <span className="text-[10px] text-white/50 font-bold uppercase tracking-wider mb-0.5">{t("hero.type_label", "نوع المؤسسة")}</span>
-                    <span className="text-sm text-white font-bold truncate">
+                    <span className="mb-0.5 text-[9px] font-extrabold uppercase tracking-[0.12em] text-slate-400">{t("hero.type_label", "نوع المؤسسة")}</span>
+                    <span className="truncate text-sm font-bold text-slate-800">
                       {selectedDatabase ? databases.find(d => d.id === selectedDatabase)?.name : t("hero.all", "اختر النوع")}
                     </span>
                   </div>
                   <motion.div animate={{ rotate: activeDropdown === 'database' ? 180 : 0 }} transition={{ duration: 0.2 }} className="shrink-0">
-                    <ChevronDown size={16} className="text-white/40" />
+                    <ChevronDown size={16} className="text-slate-400" />
                   </motion.div>
                 </div>
 
@@ -1192,11 +1207,11 @@ const HeroSection = () => {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
                       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                      className="absolute top-[110%] left-0 right-0 md:right-auto md:min-w-full bg-slate-900/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-2 flex flex-col gap-1 z-50 max-h-60 overflow-y-auto"
+                      className="absolute left-0 right-0 top-[112%] z-50 flex max-h-60 flex-col gap-1 overflow-y-auto rounded-2xl border border-slate-200 bg-white/95 p-2 shadow-[0_20px_55px_rgba(15,23,42,0.22)] backdrop-blur-xl md:right-auto md:min-w-full"
                     >
                       <li 
                         onClick={() => { setSelectedDatabase(""); setActiveDropdown(null); }}
-                        className={`flex items-center justify-between px-3 py-2.5 text-sm font-bold rounded-xl cursor-pointer transition-colors ${!selectedDatabase ? 'bg-emerald-500/20 text-emerald-300' : 'text-white/70 hover:bg-white/5'}`}
+                        className={`flex cursor-pointer items-center justify-between rounded-xl px-3 py-2.5 text-sm font-bold transition-colors ${!selectedDatabase ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
                       >
                         <span>{t("hero.all", "كل الأنواع")}</span>
                         {!selectedDatabase && <Check size={16} />}
@@ -1205,7 +1220,7 @@ const HeroSection = () => {
                         <li 
                           key={db.id}
                           onClick={() => { setSelectedDatabase(db.id); setActiveDropdown(null); }}
-                          className={`flex items-center justify-between px-3 py-2.5 text-sm font-bold rounded-xl cursor-pointer transition-colors ${selectedDatabase === db.id ? 'bg-emerald-500/20 text-emerald-300' : 'text-white/70 hover:bg-white/5'}`}
+                          className={`flex cursor-pointer items-center justify-between rounded-xl px-3 py-2.5 text-sm font-bold transition-colors ${selectedDatabase === db.id ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
                         >
                           <span>{db.name}</span>
                           {selectedDatabase === db.id && <Check size={16} />}
@@ -1216,29 +1231,29 @@ const HeroSection = () => {
                 </AnimatePresence>
               </div>
 
-              <div className="hidden md:block h-10 w-px bg-white/10 shrink-0"></div>
-
               {/* Champ 3 : Pays */}
               <div className="relative md:min-w-[160px]">
                 <div 
                   onClick={() => toggleDropdown('country')}
-                  className="flex items-center gap-3 px-4 py-2.5 cursor-pointer group/country select-none rounded-xl hover:bg-white/10 transition-colors h-full"
+                  className={`group/country flex min-h-[64px] h-full cursor-pointer select-none items-center gap-3 rounded-2xl border px-4 py-2.5 transition-all ${activeDropdown === 'country' ? 'border-emerald-400/50 bg-emerald-50/70 shadow-[0_0_0_4px_rgba(52,211,153,0.08)]' : 'border-transparent bg-slate-50/90 hover:border-slate-200 hover:bg-white'}`}
                 >
-                  <MapPin size={18} className={`transition-colors duration-300 shrink-0 ${activeDropdown === 'country' ? 'text-emerald-300' : 'text-white/40 group-hover/country:text-emerald-300'}`} />
+                  <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl transition-colors ${activeDropdown === 'country' ? 'bg-emerald-500 text-white' : 'bg-emerald-50 text-emerald-600'}`}>
+                    <MapPin size={18} />
+                  </span>
                   <div className="flex flex-col text-start w-full">
-                    <span className="text-[10px] text-white/50 font-bold uppercase tracking-wider mb-0.5">{t("hero.country_label", "الدولة")}</span>
+                    <span className="mb-0.5 text-[9px] font-extrabold uppercase tracking-[0.12em] text-slate-400">{t("hero.country_label", "الدولة")}</span>
                     
                     <div className="flex items-center gap-2 max-w-full">
                       {selectedCountry && currentSelectedCountryObj && (
                         <img src={currentSelectedCountryObj.flag} alt="" className="w-4 h-3 object-cover rounded-[2px] shadow-sm shrink-0" />
                       )}
-                      <span className="text-sm text-white font-bold truncate">
+                      <span className="truncate text-sm font-bold text-slate-800">
                         {selectedCountry && currentSelectedCountryObj ? currentSelectedCountryObj.name : t("hero.select_country", "اختر الدولة")}
                       </span>
                     </div>
                   </div>
                   <motion.div animate={{ rotate: activeDropdown === 'country' ? 180 : 0 }} transition={{ duration: 0.2 }} className="shrink-0">
-                    <ChevronDown size={16} className="text-white/40" />
+                    <ChevronDown size={16} className="text-slate-400" />
                   </motion.div>
                 </div>
 
@@ -1249,11 +1264,11 @@ const HeroSection = () => {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
                       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                      className="absolute top-[110%] left-0 right-0 md:right-auto md:min-w-full bg-slate-900/80 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-2 flex flex-col gap-1 z-50 max-h-56 overflow-y-auto"
+                      className="absolute left-0 right-0 top-[112%] z-50 flex max-h-56 flex-col gap-1 overflow-y-auto rounded-2xl border border-slate-200 bg-white/95 p-2 shadow-[0_20px_55px_rgba(15,23,42,0.22)] backdrop-blur-xl md:right-auto md:min-w-full"
                     >
                       <li 
                         onClick={() => { setSelectedCountry(""); setActiveDropdown(null); }}
-                        className={`flex items-center justify-between px-3 py-2.5 text-sm font-bold rounded-xl cursor-pointer transition-colors ${!selectedCountry ? 'bg-emerald-500/20 text-emerald-300' : 'text-white/70 hover:bg-white/5'}`}
+                        className={`flex cursor-pointer items-center justify-between rounded-xl px-3 py-2.5 text-sm font-bold transition-colors ${!selectedCountry ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
                       >
                         <span>{t("hero.select_country_all", "كل الدول")}</span>
                         {!selectedCountry && <Check size={16} />}
@@ -1262,7 +1277,7 @@ const HeroSection = () => {
                         <li 
                           key={country.code}
                           onClick={() => { setSelectedCountry(country.code); setActiveDropdown(null); }}
-                          className={`flex items-center justify-between px-3 py-2.5 text-sm font-bold rounded-xl cursor-pointer transition-colors ${selectedCountry === country.code ? 'bg-emerald-500/20 text-emerald-300' : 'text-white/70 hover:bg-white/5'}`}
+                          className={`flex cursor-pointer items-center justify-between rounded-xl px-3 py-2.5 text-sm font-bold transition-colors ${selectedCountry === country.code ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
                         >
                           <div className="flex items-center gap-2">
                             <img src={country.flag} alt="" className="w-4 h-3 object-cover rounded-[2px] shadow-sm shrink-0" />
@@ -1276,31 +1291,20 @@ const HeroSection = () => {
                 </AnimatePresence>
               </div>
 
-              {/* Bouton de soumission - Glow Vert */}
+              {/* Bouton de soumission */}
               <motion.button 
                 type="submit" 
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="px-8 py-3.5 mt-2 md:mt-0 bg-gradient-to-l from-emerald-500 to-teal-400 text-slate-900 font-extrabold text-sm rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-emerald-500/30 hover:shadow-emerald-400/50 shrink-0"
+                className="flex min-h-[64px] shrink-0 items-center justify-center gap-3 rounded-2xl bg-gradient-to-l from-emerald-600 to-teal-500 px-7 py-3.5 text-sm font-extrabold text-white shadow-[0_12px_28px_rgba(5,150,105,0.3)] transition-all hover:from-emerald-500 hover:to-teal-400 hover:shadow-[0_15px_35px_rgba(5,150,105,0.4)]"
               >
                 <span>{t("hero.search_btn", "بحث")}</span>
-                {isRtl ? <ArrowLeft size={18} /> : <ArrowLeft size={18} className="rotate-180" />}
+                <span className="grid h-8 w-8 place-items-center rounded-xl bg-white/15">
+                  {isRtl ? <ArrowLeft size={17} /> : <ArrowLeft size={17} className="rotate-180" />}
+                </span>
               </motion.button>
 
             </form>
-          </motion.div>
-
-          {/* Mini statistiques en bas de la barre de recherche */}
-          <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-6 mt-10">
-            <div className="flex items-center gap-2 text-white/70">
-              <Cpu size={18} className="text-emerald-400" />
-              <span className="text-sm font-bold">+450 مركز ذكاء اصطناعي</span>
-            </div>
-            <div className="hidden md:block w-px h-5 bg-white/20"></div>
-            <div className="flex items-center gap-2 text-white/70">
-              <Globe2 size={18} className="text-emerald-400" />
-              <span className="text-sm font-bold">تغطية لـ 21 دولة عربية</span>
-            </div>
           </motion.div>
 
         </motion.div>
