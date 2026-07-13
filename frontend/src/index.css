@@ -40,6 +40,20 @@
   animation-play-state: paused;
 }
 
+.stats-swiper .swiper-pagination-bullet {
+  width: 8px;
+  height: 8px;
+  background: #cbd5e1;
+  opacity: 1;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.stats-swiper .swiper-pagination-bullet-active {
+  width: 28px;
+  border-radius: 999px;
+  background: #059669;
+}
+
 /* تخصيص شكل السكرول بار للمتصفحات (Chrome, Safari, Edge) */
 /* .custom-scrollbar::-webkit-scrollbar {
   width: 6px; 
