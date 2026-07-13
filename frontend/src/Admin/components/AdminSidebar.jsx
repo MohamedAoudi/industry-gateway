@@ -4,14 +4,20 @@ import { useLocation, Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import {
   LayoutDashboard,
-  Users,
   FlaskConical,
   Briefcase,
   ClipboardList,
   ChevronDown,
-  Search,
-  Bell,
   Network,
+  Database,
+  Microscope,
+  BrainCircuit,
+  GraduationCap,
+  FileBadge,
+  HandHeart,
+  Building2,
+  BookOpen,
+  UserPlus,
 } from "lucide-react";
 
 const NavItem = ({
@@ -89,33 +95,33 @@ const AdminSidebar = () => {
 
     {
       id: "database_centers",
-      icon: <Users />,
+      icon: <Database />,
       label: t("menu.database"),
       hasSubmenu: true,
       submenu: [
         {
           label: t("submenu.database.scientific_research_innovation_centers"),
-          icon: <Search size={14} />,
+          icon: <Microscope size={14} />,
           path: "/admin/scientificResearchInnovationCentersList",
         },
         {
           label: t("submenu.database.centers_excellence_artificial_intelligence"),
-          icon: <Bell size={14} />,
+          icon: <BrainCircuit size={14} />,
           path: "/admin/centersExcellenceArtificialIntelligenceList",
         },
         {
           label: t("submenu.database.ministries_higher_education_scientific_research"),
-          icon: <Search size={14} />,
+          icon: <GraduationCap size={14} />,
           path: "/admin/ministriesHigherEducationScientificResearchList",
         },
         {
           label: t("submenu.database.industrial_property_patent_offices"),
-          icon: <Bell size={14} />,
+          icon: <FileBadge size={14} />,
           path: "/admin/industrialPropertyPatentOfficesList",
         },
         {
           label: t("submenu.database.supporting_bodies_scientific_research"),
-          icon: <Bell size={14} />,
+          icon: <HandHeart size={14} />,
           path: "/admin/supportingBodiesScientificResearchList",
         },
       ],
@@ -123,18 +129,18 @@ const AdminSidebar = () => {
 
     {
       id: "companies",
-      icon: <Users />,
+      icon: <Building2 />,
       label: t("companies.industrial_companies"),
       hasSubmenu: true,
       submenu: [
         {
           label: t("companies.business_directory"),
-          icon: <Search size={14} />,
+          icon: <BookOpen size={14} />,
           path: "/admin/companies",
         },
         {
           label: t("companies.applications_to_join"),
-          icon: <Bell size={14} />,
+          icon: <UserPlus size={14} />,
           path: "/admin/companies/requests",
         },
       ],

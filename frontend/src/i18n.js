@@ -63,10 +63,20 @@ i18n.use(initReactI18next).init({
 
         stats: {
           title: "البوابة في أرقام",
+          subtitle: "بيانات حية تعكس منظومة البحث العلمي والابتكار في الوطن العربي",
+          live_data: "بيانات مباشرة من المنصة",
+          entries: "سجل",
+          load_error: "تعذر تحميل الإحصائيات حاليًا",
           factories: "المصانع المسجلة",
           researchers: "الباحثين والمبتكرين",
           countries: "الدول العربية",
-          solutions: "حلول تكنولوجية"
+          solutions: "حلول تكنولوجية",
+          research_innovation_ai: "مراكز البحث العلمي والإبتكار والذكاء الصناعي",
+          universities_academic_institutions: "الجامعات والمؤسسات الأكاديمية والعلمية",
+          incubators_technology_labs: "الحاضنات والأقطاب التكنولوجية والمختبرات",
+          programs_initiatives_strategies: "البرامج والمبادرات والاستراتيجيات",
+          industrial_property_patents: "مكاتب الملكية الصناعية وبراءات الإختراع",
+          experts_specialists: "قاعدة الخبراء والمختصين"
         },
         
         about_sections: {
@@ -207,6 +217,11 @@ i18n.use(initReactI18next).init({
             ministries_higher_education_scientific_research: "وزارات التعليم العالي والبحث العلمي",
             industrial_property_patent_offices: "مكاتب الملكية الصناعية وبراءات الإختراع",
             supporting_bodies_scientific_research: "الجهات الداعمة للبحث العلمي",
+            research_innovation_ai_centers: "مراكز البحث العلمي والإبتكار والذكاء الصناعي",
+            universities_academic_scientific_institutions: "الجامعات والمؤسسات الأكاديمية والعلمية",
+            incubators_technology_poles_laboratories: "الحاضنات والأقطاب التكنولوجية والمختبرات",
+            programs_initiatives_strategies: "البرامج والمبادرات والاستراتيجيات",
+            experts_specialists_database: "قاعدة الخبراء والمختصين",
           },
           media_center: {
             news: "أخبار",
@@ -284,10 +299,20 @@ i18n.use(initReactI18next).init({
 
         stats: {
           title: "Portal in Numbers",
+          subtitle: "Live data reflecting the scientific research and innovation ecosystem across the Arab world",
+          live_data: "Live platform data",
+          entries: "records",
+          load_error: "Statistics are temporarily unavailable",
           factories: "Registered Factories",
           researchers: "Researchers & Innovators",
           countries: "Arab Countries",
-          solutions: "Tech Solutions"
+          solutions: "Tech Solutions",
+          research_innovation_ai: "Scientific Research, Innovation and AI Centers",
+          universities_academic_institutions: "Universities and Academic and Scientific Institutions",
+          incubators_technology_labs: "Incubators, Technology Poles and Laboratories",
+          programs_initiatives_strategies: "Programs, Initiatives and Strategies",
+          industrial_property_patents: "Industrial Property and Patent Offices",
+          experts_specialists: "Experts and Specialists Database"
         },
         about_sections: {
           goals: {
@@ -423,6 +448,11 @@ i18n.use(initReactI18next).init({
             ministries_higher_education_scientific_research: "Ministries of Higher Education and Scientific Research",
             industrial_property_patent_offices: "Industrial Property and Patent Offices",
             supporting_bodies_scientific_research: "Supporting bodies for scientific research",
+            research_innovation_ai_centers: "Scientific Research, Innovation and AI Centers",
+            universities_academic_scientific_institutions: "Universities and Academic and Scientific Institutions",
+            incubators_technology_poles_laboratories: "Incubators, Technology Poles and Laboratories",
+            programs_initiatives_strategies: "Programs, Initiatives and Strategies",
+            experts_specialists_database: "Experts and Specialists Database",
 
           },
           media_center: {

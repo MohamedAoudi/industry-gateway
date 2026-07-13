@@ -3,6 +3,10 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Cairo', 'Tahoma', 'Arial', 'sans-serif'],
+        arabic: ['Cairo', 'Tahoma', 'Arial', 'sans-serif'],
+      },
       colors: {
         brand: {
           dark: "#08973f",    

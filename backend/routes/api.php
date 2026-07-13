@@ -17,6 +17,7 @@ use App\Http\Controllers\CentersExcellenceArtificialIntelligenceController;
 use App\Http\Controllers\MinistriesHigherEducationScientificResearchController;
 use App\Http\Controllers\IndustrialPropertyPatentOfficesController;
 use App\Http\Controllers\SupportingBodiesScientificResearchController;
+use App\Http\Controllers\PortalStatsController;
 
 
 
@@ -31,6 +32,7 @@ Route::post('/tokens/create', function (Request $request) {
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/pays', [PaysController::class, 'index']); 
+Route::get('/portal-stats', [PortalStatsController::class, 'index']);
 
 Route::get('/scientificResearchInnovationCenters', [ScientificResearchInnovationCentersController::class, 'index']);
 

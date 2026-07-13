@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html {
+    font-family: "Cairo", Tahoma, Arial, sans-serif;
+  }
+
+  body,
+  button,
+  input,
+  select,
+  textarea {
+    font-family: inherit;
+  }
+}
 
 @keyframes fade {
   from { opacity: 0; transform: translateY(10px); }

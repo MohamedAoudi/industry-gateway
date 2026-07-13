@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { 
   Phone, Mail, Globe, Facebook, Instagram, Linkedin, Twitter, 
-  MapPin, ShieldCheck 
+  MapPin, ShieldCheck, Home, Info, LogIn, Send, Factory, Megaphone
 } from "lucide-react";
 import aidsmo from '../assets/images/logos/aidsmo_logo.png'; 
 
@@ -9,9 +9,12 @@ const Footer = () => {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.language === "ar";
 
-  const FooterLink = ({ label }) => (
+  const FooterLink = ({ label, icon: Icon }) => (
     <li>
       <a href="#" className="flex items-center gap-2 text-white hover:text-white transition-all duration-300 group">
+        <span className="grid h-7 w-7 shrink-0 place-items-center rounded-lg bg-white/10 text-white transition-all group-hover:bg-white group-hover:text-emerald-700">
+          <Icon size={14} />
+        </span>
         <span className={`text-[14px] font-medium transition-transform duration-300 ${
           isRtl ? "group-hover:-translate-x-1" : "group-hover:translate-x-1"
         }`}>
@@ -65,9 +68,9 @@ const Footer = () => {
                 {t("footer.sitemap")}
               </h4>
               <ul className="space-y-4">
-                <FooterLink label="menu.home" />
-                <FooterLink label="menu.about" />
-                <FooterLink label="footer.login" />
+                <FooterLink icon={Home} label="menu.home" />
+                <FooterLink icon={Info} label="menu.about" />
+                <FooterLink icon={LogIn} label="footer.login" />
               </ul>
             </div>
 
@@ -77,9 +80,9 @@ const Footer = () => {
                 {t("footer.actions")}
               </h4>
               <ul className="space-y-4">
-                <FooterLink label="footer.add_request" />
-                <FooterLink label="footer.add_factory" />
-                <FooterLink label="footer.add_ad" />
+                <FooterLink icon={Send} label="footer.add_request" />
+                <FooterLink icon={Factory} label="footer.add_factory" />
+                <FooterLink icon={Megaphone} label="footer.add_ad" />
               </ul>
             </div>
 

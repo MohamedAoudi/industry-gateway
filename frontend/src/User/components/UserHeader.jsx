@@ -257,40 +257,51 @@ import { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { 
   ChevronDown, Search, Home, Menu as MenuIcon, X, 
-  Zap, Database, MessageSquare, LogIn, LogOut, User, Newspaper, Layers 
+  Zap, Database, LogOut, User, Layers, Info, Handshake, Library,
+  Presentation, Megaphone, CircleHelp, BadgeDollarSign, Microscope,
+  GraduationCap, FlaskConical, Workflow, FileBadge, UsersRound,
+  Newspaper, Mail
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import aidsmoLogo from '../assets/images/logos/aidsmo_logo.png';
 import logo from '../assets/images/logos/logo.png';
 
-const SubLinkCard = ({ label, href }) => {
+const SubLinkCard = ({ label, href, icon: Icon = Zap }) => {
   const { t } = useTranslation();
+  const Wrapper = href ? Link : "div";
+
   return (
-    <a
-      href={href}
-      className="group flex items-center gap-3 p-2.5 rounded-xl hover:bg-slate-50 transition-all duration-200"
+    <Wrapper
+      {...(href ? { to: href } : {})}
+      className="group flex items-center gap-3 rounded-xl border border-transparent p-2.5 transition-all duration-200 hover:border-emerald-100 hover:bg-emerald-50/70"
     >
-      {/* <div className="flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-200">
-        <Zap size={13} />
-      </div> */}
-      <span className="text-[13px] font-medium text-slate-600 group-hover:text-slate-900 transition-colors leading-tight">
+      <div className="flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-200">
+        <Icon size={14} />
+      </div>
+      <span className="text-[13px] font-semibold text-slate-600 group-hover:text-emerald-900 transition-colors leading-tight">
         {t(label)}
       </span>
-    </a>
+    </Wrapper>
   );
 };
 
-const MegaMenu = ({ label, children, width = "w-[550px]" }) => {
+const MegaMenu = ({ label, icon: Icon, children, width = "w-[550px]" }) => {
   const { t } = useTranslation();
   return (
     <div className="relative group">
-      <button className="flex items-center gap-1.5 px-3 py-2 text-[14px] font-semibold text-slate-700 hover:text-emerald-600 transition-all duration-200">
+      <button className="flex items-center gap-2 rounded-xl px-3.5 py-2.5 text-[13px] font-bold text-slate-700 transition-all duration-200 hover:bg-emerald-50 hover:text-emerald-700">
+        {Icon && (
+          <span className="grid h-7 w-7 place-items-center rounded-lg bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100 transition-colors group-hover:bg-emerald-600 group-hover:text-white">
+            <Icon size={14} />
+          </span>
+        )}
         <span>{t(`menu.${label}`)}</span>
-        <ChevronDown size={11} className="opacity-40 group-hover:rotate-180 transition-transform duration-300" />
+        <ChevronDown size={12} className="text-slate-400 group-hover:rotate-180 group-hover:text-emerald-600 transition-all duration-300" />
       </button>
-      <div className={`absolute top-full ltr:left-0 rtl:right-0 ${width} opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-2 group-hover:translate-y-0 transition-all duration-300 z-50 pt-2`}>
-        <div className="bg-white shadow-xl rounded-2xl border border-slate-100 p-4 grid grid-cols-2 gap-1.5">
+      <div className={`absolute top-full ltr:left-0 rtl:right-0 ${width} opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-3 group-hover:translate-y-0 transition-all duration-300 z-50 pt-3`}>
+        <div className="relative grid grid-cols-2 gap-1.5 overflow-hidden rounded-[1.5rem] border border-white bg-white/95 p-4 shadow-[0_24px_65px_rgba(15,23,42,0.18)] backdrop-blur-2xl">
+          <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400 to-transparent" />
           {children}
         </div>
       </div>
@@ -330,6 +341,8 @@ const UserHeader = () => {
   const { t, i18n } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [userData, setUserData] = useState({ prenom: "", nom: "" });
 
   useEffect(() => {
@@ -359,27 +372,27 @@ const UserHeader = () => {
   };
 
   return (
-    <header className="fixed top-0 w-full z-50 flex flex-col items-center shadow-sm">
+    <header className="fixed top-0 z-50 flex w-full flex-col items-center">
       
       {/* 1. TOP HEADER */}
-      <div className="w-full bg-white/95 backdrop-blur-xl border-b border-slate-200/70 px-6 flex justify-between items-center h-16">
+      <div className="flex h-20 w-full items-center justify-between border-b border-white/60 bg-white/90 px-4 shadow-[0_1px_0_rgba(15,23,42,0.04)] backdrop-blur-2xl xl:hidden">
         <div className="flex-shrink-0">
-          <img src={logo} alt="Logo Left" className="h-12 w-auto object-contain" />
+          <img src={logo} alt="Logo Left" className="h-16 w-auto object-contain" />
         </div>
         
         <div className="flex items-center gap-4">
-          <div className="hidden md:flex items-center bg-slate-50 border border-slate-200 focus-within:border-emerald-500 rounded-full px-3 py-1.5 transition-all duration-200">
+          <div className="hidden">
             <input 
               type="text" 
               placeholder={t('search')} 
               className="bg-transparent border-none text-[13px] outline-none w-64 focus:w-72 transition-all duration-300 px-1 text-slate-700 placeholder:text-slate-400" 
             />
-            <Search size={14} className="text-slate-400 group-focus-within:text-emerald-600" />
+            <Search size={15} className="text-slate-400 transition-colors group-focus-within:text-emerald-600" />
           </div>
         </div>
 
         <div className="flex items-center gap-4 flex-shrink-0">
-          <div className="flex bg-slate-100 p-1 rounded-xl border border-slate-200/50">
+          <div className="flex rounded-xl border border-slate-200/60 bg-slate-100/80 p-1">
             {['ar', 'en'].map(lng => (
               <button 
                 key={lng} 
@@ -392,59 +405,114 @@ const UserHeader = () => {
               </button>
             ))}
           </div>
-          <img src={aidsmoLogo} alt="Logo Right" className="h-10 w-auto object-contain" />
+          <img src={aidsmoLogo} alt="Logo Right" className="hidden h-14 w-auto object-contain sm:block" />
+          <button
+            type="button"
+            onClick={() => setIsMobileMenuOpen((isOpen) => !isOpen)}
+            aria-label={isMobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+            aria-expanded={isMobileMenuOpen}
+            className="grid h-10 w-10 place-items-center rounded-xl bg-slate-900 text-white transition-colors hover:bg-emerald-700 xl:hidden"
+          >
+            {isMobileMenuOpen ? <X size={19} /> : <MenuIcon size={19} />}
+          </button>
         </div>
       </div>
 
       {/* 2. MAIN HEADER */}
-      <div className={`w-full flex justify-center transition-all duration-300 ${isScrolled ? "py-1.5" : "py-3"}`}>
-        <nav className={`flex items-center gap-1 px-4 py-1.5 rounded-full border transition-all duration-300 ${
+      <div className="hidden w-full transition-all duration-300 xl:flex">
+        <nav className={`relative flex w-full items-center justify-between gap-3 overflow-visible border-b bg-white px-5 py-2 transition-all duration-300 ${
           isScrolled 
-          ? "bg-white shadow-lg border-slate-200/80 scale-95" 
-          : "bg-white/95 backdrop-blur-md border-slate-100 shadow-md"
+          ? "border-slate-200 shadow-[0_10px_30px_rgba(15,23,42,0.1)]" 
+          : "border-slate-100 shadow-[0_8px_24px_rgba(15,23,42,0.07)]"
         }`}>
+          <div className="flex shrink-0 items-center">
+            <img src={logo} alt="Logo" className="h-16 w-auto object-contain" />
+          </div>
           
-          <div className="flex items-center gap-0.5">
-            <Link to="/" className="p-2 text-slate-500 hover:text-emerald-600 rounded-full hover:bg-slate-50 transition-colors">
-              <Home size={16} />
+          <div className="absolute left-1/2 flex -translate-x-1/2 items-center gap-1">
+            <Link to="/" className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-emerald-600 to-teal-500 text-white shadow-[0_8px_20px_rgba(5,150,105,0.25)] transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_25px_rgba(5,150,105,0.35)]">
+              <Home size={17} />
             </Link>
             
-            <Link to="/about" className="px-3 py-2 text-[14px] font-semibold text-slate-700 hover:text-emerald-600 transition-colors">
+            <Link to="/about" className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-emerald-50 hover:text-emerald-700">
+              <Info size={15} className="text-emerald-600" />
               {t("menu.about")}
             </Link>
 
-            <MegaMenu label="services">
-              <Link to="/linkingresearcherscompanies"><SubLinkCard label="submenu.services.linking_researchers_industrial_companies" /></Link>
-              <Link to="/researchDatabase"><SubLinkCard label="submenu.services.database_research_technologies_available_industrial_application" /></Link>
-              <Link to="/workshopsseminars"><SubLinkCard label="submenu.services.joint_workshops_seminars" /></Link>
-              <SubLinkCard label="submenu.services.supporting_marketing_investment_scientific_research_outputs" href="/services/marketing" />
-              <SubLinkCard label="submenu.services.technical_details_how_use_services" href="/services/how-to" />
-              <SubLinkCard label="submenu.services.subscription_prices_terms" href="/services/pricing" />
+            <MegaMenu label="services" icon={Layers}>
+              <Link to="/linkingresearcherscompanies"><SubLinkCard icon={Handshake} label="submenu.services.linking_researchers_industrial_companies" /></Link>
+              <Link to="/researchDatabase"><SubLinkCard icon={Library} label="submenu.services.database_research_technologies_available_industrial_application" /></Link>
+              <Link to="/workshopsseminars"><SubLinkCard icon={Presentation} label="submenu.services.joint_workshops_seminars" /></Link>
+              <SubLinkCard icon={Megaphone} label="submenu.services.supporting_marketing_investment_scientific_research_outputs" href="/services/marketing" />
+              <SubLinkCard icon={CircleHelp} label="submenu.services.technical_details_how_use_services" href="/services/how-to" />
+              <SubLinkCard icon={BadgeDollarSign} label="submenu.services.subscription_prices_terms" href="/services/pricing" />
             </MegaMenu>
 
-            <MegaMenu label="database">
-              <Link to="/scientificResearchInnovationCenters"><SubLinkCard label="submenu.database.scientific_research_innovation_centers" /></Link>
-              <Link to="/centersExcellenceAI"><SubLinkCard label="submenu.database.centers_excellence_artificial_intelligence" /></Link>
-              <Link to="/ministriesHigherEducationScientificResearch"><SubLinkCard label="submenu.database.ministries_higher_education_scientific_research" /></Link>
-              <Link to="/industrialPropertyPatentOffices"><SubLinkCard label="submenu.database.industrial_property_patent_offices" /></Link>
-              <Link to="/supportingBodiesScientificResearch"><SubLinkCard label="submenu.database.supporting_bodies_scientific_research" /></Link>
+            <MegaMenu label="database" icon={Database}>
+              <Link to="/researchDatabase?category=research-innovation-ai"><SubLinkCard icon={Microscope} label="submenu.database.research_innovation_ai_centers" /></Link>
+              <Link to="/researchDatabase?category=universities"><SubLinkCard icon={GraduationCap} label="submenu.database.universities_academic_scientific_institutions" /></Link>
+              <Link to="/researchDatabase?category=incubators-technology-labs"><SubLinkCard icon={FlaskConical} label="submenu.database.incubators_technology_poles_laboratories" /></Link>
+              <Link to="/researchDatabase?category=programs-initiatives-strategies"><SubLinkCard icon={Workflow} label="submenu.database.programs_initiatives_strategies" /></Link>
+              <Link to="/researchDatabase?category=industrial-property-patents"><SubLinkCard icon={FileBadge} label="submenu.database.industrial_property_patent_offices" /></Link>
+              <Link to="/researchDatabase?category=experts-specialists"><SubLinkCard icon={UsersRound} label="submenu.database.experts_specialists_database" /></Link>
             </MegaMenu>
 
-            <Link to="/mediaCenter" className="px-3 py-2 text-[14px] font-semibold text-slate-700 hover:text-emerald-600 transition-colors">
+            <Link to="/mediaCenter" className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-emerald-50 hover:text-emerald-700">
+              <Newspaper size={15} className="text-emerald-600" />
               {t("menu.media_center")}
             </Link>
 
-            <Link to="/contact" className="px-3 py-2 text-[14px] font-semibold text-slate-700 hover:text-emerald-600 transition-colors">
+            <Link to="/contact" className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-emerald-50 hover:text-emerald-700">
+              <Mail size={15} className="text-emerald-600" />
               {t("menu.contact")}
             </Link>
           </div>
 
-          {/* SÉPARATEUR DE COMPTE */}
-          <div className="flex items-center gap-2 ltr:ml-1 ltr:border-l rtl:mr-1 rtl:border-r border-slate-200 ltr:pl-3 rtl:pr-3">
+          <div className="flex shrink-0 items-center gap-3">
+            <div className={`group flex h-10 shrink-0 items-center overflow-hidden rounded-xl border transition-all duration-300 focus-within:border-emerald-400 focus-within:bg-white focus-within:shadow-[0_0_0_4px_rgba(52,211,153,0.08)] ${
+              isSearchOpen ? "w-[230px] border-slate-200 bg-slate-50/80" : "w-10 border-emerald-100 bg-emerald-50"
+            }`}>
+            {isSearchOpen && (
+              <input
+                autoFocus
+                type="text"
+                placeholder={t('search')}
+                className="min-w-0 flex-1 border-none bg-transparent px-3 text-[12px] text-slate-700 outline-none placeholder:text-slate-400"
+              />
+            )}
+            <button
+              type="button"
+              onClick={() => setIsSearchOpen((isOpen) => !isOpen)}
+              aria-label={isSearchOpen ? "Fermer la recherche" : "Ouvrir la recherche"}
+              aria-expanded={isSearchOpen}
+              className="grid h-10 w-10 shrink-0 place-items-center text-emerald-600 transition-colors hover:bg-emerald-100"
+            >
+              {isSearchOpen ? <X size={16} /> : <Search size={16} />}
+            </button>
+            </div>
+
+            <div className="flex shrink-0 rounded-xl border border-slate-200/60 bg-slate-100/80 p-1">
+              {['ar', 'en'].map(lng => (
+                <button
+                  key={lng}
+                  onClick={() => switchLang(lng)}
+                  className={`rounded-lg px-2.5 py-1 text-[11px] font-bold transition-all duration-200 ${
+                    i18n.language === lng ? "bg-white text-emerald-600 shadow-sm" : "text-slate-600 hover:text-slate-900"
+                  }`}
+                >
+                  {lng.toUpperCase()}
+                </button>
+              ))}
+            </div>
+
+            <img src={aidsmoLogo} alt="AIDSMO" className="h-14 w-auto shrink-0 object-contain" />
+
+            {/* SÉPARATEUR DE COMPTE */}
+            <div className="flex items-center gap-2 border-slate-200 ltr:ml-1 ltr:border-l ltr:pl-3 rtl:mr-1 rtl:border-r rtl:pr-3">
             {isLoggedIn ? (
               <div className="relative group">
-                <button className="flex items-center gap-2 p-0.5 ltr:pr-3 rtl:pl-3 rounded-full bg-emerald-50 border border-emerald-100/70 hover:bg-emerald-100/50 transition-colors duration-200">
-                  <div className="w-7 h-7 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold text-[11px] shrink-0 shadow-sm">
+                <button className="flex items-center gap-2 rounded-xl border border-emerald-100 bg-emerald-50 p-1 ltr:pr-3 rtl:pl-3 transition-colors duration-200 hover:bg-emerald-100">
+                  <div className="w-7 h-7 rounded-lg bg-emerald-600 flex items-center justify-center text-white font-bold text-[11px] shrink-0 shadow-sm">
                     {userData.prenom.charAt(0).toUpperCase()}{userData.nom.charAt(0).toUpperCase()}
                   </div>
                   <p className="hidden sm:block text-[12px] font-bold text-emerald-900 capitalize">
@@ -477,14 +545,78 @@ const UserHeader = () => {
             ) : (
               <Link 
                 to="/login" 
-                className="flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-emerald-700 text-white text-[13px] font-bold hover:bg-emerald-800 transition-all duration-200 shadow-sm hover:shadow-lg"
+                aria-label={t("menu.login")}
+                className="group/login flex h-10 w-10 items-center justify-center gap-0 overflow-hidden rounded-xl bg-gradient-to-l from-emerald-600 to-teal-500 px-0 text-[13px] font-bold text-white shadow-[0_8px_20px_rgba(5,150,105,0.25)] transition-all duration-300 hover:w-36 hover:gap-2 hover:px-4 hover:from-emerald-500 hover:to-teal-400 hover:shadow-[0_10px_26px_rgba(5,150,105,0.4)]"
               >
-                <User size={13} />
-                <span>{t("menu.login")}</span>
+                <User size={15} className="shrink-0" />
+                <span className="max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300 group-hover/login:max-w-24 group-hover/login:opacity-100">
+                  {t("menu.login")}
+                </span>
               </Link>
             )}
+            </div>
           </div>
         </nav>
+      </div>
+
+      {/* 3. MENU MOBILE */}
+      <div
+        className={`w-[calc(100%-1.5rem)] overflow-hidden rounded-b-[1.5rem] border-x border-b border-white/70 bg-white/95 shadow-[0_22px_55px_rgba(15,23,42,0.2)] backdrop-blur-2xl transition-all duration-300 xl:hidden ${
+          isMobileMenuOpen ? "max-h-[calc(100vh-5rem)] translate-y-0 opacity-100" : "pointer-events-none max-h-0 -translate-y-3 border-transparent opacity-0"
+        }`}
+      >
+        <div className="max-h-[calc(100vh-6rem)] space-y-1 overflow-y-auto p-3" dir={i18n.language === "ar" ? "rtl" : "ltr"}>
+          <Link onClick={() => setIsMobileMenuOpen(false)} to="/" className="flex items-center gap-3 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-bold text-emerald-800">
+            <Home size={17} />
+            {t("menu.home")}
+          </Link>
+          <Link onClick={() => setIsMobileMenuOpen(false)} to="/about" className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50">
+            <Info size={17} className="text-emerald-600" />
+            {t("menu.about")}
+          </Link>
+
+          <details className="group/mobile rounded-xl open:bg-slate-50">
+            <summary className="flex cursor-pointer list-none items-center justify-between rounded-xl px-4 py-3 text-sm font-bold text-slate-700">
+              <span className="flex items-center gap-3"><Layers size={17} className="text-emerald-600" />{t("menu.services")}</span>
+              <ChevronDown size={15} className="text-slate-400 transition-transform group-open/mobile:rotate-180" />
+            </summary>
+            <div className="space-y-1 px-2 pb-2">
+              <Link onClick={() => setIsMobileMenuOpen(false)} to="/linkingresearcherscompanies"><SubLinkCard icon={Handshake} label="submenu.services.linking_researchers_industrial_companies" /></Link>
+              <Link onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase"><SubLinkCard icon={Library} label="submenu.services.database_research_technologies_available_industrial_application" /></Link>
+              <Link onClick={() => setIsMobileMenuOpen(false)} to="/workshopsseminars"><SubLinkCard icon={Presentation} label="submenu.services.joint_workshops_seminars" /></Link>
+            </div>
+          </details>
+
+          <details className="group/mobile rounded-xl open:bg-slate-50">
+            <summary className="flex cursor-pointer list-none items-center justify-between rounded-xl px-4 py-3 text-sm font-bold text-slate-700">
+              <span className="flex items-center gap-3"><Database size={17} className="text-emerald-600" />{t("menu.database")}</span>
+              <ChevronDown size={15} className="text-slate-400 transition-transform group-open/mobile:rotate-180" />
+            </summary>
+            <div className="space-y-1 px-2 pb-2">
+              <Link onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=research-innovation-ai"><SubLinkCard icon={Microscope} label="submenu.database.research_innovation_ai_centers" /></Link>
+              <Link onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=universities"><SubLinkCard icon={GraduationCap} label="submenu.database.universities_academic_scientific_institutions" /></Link>
+              <Link onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=incubators-technology-labs"><SubLinkCard icon={FlaskConical} label="submenu.database.incubators_technology_poles_laboratories" /></Link>
+              <Link onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=programs-initiatives-strategies"><SubLinkCard icon={Workflow} label="submenu.database.programs_initiatives_strategies" /></Link>
+              <Link onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=industrial-property-patents"><SubLinkCard icon={FileBadge} label="submenu.database.industrial_property_patent_offices" /></Link>
+              <Link onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=experts-specialists"><SubLinkCard icon={UsersRound} label="submenu.database.experts_specialists_database" /></Link>
+            </div>
+          </details>
+
+          <Link onClick={() => setIsMobileMenuOpen(false)} to="/mediaCenter" className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50">
+            <Newspaper size={17} className="text-emerald-600" />
+            {t("menu.media_center")}
+          </Link>
+          <Link onClick={() => setIsMobileMenuOpen(false)} to="/contact" className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50">
+            <Mail size={17} className="text-emerald-600" />
+            {t("menu.contact")}
+          </Link>
+          {!isLoggedIn && (
+            <Link onClick={() => setIsMobileMenuOpen(false)} to="/login" className="mt-2 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-l from-emerald-600 to-teal-500 px-4 py-3 text-sm font-bold text-white shadow-[0_8px_20px_rgba(5,150,105,0.25)] transition-all hover:from-emerald-500 hover:to-teal-400">
+              <User size={16} />
+              {t("menu.login")}
+            </Link>
+          )}
+        </div>
       </div>
     </header>
   );
