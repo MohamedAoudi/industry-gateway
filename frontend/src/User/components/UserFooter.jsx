@@ -13,6 +13,7 @@ import {
   Newspaper,
   Phone,
   Presentation,
+  CircleHelp,
   UserRound,
 } from "lucide-react";
 
@@ -28,6 +29,7 @@ const UserFooter = () => {
     { label: "menu.home", to: "/", icon: Home },
     { label: "menu.about", to: "/about", icon: Info },
     { label: "menu.media_center", to: "/mediaCenter", icon: Newspaper },
+    { label: "footer.faq", to: "/faq", icon: CircleHelp },
   ];
 
   const serviceLinks = [

@@ -1,3 +1,4 @@
+import { Link } from '@inertiajs/react';
 import type { ComponentPropsWithoutRef } from 'react';
 import {
     SidebarGroup,
@@ -23,25 +24,39 @@ export function NavFooter({
         >
             <SidebarGroupContent>
                 <SidebarMenu>
-                    {items.map((item) => (
-                        <SidebarMenuItem key={item.title}>
-                            <SidebarMenuButton
-                                asChild
-                                className="text-neutral-600 hover:text-neutral-800 dark:text-neutral-300 dark:hover:text-neutral-100"
-                            >
-                                <a
-                                    href={toUrl(item.href)}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
+                    {items.map((item) => {
+                        const href = toUrl(item.href);
+                        const isInternal = href.startsWith('/');
+
+                        return (
+                            <SidebarMenuItem key={item.title}>
+                                <SidebarMenuButton
+                                    asChild
+                                    className="text-neutral-600 hover:text-neutral-800 dark:text-neutral-300 dark:hover:text-neutral-100"
                                 >
-                                    {item.icon && (
-                                        <item.icon className="h-5 w-5" />
+                                    {isInternal ? (
+                                        <Link href={href}>
+                                            {item.icon && (
+                                                <item.icon className="h-5 w-5" />
+                                            )}
+                                            <span>{item.title}</span>
+                                        </Link>
+                                    ) : (
+                                        <a
+                                            href={href}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            {item.icon && (
+                                                <item.icon className="h-5 w-5" />
+                                            )}
+                                            <span>{item.title}</span>
+                                        </a>
                                     )}
-                                    <span>{item.title}</span>
-                                </a>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                    ))}
+                                </SidebarMenuButton>
+                            </SidebarMenuItem>
+                        );
+                    })}
                 </SidebarMenu>
             </SidebarGroupContent>
         </SidebarGroup>

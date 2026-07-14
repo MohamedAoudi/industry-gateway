@@ -80,6 +80,84 @@ Controller980bb49ee7ae63891f1d891d2fbcf1c9.head = (options?: RouteQueryOptions):
     /**
 * @see \Inertia\Controller::__invoke
  * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+ * @route '/faq'
+ */
+const Controller92f1f176050b935721bc0098427f55ed = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: Controller92f1f176050b935721bc0098427f55ed.url(options),
+    method: 'get',
+})
+
+Controller92f1f176050b935721bc0098427f55ed.definition = {
+    methods: ["get","head"],
+    url: '/faq',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \Inertia\Controller::__invoke
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+ * @route '/faq'
+ */
+Controller92f1f176050b935721bc0098427f55ed.url = (options?: RouteQueryOptions) => {
+    return Controller92f1f176050b935721bc0098427f55ed.definition.url + queryParams(options)
+}
+
+/**
+* @see \Inertia\Controller::__invoke
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+ * @route '/faq'
+ */
+Controller92f1f176050b935721bc0098427f55ed.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: Controller92f1f176050b935721bc0098427f55ed.url(options),
+    method: 'get',
+})
+/**
+* @see \Inertia\Controller::__invoke
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+ * @route '/faq'
+ */
+Controller92f1f176050b935721bc0098427f55ed.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: Controller92f1f176050b935721bc0098427f55ed.url(options),
+    method: 'head',
+})
+
+    /**
+* @see \Inertia\Controller::__invoke
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+ * @route '/faq'
+ */
+    const Controller92f1f176050b935721bc0098427f55edForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: Controller92f1f176050b935721bc0098427f55ed.url(options),
+        method: 'get',
+    })
+
+            /**
+* @see \Inertia\Controller::__invoke
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+ * @route '/faq'
+ */
+        Controller92f1f176050b935721bc0098427f55edForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: Controller92f1f176050b935721bc0098427f55ed.url(options),
+            method: 'get',
+        })
+            /**
+* @see \Inertia\Controller::__invoke
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+ * @route '/faq'
+ */
+        Controller92f1f176050b935721bc0098427f55edForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: Controller92f1f176050b935721bc0098427f55ed.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    Controller92f1f176050b935721bc0098427f55ed.form = Controller92f1f176050b935721bc0098427f55edForm
+    /**
+* @see \Inertia\Controller::__invoke
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
  * @route '/dashboard'
  */
 const Controller42a740574ecbfbac32f8cc353fc32db9 = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
@@ -155,6 +233,84 @@ Controller42a740574ecbfbac32f8cc353fc32db9.head = (options?: RouteQueryOptions):
         })
     
     Controller42a740574ecbfbac32f8cc353fc32db9.form = Controller42a740574ecbfbac32f8cc353fc32db9Form
+    /**
+* @see \Inertia\Controller::__invoke
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+ * @route '/admin/faq'
+ */
+const Controller75f28179d8b31ec67fdaac460e5c65b8 = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: Controller75f28179d8b31ec67fdaac460e5c65b8.url(options),
+    method: 'get',
+})
+
+Controller75f28179d8b31ec67fdaac460e5c65b8.definition = {
+    methods: ["get","head"],
+    url: '/admin/faq',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \Inertia\Controller::__invoke
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+ * @route '/admin/faq'
+ */
+Controller75f28179d8b31ec67fdaac460e5c65b8.url = (options?: RouteQueryOptions) => {
+    return Controller75f28179d8b31ec67fdaac460e5c65b8.definition.url + queryParams(options)
+}
+
+/**
+* @see \Inertia\Controller::__invoke
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+ * @route '/admin/faq'
+ */
+Controller75f28179d8b31ec67fdaac460e5c65b8.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: Controller75f28179d8b31ec67fdaac460e5c65b8.url(options),
+    method: 'get',
+})
+/**
+* @see \Inertia\Controller::__invoke
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+ * @route '/admin/faq'
+ */
+Controller75f28179d8b31ec67fdaac460e5c65b8.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: Controller75f28179d8b31ec67fdaac460e5c65b8.url(options),
+    method: 'head',
+})
+
+    /**
+* @see \Inertia\Controller::__invoke
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+ * @route '/admin/faq'
+ */
+    const Controller75f28179d8b31ec67fdaac460e5c65b8Form = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: Controller75f28179d8b31ec67fdaac460e5c65b8.url(options),
+        method: 'get',
+    })
+
+            /**
+* @see \Inertia\Controller::__invoke
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+ * @route '/admin/faq'
+ */
+        Controller75f28179d8b31ec67fdaac460e5c65b8Form.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: Controller75f28179d8b31ec67fdaac460e5c65b8.url(options),
+            method: 'get',
+        })
+            /**
+* @see \Inertia\Controller::__invoke
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+ * @route '/admin/faq'
+ */
+        Controller75f28179d8b31ec67fdaac460e5c65b8Form.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: Controller75f28179d8b31ec67fdaac460e5c65b8.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    Controller75f28179d8b31ec67fdaac460e5c65b8.form = Controller75f28179d8b31ec67fdaac460e5c65b8Form
     /**
 * @see \Inertia\Controller::__invoke
  * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
@@ -236,7 +392,9 @@ Controllere19ee86e9cf603ce1a59a1ec5d21dec5.head = (options?: RouteQueryOptions):
 
 const Controller = {
     '/': Controller980bb49ee7ae63891f1d891d2fbcf1c9,
+    '/faq': Controller92f1f176050b935721bc0098427f55ed,
     '/dashboard': Controller42a740574ecbfbac32f8cc353fc32db9,
+    '/admin/faq': Controller75f28179d8b31ec67fdaac460e5c65b8,
     '/settings/appearance': Controllere19ee86e9cf603ce1a59a1ec5d21dec5,
 }
 

@@ -56,6 +56,7 @@ import SupportingBodiesScientificResearchForm from "../Admin/pages/DatabaseCente
 import CompaniesList from "../Admin/pages/Companies/CompaniesList";
 import CompanyRequests from "../Admin/pages/Companies/CompanyRequests";
 import ManageOffers from "../Admin/pages/Offer/ManageOffers";
+import ManageFaq from "../Admin/pages/Faq/ManageFaq";
 
 
 const AdminRoutes = () => (
@@ -81,6 +82,7 @@ const AdminRoutes = () => (
         <Route path="companies" element={<CompaniesList />} />
         <Route path="companies/requests" element={<CompanyRequests />} />
         <Route path="offers" element={<ManageOffers />} />
+        <Route path="faq" element={<ManageFaq />} />
 
       </Route>
     </Route>

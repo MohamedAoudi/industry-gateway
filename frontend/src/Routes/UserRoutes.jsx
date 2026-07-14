@@ -11,6 +11,7 @@ import ScientificResearchInnovationCenters from '../User/pages/Database/Scientif
 import MinistriesHigherEducationScientificResearch from '../User/pages/Database/MinistriesHigherEducationScientificResearch';
 import MediaCenterSection from '../User/pages/MediaCenter/MediaCenterSection';
 import ContactPage from '../User/pages/Contact/ContactPage';
+import FaqPage from '../User/pages/Faq/FaqPage';
 
 import Login from '../Authentification/Login'; 
 import Register from '../Authentification/Register';
@@ -31,6 +32,7 @@ const UserRoutes = () => (
       <Route path="ministriesHigherEducationScientificResearch" element={<MinistriesHigherEducationScientificResearch />} />
       <Route path="mediaCenter" element={<MediaCenterSection />} />
       <Route path="contact" element={<ContactPage />} />
+      <Route path="faq" element={<FaqPage />} />
 
 
 

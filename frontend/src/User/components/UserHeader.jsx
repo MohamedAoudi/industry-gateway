@@ -258,7 +258,7 @@ import {
   Zap, Database, LogOut, User, Layers, Info, Handshake, Library,
   Presentation, Megaphone, Microscope,
   GraduationCap, FlaskConical, Workflow, FileBadge, UsersRound,
-  Newspaper, Mail
+  Newspaper, Mail, CircleHelp
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -458,6 +458,11 @@ const UserHeader = () => {
               {t("menu.media_center")}
             </Link>
 
+            <Link to="/faq" className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-emerald-50 hover:text-emerald-700">
+              <CircleHelp size={15} className="text-emerald-600" />
+              {t("footer.faq")}
+            </Link>
+
             <Link to="/contact" className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-emerald-50 hover:text-emerald-700">
               <Mail size={15} className="text-emerald-600" />
               {t("menu.contact")}
@@ -601,6 +606,10 @@ const UserHeader = () => {
           <Link onClick={() => setIsMobileMenuOpen(false)} to="/mediaCenter" className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50">
             <Newspaper size={17} className="text-emerald-600" />
             {t("menu.media_center")}
+          </Link>
+          <Link onClick={() => setIsMobileMenuOpen(false)} to="/faq" className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50">
+            <CircleHelp size={17} className="text-emerald-600" />
+            {t("footer.faq")}
           </Link>
           <Link onClick={() => setIsMobileMenuOpen(false)} to="/contact" className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50">
             <Mail size={17} className="text-emerald-600" />

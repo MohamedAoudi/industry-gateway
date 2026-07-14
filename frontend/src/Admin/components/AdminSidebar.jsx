@@ -18,6 +18,7 @@ import {
   Building2,
   BookOpen,
   UserPlus,
+  CircleHelp,
 } from "lucide-react";
 
 const NavItem = ({
@@ -151,6 +152,13 @@ const AdminSidebar = () => {
       icon: <Briefcase />,
       label: t("footer.add_request"),
       path: "/admin/offers",
+    },
+
+    {
+      id: "faq",
+      icon: <CircleHelp />,
+      label: i18n.language === "ar" ? "الأسئلة الشائعة" : "FAQ",
+      path: "/admin/faq",
     },
 
     {

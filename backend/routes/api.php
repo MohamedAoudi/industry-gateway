@@ -18,6 +18,7 @@ use App\Http\Controllers\MinistriesHigherEducationScientificResearchController;
 use App\Http\Controllers\IndustrialPropertyPatentOfficesController;
 use App\Http\Controllers\SupportingBodiesScientificResearchController;
 use App\Http\Controllers\PortalStatsController;
+use App\Http\Controllers\FaqQuestionController;
 
 
 
@@ -33,6 +34,8 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/pays', [PaysController::class, 'index']); 
 Route::get('/portal-stats', [PortalStatsController::class, 'index']);
+Route::get('/faqs', [FaqQuestionController::class, 'index']);
+Route::post('/faqs', [FaqQuestionController::class, 'store']);
 
 Route::get('/scientificResearchInnovationCenters', [ScientificResearchInnovationCentersController::class, 'index']);
 
@@ -85,6 +88,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/supportingBodiesScientificResearch', [SupportingBodiesScientificResearchController::class, 'store']);
     Route::match(['put', 'patch', 'post'], '/supportingBodiesScientificResearch/{id}', [SupportingBodiesScientificResearchController::class, 'update']);
     Route::delete('/supportingBodiesScientificResearch/{id}', [SupportingBodiesScientificResearchController::class, 'destroy']);
+
+    Route::get('/faqs/admin', [FaqQuestionController::class, 'adminIndex']);
+    Route::match(['put', 'patch', 'post'], '/faqs/{id}', [FaqQuestionController::class, 'update']);
+    Route::delete('/faqs/{id}', [FaqQuestionController::class, 'destroy']);
 
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);

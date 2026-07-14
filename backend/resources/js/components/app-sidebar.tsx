@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react';
-import { BookOpen, FolderGit2, LayoutGrid } from 'lucide-react';
+import { BookOpen, FolderGit2, HelpCircle, LayoutGrid } from 'lucide-react';
 import AppLogo from '@/components/app-logo';
 import { NavFooter } from '@/components/nav-footer';
 import { NavMain } from '@/components/nav-main';
@@ -22,9 +22,19 @@ const mainNavItems: NavItem[] = [
         href: dashboard(),
         icon: LayoutGrid,
     },
+    {
+        title: 'الأسئلة الشائعة',
+        href: '/admin/faq',
+        icon: HelpCircle,
+    },
 ];
 
 const footerNavItems: NavItem[] = [
+    {
+        title: 'الأسئلة الشائعة',
+        href: '/faq',
+        icon: HelpCircle,
+    },
     {
         title: 'Repository',
         href: 'https://github.com/laravel/react-starter-kit',

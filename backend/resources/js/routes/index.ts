@@ -291,6 +291,84 @@ home.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 /**
 * @see \Inertia\Controller::__invoke
  * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+ * @route '/faq'
+ */
+export const faq = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: faq.url(options),
+    method: 'get',
+})
+
+faq.definition = {
+    methods: ["get","head"],
+    url: '/faq',
+} satisfies RouteDefinition<["get","head"]>
+
+/**
+* @see \Inertia\Controller::__invoke
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+ * @route '/faq'
+ */
+faq.url = (options?: RouteQueryOptions) => {
+    return faq.definition.url + queryParams(options)
+}
+
+/**
+* @see \Inertia\Controller::__invoke
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+ * @route '/faq'
+ */
+faq.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
+    url: faq.url(options),
+    method: 'get',
+})
+/**
+* @see \Inertia\Controller::__invoke
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+ * @route '/faq'
+ */
+faq.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
+    url: faq.url(options),
+    method: 'head',
+})
+
+    /**
+* @see \Inertia\Controller::__invoke
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+ * @route '/faq'
+ */
+    const faqForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+        action: faq.url(options),
+        method: 'get',
+    })
+
+            /**
+* @see \Inertia\Controller::__invoke
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+ * @route '/faq'
+ */
+        faqForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: faq.url(options),
+            method: 'get',
+        })
+            /**
+* @see \Inertia\Controller::__invoke
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
+ * @route '/faq'
+ */
+        faqForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+            action: faq.url({
+                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+                            _method: 'HEAD',
+                            ...(options?.query ?? options?.mergeQuery ?? {}),
+                        }
+                    }),
+            method: 'get',
+        })
+    
+    faq.form = faqForm
+/**
+* @see \Inertia\Controller::__invoke
+ * @see vendor/inertiajs/inertia-laravel/src/Controller.php:13
  * @route '/dashboard'
  */
 export const dashboard = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
