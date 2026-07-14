@@ -93,12 +93,14 @@ const UserFooter = () => {
   };
 
   return (
-    <footer dir={isRtl ? "rtl" : "ltr"} className="relative mt-auto pt-16 text-white">
-      <div className="absolute inset-x-0 bottom-0 top-28 overflow-hidden bg-gradient-to-br from-emerald-950 via-emerald-900 to-teal-950">
-        <div className="pointer-events-none absolute -right-40 -top-48 h-[34rem] w-[34rem] rounded-full border-[80px] border-white/[0.025]" />
-        <div className="pointer-events-none absolute -bottom-52 -left-44 h-[32rem] w-[32rem] rounded-full border-[70px] border-emerald-400/[0.04]" />
-        <div className="pointer-events-none absolute inset-0 opacity-[0.025] [background-image:linear-gradient(white_1px,transparent_1px),linear-gradient(90deg,white_1px,transparent_1px)] [background-size:42px_42px]" />
+    <footer dir={isRtl ? "rtl" : "ltr"} className="relative mt-auto overflow-hidden bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-950 pt-16 text-white">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="absolute inset-0 opacity-[0.035] [background-image:linear-gradient(white_1px,transparent_1px),linear-gradient(90deg,white_1px,transparent_1px)] [background-size:48px_48px]" />
+        <div className="absolute -left-32 top-10 h-80 w-80 rounded-full bg-emerald-400/20 blur-[100px]" />
+        <div className="absolute -right-40 bottom-0 h-96 w-96 rounded-full bg-teal-400/15 blur-[110px]" />
+        <div className="absolute left-1/2 top-1/2 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 rounded-full border-[80px] border-white/[0.015]" />
       </div>
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400/70 to-transparent" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_20px_55px_rgba(15,23,42,0.14)]">

@@ -18,8 +18,8 @@ const Home = () => {
         <StatsSection />
         <CoreGoals />
         <ServicesSection />
-        <LatestNewsSection />
         <SuccessStoriesSection />
+        <LatestNewsSection />
     </section>
   );
 };
