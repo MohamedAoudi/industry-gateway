@@ -293,6 +293,12 @@ i18n.use(initReactI18next).init({
           address_title: "العنوان الرسمي",
           hours_title: "أوقات العمل",
           hours_value: "الاثنين إلى الجمعة، 08:30 - 16:30",
+          map: {
+            eyebrow: "موقعنا",
+            title: "اعثر علينا على الخريطة",
+            subtitle: "مقر المنظمة العربية للتنمية الصناعية والتقييس والتعدين في مدينة الرباط، المملكة المغربية.",
+            iframe_title: "موقع المنظمة العربية للتنمية الصناعية والتقييس والتعدين"
+          },
           form: {
             eyebrow: "أرسل رسالة",
             title: "كيف يمكننا مساعدتك؟",
@@ -562,6 +568,12 @@ i18n.use(initReactI18next).init({
           address_title: "Official address",
           hours_title: "Working hours",
           hours_value: "Monday to Friday, 08:30 - 16:30",
+          map: {
+            eyebrow: "Our location",
+            title: "Find us on the map",
+            subtitle: "Headquarters of the Arab Industrial Development, Standardization and Mining Organization in Rabat, Morocco.",
+            iframe_title: "Location of the Arab Industrial Development, Standardization and Mining Organization"
+          },
           form: {
             eyebrow: "Send a message",
             title: "How can we help you?",

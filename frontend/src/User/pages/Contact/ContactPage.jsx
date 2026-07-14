@@ -233,6 +233,34 @@ const ContactPage = () => {
             </form>
           </section>
         </div>
+
+        <section className="mt-8 overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-3 shadow-[0_20px_60px_rgba(15,23,42,0.09)] sm:p-4">
+          <div className="flex flex-col gap-4 px-3 pb-5 pt-3 sm:flex-row sm:items-end sm:justify-between sm:px-5 sm:pb-6 sm:pt-4">
+            <div>
+              <span className="mb-2 inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.16em] text-emerald-600">
+                <MapPin size={15} />
+                {t("contact_page.map.eyebrow")}
+              </span>
+              <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">
+                {t("contact_page.map.title")}
+              </h2>
+            </div>
+            <p className="max-w-xl text-sm leading-6 text-slate-500">
+              {t("contact_page.map.subtitle")}
+            </p>
+          </div>
+
+          <div className="relative h-[360px] overflow-hidden rounded-[1.5rem] bg-slate-100 sm:h-[450px]">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d4358.762740052641!2d-6.8529211878093665!3d33.99675227306604!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda76dd32500881d%3A0xd989cfa8a28391fe!2sOrganisation%20arabe%20pour%20le%20d%C3%A9veloppement%20industriel%2C%20de%20normalisation%20et%20des%20mines!5e1!3m2!1sfr!2sma!4v1784017645808!5m2!1sfr!2sma"
+              title={t("contact_page.map.iframe_title")}
+              className="h-full w-full border-0"
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="strict-origin-when-cross-origin"
+            />
+          </div>
+        </section>
       </main>
     </div>
   );
