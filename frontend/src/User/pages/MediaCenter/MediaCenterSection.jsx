@@ -1,793 +1,317 @@
-// import { useState, useEffect } from "react";
-// import { motion, AnimatePresence } from "framer-motion";
-// import { useTranslation } from "react-i18next";
-// import { 
-//   Newspaper, 
-//   Calendar, 
-//   FileText, 
-//   Trophy, 
-//   Sparkles,
-//   ArrowUpRight,
-//   Download,
-//   MapPin,
-//   Loader2
-// } from "lucide-react";
-
-// const TABS = [
-//   { id: "news", labelKey: "submenu.media_center.news", icon: <Newspaper className="h-4 w-4 md:h-5 md:w-5" /> },
-//   { id: "events", labelKey: "submenu.media_center.events", icon: <Calendar className="h-4 w-4 md:h-5 md:w-5" /> },
-//   { id: "releases", labelKey: "submenu.media_center.releases", icon: <FileText className="h-4 w-4 md:h-5 md:w-5" /> },
-//   { id: "competitions_prizes", labelKey: "submenu.media_center.competitions_prizes", icon: <Trophy className="h-4 w-4 md:h-5 md:w-5" /> },
-//   { id: "success_stories", labelKey: "submenu.media_center.success_stories", icon: <Sparkles className="h-4 w-4 md:h-5 md:w-5" /> }
-// ];
-
-// // =========================================================================
-// // DONNÉES STATIQUES (MOCK DATA)
-// // =========================================================================
-// const MOCK_DATA = {
-//   news: [
-//     {
-//       idCenter: 1,
-//       photo: null, // Sera remplacé par l'image Unsplash par défaut dans le code
-//       titre_ar: "إطلاق المبادرة العربية لدعم ابتكارات الذكاء الاصطناعي في الصناعة",
-//       titre_en: "Launch of the Arabic Initiative to Support AI Innovations in Industry",
-//       description_ar: "شهدت أعمال المؤتمر اليوم إطلاق مبادرة جديدة تهدف إلى تمويل الشراكات بين مراكز الأبحاث والمصانع لتبني حلول الذكاء الاصطناعي.",
-//       description_en: "Today's conference witnessed the launch of a new initiative aimed at funding partnerships between research centers and factories.",
-//       created_at: "2026-06-15T10:00:00Z",
-//       url: "https://example.com"
-//     },
-//     {
-//       idCenter: 2,
-//       photo: null,
-//       titre_ar: "توقيع اتفاقية تعاون لنقل التكنولوجيا بين الجامعات والمنشآت الصناعية",
-//       titre_en: "Signing a Technology Transfer Cooperation Agreement Between Universities and Industrial Plants",
-//       description_ar: "اتفاقية جديدة تضمن حماية الملكية الفكرية وتسهيل تدفق أبحاث الحلول التقنية مباشرة إلى خطوط الإنتاج.",
-//       description_en: "A new agreement ensures the protection of intellectual property and facilitates the flow of tech solution research directly to production lines.",
-//       created_at: "2026-05-28T14:30:00Z",
-//       url: "https://example.com"
-//     },
-//     {
-//       idCenter: 3,
-//       photo: null,
-//       titre_ar: "ندوة افتراضية حول مستقبل الطاقة المستدامة في القطاع الصناعي العربي",
-//       titre_en: "Virtual Webinar on the Future of Sustainable Energy in the Arab Industrial Sector",
-//       description_ar: "خبراء ومستثمرون يناقشون آليات تقليل الانبعاثات الكربونية بالاعتماد على الابتكارات الهندسية المحلية.",
-//       description_en: "Experts and investors discuss mechanisms to reduce carbon emissions relying on local engineering innovations.",
-//       created_at: "2026-05-10T09:15:00Z",
-//       url: "https://example.com"
-//     }
-//   ],
-//   events: [
-//     {
-//       idCenter: 4,
-//       titre_ar: "الملتقى العربي الأول للابتكار الصناعي ونقل التكنولوجيا",
-//       titre_en: "The 1st Arab Forum for Industrial Innovation and Technology Transfer",
-//       description_ar: "ملتقى يجمع نخبة من العلماء والمصنعين لبحث فرص الاستثمار المشترك.",
-//       description_en: "A forum bringing together elite scientists and manufacturers to discuss joint investment opportunities.",
-//       created_at: "2026-07-12T08:00:00Z",
-//       pays: { nom_ar: "المملكة العربية السعودية", nom_en: "Saudi Arabia" },
-//       url: "https://example.com"
-//     },
-//     {
-//       idCenter: 5,
-//       titre_ar: "ورشة عمل: صياغة براءات الاختراع وحماية الملكية الفكرية",
-//       titre_en: "Workshop: Patent Drafting and Intellectual Property Protection",
-//       description_ar: "دورة مكثفة للباحثين والمبتكرين حول الخطوات القانونية لتسجيل البراءات.",
-//       description_en: "An intensive course for researchers and innovators on the legal steps for patent registration.",
-//       created_at: "2026-08-05T09:00:00Z",
-//       pays: { nom_ar: "جمهورية مصر العربية", nom_en: "Egypt" },
-//       url: "https://example.com"
-//     }
-//   ],
-//   releases: [
-// {
-//       idCenter: 6,
-//       titre_ar: "التقرير السنوي لواقع البحث العلمي والابتكار في العالم العربي 2025",
-//       titre_en: "Annual Report on the Reality of Scientific Research and Innovation in the Arab World 2025",
-//       description_ar: "دراسة إحصائية شاملة تستعرض مؤشرات التطور وأعداد براءات الاختراع المسجلة.",
-//       description_en: "A comprehensive statistical study reviewing development indicators and numbers of registered patents.",
-//       url: "https://example.com/report.pdf"
-//     },
-//     {
-//       idCenter: 7,
-//       titre_ar: "دليل المصنعين للوصول إلى مراكز التميز والذكاء الاصطناعي",
-//       titre_en: "Manufacturers Guide to Accessing Centers of Excellence and AI", // <-- Nettoyé ici ! La ligne span parasite a été supprimée
-//       description_ar: "خطوات مبسطة لكيفية طرح المشاكل التقنية واستقبال أبحاث الحلول.",
-//       description_en: "Simplified steps on how to submit technical bottlenecks and receive research solutions.",
-//       url: "https://example.com/guide.pdf"
-//     }
-//   ],
-//   competitions_prizes: [
-//     {
-//       idCenter: 8,
-//       titre_ar: "جائزة أفضل ابتكار صناعي مستدام لعام 2026",
-//       titre_en: "Best Sustainable Industrial Innovation Award 2026",
-//       description_ar: "مسابقة مفتوحة لكافة الباحثين العرب لتقديم حلول مبتكرة في ترشيد استهلاك الطاقة بالمصانع.",
-//       description_en: "An open competition for all Arab researchers to present innovative solutions in streamlining factory energy consumption.",
-//       pays: { nom_ar: "دولة الإمارات", nom_en: "UAE" },
-//       url: "https://example.com"
-//     },
-//     {
-//       idCenter: 9,
-//       titre_ar: "هاكاثون الذكاء الاصطناعي لحلول خطوط الإنتاج المعقدة",
-//       titre_en: "AI Hackathon for Complex Production Line Solutions",
-//       description_ar: "تحدي تقني مخصص لفرق المطورين لابتكار خوارزميات صيانة تنبؤية للآلات.",
-//       description_en: "A tech challenge dedicated to developer teams to innovate predictive maintenance algorithms for machinery.",
-//       pays: { nom_ar: "المملكة المغربية", nom_en: "Morocco" },
-//       url: "https://example.com"
-//     }
-//   ],
-//   success_stories: [
-//     {
-//       idCenter: 10,
-//       description_ar: "بفضل البوابة، نجح فريقنا البحثي في تحويل براءة اختراع لتنقية المياه العادمة إلى نظام تشغيلي كامل متبنى من قبل ثلاثة مصانع كبرى.",
-//       description_en: "Thanks to the portal, our research team successfully converted a wastewater purification patent into a full operational system adopted by three major factories.",
-//       titre_ar: "د. أحمد السعيد - مركز أبحاث وتطوير المياه",
-//       titre_en: "Dr. Ahmed Al-Saeed - Water R&D Center",
-//       created_at: "2026-01-01"
-//     },
-//     {
-//       idCenter: 11,
-//       description_ar: "واجهنا مشكلة هدر حراري معقدة في خط صهر المعادن. قمنا بطرح المشكلة هنا وتلقينا 4 حلول بحثية تطبيقية من جامعات مختلفة تم تنفيذ أفضلها بنجاح.",
-//       description_en: "We faced a complex thermal waste problem in the metal smelting line. We submitted it here and received 4 applied research solutions from different universities, the best of which was successfully deployed.",
-//       titre_ar: "المهندس خالد منصور - الشركة العربية للصناعات المتقدمة",
-//       titre_en: "Eng. Khaled Mansour - Arab Advanced Industries Co.",
-//       created_at: "2025-01-01"
-//     }
-//   ]
-// };
-
-// export default function MediaCenterSection() {
-//   const [active, setActive] = useState("news");
-//   const [data, setData] = useState([]);
-//   const [loading, setLoading] = useState(true);
-  
-//   const { t, i18n } = useTranslation();
-//   const isAr = i18n.language === 'ar';
-//   const currentDir = isAr ? 'rtl' : 'ltr';
-
-//   // Simulation du chargement réseau via un setTimeout sur nos données statiques
-//   useEffect(() => {
-//     setLoading(true);
-//     const timer = setTimeout(() => {
-//       setData(MOCK_DATA[active] || []);
-//       setLoading(false);
-//     }, 400); // Délai de 400ms pour simuler le comportement réel de l'API
-
-//     return () => clearTimeout(timer);
-//   }, [active]);
-
-//   return (
-//     <section
-//       dir={currentDir}
-//       className={`min-h-screen bg-[#fcfdfe] pb-20 overflow-hidden relative ${isAr ? 'font-arabic' : 'font-sans'}`}
-//     >
-//       {/* Glows d'ambiance en arrière-plan */}
-//       <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-emerald-500/5 rounded-full blur-[120px] -z-10" />
-//       <div className="absolute bottom-10 right-1/4 w-[400px] h-[400px] bg-[#0fa968]/5 rounded-full blur-[140px] -z-10" />
-
-//       {/* ================= HEADER HERO ================= */}
-//       <div className="relative bg-emerald-600 py-20 overflow-hidden mb-12">
-//         <div className={`absolute top-0 ${isAr ? 'left-0' : 'right-0'} w-96 h-96 bg-emerald-500/10 rounded-full blur-[120px] -translate-y-1/2`}></div>
-//         <div className={`absolute bottom-0 ${isAr ? 'right-0' : 'left-0'} w-96 h-96 bg-[#0fa968]/10 rounded-full blur-[120px] translate-y-1/2`}></div>
-        
-//         <div className="max-w-7xl mx-auto px-6 relative z-10 text-center lg:text-start">
-//           <h1 className="text-4xl md:text-5xl font-black text-white mb-4 leading-tight">
-//             {t("menu.media_center")}
-//           </h1>
-//         </div>
-//       </div>
-
-//       {/* ================= MAIN CONTAINER ================= */}
-//       <div className="mx-auto max-w-7xl px-4 sm:px-6 w-full -mt-16 relative z-20">
-//         <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-gray-100 shadow-[0_20px_50px_rgba(12,35,64,0.04)] p-4 sm:p-8 flex flex-col gap-10">
-          
-//           {/* BARRE D'ONGLETS SUPÉRIEURE */}
-//           <div className="grid grid-cols-2 sm:grid-cols-3 lg:flex p-2 bg-gray-50 rounded-2xl border border-gray-200/50 gap-2 w-full">
-//             {TABS.map((tab) => {
-//               const isActive = tab.id === active;
-//               return (
-//                 <button
-//                   key={tab.id}
-//                   onClick={() => setActive(tab.id)}
-//                   className={`lg:flex-1 flex items-center justify-center gap-3 py-3 px-4 rounded-xl font-bold text-xs md:text-sm transition-all duration-300 relative overflow-hidden ${
-//                     isActive ? "text-white bg-[#0fa968] shadow-lg shadow-emerald-600/10" : "text-gray-500 hover:text-gray-800 hover:bg-gray-100"
-//                   }`}
-//                 >
-//                   <span className={`p-1.5 rounded-lg transition-colors ${isActive ? "bg-white/20 text-white" : "bg-gray-200/60 text-gray-400 group-hover:text-[#0fa968]"}`}>
-//                     {tab.icon}
-//                   </span>
-//                   <span className="truncate whitespace-nowrap">{t(tab.labelKey)}</span>
-//                 </button>
-//               );
-//             })}
-//           </div>
-
-//           {/* ================= ZONE DE RENDU DES CONTENUS ================= */}
-//           <div className="min-h-[400px] w-full relative flex items-center justify-center">
-            
-//             {loading ? (
-//               <div className="flex flex-col items-center gap-3 text-gray-400">
-//                 <Loader2 className="h-8 w-8 animate-spin text-[#0fa968]" />
-//                 <span className="text-xs font-bold">{isAr ? "جاري التحميل..." : "Loading..."}</span>
-//               </div>
-//             ) : data.length === 0 ? (
-//               <div className="text-gray-400 text-sm font-bold">
-//                 {isAr ? "لا توجد بيانات متاحة حالياً." : "No data available at the moment."}
-//               </div>
-//             ) : (
-//               <AnimatePresence mode="wait">
-//                 <motion.div
-//                   key={active}
-//                   initial={{ opacity: 0, y: 15 }}
-//                   animate={{ opacity: 1, y: 0 }}
-//                   exit={{ opacity: 0, y: -15 }}
-//                   transition={{ duration: 0.3, ease: "easeOut" }}
-//                   className="w-full"
-//                 >
-
-//                   {/* 1. ONGLET : ACTUALITÉS (NEWS) */}
-//                   {active === "news" && (
-//                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-//                       {data.map((item) => (
-//                         <article key={item.idCenter} className="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(12,35,64,0.02)] group hover:shadow-[0_15px_35px_rgba(12,35,64,0.06)] hover:border-emerald-500/10 transition-all duration-300 flex flex-col justify-between">
-//                           <div className="relative overflow-hidden h-48 bg-gray-50">
-//                             <img 
-//                               src={item.photo ? `${import.meta.env.VITE_API_BASE_URL}/storage/${item.photo}` : 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=600&q=80'} 
-//                               alt={isAr ? item.titre_ar : item.titre_en} 
-//                               className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-500"
-//                             />
-//                           </div>
-//                           <div className="p-6 flex-1 flex flex-col justify-between gap-4">
-//                             <div className="space-y-2">
-//                               <span className="text-xs font-bold text-gray-400 block">
-//                                 {new Date(item.created_at).toLocaleDateString(isAr ? 'ar-EG' : 'en-US', { day: '2-digit', month: 'long', year: 'numeric' })}
-//                               </span>
-//                               <h3 className="text-base font-black text-[#0c2340] leading-snug line-clamp-2 group-hover:text-[#0fa968] transition-colors">
-//                                 {isAr ? item.titre_ar : item.titre_en}
-//                               </h3>
-//                               <p className="text-gray-500 text-xs line-clamp-3 leading-relaxed font-medium">
-//                                 {isAr ? item.description_ar : item.description_en}
-//                               </p>
-//                             </div>
-//                             <div className="flex items-center justify-between border-t border-gray-100 pt-4 mt-auto">
-//                               <a href={item.url || "#"} target="_blank" rel="noreferrer" className="text-xs font-bold text-gray-600 group-hover:text-[#0fa968] group-hover:underline cursor-pointer">
-//                                 {t("news_section.read_more", "اقرأ المزيد")}
-//                               </a>
-//                               <ArrowUpRight size={16} className="text-gray-400 group-hover:text-[#0fa968] transition-colors" />
-//                             </div>
-//                           </div>
-//                         </article>
-//                       ))}
-//                     </div>
-//                   )}
-
-//                   {/* 2. ONGLET : ÉVÉNEMENTS (EVENTS) */}
-//                   {active === "events" && (
-//                     <div className="space-y-4 max-w-4xl mx-auto">
-//                       {data.map((item) => {
-//                         const eventDate = new Date(item.created_at);
-//                         return (
-//                           <div key={item.idCenter} className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 hover:border-emerald-500/20 transition-colors duration-300">
-//                             <div className="flex items-center gap-5">
-//                               <div className="h-16 w-16 bg-emerald-50 text-[#0fa968] rounded-xl flex flex-col items-center justify-center border border-emerald-500/10 flex-shrink-0">
-//                                 <span className="text-xl font-black leading-none">
-//                                   {eventDate.getDate()}
-//                                 </span>
-//                                 <span className="text-[10px] uppercase font-bold text-emerald-700 mt-1">
-//                                   {eventDate.toLocaleString(isAr ? 'ar-EG' : 'en-US', { month: 'short' })}
-//                                 </span>
-//                               </div>
-//                               <div className="space-y-1 text-start">
-//                                 <h3 className="text-base font-bold text-[#0c2340]">{isAr ? item.titre_ar : item.titre_en}</h3>
-//                                 <p className="text-gray-500 text-xs line-clamp-1 font-medium">{isAr ? item.description_ar : item.description_en}</p>
-//                                 <div className="flex items-center gap-3 text-xs text-gray-400 font-bold">
-//                                   <span className="inline-flex items-center gap-1">
-//                                     <MapPin size={12} className="text-[#0fa968]" /> {isAr ? item.pays?.nom_ar : item.pays?.nom_en}
-//                                   </span>
-//                                 </div>
-//                               </div>
-//                             </div>
-//                             {item.url && (
-//                               <a href={item.url} target="_blank" rel="noreferrer" className="text-center w-full sm:w-auto px-5 py-2.5 bg-white border border-gray-200 text-gray-700 text-xs font-bold rounded-xl hover:bg-[#0fa968] hover:text-white hover:border-[#0fa968] transition-all shadow-sm">
-//                                 {isAr ? "تسجيل الحضور" : "Register"}
-//                               </a>
-//                             )}
-//                           </div>
-//                         );
-//                       })}
-//                     </div>
-//                   )}
-
-//                   {/* 3. ONGLET : PUBLICATIONS (RELEASES) */}
-//                   {active === "releases" && (
-//                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
-//                       {data.map((item) => (
-//                         <div key={item.idCenter} className="p-5 bg-white border border-gray-100 rounded-2xl flex gap-5 items-center hover:shadow-md hover:border-emerald-500/10 transition-all duration-300">
-//                           <div className="h-24 w-18 bg-[#0a2540] rounded-xl flex items-center justify-center text-white font-black text-xl shadow-inner flex-shrink-0">
-//                             📚
-//                           </div>
-//                           <div className="space-y-3 flex-1 text-start">
-//                             <div>
-//                               <span className="text-[10px] font-bold px-2 py-0.5 bg-emerald-50 text-[#0fa968] rounded-md border border-emerald-500/10 inline-block mb-1">PDF</span>
-//                               <h4 className="text-base font-bold text-[#0c2340] line-clamp-1">{isAr ? item.titre_ar : item.titre_en}</h4>
-//                               <p className="text-xs text-gray-400 font-medium mt-0.5 line-clamp-1">{isAr ? item.description_ar : item.description_en}</p>
-//                             </div>
-//                             {item.url && (
-//                               <a href={item.url} download target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0fa968] hover:underline">
-//                                 <Download size={14} />
-//                                 <span>{isAr ? "تحميل المستند" : "Download File"}</span>
-//                               </a>
-//                             )}
-//                           </div>
-//                         </div>
-//                       ))}
-//                     </div>
-//                   )}
-
-//                   {/* 4. ONGLET : CONCOURS & PRIX (COMPETITIONS) */}
-//                   {active === "competitions_prizes" && (
-//                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-//                       {data.map((item) => (
-//                         <div key={item.idCenter} className="p-6 bg-white border border-gray-100 rounded-2xl shadow-sm flex flex-col justify-between min-h-[180px] hover:border-emerald-500/20 transition-all duration-300 relative overflow-hidden group text-start">
-//                           <div className="absolute top-0 end-0 bg-emerald-50 p-3 rounded-bl-2xl text-lg border-b border-s border-gray-50 text-[#0fa968]">🏆</div>
-//                           <div className="space-y-2 max-w-[85%]">
-//                             <h3 className="text-lg font-bold text-[#0c2340] tracking-tight">{isAr ? item.titre_ar : item.titre_en}</h3>
-//                             <p className="text-xs font-medium text-gray-500 leading-relaxed line-clamp-3">{isAr ? item.description_ar : item.description_en}</p>
-//                           </div>
-//                           <div className="pt-4 border-t border-gray-50 flex items-center justify-between mt-4">
-//                             <span className="text-xs font-bold text-[#0fa968] bg-emerald-50 px-2.5 py-1 rounded-md">
-//                               {isAr ? item.pays?.nom_ar : item.pays?.nom_en}
-//                             </span>
-//                             {item.url && (
-//                               <a href={item.url} target="_blank" rel="noreferrer" className="text-xs font-bold text-gray-600 hover:text-[#0fa968] hover:underline">
-//                                 {isAr ? "التفاصيل" : "Details"}
-//                               </a>
-//                             )}
-//                           </div>
-//                         </div>
-//                       ))}
-//                     </div>
-//                   )}
-
-//                   {/* 5. ONGLET : HISTOIRES DE SUCCÈS (STORIES) */}
-//                   {active === "success_stories" && (
-//                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-//                       {data.map((item) => (
-//                         <div key={item.idCenter} className="p-6 bg-white border border-gray-100 rounded-2xl flex flex-col justify-between gap-4 shadow-sm hover:border-emerald-500/10 transition-all">
-//                           <p className="text-gray-500 text-sm italic leading-relaxed text-justify font-medium">
-//                             “ {isAr ? item.description_ar : item.description_en} ”
-//                           </p>
-//                           <div className="flex items-center gap-3 pt-3 border-t border-gray-50">
-//                             <div className="h-10 w-10 bg-emerald-50 text-[#0fa968] rounded-full flex items-center justify-center text-sm font-bold shadow-inner shrink-0">
-//                               {(isAr ? item.titre_ar : item.titre_en)?.[0] || "S"}
-//                             </div>
-//                             <div className="text-start">
-//                               <h4 className="text-sm font-bold text-[#0c2340]">{isAr ? item.titre_ar : item.titre_en}</h4>
-//                               <span className="text-xs font-bold text-gray-400">
-//                                 {new Date(item.created_at).getFullYear()}
-//                               </span>
-//                             </div>
-//                           </div>
-//                         </div>
-//                       ))}
-//                     </div>
-//                   )}
-
-//                 </motion.div>
-//               </AnimatePresence>
-//             )}
-//           </div>
-
-//         </div>
-//       </div>
-//     </section>
-//   );
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { 
-  Newspaper, 
-  Calendar, 
-  FileText, 
-  Trophy, 
-  Sparkles,
-  ArrowUpRight,
-  Download,
+import {
+  ArrowLeft,
+  CalendarDays,
+  FileText,
   MapPin,
-  Loader2,
-  Bookmark
+  Newspaper,
+  Quote,
+  Sparkles,
+  Trophy,
 } from "lucide-react";
 
-const TABS = [
-  { id: "news", labelKey: "submenu.media_center.news", icon: <Newspaper className="h-4 w-4" /> },
-  { id: "events", labelKey: "submenu.media_center.events", icon: <Calendar className="h-4 w-4" /> },
-  { id: "releases", labelKey: "submenu.media_center.releases", icon: <FileText className="h-4 w-4" /> },
-  { id: "competitions_prizes", labelKey: "submenu.media_center.competitions_prizes", icon: <Trophy className="h-4 w-4" /> },
-  { id: "success_stories", labelKey: "submenu.media_center.success_stories", icon: <Sparkles className="h-4 w-4" /> }
+const tabs = [
+  { id: "news", labelKey: "submenu.media_center.news", icon: Newspaper },
+  { id: "events", labelKey: "submenu.media_center.events", icon: CalendarDays },
+  { id: "releases", labelKey: "submenu.media_center.releases", icon: FileText },
+  { id: "competitions", labelKey: "submenu.media_center.competitions_prizes", icon: Trophy },
+  { id: "stories", labelKey: "submenu.media_center.success_stories", icon: Sparkles },
 ];
 
-const MOCK_DATA = {
+const mediaContent = {
   news: [
     {
-      idCenter: 1,
-      photo: null,
-      titre_ar: "إطلاق المبادرة العربية لدعم ابتكارات الذكاء الاصطناعي في الصناعة",
-      titre_en: "Launch of the Arabic Initiative to Support AI Innovations in Industry",
-      description_ar: "شهدت أعمال المؤتمر اليوم إطلاق مبادرة جديدة تهدف إلى تمويل الشراكات بين مراكز الأبحاث والمصانع لتبني حلول الذكاء الاصطناعي.",
-      description_en: "Today's conference witnessed the launch of a new initiative aimed at funding partnerships between research centers and factories.",
-      created_at: "2026-06-15T10:00:00Z",
-      url: "https://example.com"
+      id: 1,
+      titleAr: "إطلاق المبادرة العربية لدعم ابتكارات الذكاء الاصطناعي في الصناعة",
+      titleEn: "Launch of the Arab Initiative to Support AI Innovations in Industry",
+      descriptionAr: "مبادرة جديدة تهدف إلى تمويل الشراكات بين مراكز الأبحاث والمصانع لتبني حلول الذكاء الاصطناعي.",
+      descriptionEn: "A new initiative aims to fund partnerships between research centers and factories adopting AI solutions.",
+      date: "2026-06-15T10:00:00Z",
+      image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&q=85&w=1200",
     },
     {
-      idCenter: 2,
-      photo: null,
-      titre_ar: "توقيع اتفاقية تعاون لنقل التكنولوجيا بين الجامعات والمنشآت الصناعية",
-      titre_en: "Signing a Technology Transfer Cooperation Agreement Between Universities and Industrial Plants",
-      description_ar: "اتفاقية جديدة تضمن حماية الملكية الفكرية وتسهيل تدفق أبحاث الحلول التقنية مباشرة إلى خطوط الإنتاج.",
-      description_en: "A new agreement ensures the protection of intellectual property and facilitates the flow of tech solution research directly to production lines.",
-      created_at: "2026-05-28T14:30:00Z",
-      url: "https://example.com"
+      id: 2,
+      titleAr: "توقيع اتفاقية تعاون لنقل التكنولوجيا بين الجامعات والمنشآت الصناعية",
+      titleEn: "Technology Transfer Agreement Between Universities and Industrial Plants",
+      descriptionAr: "اتفاقية تضمن حماية الملكية الفكرية وتسهيل انتقال أبحاث الحلول التقنية إلى خطوط الإنتاج.",
+      descriptionEn: "An agreement protecting intellectual property and moving technical research to production lines.",
+      date: "2026-05-28T14:30:00Z",
+      image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=85&w=1200",
     },
     {
-      idCenter: 3,
-      photo: null,
-      titre_ar: "ندوة افتراضية حول مستقبل الطاقة المستدامة في القطاع الصناعي العربي",
-      titre_en: "Virtual Webinar on the Future of Sustainable Energy in the Arab Industrial Sector",
-      description_ar: "خبراء ومستثمرون يناقشون آليات تقليل الانبعاثات الكربونية بالاعتماد على الابتكارات الهندسية المحلية.",
-      description_en: "Experts and investors discuss mechanisms to reduce carbon emissions relying on local engineering innovations.",
-      created_at: "2026-05-10T09:15:00Z",
-      url: "https://example.com"
-    }
+      id: 3,
+      titleAr: "ندوة افتراضية حول مستقبل الطاقة المستدامة في القطاع الصناعي العربي",
+      titleEn: "Virtual Webinar on Sustainable Energy in the Arab Industrial Sector",
+      descriptionAr: "خبراء ومستثمرون يناقشون تقليل الانبعاثات الكربونية بالاعتماد على الابتكارات الهندسية المحلية.",
+      descriptionEn: "Experts discuss reducing carbon emissions through locally developed engineering innovations.",
+      date: "2026-05-10T09:15:00Z",
+      image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&q=85&w=1200",
+    },
   ],
   events: [
     {
-      idCenter: 4,
-      titre_ar: "الملتقى العربي الأول للابتكار الصناعي ونقل التكنولوجيا",
-      titre_en: "The 1st Arab Forum for Industrial Innovation and Technology Transfer",
-      description_ar: "ملتقى يجمع نخبة من العلماء والمصنعين لبحث فرص الاستثمار المشترك.",
-      description_en: "A forum bringing together elite scientists and manufacturers to discuss joint investment opportunities.",
-      created_at: "2026-07-12T08:00:00Z",
-      pays: { nom_ar: "المملكة العربية السعودية", nom_en: "Saudi Arabia" },
-      url: "https://example.com"
+      id: 4,
+      titleAr: "الملتقى العربي الأول للابتكار الصناعي ونقل التكنولوجيا",
+      titleEn: "The 1st Arab Forum for Industrial Innovation and Technology Transfer",
+      descriptionAr: "ملتقى يجمع نخبة من العلماء والمصنعين لبحث فرص الاستثمار والتعاون المشترك.",
+      descriptionEn: "A forum bringing together scientists and manufacturers to discuss joint investment opportunities.",
+      date: "2026-07-12T08:00:00Z",
+      locationAr: "المملكة العربية السعودية",
+      locationEn: "Saudi Arabia",
     },
     {
-      idCenter: 5,
-      titre_ar: "ورشة عمل: صياغة براءات الاختراع وحماية الملكية الفكرية",
-      titre_en: "Workshop: Patent Drafting and Intellectual Property Protection",
-      description_ar: "دورة مكثفة للباحثين والمبتكرين حول الخطوات القانونية لتسجيل البراءات.",
-      description_en: "An intensive course for researchers and innovators on the legal steps for patent registration.",
-      created_at: "2026-08-05T09:00:00Z",
-      pays: { nom_ar: "جمهورية مصر العربية", nom_en: "Egypt" },
-      url: "https://example.com"
-    }
+      id: 5,
+      titleAr: "ورشة عمل: صياغة براءات الاختراع وحماية الملكية الفكرية",
+      titleEn: "Workshop: Patent Drafting and Intellectual Property Protection",
+      descriptionAr: "دورة مكثفة للباحثين والمبتكرين حول الخطوات القانونية لتسجيل براءات الاختراع.",
+      descriptionEn: "An intensive course for researchers on the legal steps for patent registration.",
+      date: "2026-08-05T09:00:00Z",
+      locationAr: "جمهورية مصر العربية",
+      locationEn: "Egypt",
+    },
   ],
   releases: [
     {
-      idCenter: 6,
-      titre_ar: "التقرير السنوي لواقع البحث العلمي والابتكار في العالم العربي 2025",
-      titre_en: "Annual Report on the Reality of Scientific Research and Innovation in the Arab World 2025",
-      description_ar: "دراسة إحصائية شاملة تستعرض مؤشرات التطور وأعداد براءات الاختراع المسجلة.",
-      description_en: "A comprehensive statistical study reviewing development indicators and numbers of registered patents.",
-      url: "https://example.com/report.pdf"
+      id: 6,
+      titleAr: "التقرير السنوي لواقع البحث العلمي والابتكار في العالم العربي 2025",
+      titleEn: "Annual Report on Scientific Research and Innovation in the Arab World 2025",
+      descriptionAr: "دراسة إحصائية شاملة تستعرض مؤشرات التطور وأعداد براءات الاختراع المسجلة.",
+      descriptionEn: "A comprehensive statistical study of development indicators and registered patents.",
+      type: "PDF",
     },
     {
-      idCenter: 7,
-      titre_ar: "دليل المصنعين للوصول إلى مراكز التميز والذكاء الاصطناعي",
-      titre_en: "Manufacturers Guide to Accessing Centers of Excellence and AI",
-      description_ar: "خطوات مبسطة لكيفية طرح المشاكل التقنية واستقبال أبحاث الحلول.",
-      description_en: "Simplified steps on how to submit technical bottlenecks and receive research solutions.",
-      url: "https://example.com/guide.pdf"
-    }
+      id: 7,
+      titleAr: "دليل المصنعين للوصول إلى مراكز التميز والذكاء الاصطناعي",
+      titleEn: "Manufacturers Guide to Centers of Excellence and AI",
+      descriptionAr: "خطوات مبسطة لكيفية طرح المشكلات التقنية والوصول إلى الحلول البحثية المناسبة.",
+      descriptionEn: "Simplified steps for submitting technical challenges and accessing research solutions.",
+      type: "PDF",
+    },
   ],
-  competitions_prizes: [
+  competitions: [
     {
-      idCenter: 8,
-      titre_ar: "جائزة أفضل ابتكار صناعي مستدام لعام 2026",
-      titre_en: "Best Sustainable Industrial Innovation Award 2026",
-      description_ar: "مسابقة مفتوحة لكافة الباحثين العرب لتقديم حلول مبتكرة في ترشيد استهلاك الطاقة بالمصانع.",
-      description_en: "An open competition for all Arab researchers to present innovative solutions in streamlining factory energy consumption.",
-      pays: { nom_ar: "دولة الإمارات", nom_en: "UAE" },
-      url: "https://example.com"
+      id: 8,
+      titleAr: "جائزة أفضل ابتكار صناعي مستدام لعام 2026",
+      titleEn: "Best Sustainable Industrial Innovation Award 2026",
+      descriptionAr: "مسابقة مفتوحة للباحثين العرب لتقديم حلول مبتكرة في ترشيد استهلاك الطاقة بالمصانع.",
+      descriptionEn: "An open competition for Arab researchers presenting innovative factory energy solutions.",
+      locationAr: "دولة الإمارات العربية المتحدة",
+      locationEn: "United Arab Emirates",
     },
     {
-      idCenter: 9,
-      titre_ar: "هاكاثون الذكاء الاصطناعي لحلول خطوط الإنتاج المعقدة",
-      titre_en: "AI Hackathon for Complex Production Line Solutions",
-      description_ar: "تحدي تقني مخصص لفرق المطورين لابتكار خوارزميات صيانة تنبؤية للآلات.",
-      description_en: "A tech challenge dedicated to developer teams to innovate predictive maintenance algorithms for machinery.",
-      pays: { nom_ar: "المملكة المغربية", nom_en: "Morocco" },
-      url: "https://example.com"
-    }
+      id: 9,
+      titleAr: "هاكاثون الذكاء الاصطناعي لحلول خطوط الإنتاج المعقدة",
+      titleEn: "AI Hackathon for Complex Production Line Solutions",
+      descriptionAr: "تحدٍ تقني لفرق المطورين لابتكار خوارزميات الصيانة التنبؤية للآلات.",
+      descriptionEn: "A technical challenge to create predictive maintenance algorithms for machinery.",
+      locationAr: "المملكة المغربية",
+      locationEn: "Morocco",
+    },
   ],
-  success_stories: [
+  stories: [
     {
-      idCenter: 10,
-      description_ar: "بفضل البوابة، نجح فريقنا البحثي في تحويل براءة اختراع لتنقية المياه العادمة إلى نظام تشغيلي كامل متبنى من قبل ثلاثة مصانع كبرى.",
-      description_en: "Thanks to the portal, our research team successfully converted a wastewater purification patent into a full operational system adopted by three major factories.",
-      titre_ar: "د. أحمد السعيد - مركز أبحاث وتطوير المياه",
-      titre_en: "Dr. Ahmed Al-Saeed - Water R&D Center",
-      created_at: "2026-01-01"
+      id: 10,
+      titleAr: "د. أحمد السعيد — مركز أبحاث وتطوير المياه",
+      titleEn: "Dr. Ahmed Al-Saeed — Water R&D Center",
+      descriptionAr: "نجح فريقنا في تحويل براءة اختراع لتنقية المياه العادمة إلى نظام تشغيلي تبنته ثلاثة مصانع كبرى.",
+      descriptionEn: "Our team converted a wastewater purification patent into an operational system adopted by three factories.",
     },
     {
-      idCenter: 11,
-      description_ar: "واجهنا مشكلة هدر حراري معقدة في خط صهر المعادن. قمنا بطرح المشكلة هنا وتلقينا 4 حلول بحثية تطبيقية من جامعات مختلفة تم تنفيذ أفضلها بنجاح.",
-      description_en: "We faced a complex thermal waste problem in the metal smelting line. We submitted it here and received 4 applied research solutions from different universities, the best of which was successfully deployed.",
-      titre_ar: "المهندس خالد منصور - الشركة العربية للصناعات المتقدمة",
-      titre_en: "Eng. Khaled Mansour - Arab Advanced Industries Co.",
-      created_at: "2025-01-01"
-    }
-  ]
+      id: 11,
+      titleAr: "المهندس خالد منصور — الشركة العربية للصناعات المتقدمة",
+      titleEn: "Eng. Khaled Mansour — Arab Advanced Industries Co.",
+      descriptionAr: "طرحنا مشكلة الهدر الحراري وتلقينا أربعة حلول بحثية من جامعات مختلفة، ثم نفذنا أفضلها بنجاح.",
+      descriptionEn: "We submitted a thermal waste challenge, received four university solutions and deployed the best one.",
+    },
+  ],
 };
 
-export default function MediaCenterSection() {
-  const [active, setActive] = useState("news");
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  
+const MediaCenterSection = () => {
   const { t, i18n } = useTranslation();
-  const isAr = i18n.language === 'ar';
-  const currentDir = isAr ? 'rtl' : 'ltr';
+  const isRtl = i18n.dir() === "rtl";
+  const locale = isRtl ? "ar-MA" : "en-US";
+  const [activeTab, setActiveTab] = useState("news");
+  const currentTab = tabs.find((tab) => tab.id === activeTab);
+  const CurrentIcon = currentTab.icon;
+  const items = mediaContent[activeTab];
 
-  useEffect(() => {
-    setLoading(true);
-    const timer = setTimeout(() => {
-      setData(MOCK_DATA[active] || []);
-      setLoading(false);
-    }, 400);
-
-    return () => clearTimeout(timer);
-  }, [active]);
+  const getTitle = (item) => isRtl ? item.titleAr : item.titleEn;
+  const getDescription = (item) => isRtl ? item.descriptionAr : item.descriptionEn;
+  const getLocation = (item) => isRtl ? item.locationAr : item.locationEn;
+  const formatDate = (date) => new Intl.DateTimeFormat(locale, {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  }).format(new Date(date));
 
   return (
-    <section
-      dir={currentDir}
-      className={`min-h-screen bg-[#f8fafc] pb-24 overflow-hidden relative ${isAr ? 'font-arabic' : 'font-sans'}`}
-    >
-      {/* Halo de lumière stylisé en arrière-plan */}
-      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-emerald-500/5 rounded-full blur-[140px] pointer-events-none -z-10" />
-      <div className="absolute top-80 left-0 w-[500px] h-[500px] bg-slate-900/5 rounded-full blur-[120px] pointer-events-none -z-10" />
-
-      {/* ================= HEADER HERO (Minimaliste & Moderne) ================= */}
-      <div className="relative mb-12 overflow-hidden bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-950 py-20">
+    <div dir={isRtl ? "rtl" : "ltr"} className="min-h-screen bg-[#f7faf8]">
+      <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-950 pb-32 pt-20 text-white sm:pb-40 sm:pt-24">
         <div className="pointer-events-none absolute inset-0 opacity-[0.035] [background-image:linear-gradient(white_1px,transparent_1px),linear-gradient(90deg,white_1px,transparent_1px)] [background-size:48px_48px]" />
         <div className="pointer-events-none absolute -left-32 top-10 h-80 w-80 rounded-full bg-emerald-400/20 blur-[100px]" />
         <div className="pointer-events-none absolute -right-40 bottom-0 h-96 w-96 rounded-full bg-teal-400/15 blur-[110px]" />
         <div className="pointer-events-none absolute left-1/2 top-1/2 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 rounded-full border-[80px] border-white/[0.015]" />
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400/70 to-transparent" />
-        
-        <div className="max-w-7xl mx-auto px-6 relative z-10 text-center lg:text-start">
-          <h1 className="text-4xl md:text-5xl font-black text-white mb-4 leading-tight">
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+          className="relative mx-auto max-w-7xl px-6"
+        >
+          <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-400/10 px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-emerald-300 backdrop-blur-sm">
+            <Newspaper size={14} />
+            {t("media_page.eyebrow")}
+          </span>
+          <h1 className="max-w-4xl text-5xl font-black leading-tight tracking-tight sm:text-6xl lg:text-7xl">
             {t("menu.media_center")}
           </h1>
-        </div>
-      </div>
+          <p className="mt-6 max-w-3xl text-lg leading-9 text-emerald-50/70">
+            {t("media_page.subtitle")}
+          </p>
+        </motion.div>
+      </section>
 
-      {/* ================= MAIN CONTAINER ================= */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 w-full">
-        <div className="flex flex-col gap-12">
-          
-          {/* BARRE D'ONGLETS SUPÉRIEURE (Style Pillule Flottante avec animation fluide) */}
-          <div className="max-w-4xl mx-auto w-full bg-white/70 backdrop-blur-xl rounded-full border border-gray-100 shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-1.5 flex flex-wrap md:flex-nowrap justify-between gap-1 overflow-hidden z-20 relative">
-            {TABS.map((tab) => {
-              const isActive = tab.id === active;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActive(tab.id)}
-                  className={`relative flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-full font-bold text-xs md:text-sm transition-colors duration-200 z-10 ${
-                    isActive ? "text-white" : "text-gray-500 hover:text-[#0c2340]"
-                  }`}
-                >
-                  {isActive && (
-                    <motion.div
-                      layoutId="activeMediaTabIndicator"
-                      className="absolute inset-0 bg-emerald-600 rounded-full -z-10 shadow-md shadow-emerald-500/20"
-                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                    />
-                  )}
-                  {tab.icon}
-                  <span className="whitespace-nowrap">{t(tab.labelKey)}</span>
-                </button>
-              );
-            })}
+      <main className="relative mx-auto -mt-20 max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
+        <nav className="grid gap-2 rounded-[1.75rem] border border-slate-200 bg-white/95 p-2 shadow-[0_24px_70px_rgba(15,23,42,0.14)] backdrop-blur-xl sm:grid-cols-2 lg:grid-cols-5">
+          {tabs.map(({ id, labelKey, icon: Icon }) => {
+            const isActive = activeTab === id;
+            return (
+              <button
+                key={id}
+                type="button"
+                onClick={() => setActiveTab(id)}
+                className={`flex items-center justify-center gap-2.5 rounded-2xl px-4 py-3.5 text-sm font-black transition-all ${
+                  isActive
+                    ? "bg-gradient-to-r from-emerald-600 to-teal-500 text-white shadow-md shadow-emerald-600/20"
+                    : "text-slate-500 hover:bg-emerald-50 hover:text-emerald-800"
+                }`}
+              >
+                <Icon size={17} />
+                {t(labelKey)}
+              </button>
+            );
+          })}
+        </nav>
+
+        <div className="mb-9 mt-14 flex items-center gap-4">
+          <span className="grid h-12 w-12 place-items-center rounded-2xl bg-emerald-600 text-white shadow-lg shadow-emerald-600/20">
+            <CurrentIcon size={21} />
+          </span>
+          <div>
+            <span className="text-[10px] font-black uppercase tracking-[0.18em] text-emerald-600">{t("media_page.browse")}</span>
+            <h2 className="mt-1 text-3xl font-black text-slate-950">{t(currentTab.labelKey)}</h2>
           </div>
+        </div>
 
-          {/* ================= ZONE DE RENDU DES CONTENUS ================= */}
-          <div className="min-h-[400px] w-full relative">
-            
-            {loading ? (
-              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-gray-400">
-                <Loader2 className="h-8 w-8 animate-spin text-emerald-600" />
-                <span className="text-xs font-bold">{isAr ? "جاري التحميل..." : "Loading..."}</span>
+        <AnimatePresence mode="wait">
+          <motion.section
+            key={activeTab}
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.35 }}
+          >
+            {activeTab === "news" && (
+              <div className="grid gap-6 lg:grid-cols-3">
+                {items.map((item, index) => (
+                  <article key={item.id} className={`group overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-[0_15px_45px_rgba(15,23,42,0.06)] transition-all duration-500 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-[0_24px_55px_rgba(5,150,105,0.13)] ${index === 0 ? "lg:col-span-2" : ""}`}>
+                    <div className={`relative overflow-hidden bg-slate-200 ${index === 0 ? "h-72 sm:h-96" : "h-64"}`}>
+                      <img src={item.image} alt={getTitle(item)} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/15 to-transparent" />
+                      <div className="absolute inset-x-0 bottom-0 p-6 text-white sm:p-8">
+                        <span className="flex items-center gap-2 text-xs font-bold text-emerald-300">
+                          <CalendarDays size={14} />
+                          {formatDate(item.date)}
+                        </span>
+                        <h3 className={`mt-3 font-black leading-tight ${index === 0 ? "text-2xl sm:text-3xl" : "text-xl"}`}>{getTitle(item)}</h3>
+                      </div>
+                    </div>
+                    <div className="p-6">
+                      <p className="text-sm leading-7 text-slate-500">{getDescription(item)}</p>
+                      <span className="mt-5 inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.13em] text-emerald-700">
+                        {t("media_page.read_more")}
+                        <ArrowLeft size={14} className={isRtl ? "" : "rotate-180"} />
+                      </span>
+                    </div>
+                  </article>
+                ))}
               </div>
-            ) : data.length === 0 ? (
-              <div className="absolute inset-0 flex items-center justify-center text-gray-400 text-sm font-bold">
-                {isAr ? "لا توجد بيانات متاحة حالياً." : "No data available at the moment."}
-              </div>
-            ) : (
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={active}
-                  initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  exit={{ opacity: 0, y: -20, filter: "blur(4px)" }}
-                  transition={{ duration: 0.4, ease: "easeOut" }}
-                  className="w-full"
-                >
-
-                  {/* 1. ONGLET : ACTUALITÉS (NEWS) */}
-                  {active === "news" && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                      {data.map((item) => (
-                        <article key={item.idCenter} className="bg-white border border-gray-100 rounded-3xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.02)] group hover:shadow-[0_20px_40px_rgba(0,0,0,0.05)] hover:border-emerald-500/20 transition-all duration-300 flex flex-col justify-between">
-                          <div className="relative overflow-hidden h-52 bg-gray-50">
-                            <img 
-                              src={item.photo ? `${import.meta.env.VITE_API_BASE_URL}/storage/${item.photo}` : 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=600&q=80'} 
-                              alt={isAr ? item.titre_ar : item.titre_en} 
-                              className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
-                            />
-                          </div>
-                          <div className="p-6 flex-1 flex flex-col justify-between gap-5">
-                            <div className="space-y-3">
-                              <span className="text-xs font-bold text-gray-400 block">
-                                {new Date(item.created_at).toLocaleDateString(isAr ? 'ar-EG' : 'en-US', { day: '2-digit', month: 'long', year: 'numeric' })}
-                              </span>
-                              <h3 className="text-lg font-black text-[#0c2340] leading-snug line-clamp-2 group-hover:text-emerald-600 transition-colors duration-200">
-                                {isAr ? item.titre_ar : item.titre_en}
-                              </h3>
-                              <p className="text-black text-sm line-clamp-3 leading-relaxed font-medium text-justify">
-                                {isAr ? item.description_ar : item.description_en}
-                              </p>
-                            </div>
-                            <div className="flex items-center justify-between border-t border-gray-50 pt-4 mt-auto">
-                              <a href={item.url || "#"} target="_blank" rel="noreferrer" className="text-xs font-bold text-gray-500 group-hover:text-emerald-600 group-hover:underline cursor-pointer transition-colors">
-                                {t("news_section.read_more", "اقرأ المزيد")}
-                              </a>
-                              <ArrowUpRight size={16} className="text-gray-300 group-hover:text-emerald-600 transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
-                            </div>
-                          </div>
-                        </article>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* 2. ONGLET : ÉVÉNEMENTS (EVENTS) */}
-                  {active === "events" && (
-                    <div className="space-y-4 max-w-4xl mx-auto">
-                      {data.map((item) => {
-                        const eventDate = new Date(item.created_at);
-                        return (
-                          <div key={item.idCenter} className="bg-white p-6 rounded-3xl border border-gray-100 shadow-[0_4px_20px_rgba(0,0,0,0.01)] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 hover:shadow-xl hover:border-emerald-500/20 transition-all duration-300 group">
-                            <div className="flex items-center gap-6">
-                              {/* Calendrier Minimaliste */}
-                              <div className="h-16 w-16 bg-emerald-50 text-emerald-600 rounded-2xl flex flex-col items-center justify-center border border-emerald-100 flex-shrink-0 shadow-sm group-hover:scale-105 transition-transform duration-300">
-                                <span className="text-2xl font-black leading-none">
-                                  {eventDate.getDate()}
-                                </span>
-                                <span className="text-[10px] uppercase font-bold text-emerald-700 mt-1">
-                                  {eventDate.toLocaleString(isAr ? 'ar-EG' : 'en-US', { month: 'short' })}
-                                </span>
-                              </div>
-                              {/* Contenu */}
-                              <div className="space-y-1 text-start">
-                                <h3 className="text-lg font-bold text-[#0c2340] group-hover:text-emerald-600 transition-colors">{isAr ? item.titre_ar : item.titre_en}</h3>
-                                <p className="text-black text-sm line-clamp-1 font-medium">{isAr ? item.description_ar : item.description_en}</p>
-                                <div className="flex items-center gap-3 text-xs text-gray-400 font-bold pt-1">
-                                  <span className="inline-flex items-center gap-1 bg-gray-50 px-2.5 py-1 rounded-md border border-gray-100">
-                                    <MapPin size={12} className="text-emerald-500" /> {isAr ? item.pays?.nom_ar || "عبر الإنترنت" : item.pays?.nom_en || "Online"}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                            {item.url && (
-                              <a href={item.url} target="_blank" rel="noreferrer" className="text-center w-full sm:w-auto px-6 py-3 bg-white border border-gray-200 text-gray-700 text-xs font-bold rounded-xl hover:bg-emerald-600 hover:text-white hover:border-emerald-600 transition-all shadow-sm">
-                                {isAr ? "تسجيل الحضور" : "Register"}
-                              </a>
-                            )}
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-
-                  {/* 3. ONGLET : PUBLICATIONS (RELEASES) */}
-                  {active === "releases" && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-4xl mx-auto">
-                      {data.map((item) => (
-                        <div key={item.idCenter} className="p-6 bg-white border border-gray-100 rounded-3xl flex gap-6 items-center shadow-[0_4px_20px_rgba(0,0,0,0.01)] hover:shadow-xl hover:border-emerald-500/20 transition-all duration-300 group">
-                          <div className="h-24 w-18 bg-[#0a2540] rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-inner flex-shrink-0 group-hover:bg-emerald-600 transition-colors duration-300">
-                            📚
-                          </div>
-                          <div className="space-y-3 flex-1 text-start">
-                            <div>
-                              <span className="text-[10px] font-bold px-2 py-0.5 bg-emerald-50 text-emerald-600 rounded-md border border-emerald-500/10 inline-block mb-1.5">PDF</span>
-                              <h4 className="text-base font-bold text-[#0c2340] line-clamp-1 group-hover:text-emerald-600 transition-colors">{isAr ? item.titre_ar : item.titre_en}</h4>
-                              <p className="text-black text-xs font-medium mt-0.5 line-clamp-1">{isAr ? item.description_ar : item.description_en}</p>
-                            </div>
-                            {item.url && (
-                              <a href={item.url} download target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 hover:underline">
-                                <Download size={14} />
-                                <span>{isAr ? "تحميل المستند" : "Download File"}</span>
-                              </a>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* 4. ONGLET : CONCOURS & PRIX (COMPETITIONS) */}
-                  {active === "competitions_prizes" && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-                      {data.map((item) => (
-                        <div key={item.idCenter} className="p-6 bg-white border border-gray-100 rounded-3xl shadow-[0_4px_20px_rgba(0,0,0,0.01)] flex flex-col justify-between min-h-[190px] hover:shadow-xl hover:border-emerald-500/20 transition-all duration-300 relative overflow-hidden group text-start">
-                          <div className="absolute top-0 end-0 bg-emerald-50 p-3.5 rounded-bl-3xl text-lg border-b border-s border-gray-50 text-emerald-600">🏆</div>
-                          <div className="space-y-2 max-w-[82%]">
-                            <h3 className="text-lg font-bold text-[#0c2340] group-hover:text-emerald-600 transition-colors tracking-tight">{isAr ? item.titre_ar : item.titre_en}</h3>
-                            <p className="text-black text-xs font-medium leading-relaxed line-clamp-3">{isAr ? item.description_ar : item.description_en}</p>
-                          </div>
-                          <div className="pt-4 border-t border-gray-50 flex items-center justify-between mt-4">
-                            <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-md">
-                              {isAr ? item.pays?.nom_ar || "مسابقة" : item.pays?.nom_en || "Competition"}
-                            </span>
-                            {item.url && (
-                              <a href={item.url} target="_blank" rel="noreferrer" className="text-xs font-bold text-gray-500 hover:text-emerald-600 hover:underline transition-colors">
-                                {isAr ? "التفاصيل" : "Details"}
-                              </a>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* 5. ONGLET : HISTOIRES DE SUCCÈS (STORIES) */}
-                  {active === "success_stories" && (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-                      {data.map((item) => (
-                        <div key={item.idCenter} className="p-6 bg-white border border-gray-100 rounded-3xl flex flex-col justify-between gap-5 shadow-[0_4px_20px_rgba(0,0,0,0.01)] hover:shadow-xl hover:border-emerald-500/10 transition-all duration-300 group">
-                          <p className="text-black text-sm italic leading-relaxed text-justify font-medium group-hover:text-emerald-600 transition-colors duration-300">
-                            “ {isAr ? item.description_ar : item.description_en} ”
-                          </p>
-                          <div className="flex items-center gap-3 pt-3 border-t border-gray-50">
-                            <div className="h-10 w-10 bg-emerald-50 text-emerald-600 border border-emerald-100 rounded-full flex items-center justify-center text-sm font-bold shadow-sm shrink-0">
-                              {(isAr ? item.titre_ar : item.titre_en)?.[0] || "S"}
-                            </div>
-                            <div className="text-start">
-                              <h4 className="text-sm font-bold text-[#0c2340]">{isAr ? item.titre_ar : item.titre_en}</h4>
-                              <span className="text-xs font-bold text-gray-400">
-                                {new Date(item.created_at).getFullYear()}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                </motion.div>
-              </AnimatePresence>
             )}
-          </div>
 
-        </div>
-      </div>
-    </section>
+            {activeTab === "events" && (
+              <div className="grid gap-6 lg:grid-cols-2">
+                {items.map((item) => {
+                  const date = new Date(item.date);
+                  return (
+                    <article key={item.id} className="group flex flex-col overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:border-emerald-300 hover:shadow-[0_20px_50px_rgba(5,150,105,0.1)] sm:flex-row">
+                      <div className="flex min-w-[150px] flex-col items-center justify-center bg-gradient-to-br from-emerald-700 to-teal-500 p-7 text-white">
+                        <strong className="text-5xl font-black">{date.getDate()}</strong>
+                        <span className="mt-1 text-xs font-black uppercase tracking-[0.16em]">{new Intl.DateTimeFormat(locale, { month: "long" }).format(date)}</span>
+                        <span className="mt-1 text-sm text-white/70">{date.getFullYear()}</span>
+                      </div>
+                      <div className="p-7">
+                        <span className="inline-flex items-center gap-2 text-xs font-bold text-emerald-700"><MapPin size={14} />{getLocation(item)}</span>
+                        <h3 className="mt-4 text-2xl font-black leading-9 text-slate-900">{getTitle(item)}</h3>
+                        <p className="mt-3 text-sm leading-7 text-slate-500">{getDescription(item)}</p>
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            )}
+
+            {activeTab === "releases" && (
+              <div className="space-y-4">
+                {items.map((item, index) => (
+                  <article key={item.id} className="group flex flex-col gap-6 rounded-[1.6rem] border border-slate-200 bg-white p-6 transition-all hover:border-emerald-300 hover:shadow-[0_18px_45px_rgba(5,150,105,0.09)] sm:flex-row sm:items-center">
+                    <span className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-emerald-50 text-emerald-700"><FileText size={27} /></span>
+                    <div className="flex-1">
+                      <span className="text-[10px] font-black uppercase tracking-[0.18em] text-emerald-600">{item.type} · 0{index + 1}</span>
+                      <h3 className="mt-2 text-xl font-black text-slate-900 sm:text-2xl">{getTitle(item)}</h3>
+                      <p className="mt-2 text-sm leading-7 text-slate-500">{getDescription(item)}</p>
+                    </div>
+                    <span className="inline-flex shrink-0 items-center gap-2 text-xs font-black text-emerald-700">{t("media_page.read_more")}<ArrowLeft size={14} className={isRtl ? "" : "rotate-180"} /></span>
+                  </article>
+                ))}
+              </div>
+            )}
+
+            {activeTab === "competitions" && (
+              <div className="grid gap-6 lg:grid-cols-2">
+                {items.map((item, index) => (
+                  <article key={item.id} className="group relative overflow-hidden rounded-[2rem] border border-amber-200 bg-gradient-to-br from-amber-50 via-white to-emerald-50 p-8 shadow-sm transition-all hover:-translate-y-1 hover:shadow-[0_22px_55px_rgba(217,119,6,0.12)]">
+                    <div className="pointer-events-none absolute -right-16 -top-20 h-52 w-52 rounded-full border-[38px] border-amber-500/[0.06]" />
+                    <div className="flex items-start justify-between">
+                      <span className="grid h-14 w-14 place-items-center rounded-2xl bg-amber-500 text-white shadow-lg shadow-amber-500/20"><Trophy size={25} /></span>
+                      <span className="text-4xl font-black text-amber-500/15">0{index + 1}</span>
+                    </div>
+                    <span className="mt-8 inline-flex items-center gap-2 text-xs font-bold text-emerald-700"><MapPin size={14} />{getLocation(item)}</span>
+                    <h3 className="mt-4 text-2xl font-black leading-9 text-slate-900">{getTitle(item)}</h3>
+                    <p className="mt-3 text-sm leading-7 text-slate-500">{getDescription(item)}</p>
+                  </article>
+                ))}
+              </div>
+            )}
+
+            {activeTab === "stories" && (
+              <div className="grid gap-6 lg:grid-cols-2">
+                {items.map((item) => (
+                  <article key={item.id} className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-emerald-800 to-teal-700 p-8 text-white shadow-[0_24px_60px_rgba(5,150,105,0.16)] sm:p-10">
+                    <Quote size={48} className="text-white/15" />
+                    <blockquote className="mt-6 text-xl font-semibold leading-10 text-emerald-50/90">“{getDescription(item)}”</blockquote>
+                    <div className="mt-8 border-t border-white/15 pt-6 text-sm font-black text-white">{getTitle(item)}</div>
+                  </article>
+                ))}
+              </div>
+            )}
+          </motion.section>
+        </AnimatePresence>
+      </main>
+    </div>
   );
-}
+};
+
+export default MediaCenterSection;

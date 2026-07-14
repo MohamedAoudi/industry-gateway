@@ -208,6 +208,13 @@ i18n.use(initReactI18next).init({
             experts: "تواصل مع الخبراء والباحثين والمختصين في مختلف المجالات العلمية والصناعية."
           }
         },
+
+        media_page: {
+          eyebrow: "نبض الصناعة والابتكار",
+          subtitle: "تابع أخبار البوابة والفعاليات والإصدارات والجوائز وقصص النجاح في منظومة البحث والابتكار الصناعي العربي.",
+          browse: "تصفح القسم",
+          read_more: "اقرأ المزيد"
+        },
         
         success_stories: {
           title: "أثرنا الملموس",
@@ -733,6 +740,12 @@ i18n.use(initReactI18next).init({
             patents: "A directory of industrial property and patent offices offering innovation protection services.",
             experts: "Connect with experts, researchers and specialists across scientific and industrial fields."
           }
+        },
+        media_page: {
+          eyebrow: "Industry and innovation pulse",
+          subtitle: "Follow portal news, events, publications, awards and success stories across the Arab research and industrial innovation ecosystem.",
+          browse: "Browse section",
+          read_more: "Read more"
         },
 
         submenu: {
