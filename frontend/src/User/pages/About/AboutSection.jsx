@@ -1,798 +1,220 @@
-// import React, { useState } from "react";
-// import { motion, AnimatePresence } from "framer-motion";
-// import { useTranslation } from "react-i18next";
-// import {
-//   Info,
-//   Target,
-//   Eye,
-//   Award,
-//   Mail,
-//   Phone,
-//   MapPin,
-//   Compass,
-//   Layers,
-//   Globe
-// } from "lucide-react";
-
-// const AboutPage = () => {
-//   const { t, i18n } = useTranslation();
-//   const isAr = i18n.language === "ar";
-//   const dir = isAr ? "rtl" : "ltr";
-  
-//   const [activeTab, setActiveTab] = useState("about");
-
-//   const tabs = [
-//     { id: "about", label: t("about_platform.about.title"), icon: <Info size={18} /> },
-//     { id: "vision", label: t("about_platform.vision.title"), icon: <Eye size={18} /> },
-//     { id: "mission", label: t("about_platform.mission.title"), icon: <Target size={18} /> },
-//     { id: "goals", label: t("about_platform.goals.title"), icon: <Award size={18} /> },
-//     { id: "contact", label: t("about_platform.contact.title"), icon: <Mail size={18} /> },
-//   ];
-
-//   return (
-//     <div dir={dir} className="min-h-screen bg-[#fcfdfe] pt-16 select-none font-sans">
-
-//       {/* ================= HERO SECTION ================= */}
-//       <div className="relative py-24 bg-emerald-600 text-white overflow-hidden">
-//         <div className="absolute w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[120px] -top-40 -left-20"></div>
-//         <div className="absolute w-[500px] h-[500px] bg-[#0fa968]/10 rounded-full blur-[120px] -bottom-40 -right-20"></div>
-
-//         <div className="max-w-5xl mx-auto px-6 text-start relative z-10">
-//           <motion.h1 
-//             initial={{ opacity: 0, y: -10 }}
-//             animate={{ opacity: 1, y: 0 }}
-//             className="text-3xl md:text-5xl font-black mb-4 leading-tight"
-//           >
-//             {t("about_platform.about.title")}
-//           </motion.h1>
-
-//           <motion.p 
-//             initial={{ opacity: 0 }}
-//             animate={{ opacity: 1 }}
-//             transition={{ delay: 0.2 }}
-//             className="text-gray-300 max-w-2xl text-base md:text-lg leading-relaxed font-medium"
-//           >
-//             {t("about_platform.subtitle")}
-//           </motion.p>
-//         </div>
-//       </div>
-
-//       {/* ================= TABS NAVIGATION ================= */}
-//       <div className="max-w-5xl mx-auto px-6 -mt-8 relative z-20">
-//         <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-gray-100 shadow-[0_20px_50px_rgba(12,35,64,0.04)] p-2 flex flex-wrap justify-center gap-1.5">
-//           {tabs.map((tab) => (
-//             <button
-//               key={tab.id}
-//               onClick={() => setActiveTab(tab.id)}
-//               className={`flex items-center gap-2.5 px-6 py-3 rounded-xl font-bold text-xs md:text-sm transition-all relative ${
-//                 activeTab === tab.id
-//                   ? "bg-[#0fa968] text-white shadow-lg shadow-emerald-600/10"
-//                   : "text-gray-500 hover:text-gray-800 hover:bg-gray-50"
-//               }`}
-//             >
-//               {tab.icon}
-//               <span>{tab.label}</span>
-//             </button>
-//           ))}
-//         </div>
-//       </div>
-
-//       {/* ================= DYNAMIC CONTENT CONTAINER ================= */}
-//       <div className="max-w-5xl mx-auto px-6 py-20 relative z-10">
-//         <AnimatePresence mode="wait">
-//           <motion.div
-//             key={activeTab}
-//             initial={{ opacity: 0, y: 15 }}
-//             animate={{ opacity: 1, y: 0 }}
-//             exit={{ opacity: 0, y: -15 }}
-//             transition={{ duration: 0.4, ease: "easeOut" }}
-//             className="w-full"
-//           >
-            
-//             {/* 1. ONGLET: ABOUT */}
-//             {activeTab === "about" && (
-//               <div className="flex flex-col gap-12">
-//                 <div className={`bg-white p-8 rounded-2xl border border-gray-100 shadow-sm ${isAr ? "text-right" : "text-left"}`}>
-//                   <h4 className="text-lg font-bold text-[#0c2340] mb-4">{t("about_platform.about.title")}</h4>
-//                   <p className="text-gray-500 text-sm md:text-base leading-relaxed font-medium">
-//                     {t("about_platform.about.description_about")}
-//                   </p>
-//                 </div>
-//               </div>
-//             )}
-
-//             {/* 2. ONGLET: VISION */}
-//             {activeTab === "vision" && (
-//               <div className={`bg-white p-8 md:p-12 rounded-3xl shadow-md border border-gray-100 ${isAr ? "text-right" : "text-left"}`}>
-//                 <div className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-6 text-[#0fa968]">
-//                   <Eye size={24} />
-//                 </div>
-//                 <h3 className="text-2xl font-black text-[#0c2340] mb-4">
-//                   {isAr ? "رؤية البوابة" : "Our Strategic Vision"}
-//                 </h3>
-//                 <p className="text-gray-500 text-base leading-relaxed font-medium max-w-3xl">
-//                   {t("about_platform.vision.description_vision")}
-//                 </p>
-//               </div>
-//             )}.
-
-//             {/* 3. ONGLET: MISSION */}
-//             {activeTab === "mission" && (
-//               <div className={`bg-white p-8 md:p-12 rounded-3xl shadow-md border border-gray-100 ${isAr ? "text-right" : "text-left"}`}>
-//                 <div className="w-12 h-12 rounded-xl bg-emerald-50 text-[#0fa968] flex items-center justify-center mb-6">
-//                   <Target size={24} />
-//                 </div>
-//                 <h3 className="text-2xl font-black text-[#0c2340] mb-4">
-//                   {isAr ? "رسالة البوابة" : "Our Core Mission"}
-//                 </h3>
-//                 <p className="text-gray-500 text-base leading-relaxed font-medium max-w-3xl">
-//                   {t("about_platform.mission.description_mission")}
-//                 </p>
-//               </div>
-//             )}
-
-//             {/* 4. ONGLET: GOALS */}
-//             {activeTab === "goals" && (
-//               <div className={`grid grid-cols-1 md:grid-cols-2 gap-6 ${isAr ? "text-right" : "text-left"}`}>
-//                 <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col gap-3">
-//                   <div className="w-9 h-9 rounded-lg bg-emerald-50 text-[#0fa968] flex items-center justify-center font-bold text-sm">١</div>
-//                   <p className="text-gray-600 text-xs md:text-sm leading-relaxed font-semibold">{t("about_platform.goals.g1")}</p>
-//                 </div>
-//                 <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col gap-3">
-//                   <div className="w-9 h-9 rounded-lg bg-emerald-50 text-[#0fa968] flex items-center justify-center font-bold text-sm">٢</div>
-//                   <p className="text-gray-600 text-xs md:text-sm leading-relaxed font-semibold">{t("about_platform.goals.g2")}</p>
-//                 </div>
-//                 <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col gap-3">
-//                   <div className="w-9 h-9 rounded-lg bg-emerald-50 text-[#0fa968] flex items-center justify-center font-bold text-sm">٣</div>
-//                   <p className="text-gray-600 text-xs md:text-sm leading-relaxed font-semibold">{t("about_platform.goals.g3")}</p>
-//                 </div>
-//                 <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col gap-3">
-//                   <div className="w-9 h-9 rounded-lg bg-emerald-50 text-[#0fa968] flex items-center justify-center font-bold text-sm">٤</div>
-//                   <p className="text-gray-600 text-xs md:text-sm leading-relaxed font-semibold">{t("about_platform.goals.g4")}</p>
-//                 </div>
-//                 <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col gap-3">
-//                   <div className="w-9 h-9 rounded-lg bg-emerald-50 text-[#0fa968] flex items-center justify-center font-bold text-sm">٥</div>
-//                   <p className="text-gray-600 text-xs md:text-sm leading-relaxed font-semibold">{t("about_platform.goals.g5")}</p>
-//                 </div>
-//                 <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex flex-col gap-3">
-//                   <div className="w-9 h-9 rounded-lg bg-emerald-50 text-[#0fa968] flex items-center justify-center font-bold text-sm">٦</div>
-//                   <p className="text-gray-600 text-xs md:text-sm leading-relaxed font-semibold">{t("about_platform.goals.g6")}</p>
-//                 </div>
-//               </div>
-//             )}
-
-//             {/* 5. ONGLET: CONTACT */}
-//             {activeTab === "contact" && (
-//               <div className={`bg-white p-8 md:p-12 rounded-3xl shadow-md border border-gray-100 ${isAr ? "text-right" : "text-left"}`}>
-//                 <div className="max-w-3xl mx-auto">
-//                   <h3 className="text-2xl font-black text-[#0c2340] mb-4">
-//                     {t("about_platform.contact.title")}
-//                   </h3>
-//                   <p className="text-gray-500 text-sm md:text-base leading-relaxed font-medium mb-10">
-//                     {t("about_platform.contact.description")}
-//                   </p>
-
-//                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-//                     <div className="bg-gray-50/70 p-6 rounded-xl border border-gray-100 flex items-start gap-4">
-//                       <div className="w-10 h-10 rounded-lg bg-emerald-50 text-[#0fa968] flex items-center justify-center shrink-0">
-//                         <Mail size={20} />
-//                       </div>
-//                       <div className="flex flex-col text-start">
-//                         <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">{isAr ? "البريد الإلكتروني" : "Email Address"}</span>
-//                         <a href={`mailto:${t("about_platform.contact.info.email")}`} className="font-bold text-sm text-[#0c2340] hover:text-[#0fa968] transition-colors">
-//                           {t("about_platform.contact.info.email")}
-//                         </a>
-//                       </div>
-//                     </div>
-
-//                     <div className="bg-gray-50/70 p-6 rounded-xl border border-gray-100 flex items-start gap-4">
-//                       <div className="w-10 h-10 rounded-lg bg-emerald-50 text-[#0fa968] flex items-center justify-center shrink-0">
-//                         <Phone size={20} />
-//                       </div>
-//                       <div className="flex flex-col text-start">
-//                         <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">{isAr ? "الهاتف" : "Phone Number"}</span>
-//                         <span className="font-bold text-sm text-[#0c2340]" dir="ltr">
-//                           {t("about_platform.contact.info.phone")}
-//                         </span>
-//                       </div>
-//                     </div>
-
-//                     <div className="bg-gray-50/70 p-6 rounded-xl border border-gray-100 flex items-start gap-4 md:col-span-2">
-//                       <div className="w-10 h-10 rounded-lg bg-emerald-50 text-[#0fa968] flex items-center justify-center shrink-0">
-//                         <MapPin size={20} />
-//                       </div>
-//                       <div className="flex flex-col text-start">
-//                         <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider mb-0.5">{isAr ? "المقر والعنوان" : "Official Address"}</span>
-//                         <span className="font-semibold text-xs md:text-sm text-gray-600 leading-relaxed">
-//                           {t("about_platform.contact.info.adress")}
-//                         </span>
-//                       </div>
-//                     </div>
-//                   </div>
-//                 </div>
-//               </div>
-//             )}
-
-//           </motion.div>
-//         </AnimatePresence>
-//       </div>
-
-//     </div>
-//   );
-// };
-
-// const Card = ({ icon, title }) => (
-//   <div className="bg-white p-6 md:p-8 rounded-2xl border border-gray-100 shadow-[0_10px_30px_rgba(12,35,64,0.02)] hover:shadow-[0_15px_35px_rgba(12,35,64,0.05)] hover:border-emerald-500/10 transition-all duration-300 flex flex-col items-start gap-5 group">
-//     <div className="w-12 h-12 flex items-center justify-center bg-emerald-50 text-[#0fa968] rounded-xl group-hover:scale-105 transition-transform duration-300">
-//       {icon}
-//     </div>
-//     <h3 className="text-xs md:text-sm font-bold text-[#0c2340] leading-relaxed">
-//       {title}
-//     </h3>
-//   </div>
-// );
-
-// export default AboutPage;
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React, { useState } from "react";
-// import { motion, AnimatePresence } from "framer-motion";
-// import { useTranslation } from "react-i18next";
-// import {
-//   Info,
-//   Target,
-//   Eye,
-//   Award,
-//   Mail,
-//   Phone,
-//   MapPin,
-//   Compass,
-//   Layers,
-//   Globe,
-//   Sparkles,
-//   ArrowUpRight
-// } from "lucide-react";
-
-// const AboutPage = () => {
-//   const { t, i18n } = useTranslation();
-//   const isAr = i18n.language === "ar";
-//   const dir = isAr ? "rtl" : "ltr";
-  
-//   const [activeTab, setActiveTab] = useState("about");
-
-//   // Définition des onglets
-//   const tabs = [
-//     { id: "about", label: t("about_platform.about.title"), icon: <Info size={18} /> },
-//     { id: "vision", label: t("about_platform.vision.title"), icon: <Eye size={18} /> },
-//     { id: "mission", label: t("about_platform.mission.title"), icon: <Target size={18} /> },
-//     { id: "goals", label: t("about_platform.goals.title"), icon: <Award size={18} /> },
-//     { id: "contact", label: t("about_platform.contact.title"), icon: <Mail size={18} /> },
-//   ];
-
-//   return (
-//     <div dir={dir} className="min-h-screen bg-[#f8fafc] relative overflow-hidden">
-
-//       {/* ================= BACKGROUND MESH GRADIENTS ================= */}
-//       <div className="absolute top-0 left-0 w-full h-[600px] bg-gradient-to-b from-[#e2f4eb] to-transparent opacity-60 pointer-events-none -z-10" />
-//       <div className="absolute -top-40 -right-40 w-[600px] h-[600px] bg-[#0fa968]/10 rounded-full blur-[120px] pointer-events-none -z-10" />
-//       <div className="absolute top-40 -left-20 w-[500px] h-[500px] bg-[#0a2540]/5 rounded-full blur-[100px] pointer-events-none -z-10" />
-
-//       {/* ================= HERO SECTION (Airy & Modern) ================= */}
-//       <div className="relative py-24 bg-emerald-600 text-white overflow-hidden">
-//         <div className="absolute w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[120px] -top-40 -left-20"></div>
-//         <div className="absolute w-[500px] h-[500px] bg-[#0fa968]/10 rounded-full blur-[120px] -bottom-40 -right-20"></div>
-
-//         <div className="max-w-5xl mx-auto px-6 text-start relative z-10">
-//           <motion.h1 
-//             initial={{ opacity: 0, y: -10 }}
-//             animate={{ opacity: 1, y: 0 }}
-//             className="text-3xl md:text-5xl font-black mb-4 leading-tight"
-//           >
-//             {t("about_platform.about.title")}
-//           </motion.h1>
-
-//           <motion.p 
-//             initial={{ opacity: 0 }}
-//             animate={{ opacity: 1 }}
-//             transition={{ delay: 0.2 }}
-//             className="text-gray-300 max-w-2xl text-base md:text-lg leading-relaxed font-medium"
-//           >
-//             {t("about_platform.subtitle")}
-//           </motion.p>
-//         </div>
-//       </div>
-
-//       {/* ================= MAGIC PILL NAVIGATION ================= */}
-//       <div className="max-w-4xl mx-auto px-6 relative z-20 -mt-8 mb-16">
-//         <div className="bg-white backdrop-blur-xl rounded-full border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-1.5 flex flex-wrap md:flex-nowrap justify-between gap-1 overflow-hidden">
-//           {tabs.map((tab) => (
-//             <button
-//               key={tab.id}
-//               onClick={() => setActiveTab(tab.id)}
-//               className={`relative flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-full font-bold text-sm transition-colors z-10 ${
-//                 activeTab === tab.id ? "text-white" : "text-gray-500 hover:text-[#0a2540]"
-//               }`}
-//             >
-//               {activeTab === tab.id && (
-//                 <motion.div
-//                   layoutId="activeTabIndicator"
-//                   className="absolute inset-0 bg-[#0fa968] rounded-full -z-10 shadow-md shadow-emerald-500/20"
-//                   transition={{ type: "spring", stiffness: 400, damping: 30 }}
-//                 />
-//               )}
-//               {tab.icon}
-//               <span className="whitespace-nowrap">{tab.label}</span>
-//             </button>
-//           ))}
-//         </div>
-//       </div>
-
-//       {/* ================= DYNAMIC CONTENT CONTAINER ================= */}
-//       <div className="max-w-5xl mx-auto px-6 relative z-10">
-//         <AnimatePresence mode="wait">
-//           <motion.div
-//             key={activeTab}
-//             initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
-//             animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-//             exit={{ opacity: 0, y: -20, filter: "blur(4px)" }}
-//             transition={{ duration: 0.4, ease: "easeOut" }}
-//             className="w-full"
-//           >
-            
-//             {/* 1. ONGLET: ABOUT (Bento Grid) */}
-//             {activeTab === "about" && (
-//               <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                
-//                 {/* Carte Principale (Fond Blanc) */}
-//                 <div className={`lg:col-span-8 bg-white p-8 md:p-12 rounded-[2rem] shadow-xl border border-gray-100 relative overflow-hidden flex flex-col justify-center ${isAr ? "text-right" : "text-left"}`}>
-//                   {/* Halo décoratif subtil en arrière-plan */}
-//                   <div className="absolute -top-32 -right-32 w-96 h-96 bg-emerald-500/10 rounded-full blur-[80px]"></div>
-                  
-//                   {/* Icône avec un fond vert clair pour contraster sur le blanc */}
-//                   <div className="relative z-10 w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center mb-8 border border-emerald-100">
-//                     <Info size={28} className="text-[#0fa968]" />
-//                   </div>
-                  
-//                   {/* Textes sombres pour être lisibles sur le blanc */}
-//                   <h3 className="relative z-10 text-3xl font-black mb-6 text-[#0a2540]">
-//                     {isAr ? "من نحن؟" : "Who are we?"}
-//                   </h3>
-//                   <p className="relative z-10 [#0a2540] text-justify text-lg leading-relaxed font-medium">
-//                     {t("about_platform.about.description_about")}
-//                   </p>
-//                 </div>
-
-//                 {/* Cartes Latérales */}
-//                 <div className="lg:col-span-4 flex flex-col gap-6">
-//                   <BentoCard icon={<Globe />} title={isAr ? "تعزيز التكامل الصناعي العربي" : "Enhancing Arab industrial integration"} />
-//                   <BentoCard icon={<Layers />} title={isAr ? "ربط أصحاب المصلحة رقمياً" : "Digitally connecting ecosystem stakeholders"} />
-//                   <BentoCard icon={<Compass />} title={isAr ? "مساحة معرفية مخصصة للتطوير" : "Dedicated knowledge space for R&D development"} />
-//                 </div>
-//               </div>
-//             )}
-
-//             {/* 2. ONGLET: VISION & 3. MISSION (Heroic Cards) */}
-//             {(activeTab === "vision" || activeTab === "mission") && (
-//               <div className={`relative bg-white p-10 md:p-16 rounded-[2.5rem] shadow-xl border border-gray-100 overflow-hidden ${isAr ? "text-right" : "text-left"}`}>
-//                 {/* Décoration d'arrière-plan */}
-//                 <div className={`absolute top-0 ${isAr ? 'left-0' : 'right-0'} opacity-[0.03] pointer-events-none transform ${isAr ? '-translate-x-1/4' : 'translate-x-1/4'} -translate-y-1/4`}>
-//                   {activeTab === "vision" ? <Eye size={400} /> : <Target size={400} />}
-//                 </div>
-
-//                 <div className="relative z-10 max-w-3xl">
-//                   <div className="w-16 h-16 bg-emerald-50 text-[#0fa968] rounded-2xl flex items-center justify-center mb-8 border border-emerald-100 shadow-sm">
-//                     {activeTab === "vision" ? <Eye size={32} /> : <Target size={32} />}
-//                   </div>
-//                   <h2 className="text-4xl md:text-5xl font-black text-[#0a2540] mb-8">
-//                     {activeTab === "vision" 
-//                       ? (isAr ? "رؤيتنا الإستراتيجية" : "Our Strategic Vision")
-//                       : (isAr ? "رسالتنا الأساسية" : "Our Core Mission")}
-//                   </h2>
-//                   <p className="[#0a2540] text-xl text-justify md:text-2xl leading-relaxed font-medium">
-//                     {activeTab === "vision" 
-//                       ? t("about_platform.vision.description_vision")
-//                       : t("about_platform.mission.description_mission")}
-//                   </p>
-//                 </div>
-//               </div>
-//             )}
-
-//             {/* 4. ONGLET: GOALS (Grid moderne avec numéros géants) */}
-//             {activeTab === "goals" && (
-//               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-//                 {[1, 2, 3, 4, 5, 6].map((num) => (
-//                   <div key={num} className={`bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-2xl hover:border-[#0fa968]/30 transition-all duration-300 group relative overflow-hidden ${isAr ? "text-right" : "text-left"}`}>
-//                     {/* Numéro géant en filigrane */}
-//                     <span className={`absolute top-4 ${isAr ? 'left-6' : 'right-6'} text-8xl font-black text-gray-50 group-hover:text-emerald-50 transition-colors duration-300 z-0 select-none`}>
-//                       {num}
-//                     </span>
-                    
-//                     <div className="relative z-10">
-//                       <div className="w-12 h-12 bg-gray-50 text-[#0a2540] group-hover:bg-[#0fa968] group-hover:text-white rounded-xl flex items-center justify-center mb-6 transition-colors duration-300">
-//                         <Award size={20} />
-//                       </div>
-//                       <p className="text-[#0a2540] font-bold text-justify text-lg leading-relaxed">
-//                         {t(`about_platform.goals.g${num}`)}
-//                       </p>
-//                     </div>
-//                   </div>
-//                 ))}
-//               </div>
-//             )}
-
-//             {/* 5. ONGLET: CONTACT (Split Layout Glassmorphism) */}
-//             {activeTab === "contact" && (
-//               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-                
-//                 {/* Texte d'intro à gauche */}
-//                 <div className={`lg:col-span-5 ${isAr ? "text-right" : "text-left"}`}>
-//                   <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 text-emerald-600 font-bold text-sm mb-6">
-//                     <Mail size={16} />
-//                     {isAr ? "تواصل معنا" : "Get in touch"}
-//                   </div>
-//                   <h2 className="text-4xl md:text-5xl font-black text-[#0a2540] mb-6 leading-tight">
-//                     {t("about_platform.contact.title")}
-//                   </h2>
-//                   <p className="text-[#0a2540] text-lg  leading-relaxed">
-//                     {t("about_platform.contact.description")}
-//                   </p>
-//                 </div>
-
-//                 {/* Cartes de contact interactives à droite */}
-//                 <div className="lg:col-span-7 flex flex-col gap-4">
-                  
-//                   <a href={`mailto:${t("about_platform.contact.info.email")}`} className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex items-center justify-between group">
-//                     <div className="flex items-center gap-6">
-//                       <div className="w-14 h-14 bg-emerald-600 text-white rounded-2xl flex items-center justify-center shrink-0 group-hover:bg-[#0fa968] transition-colors">
-//                         <Mail size={24} />
-//                       </div>
-//                       <div className={`flex flex-col ${isAr ? "text-right" : "text-left"}`}>
-//                         <span className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">{isAr ? "البريد الإلكتروني" : "Email Address"}</span>
-//                         <span className="text-xl font-bold text-[#0a2540]">{t("about_platform.contact.info.email")}</span>
-//                       </div>
-//                     </div>
-//                     <ArrowUpRight size={24} className="text-gray-300 group-hover:text-[#0fa968] transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
-//                   </a>
-
-//                   <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex items-center justify-between group cursor-default">
-//                     <div className="flex items-center gap-6">
-//                       <div className="w-14 h-14 bg-emerald-600 text-white rounded-2xl flex items-center justify-center shrink-0 group-hover:bg-[#0fa968] transition-colors">
-//                         <Phone size={24} />
-//                       </div>
-//                       <div className={`flex flex-col ${isAr ? "text-right" : "text-left"}`}>
-//                         <span className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">{isAr ? "الهاتف" : "Phone Number"}</span>
-//                         <span className="text-xl font-bold text-[#0a2540]" dir="ltr">{t("about_platform.contact.info.phone")}</span>
-//                       </div>
-//                     </div>
-//                   </div>
-
-//                   <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex items-start gap-6 group cursor-default">
-//                     <div className="w-14 h-14 bg-emerald-600 text-white rounded-2xl flex items-center justify-center shrink-0 group-hover:bg-[#0fa968] transition-colors mt-1">
-//                       <MapPin size={24} />
-//                     </div>
-//                     <div className={`flex flex-col ${isAr ? "text-right" : "text-left"}`}>
-//                       <span className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">{isAr ? "المقر والعنوان" : "Official Address"}</span>
-//                       <span className="text-base font-semibold text-[#0a2540] leading-relaxed">
-//                         {t("about_platform.contact.info.adress")}
-//                       </span>
-//                     </div>
-//                   </div>
-
-//                 </div>
-//               </div>
-//             )}
-
-//           </motion.div>
-//         </AnimatePresence>
-//       </div>
-
-//     </div>
-//   );
-// };
-
-// // Composant réutilisable pour la "Bento Grid" (Onglet About)
-// const BentoCard = ({ icon, title }) => (
-//   <div className="bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl hover:border-emerald-500/20 transition-all duration-300 flex items-center gap-5 flex-1 group">
-//     <div className="w-14 h-14 bg-emerald-50 text-[#0fa968] rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:bg-[#0fa968] group-hover:text-white transition-all duration-300">
-//       {icon}
-//     </div>
-//     <h3 className="text-base font-bold text-[#0a2540] leading-snug">
-//       {title}
-//     </h3>
-//   </div>
-// );
-
-// export default AboutPage;
-
-
-
-
-
-
-
-
-
-
-
-
-import React, { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import {
-  Info,
-  Target,
+  ArrowLeft,
+  Building2,
   Eye,
-  Award,
+  Factory,
+  Globe2,
+  Lightbulb,
   Mail,
-  Phone,
-  MapPin,
-  Compass,
-  Layers,
-  Globe,
+  Microscope,
+  Network,
   Sparkles,
-  ArrowUpRight
+  Target,
 } from "lucide-react";
+
+const goalIcons = [Lightbulb, Network, Globe2, Microscope, Building2, Factory];
 
 const AboutPage = () => {
   const { t, i18n } = useTranslation();
-  const isAr = i18n.language === "ar";
-  const dir = isAr ? "rtl" : "ltr";
-  
-  const [activeTab, setActiveTab] = useState("about");
+  const isRtl = i18n.dir() === "rtl";
 
-  // Définition des onglets
-  const tabs = [
-    { id: "about", label: t("about_platform.about.title"), icon: <Info size={16} /> },
-    { id: "vision", label: t("about_platform.vision.title"), icon: <Eye size={16} /> },
-    { id: "mission", label: t("about_platform.mission.title"), icon: <Target size={16} /> },
-    { id: "goals", label: t("about_platform.goals.title"), icon: <Award size={16} /> },
-    { id: "contact", label: t("about_platform.contact.title"), icon: <Mail size={16} /> },
+  const pillars = [
+    { icon: Microscope, label: t("about_page.pillars.research") },
+    { icon: Lightbulb, label: t("about_page.pillars.innovation") },
+    { icon: Factory, label: t("about_page.pillars.industry") },
   ];
 
   return (
-    <div dir={dir} className="min-h-screen bg-[#f8fafc] relative overflow-hidden pb-20">
+    <div dir={isRtl ? "rtl" : "ltr"} className="overflow-hidden bg-white">
+      <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-950 pb-28 pt-20 text-white sm:pb-36 sm:pt-24">
+        <div className="pointer-events-none absolute inset-0 opacity-[0.035] [background-image:linear-gradient(white_1px,transparent_1px),linear-gradient(90deg,white_1px,transparent_1px)] [background-size:48px_48px]" />
+        <div className="pointer-events-none absolute -left-32 top-10 h-80 w-80 rounded-full bg-emerald-400/20 blur-[100px]" />
+        <div className="pointer-events-none absolute -right-40 bottom-0 h-96 w-96 rounded-full bg-teal-400/15 blur-[110px]" />
+        <div className="pointer-events-none absolute left-1/2 top-1/2 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 rounded-full border-[80px] border-white/[0.015]" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400/70 to-transparent" />
 
-      {/* ================= BACKGROUND MESH GRADIENTS ================= */}
-      <div className="absolute top-0 left-0 w-full h-[600px] bg-gradient-to-b from-[#e2f4eb] to-transparent opacity-60 pointer-events-none -z-10" />
-      <div className="absolute -top-40 -right-40 w-[700px] h-[700px] bg-emerald-600/5 rounded-full blur-[140px] pointer-events-none -z-10" />
-      <div className="absolute top-40 -left-20 w-[600px] h-[600px] bg-emerald-600/5 rounded-full blur-[120px] pointer-events-none -z-10" />
-
-      {/* ================= HERO SECTION (Airy & Modern) ================= */}
-      <div className="relative py-24 bg-emerald-600 text-white overflow-hidden">
-        <div className="absolute w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-[120px] -top-40 -left-20"></div>
-        <div className="absolute w-[500px] h-[500px] bg-[#0fa968]/10 rounded-full blur-[120px] -bottom-40 -right-20"></div>
-
-        <div className="max-w-5xl mx-auto px-6 text-start relative z-10">
-          <motion.h1 
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-3xl md:text-5xl font-black mb-4 leading-tight"
-          >
-            {t("about_platform.about.title")}
-          </motion.h1>
-
-          <motion.p 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-            className="text-gray-300 max-w-2xl text-base md:text-lg leading-relaxed font-medium"
-          >
-            {t("about_platform.subtitle")}
-          </motion.p>
-        </div>
-      </div>
-
-      {/* ================= MAGIC PILL NAVIGATION ================= */}
-      <div className="max-w-4xl mx-auto px-6 relative -mt-8 z-20 mb-16">
-        <div className="bg-white/80 backdrop-blur-xl rounded-full border border-white shadow-[0_8px_30px_rgb(0,0,0,0.06)] p-1.5 flex flex-wrap md:flex-nowrap justify-between gap-1 overflow-hidden">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`relative flex-1 flex items-center justify-center gap-2 px-4 py-3.5 rounded-full font-bold text-sm transition-colors z-10 ${
-                activeTab === tab.id ? "text-white" : "text-gray-500 hover:text-emerald-600"
-              }`}
-            >
-              {activeTab === tab.id && (
-                <motion.div
-                  layoutId="activeTabIndicator"
-                  className="absolute inset-0 bg-emerald-600 rounded-full -z-10 shadow-lg shadow-emerald-500/25"
-                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                />
-              )}
-              {tab.icon}
-              <span className="whitespace-nowrap">{tab.label}</span>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* ================= DYNAMIC CONTENT CONTAINER ================= */}
-      <div className="max-w-5xl mx-auto px-6 relative z-10">
-        <AnimatePresence mode="wait">
+        <div className="relative mx-auto max-w-7xl px-6">
           <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, y: 20, filter: "blur(4px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            exit={{ opacity: 0, y: -20, filter: "blur(4px)" }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="w-full"
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            className="max-w-4xl"
           >
-            
-            {/* 1. ONGLET: ABOUT (Bento Grid) */}
-            {activeTab === "about" && (
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                
-                {/* Carte Principale */}
-                <div className={`lg:col-span-12 bg-white p-1 md:px-14 rounded-[2.5rem] shadow-xl shadow-gray-200/50 border border-gray-100 relative overflow-hidden flex flex-col justify-center group ${isAr ? "text-right" : "text-left"}`}>
-                  <div className="absolute -top-32 -right-32 w-96 h-96 bg-emerald-500/10 rounded-full blur-[80px]"></div>
-                  
-                  <div className="relative z-10 w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center mb-8 border border-emerald-100 shadow-sm group-hover:scale-105 transition-transform duration-300">
-                    <Info size={32} className="text-emerald-600" />
-                  </div>
-                  
-                  <h3 className="relative z-10 text-3xl md:text-4xl font-black mb-6 text-emerald-600">
-                    {t("about_platform.about.title")}
-                  </h3>
-                  <p className="relative z-10 text-black text-xl leading-relaxed text-justify">
-                    <span className="font-medium">{t("about_platform.about.description_about")}</span>
-                    {t("about_platform.about.description_about1")}
-                    <span className="font-medium">{t("about_platform.about.description_about2")}</span>
-                    {t("about_platform.about.description_about3")}
-                  </p>
-                </div>
-
-                {/* Cartes Latérales */}
-                {/* <div className="lg:col-span-4 flex flex-col gap-6 ">
-                  <BentoCard icon={<Globe />} className="text-black" title={isAr ? "تعزيز التكامل الصناعي العربي" : "Enhancing Arab industrial integration"} />
-                  <BentoCard icon={<Layers />} title={isAr ? "ربط أصحاب المصلحة رقمياً" : "Digitally connecting ecosystem stakeholders"} />
-                  <BentoCard icon={<Compass />} title={isAr ? "مساحة معرفية مخصصة للتطوير" : "Dedicated knowledge space for R&D development"} />
-                </div> */}
-              </div>
-            )}
-
-            {/* 2. ONGLET: VISION & 3. MISSION (Heroic Cards) */}
-            {(activeTab === "vision" || activeTab === "mission") && (
-              <div className={`relative bg-white p-10 md:px-14 rounded-[2.5rem] shadow-xl shadow-gray-200/50 border border-gray-100 overflow-hidden ${isAr ? "text-right" : "text-left"}`}>
-                <div className={`absolute top-0 ${isAr ? 'left-0' : 'right-0'} opacity-[0.02] pointer-events-none transform ${isAr ? '-translate-x-1/4' : 'translate-x-1/4'} -translate-y-1/4 text-emerald-600`}>
-                  {activeTab === "vision" ? <Eye size={500} /> : <Target size={500} />}
-                </div>
-
-                <div className="relative z-10 max-w-4xl">
-                  <div className="w-16 h-16 bg-emerald-50 text-emerald-600 rounded-2xl flex items-center justify-center mb-8 border border-emerald-100 shadow-sm">
-                    {activeTab === "vision" ? <Eye size={32} /> : <Target size={32} />}
-                  </div>
-                  <h2 className="text-4xl md:text-5xl font-black text-emerald-600 mb-8">
-                    {activeTab === "vision" 
-                      ? t("about_platform.vision.title")
-                      : t("about_platform.mission.title")}
-                  </h2>
-                  <p className="text-black text-xl text-justify">
-                    {activeTab === "vision" 
-                      ? t("about_platform.vision.description_vision")
-                      : t("about_platform.mission.description_mission")}
-                  </p>
-                </div>
-              </div>
-            )}
-
-            {/* 4. ONGLET: GOALS */}
-            {activeTab === "goals" && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[1, 2, 3, 4, 5, 6].map((num) => (
-                  <div key={num} className={`bg-white p-8 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-2xl hover:border-emerald-500/30 transition-all duration-300 group relative overflow-hidden ${isAr ? "text-right" : "text-left"}`}>
-                    <span className={`absolute top-4 ${isAr ? 'left-6' : 'right-6'} text-8xl font-black text-gray-50 group-hover:text-emerald-50 transition-colors duration-300 z-0 select-none`}>
-                      {num}
-                    </span>
-                    
-                    <div className="relative z-10">
-                      <div className="w-14 h-14 bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white rounded-2xl flex items-center justify-center mb-6 transition-colors duration-300 shadow-sm">
-                        <Award size={24} />
-                      </div>
-                      {/* Description qui devient émeraude au hover */}
-                      <p className="text-black group-hover:text-emerald-600 text-justify text-xl  transition-colors duration-300">
-                        {t(`about_platform.goals.g${num}`)}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {/* 5. ONGLET: CONTACT */}
-            {activeTab === "contact" && (
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-                
-                {/* Intro à gauche */}
-                <div className={`lg:col-span-5 ${isAr ? "text-right" : "text-left"}`}>
-                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-50 border border-emerald-100 text-emerald-600 font-bold text-sm mb-6 shadow-sm">
-                    <Mail size={16} />
-                    {isAr ? "تواصل معنا" : "Get in touch"}
-                  </div>
-                  <h2 className="text-4xl md:text-5xl font-black text-emerald-600 mb-6 leading-tight">
-                    {t("about_platform.contact.title")}
-                  </h2>
-                  <p className="text-black text-xl leading-relaxed">
-                    {t("about_platform.contact.description")}
-                  </p>
-                </div>
-
-                {/* Cartes contact à droite */}
-                <div className="lg:col-span-7 flex flex-col gap-4">
-                  
-                  {/* Email */}
-                  <a href={`mailto:${t("about_platform.contact.info.email")}`} className="bg-white p-6 md:p-8 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-emerald-500/30 transition-all duration-300 flex items-center justify-between group">
-                    <div className="flex items-center gap-6">
-                      <div className="w-16 h-16 bg-emerald-50 text-emerald-600 border border-emerald-100 rounded-2xl flex items-center justify-center shrink-0 group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-300">
-                        <Mail size={28} />
-                      </div>
-                      <div className={`flex flex-col ${isAr ? "text-right" : "text-left"}`}>
-                        <span className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">{isAr ? "البريد الإلكتروني" : "Email Address"}</span>
-                        <span className="text-xl md:text-2xl font-black text-black group-hover:text-emerald-600 transition-colors">{t("about_platform.contact.info.email")}</span>
-                      </div>
-                    </div>
-                    <ArrowUpRight size={28} className="text-gray-300 group-hover:text-emerald-600 transform group-hover:translate-x-1 group-hover:-translate-y-1 transition-all" />
-                  </a>
-
-                  {/* Phone */}
-                  <div className="bg-white p-6 md:p-8 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-emerald-500/30 transition-all duration-300 flex items-center justify-between group cursor-default">
-                    <div className="flex items-center gap-6">
-                      <div className="w-16 h-16 bg-emerald-50 text-emerald-600 border border-emerald-100 rounded-2xl flex items-center justify-center shrink-0 group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-300">
-                        <Phone size={28} />
-                      </div>
-                      <div className={`flex flex-col ${isAr ? "text-right" : "text-left"}`}>
-                        <span className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">{isAr ? "الهاتف" : "Phone Number"}</span>
-                        <span className="text-xl md:text-2xl font-black text-black group-hover:text-emerald-600 transition-colors" dir="ltr">{t("about_platform.contact.info.phone")}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Address */}
-                  <div className="bg-white p-6 md:p-8 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 hover:border-emerald-500/30 transition-all duration-300 flex items-start gap-6 group cursor-default">
-                    <div className="w-16 h-16 bg-emerald-50 text-emerald-600 border border-emerald-100 rounded-2xl flex items-center justify-center shrink-0 group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-300 mt-1">
-                      <MapPin size={28} />
-                    </div>
-                    <div className={`flex flex-col ${isAr ? "text-right" : "text-left"}`}>
-                      <span className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">{isAr ? "المقر والعنوان" : "Official Address"}</span>
-                      <span className="text-lg md:text-xl font-bold text-black group-hover:text-emerald-600 transition-colors leading-relaxed">
-                        {t("about_platform.contact.info.adress")}
-                      </span>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-            )}
-
+            <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-400/10 px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-emerald-300 backdrop-blur-sm">
+              <Sparkles size={14} />
+              {t("about_page.eyebrow")}
+            </span>
+            <h1 className="text-5xl font-black leading-tight tracking-tight sm:text-6xl lg:text-7xl">
+              {t("about_platform.about.title")}
+            </h1>
+            <p className="mt-6 max-w-3xl text-lg font-medium leading-9 text-emerald-50/70 sm:text-xl">
+              {t("about_platform.subtitle")}
+            </p>
           </motion.div>
-        </AnimatePresence>
-      </div>
 
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.18 }}
+            className="mt-12 flex flex-wrap gap-3"
+          >
+            {pillars.map(({ icon: Icon, label }) => (
+              <span key={label} className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.06] px-5 py-3 text-sm font-bold text-white/85 backdrop-blur-sm">
+                <Icon size={17} className="text-emerald-300" />
+                {label}
+              </span>
+            ))}
+          </motion.div>
+        </div>
+      </section>
+
+      <main>
+        <section className="relative mx-auto -mt-16 max-w-7xl px-6 pb-20 sm:-mt-20 md:pb-28">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.25 }}
+            transition={{ duration: 0.65 }}
+            className="grid overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-[0_28px_80px_rgba(15,23,42,0.12)] lg:grid-cols-12"
+          >
+            <div className="relative overflow-hidden bg-gradient-to-br from-emerald-700 to-teal-600 p-8 text-white sm:p-10 lg:col-span-4 lg:p-12">
+              <div className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full border-[40px] border-white/10" />
+              <span className="text-7xl font-black leading-none text-white/20">01</span>
+              <h2 className="relative mt-10 text-3xl font-black leading-tight sm:text-4xl">
+                {t("about_page.identity_title")}
+              </h2>
+              <p className="relative mt-5 text-sm leading-7 text-emerald-50/80">
+                {t("about_page.identity_subtitle")}
+              </p>
+            </div>
+
+            <div className="p-8 sm:p-10 lg:col-span-8 lg:p-12 xl:p-14">
+              <span className="mb-5 inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.18em] text-emerald-600">
+                <span className="h-px w-8 bg-emerald-500" />
+                {t("about_platform.about.title")}
+              </span>
+              <p className="text-lg font-medium leading-9 text-slate-700 sm:text-xl">
+                <strong className="font-black text-emerald-700">{t("about_platform.about.description_about")}</strong>
+                {t("about_platform.about.description_about1")}
+                <strong className="font-black text-slate-950">{t("about_platform.about.description_about2")}</strong>
+                {t("about_platform.about.description_about3")}
+              </p>
+            </div>
+          </motion.div>
+        </section>
+
+        <section className="relative bg-slate-50 py-20 md:py-28">
+          <div className="pointer-events-none absolute -right-32 top-0 h-80 w-80 rounded-full bg-emerald-100/70 blur-[100px]" />
+          <div className="relative mx-auto max-w-7xl px-6">
+            <div className="mb-12 max-w-3xl md:mb-14">
+              <span className="mb-4 block text-xs font-black uppercase tracking-[0.2em] text-emerald-600">
+                {t("about_page.direction_eyebrow")}
+              </span>
+              <h2 className="text-4xl font-black leading-tight tracking-tight text-slate-950 sm:text-5xl">
+                {t("about_page.direction_title")}
+              </h2>
+            </div>
+
+            <div className="grid gap-6 lg:grid-cols-2">
+              <motion.article
+                initial={{ opacity: 0, x: isRtl ? 28 : -28 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.65 }}
+                className="group relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-emerald-700 to-teal-600 p-8 text-white shadow-[0_24px_60px_rgba(5,150,105,0.18)] sm:p-10"
+              >
+                <div className="pointer-events-none absolute -bottom-24 -right-20 h-64 w-64 rounded-full border-[50px] border-white/[0.07] transition-transform duration-700 group-hover:scale-110" />
+                <span className="grid h-14 w-14 place-items-center rounded-2xl border border-white/20 bg-white/15">
+                  <Eye size={25} />
+                </span>
+                <h3 className="mt-8 text-3xl font-black">{t("about_platform.vision.title")}</h3>
+                <p className="relative mt-5 text-base leading-8 text-emerald-50/80">
+                  {t("about_platform.vision.description_vision")}
+                </p>
+              </motion.article>
+
+              <motion.article
+                initial={{ opacity: 0, x: isRtl ? -28 : 28 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.65, delay: 0.1 }}
+                className="group relative overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-8 shadow-[0_18px_50px_rgba(15,23,42,0.07)] sm:p-10"
+              >
+                <div className="pointer-events-none absolute -bottom-24 -right-20 h-64 w-64 rounded-full border-[50px] border-emerald-500/[0.04] transition-transform duration-700 group-hover:scale-110" />
+                <span className="grid h-14 w-14 place-items-center rounded-2xl border border-emerald-100 bg-emerald-50 text-emerald-700">
+                  <Target size={25} />
+                </span>
+                <h3 className="mt-8 text-3xl font-black text-slate-950">{t("about_platform.mission.title")}</h3>
+                <p className="relative mt-5 text-base leading-8 text-slate-600">
+                  {t("about_platform.mission.description_mission")}
+                </p>
+              </motion.article>
+            </div>
+          </div>
+        </section>
+
+        <section className="relative overflow-hidden bg-white py-20 md:py-28">
+          <div className="mx-auto max-w-7xl px-6">
+            <div className="mb-14 text-center">
+              <span className="mb-4 block text-xs font-black uppercase tracking-[0.2em] text-emerald-600">
+                {t("about_page.goals_eyebrow")}
+              </span>
+              <h2 className="text-4xl font-black tracking-tight text-slate-950 sm:text-5xl">
+                {t("about_platform.goals.title")}
+              </h2>
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {goalIcons.map((Icon, index) => (
+                <motion.article
+                  key={index}
+                  initial={{ opacity: 0, y: 28 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.2 }}
+                  transition={{ duration: 0.5, delay: index * 0.06 }}
+                  className="group relative overflow-hidden rounded-[1.6rem] border border-slate-200 bg-slate-50/60 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300 hover:bg-white hover:shadow-[0_20px_50px_rgba(5,150,105,0.1)]"
+                >
+                  <div className="flex items-start justify-between gap-5">
+                    <span className="grid h-12 w-12 place-items-center rounded-xl bg-emerald-100 text-emerald-700 transition-colors group-hover:bg-emerald-600 group-hover:text-white">
+                      <Icon size={21} />
+                    </span>
+                    <span className="text-3xl font-black text-slate-200">{String(index + 1).padStart(2, "0")}</span>
+                  </div>
+                  <p className="mt-7 text-base font-bold leading-8 text-slate-700">
+                    {t(`about_platform.goals.g${index + 1}`)}
+                  </p>
+                </motion.article>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="px-6 pb-20 md:pb-28">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.35 }}
+            transition={{ duration: 0.65 }}
+            className="relative mx-auto flex max-w-7xl flex-col items-start justify-between gap-8 overflow-hidden rounded-[2rem] bg-gradient-to-r from-emerald-700 to-teal-500 p-8 text-white shadow-[0_24px_65px_rgba(5,150,105,0.2)] sm:p-10 lg:flex-row lg:items-center lg:p-12"
+          >
+            <div className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full border-[45px] border-white/10" />
+            <div className="relative max-w-3xl">
+              <h2 className="text-3xl font-black leading-tight sm:text-4xl">{t("about_page.cta.title")}</h2>
+              <p className="mt-3 text-sm leading-7 text-emerald-50/80 sm:text-base">{t("about_page.cta.subtitle")}</p>
+            </div>
+            <Link to="/contact" className="group relative inline-flex shrink-0 items-center gap-3 rounded-xl bg-white px-6 py-4 text-sm font-black text-emerald-700 shadow-lg transition-all hover:-translate-y-0.5 hover:shadow-xl">
+              <Mail size={17} />
+              {t("about_page.cta.action")}
+              <ArrowLeft size={16} className={`transition-transform ${isRtl ? "group-hover:-translate-x-1" : "rotate-180 group-hover:translate-x-1"}`} />
+            </Link>
+          </motion.div>
+        </section>
+      </main>
     </div>
   );
 };
-
-// Composant réutilisable pour la "Bento Grid" (Onglet About)
-const BentoCard = ({ icon, title }) => (
-  <div className="bg-white p-6 md:p-8 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-xl hover:border-emerald-500/30 transition-all duration-300 flex items-center gap-6 flex-1 group">
-    <div className="w-16 h-16 bg-emerald-50 text-emerald-600 border border-emerald-100 rounded-2xl flex items-center justify-center shrink-0 group-hover:scale-110 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300 shadow-sm">
-      {React.cloneElement(icon, { size: 28 })}
-    </div>
-    <h3 className="text-lg font-bold text-emerald-600 group-hover:text-emerald-700 leading-snug transition-colors">
-      {title}
-    </h3>
-  </div>
-);
 
 export default AboutPage;

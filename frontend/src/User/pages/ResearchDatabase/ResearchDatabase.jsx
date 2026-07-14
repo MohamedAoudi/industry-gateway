@@ -1,184 +1,243 @@
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { 
-  Search, Filter, BookOpen, Download, Cpu, Microscope, 
-  ArrowLeft, ArrowRight, Zap, ShieldCheck 
-} from 'lucide-react';
+import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useSearchParams } from "react-router-dom";
+import {
+  ArrowLeft,
+  Database,
+  ExternalLink,
+  FileBadge,
+  FlaskConical,
+  GraduationCap,
+  Loader2,
+  MapPin,
+  Microscope,
+  Search,
+  UsersRound,
+  Workflow,
+} from "lucide-react";
+import apiAdmin from "../../../api/apiAdmin";
+
+const categoryConfig = [
+  {
+    key: "research-innovation-ai",
+    labelKey: "submenu.database.research_innovation_ai_centers",
+    descriptionKey: "database_pages.descriptions.research",
+    endpoint: "/scientificResearchInnovationCenters?per_page=100",
+    icon: Microscope,
+  },
+  {
+    key: "universities",
+    labelKey: "submenu.database.universities_academic_scientific_institutions",
+    descriptionKey: "database_pages.descriptions.universities",
+    endpoint: "/ministriesHigherEducationScientificResearch?per_page=100",
+    icon: GraduationCap,
+  },
+  {
+    key: "incubators-technology-labs",
+    labelKey: "submenu.database.incubators_technology_poles_laboratories",
+    descriptionKey: "database_pages.descriptions.incubators",
+    endpoint: null,
+    icon: FlaskConical,
+  },
+  {
+    key: "programs-initiatives-strategies",
+    labelKey: "submenu.database.programs_initiatives_strategies",
+    descriptionKey: "database_pages.descriptions.programs",
+    endpoint: null,
+    icon: Workflow,
+  },
+  {
+    key: "industrial-property-patents",
+    labelKey: "submenu.database.industrial_property_patent_offices",
+    descriptionKey: "database_pages.descriptions.patents",
+    endpoint: "/industrialPropertyPatentOffices?per_page=100",
+    icon: FileBadge,
+  },
+  {
+    key: "experts-specialists",
+    labelKey: "submenu.database.experts_specialists_database",
+    descriptionKey: "database_pages.descriptions.experts",
+    endpoint: "/researchers",
+    icon: UsersRound,
+  },
+];
 
 const ResearchDatabase = () => {
   const { t, i18n } = useTranslation();
-  const isRtl = i18n.language === 'ar';
+  const isRtl = i18n.dir() === "rtl";
+  const [searchParams] = useSearchParams();
+  const requestedCategory = searchParams.get("category");
+  const activeCategory = categoryConfig.find((item) => item.key === requestedCategory) || categoryConfig[0];
+  const ActiveIcon = activeCategory.icon;
 
-  // بيانات تجريبية
-  const researchData = [
-    {
-      id: 1,
-      title: "تطوير أغشية نانوية لتحلية المياه",
-      category: "تكنولوجيا النانو",
-      author: "د. أحمد المنصوري",
-      year: "2024",
-      status: "قابلة للتطبيق الصناعي"
-    },
-    {
-      id: 2,
-      title: "استخدام الذكاء الاصطناعي في صيانة الآلات",
-      category: "الذكاء الاصطناعي",
-      author: "م. سارة حسن",
-      year: "2023",
-      status: "نموذج أولي"
-    },
-    {
-      id: 3,
-      title: "تحسين كفاءة الألواح الشمسية في المناطق الصحراوية",
-      category: "الطاقة المتجددة",
-      author: "د. خالد القاسمي",
-      year: "2024",
-      status: "بحث مكتمل"
+  const [records, setRecords] = useState([]);
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [hasError, setHasError] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    setSearch("");
+    setHasError(false);
+
+    if (!activeCategory.endpoint) {
+      setRecords([]);
+      setLoading(false);
+      return () => {
+        isMounted = false;
+      };
     }
-  ];
+
+    const loadRecords = async () => {
+      setLoading(true);
+      try {
+        const response = await apiAdmin.get(activeCategory.endpoint);
+        const payload = response.data?.data ?? response.data ?? [];
+        if (isMounted) setRecords(Array.isArray(payload) ? payload : []);
+      } catch (error) {
+        console.error(`Failed loading database category ${activeCategory.key}:`, error);
+        if (isMounted) {
+          setRecords([]);
+          setHasError(true);
+        }
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+
+    loadRecords();
+    return () => {
+      isMounted = false;
+    };
+  }, [activeCategory.endpoint, activeCategory.key]);
+
+  const normalizedRecords = useMemo(
+    () => records.map((record, index) => {
+      const isResearcher = activeCategory.key === "experts-specialists";
+      return {
+        id: record.idCenter || record.idResearcher || index,
+        title: isResearcher
+          ? record.full_name
+          : (isRtl ? record.titre_ar || record.titre_en : record.titre_en || record.titre_ar),
+        description: isResearcher
+          ? record.research_field
+          : (isRtl ? record.description_ar || record.description_en : record.description_en || record.description_ar),
+        country: record.pays?.nomPays || record.country || "",
+        image: isResearcher ? null : record.photo_url,
+        url: record.url || (isResearcher ? `mailto:${record.email}` : null),
+      };
+    }),
+    [activeCategory.key, isRtl, records]
+  );
+
+  const filteredRecords = useMemo(() => {
+    const query = search.trim().toLocaleLowerCase();
+    if (!query) return normalizedRecords;
+
+    return normalizedRecords.filter((record) =>
+      [record.title, record.description, record.country]
+        .filter(Boolean)
+        .some((value) => String(value).toLocaleLowerCase().includes(query))
+    );
+  }, [normalizedRecords, search]);
 
   return (
-    <div className={`min-h-screen bg-slate-50 ${isRtl ? 'font-arabic' : 'font-sans'}`} dir={isRtl ? 'rtl' : 'ltr'}>
-      
-      {/* Header Section - Inspired by Top Header (#1a1a1a) */}
-      <section className="bg-[#1a1a1a] text-white pt-20 pb-20 px-6 relative overflow-hidden">
-        {/* Amber Glow Effect */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-amber-600 opacity-5 rounded-full -mr-48 -mt-48 blur-3xl"></div>
-        
-        <div className="max-w-7xl mx-auto relative z-10 text-center">
-          <div className="inline-flex items-center gap-2 bg-amber-600/10 border border-amber-600/20 text-amber-500 px-4 py-1.5 rounded-full text-[11px] font-black uppercase tracking-widest mb-6">
-            <Zap size={14} />
-            {t('hero.badge')}
-          </div>
-          <h1 className="text-3xl md:text-5xl font-bold mb-6 text-white tracking-tight">
-            {t('submenu.services.database_research_technologies_available_industrial_application')}
+    <div dir={isRtl ? "rtl" : "ltr"} className="min-h-screen bg-slate-50">
+      <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-950 px-6 pb-28 pt-20 text-white sm:pb-36 sm:pt-24">
+        <div className="pointer-events-none absolute inset-0 opacity-[0.035] [background-image:linear-gradient(white_1px,transparent_1px),linear-gradient(90deg,white_1px,transparent_1px)] [background-size:48px_48px]" />
+        <div className="pointer-events-none absolute -left-32 top-10 h-80 w-80 rounded-full bg-emerald-400/20 blur-[100px]" />
+        <div className="pointer-events-none absolute -right-40 bottom-0 h-96 w-96 rounded-full bg-teal-400/15 blur-[110px]" />
+        <div className="pointer-events-none absolute left-1/2 top-1/2 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 rounded-full border-[80px] border-white/[0.015]" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400/70 to-transparent" />
+
+        <div className="relative mx-auto max-w-7xl text-center">
+          <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-400/10 px-4 py-2 text-xs font-black uppercase tracking-[0.16em] text-emerald-300 backdrop-blur-sm">
+            <Database size={15} />
+            {t("menu.database")}
+          </span>
+          <span className="mx-auto mb-6 grid h-16 w-16 place-items-center rounded-2xl border border-white/15 bg-white/[0.08] text-emerald-300 backdrop-blur-sm">
+            <ActiveIcon size={28} />
+          </span>
+          <h1 className="mx-auto max-w-5xl text-3xl font-black leading-tight sm:text-4xl lg:text-5xl">
+            {t(activeCategory.labelKey)}
           </h1>
-          <p className="text-slate-400 text-lg max-w-2xl mx-auto font-medium">
-            {t('linking_researchers_page.extra.db_desc')}
+          <p className="mx-auto mt-5 max-w-3xl text-base leading-8 text-emerald-50/70">
+            {t(activeCategory.descriptionKey)}
           </p>
         </div>
       </section>
 
-      {/* Search Bar - White with Slate borders and Amber focus */}
-      <section className="max-w-7xl mx-auto px-6 mt-10">
-        <div className="bg-white rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-slate-100 p-2 flex flex-col md:flex-row gap-2">
-          <div className="flex-1 relative">
-            <Search className={`absolute top-1/2 -translate-y-1/2 ${isRtl ? 'right-4' : 'left-4'} text-slate-400`} size={18} />
-            <input 
-              type="text" 
-              placeholder={t('sub_submenu.scientific_research_database.advanced_search_engine')}
-              className={`w-full py-4 ${isRtl ? 'pr-12 pl-4' : 'pl-12 pr-4'} text-slate-700 bg-transparent border-none focus:ring-0 outline-none font-bold text-sm`}
-            />
-          </div>
-          <button className="bg-amber-600 hover:bg-amber-700 text-white font-black py-4 px-10 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-amber-600/20 active:scale-95 text-xs uppercase tracking-widest">
-            <Filter size={16} />
-            {isRtl ? 'تصفية النتائج' : 'Filter Results'}
-          </button>
-        </div>
-      </section>
-
-      {/* Main Content */}
-      <section className="max-w-7xl mx-auto px-6 py-10">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
-          
-          {/* Sidebar Filters - Using Slate and Amber accents */}
-          <div className="lg:col-span-1 space-y-8">
-            <div className="bg-white p-8 rounded-2xl border border-slate-100 shadow-sm">
-              <h3 className="text-[12px] font-black text-slate-400 uppercase tracking-[2px] mb-6 flex items-center gap-2 border-l-4 border-amber-600 rtl:border-r-4 rtl:border-l-0 px-3">
-                {t('sub_submenu.scientific_research_database.classifying_research_industry_field')}
-              </h3>
-              <div className="space-y-4">
-                {['تكنولوجيا المعلومات', 'الطاقة', 'الصناعات الكيميائية', 'البيئة'].map((cat, i) => (
-                  <label key={i} className="flex items-center gap-3 cursor-pointer group">
-                    <div className="relative flex items-center">
-                        <input type="checkbox" className="peer appearance-none w-5 h-5 border-2 border-slate-200 rounded-md checked:bg-amber-600 checked:border-amber-600 transition-all" />
-                        <ShieldCheck size={12} className="absolute text-white opacity-0 peer-checked:opacity-100 left-1" />
-                    </div>
-                    <span className="text-slate-600 font-bold text-[13px] group-hover:text-amber-600 transition-colors">{cat}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
+      <main className="relative mx-auto -mt-16 max-w-7xl px-4 pb-24 sm:-mt-20 sm:px-6 lg:px-8">
+        <section>
+          <div className="mb-8 flex flex-col gap-5 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+            <label className="relative block flex-1">
+              <Search size={18} className={`absolute top-1/2 -translate-y-1/2 text-slate-400 ${isRtl ? "right-4" : "left-4"}`} />
+              <input
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder={t("database_pages.search")}
+                className={`w-full rounded-xl border border-slate-200 bg-slate-50 py-3.5 text-sm text-slate-800 outline-none transition-all focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 ${isRtl ? "pl-4 pr-12" : "pl-12 pr-4"}`}
+              />
+            </label>
+            <span className="shrink-0 rounded-xl bg-emerald-50 px-4 py-3 text-xs font-black text-emerald-700">
+              {filteredRecords.length} {t("database_pages.results")}
+            </span>
           </div>
 
-          {/* Research Results - Cards styled like SubLinkCard */}
-          <div className="lg:col-span-3 space-y-6">
-            {researchData.map((item) => (
-              <div key={item.id} className="group bg-white p-8 rounded-2xl border border-slate-100 shadow-sm hover:shadow-xl hover:border-amber-100 transition-all duration-300 relative overflow-hidden">
-                <div className="absolute top-0 ltr:right-0 rtl:left-0 p-4">
-                     <span className="text-[11px] font-black text-slate-300 uppercase">{item.year}</span>
-                </div>
-
-                <div className="flex flex-col gap-4">
-                  <div className="flex items-center gap-2">
-                    <div className="p-2 rounded-lg bg-slate-50 text-slate-500 group-hover:bg-amber-600 group-hover:text-white transition-all">
-                        <Microscope size={18} />
-                    </div>
-                    <span className="text-[12px] font-black text-amber-600 uppercase tracking-wider bg-amber-50 px-3 py-1 rounded-md">
-                        {item.category}
-                    </span>
-                  </div>
-
-                  <h2 className="text-xl font-bold text-slate-800 group-hover:text-amber-700 transition-colors">
-                    {item.title}
-                  </h2>
-                  
-                  <p className="text-slate-500 text-sm font-medium">
-                    <span className="text-slate-400">{isRtl ? 'الباحث:' : 'Researcher:'}</span> {item.author}
-                  </p>
-
-                  <div className="flex flex-wrap gap-4 items-center justify-between border-t border-slate-50 pt-6 mt-2">
-                    <div className="flex items-center gap-2 text-slate-500 text-xs font-bold uppercase tracking-tight">
-                      <Cpu size={14} className="text-amber-600" />
-                      {item.status}
-                    </div>
-                    
-                    <div className="flex gap-3">
-                      <button className="flex items-center gap-2 text-[12px] font-black uppercase text-slate-700 hover:text-amber-600 transition-colors py-2">
-                        <BookOpen size={16} />
-                        {isRtl ? 'التفاصيل' : 'Details'}
-                      </button>
-                    </div>
-                  </div>
-                </div>
+          {loading ? (
+            <div className="flex min-h-[300px] items-center justify-center rounded-[2rem] border border-slate-200 bg-white">
+              <div className="text-center text-emerald-700">
+                <Loader2 size={34} className="mx-auto animate-spin" />
+                <p className="mt-4 text-sm font-bold">{t("database_pages.loading")}</p>
               </div>
-            ))}
-
-            {/* Pagination - Matching Top Header style */}
-            <div className="flex justify-center items-center gap-4 pt-12">
-              <button className="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 text-slate-400 hover:bg-[#1a1a1a] hover:text-white transition-all shadow-sm">
-                {isRtl ? <ArrowRight size={18} /> : <ArrowLeft size={18} />}
-              </button>
-              <div className="flex gap-2">
-                 <span className="w-8 h-8 flex items-center justify-center rounded bg-amber-600 text-white text-xs font-black shadow-lg shadow-amber-600/20">1</span>
-                 <span className="w-8 h-8 flex items-center justify-center rounded hover:bg-slate-100 text-slate-500 text-xs font-black transition-colors cursor-pointer">2</span>
-              </div>
-              <button className="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 text-slate-400 hover:bg-[#1a1a1a] hover:text-white transition-all shadow-sm">
-                {isRtl ? <ArrowLeft size={18} /> : <ArrowRight size={18} />}
-              </button>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* IP Protection - Matching UserHeader's border and Amber accents */}
-      <section className="bg-slate-100/50 border-t border-slate-200 py-20">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="bg-white border-l-4 border-amber-600 rtl:border-r-4 rtl:border-l-0 p-10 rounded-2xl shadow-sm flex flex-col md:flex-row items-center gap-8">
-            <div className="bg-[#1a1a1a] p-5 rounded-2xl text-amber-500 shadow-xl">
-              <ShieldCheck size={40} />
-            </div>
-            <div>
-              <h3 className="text-2xl font-bold text-slate-800 mb-3 tracking-tight">
-                {t('linking_researchers_page.extra.secure_title')}
-              </h3>
-              <p className="text-slate-500 font-medium leading-relaxed max-w-3xl">
-                {t('linking_researchers_page.extra.secure_desc')}
+          ) : filteredRecords.length === 0 ? (
+            <div className="flex min-h-[320px] flex-col items-center justify-center rounded-[2rem] border border-dashed border-slate-300 bg-white px-6 text-center">
+              <span className="grid h-16 w-16 place-items-center rounded-2xl bg-emerald-50 text-emerald-700">
+                <ActiveIcon size={28} />
+              </span>
+              <h2 className="mt-5 text-xl font-black text-slate-900">
+                {hasError ? t("database_pages.error") : t("database_pages.empty")}
+              </h2>
+              <p className="mt-2 max-w-xl text-sm leading-7 text-slate-500">
+                {t("database_pages.empty_description")}
               </p>
             </div>
-          </div>
-        </div>
-      </section>
+          ) : (
+            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+              {filteredRecords.map((record) => (
+                <article key={record.id} className="group flex min-h-[260px] flex-col overflow-hidden rounded-[1.6rem] border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-[0_20px_50px_rgba(5,150,105,0.1)]">
+                  <div className="flex items-start justify-between gap-4">
+                    {record.image && !record.image.endsWith("/null") ? (
+                      <img src={record.image} alt="" className="h-14 w-14 rounded-xl border border-slate-100 object-contain p-1" />
+                    ) : (
+                      <span className="grid h-14 w-14 place-items-center rounded-xl bg-emerald-50 text-emerald-700">
+                        <ActiveIcon size={23} />
+                      </span>
+                    )}
+                    {record.country && (
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1.5 text-[10px] font-bold text-slate-500">
+                        <MapPin size={11} />
+                        {record.country}
+                      </span>
+                    )}
+                  </div>
+                  <h2 className="mt-6 text-xl font-black leading-8 text-slate-900 group-hover:text-emerald-700">
+                    {record.title || t("database_pages.untitled")}
+                  </h2>
+                  {record.description && <p className="mt-3 line-clamp-3 text-sm leading-7 text-slate-500">{record.description}</p>}
+                  {record.url && (
+                    <a href={record.url} target={record.url.startsWith("mailto:") ? undefined : "_blank"} rel="noreferrer" className="mt-auto inline-flex items-center gap-2 pt-6 text-xs font-black uppercase tracking-[0.13em] text-emerald-700">
+                      {t("database_pages.view")}
+                      {record.url.startsWith("mailto:") ? <ArrowLeft size={14} className={isRtl ? "" : "rotate-180"} /> : <ExternalLink size={14} />}
+                    </a>
+                  )}
+                </article>
+              ))}
+            </div>
+          )}
+        </section>
+      </main>
     </div>
   );
 };

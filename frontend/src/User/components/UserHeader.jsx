@@ -132,8 +132,6 @@
 //               <Link to="/researchDatabase"><SubLinkCard label="submenu.services.database_research_technologies_available_industrial_application" /></Link>
 //               <Link to="/workshopsseminars"><SubLinkCard label="submenu.services.joint_workshops_seminars" /></Link>
 //               <SubLinkCard label="submenu.services.supporting_marketing_investment_scientific_research_outputs" href="/services/marketing" />
-//               <SubLinkCard label="submenu.services.technical_details_how_use_services" href="/services/how-to" />
-//               <SubLinkCard label="submenu.services.subscription_prices_terms" href="/services/pricing" />
 //             </MegaMenu>
 
 //             <MegaMenu label="database" icon={Database} width="w-[600px]">
@@ -258,7 +256,7 @@ import { useTranslation } from "react-i18next";
 import { 
   ChevronDown, Search, Home, Menu as MenuIcon, X, 
   Zap, Database, LogOut, User, Layers, Info, Handshake, Library,
-  Presentation, Megaphone, CircleHelp, BadgeDollarSign, Microscope,
+  Presentation, Megaphone, Microscope,
   GraduationCap, FlaskConical, Workflow, FileBadge, UsersRound,
   Newspaper, Mail
 } from "lucide-react";
@@ -444,8 +442,6 @@ const UserHeader = () => {
               <Link to="/researchDatabase"><SubLinkCard icon={Library} label="submenu.services.database_research_technologies_available_industrial_application" /></Link>
               <Link to="/workshopsseminars"><SubLinkCard icon={Presentation} label="submenu.services.joint_workshops_seminars" /></Link>
               <SubLinkCard icon={Megaphone} label="submenu.services.supporting_marketing_investment_scientific_research_outputs" href="/services/marketing" />
-              <SubLinkCard icon={CircleHelp} label="submenu.services.technical_details_how_use_services" href="/services/how-to" />
-              <SubLinkCard icon={BadgeDollarSign} label="submenu.services.subscription_prices_terms" href="/services/pricing" />
             </MegaMenu>
 
             <MegaMenu label="database" icon={Database}>

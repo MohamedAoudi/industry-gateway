@@ -3,11 +3,9 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import {
   ArrowLeft,
-  BadgeDollarSign,
   Database,
   Megaphone,
   Presentation,
-  Settings,
   Sparkles,
   UsersRound,
 } from "lucide-react";
@@ -36,7 +34,7 @@ const serviceConfig = [
     descriptionKey: "services_section.descriptions.workshops",
     to: "/workshopsseminars",
     icon: Presentation,
-    layout: "lg:col-span-3",
+    layout: "lg:col-span-6",
   },
   {
     id: "marketing",
@@ -44,23 +42,7 @@ const serviceConfig = [
     descriptionKey: "services_section.descriptions.marketing",
     to: "/services/marketing",
     icon: Megaphone,
-    layout: "lg:col-span-3",
-  },
-  {
-    id: "technical",
-    titleKey: "submenu.services.technical_details_how_use_services",
-    descriptionKey: "services_section.descriptions.technical",
-    to: "/services/how-to",
-    icon: Settings,
-    layout: "lg:col-span-3",
-  },
-  {
-    id: "pricing",
-    titleKey: "submenu.services.subscription_prices_terms",
-    descriptionKey: "services_section.descriptions.pricing",
-    to: "/services/pricing",
-    icon: BadgeDollarSign,
-    layout: "lg:col-span-3",
+    layout: "lg:col-span-6",
   },
 ];
 

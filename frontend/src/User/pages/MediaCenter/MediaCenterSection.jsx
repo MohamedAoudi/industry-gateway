@@ -564,9 +564,12 @@ export default function MediaCenterSection() {
       <div className="absolute top-80 left-0 w-[500px] h-[500px] bg-slate-900/5 rounded-full blur-[120px] pointer-events-none -z-10" />
 
       {/* ================= HEADER HERO (Minimaliste & Moderne) ================= */}
-      <div className="relative bg-emerald-600 py-20 overflow-hidden mb-12">
-        <div className={`absolute top-0 ${isAr ? 'left-0' : 'right-0'} w-96 h-96 bg-emerald-500/10 rounded-full blur-[120px] -translate-y-1/2`}></div>
-        <div className={`absolute bottom-0 ${isAr ? 'right-0' : 'left-0'} w-96 h-96 bg-[#0fa968]/10 rounded-full blur-[120px] translate-y-1/2`}></div>
+      <div className="relative mb-12 overflow-hidden bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-950 py-20">
+        <div className="pointer-events-none absolute inset-0 opacity-[0.035] [background-image:linear-gradient(white_1px,transparent_1px),linear-gradient(90deg,white_1px,transparent_1px)] [background-size:48px_48px]" />
+        <div className="pointer-events-none absolute -left-32 top-10 h-80 w-80 rounded-full bg-emerald-400/20 blur-[100px]" />
+        <div className="pointer-events-none absolute -right-40 bottom-0 h-96 w-96 rounded-full bg-teal-400/15 blur-[110px]" />
+        <div className="pointer-events-none absolute left-1/2 top-1/2 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 rounded-full border-[80px] border-white/[0.015]" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400/70 to-transparent" />
         
         <div className="max-w-7xl mx-auto px-6 relative z-10 text-center lg:text-start">
           <h1 className="text-4xl md:text-5xl font-black text-white mb-4 leading-tight">

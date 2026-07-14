@@ -100,6 +100,25 @@ i18n.use(initReactI18next).init({
           },
         },
 
+        about_page: {
+          eyebrow: "منصة عربية للبحث والصناعة",
+          identity_title: "من المعرفة إلى أثر صناعي مستدام",
+          identity_subtitle: "نبني مساحة مشتركة تقرّب البحث العلمي والابتكار من احتياجات الصناعة العربية.",
+          direction_eyebrow: "اتجاهنا الاستراتيجي",
+          direction_title: "رؤية واضحة ورسالة تصنع الأثر",
+          goals_eyebrow: "ما الذي نعمل من أجله",
+          pillars: {
+            research: "البحث العلمي",
+            innovation: "الابتكار",
+            industry: "الصناعة"
+          },
+          cta: {
+            title: "هل لديك فكرة أو فرصة للتعاون؟",
+            subtitle: "تواصل مع فريق البوابة وكن جزءاً من منظومة عربية تجمع المعرفة بالقدرات الصناعية.",
+            action: "تواصل معنا"
+          }
+        },
+
         services_section: {
           title: "ابتكار صناعي",
           subtitle: "خدمات رقمية متكاملة تحول المعرفة والبحث العلمي إلى شراكات وحلول وفرص صناعية قابلة للتطبيق.",
@@ -108,9 +127,7 @@ i18n.use(initReactI18next).init({
             linking: "مساحة تواصل تجمع الباحثين والمبتكرين بالشركات الصناعية لبناء شراكات فعالة.",
             database: "وصول منظم إلى الأبحاث والتقنيات والحلول الجاهزة للتطبيق الصناعي.",
             workshops: "فعاليات معرفية مشتركة لتبادل الخبرات وبناء القدرات المتخصصة.",
-            marketing: "دعم وصول الابتكارات ومخرجات البحث العلمي إلى المستثمرين والأسواق.",
-            technical: "إرشادات واضحة تساعد المؤسسات والباحثين على الاستفادة من خدمات البوابة.",
-            pricing: "خطط وشروط اشتراك واضحة تناسب احتياجات مختلف مستخدمي المنصة."
+            marketing: "دعم وصول الابتكارات ومخرجات البحث العلمي إلى المستثمرين والأسواق."
           }
         },
 
@@ -170,6 +187,25 @@ i18n.use(initReactI18next).init({
               title: "ندوة افتراضية حول مستقبل الطاقة المستدامة في القطاع الصناعي العربي",
               description: "خبراء ومستثمرون يناقشون آليات تقليل الانبعاثات الكربونية بالاعتماد على الابتكارات الهندسية المحلية."
             }
+          }
+        },
+
+        database_pages: {
+          search: "ابحث داخل هذه الفئة...",
+          results: "نتيجة",
+          loading: "جاري تحميل البيانات...",
+          empty: "لا توجد بيانات متاحة حالياً",
+          empty_description: "سيتم عرض السجلات هنا فور إضافتها وتحديثها في قاعدة بيانات البوابة.",
+          error: "تعذر تحميل البيانات",
+          untitled: "بدون عنوان",
+          view: "عرض التفاصيل",
+          descriptions: {
+            research: "استكشف مراكز البحث العلمي والابتكار والذكاء الصناعي المسجلة في مختلف الدول العربية.",
+            universities: "دليل الجامعات والمؤسسات الأكاديمية والعلمية الداعمة للبحث والتطوير في المنطقة العربية.",
+            incubators: "تعرف على الحاضنات والأقطاب التكنولوجية والمختبرات التي تدعم تحويل الأفكار إلى مشاريع.",
+            programs: "تصفح البرامج والمبادرات والاستراتيجيات الوطنية والإقليمية الداعمة للابتكار الصناعي.",
+            patents: "دليل مكاتب الملكية الصناعية وبراءات الاختراع وخدمات حماية الابتكارات.",
+            experts: "تواصل مع الخبراء والباحثين والمختصين في مختلف المجالات العلمية والصناعية."
           }
         },
         
@@ -328,8 +364,6 @@ i18n.use(initReactI18next).init({
             database_research_technologies_available_industrial_application: "قاعدة بيانات للأبحاث والتقنيات",
             joint_workshops_seminars: "ورش عمل وندوات مشتركة",
             supporting_marketing_investment_scientific_research_outputs: "تسويق مخرجات البحث العلمي",
-            technical_details_how_use_services: "كيفية استخدام الخدمات",
-            subscription_prices_terms: "أسعار وشروط الاشتراك",
             success_stories_from_portal_users: "قصص نجاح المستخدمين"
           },
           database: {
@@ -596,6 +630,24 @@ i18n.use(initReactI18next).init({
             }
           }
         },
+        about_page: {
+          eyebrow: "An Arab platform for research and industry",
+          identity_title: "From knowledge to sustainable industrial impact",
+          identity_subtitle: "We build a shared space bringing scientific research and innovation closer to the needs of Arab industry.",
+          direction_eyebrow: "Our strategic direction",
+          direction_title: "A clear vision and a mission that creates impact",
+          goals_eyebrow: "What we work for",
+          pillars: {
+            research: "Scientific Research",
+            innovation: "Innovation",
+            industry: "Industry"
+          },
+          cta: {
+            title: "Do you have an idea or a collaboration opportunity?",
+            subtitle: "Contact the portal team and become part of an Arab ecosystem connecting knowledge with industrial capabilities.",
+            action: "Contact us"
+          }
+        },
         services_section: {
           title: "Industrial Innovation",
           subtitle: "Integrated digital services that turn knowledge and scientific research into applicable industrial partnerships, solutions and opportunities.",
@@ -604,9 +656,7 @@ i18n.use(initReactI18next).init({
             linking: "A collaborative space connecting researchers and innovators with industrial companies to build effective partnerships.",
             database: "Organized access to research, technologies and solutions ready for industrial application.",
             workshops: "Shared knowledge events for exchanging expertise and building specialized capabilities.",
-            marketing: "Helping innovations and research outcomes reach investors and markets.",
-            technical: "Clear guidance helping institutions and researchers benefit from the portal services.",
-            pricing: "Transparent subscription plans and terms suited to different platform users."
+            marketing: "Helping innovations and research outcomes reach investors and markets."
           }
         },
         registration_guide: {
@@ -666,6 +716,24 @@ i18n.use(initReactI18next).init({
             }
           }
         },
+        database_pages: {
+          search: "Search within this category...",
+          results: "results",
+          loading: "Loading data...",
+          empty: "No data is currently available",
+          empty_description: "Records will appear here as soon as they are added and updated in the portal database.",
+          error: "Unable to load data",
+          untitled: "Untitled",
+          view: "View details",
+          descriptions: {
+            research: "Explore registered scientific research, innovation and artificial intelligence centers across Arab countries.",
+            universities: "A directory of universities and academic institutions supporting research and development across the Arab region.",
+            incubators: "Discover incubators, technology poles and laboratories helping transform ideas into projects.",
+            programs: "Browse national and regional programs, initiatives and strategies supporting industrial innovation.",
+            patents: "A directory of industrial property and patent offices offering innovation protection services.",
+            experts: "Connect with experts, researchers and specialists across scientific and industrial fields."
+          }
+        },
 
         submenu: {
           services: {
@@ -673,8 +741,6 @@ i18n.use(initReactI18next).init({
             database_research_technologies_available_industrial_application: "Tech & Research Database",
             joint_workshops_seminars: "Workshops & Seminars",
             supporting_marketing_investment_scientific_research_outputs: "Marketing Research Outputs",
-            technical_details_how_use_services: "How to Use Services",
-            subscription_prices_terms: "Pricing & Terms",
             success_stories_from_portal_users: "Success Stories"
           },
           // database: {
