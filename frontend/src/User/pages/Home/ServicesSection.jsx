@@ -1,276 +1,162 @@
-// import React from "react";
-// import { motion } from "framer-motion";
-// import { useTranslation } from "react-i18next";
-// import { 
-//   Users, 
-//   Database, 
-//   Presentation, 
-//   TrendingUp, 
-//   Settings, 
-//   ShieldCheck,
-//   ArrowUpRight
-// } from "lucide-react";
-
-// const ServicesSection = () => {
-//   const { t, i18n } = useTranslation();
-//   const isRtl = i18n.language === "ar";
-
-//   // تعريف الخدمات وتوزيعها في الشبكة
-//   const services = [
-//     {
-//       id: "linking",
-//       title: t("submenu.services.linking_researchers_industrial_companies"),
-//       icon: <Users size={32} />,
-//       gridClass: "md:col-span-2 md:row-span-2", // خلية كبيرة
-//       bg: "bg-gradient-to-br from-amber-500/20 to-orange-600/5",
-//       iconColor: "text-amber-500"
-//     },
-//     {
-//       id: "database",
-//       title: t("submenu.services.database_research_technologies_available_industrial_application"),
-//       icon: <Database size={24} />,
-//       gridClass: "md:col-span-2 md:row-span-1", // خلية عريضة
-//       bg: "bg-gradient-to-br from-blue-500/20 to-cyan-600/5",
-//       iconColor: "text-blue-400"
-//     },
-//     {
-//       id: "workshops",
-//       title: t("submenu.services.joint_workshops_seminars"),
-//       icon: <Presentation size={24} />,
-//       gridClass: "md:col-span-1 md:row-span-1",
-//       bg: "bg-gradient-to-br from-purple-500/20 to-pink-600/5",
-//       iconColor: "text-purple-400"
-//     },
-//     {
-//       id: "marketing",
-//       title: t("submenu.services.supporting_marketing_investment_scientific_research_outputs"),
-//       icon: <TrendingUp size={24} />,
-//       gridClass: "md:col-span-1 md:row-span-2", // خلية طويلة
-//       bg: "bg-gradient-to-br from-emerald-500/20 to-teal-600/5",
-//       iconColor: "text-emerald-400"
-//     },
-//     {
-//       id: "technical",
-//       title: t("submenu.services.technical_details_how_use_services"),
-//       icon: <Settings size={24} />,
-//       gridClass: "md:col-span-1 md:row-span-1",
-//       bg: "bg-slate-800/40",
-//       iconColor: "text-slate-300"
-//     },
-//     {
-//       id: "pricing",
-//       title: t("submenu.services.subscription_prices_terms"),
-//       icon: <ShieldCheck size={24} />,
-//       gridClass: "md:col-span-2 md:row-span-1",
-//       bg: "bg-gradient-to-br from-rose-500/20 to-red-600/5",
-//       iconColor: "text-rose-400"
-//     }
-//   ];
-
-//   return (
-//     <section className="py-24 bg-[#020202] relative overflow-hidden">
-//       {/* عناصر ديكورية للخلفية */}
-//       <div className="absolute top-0 left-1/4 w-96 h-96 bg-amber-500/10 blur-[120px] rounded-full" />
-//       <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/10 blur-[120px] rounded-full" />
-
-//       <div className="container mx-auto px-6 relative z-10">
-//         <div className="mb-16">
-//           <motion.span 
-//             initial={{ opacity: 0 }}
-//             whileInView={{ opacity: 1 }}
-//             className="text-amber-500 font-mono tracking-widest text-sm uppercase block mb-4"
-//           >
-//             {t("menu.services")}
-//           </motion.span>
-//           <motion.h2 
-//             initial={{ opacity: 0, y: 20 }}
-//             whileInView={{ opacity: 1, y: 0 }}
-//             className="text-4xl md:text-6xl font-black text-white"
-//           >
-//             {isRtl ? "حلول ذكية لنمو صناعي" : "Smart Solutions for Industrial Growth"}
-//           </motion.h2>
-//         </div>
-
-//         {/* Bento Grid */}
-//         <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-none md:grid-rows-3 gap-4 h-auto md:h-[800px]">
-//           {services.map((service, index) => (
-//             <motion.div
-//               key={service.id}
-//               initial={{ opacity: 0, scale: 0.9 }}
-//               whileInView={{ opacity: 1, scale: 1 }}
-//               transition={{ delay: index * 0.1 }}
-//               whileHover={{ y: -5 }}
-//               className={`group relative overflow-hidden rounded-[2.5rem] p-8 border border-white/5 backdrop-blur-3xl ${service.bg} ${service.gridClass}`}
-//             >
-//               {/* تأثير الضوء عند الحوم */}
-//               <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              
-//               <div className="relative z-10 h-full flex flex-col justify-between">
-//                 <div className={`${service.iconColor} p-3 w-fit rounded-2xl bg-white/5 border border-white/10 group-hover:scale-110 transition-transform duration-500`}>
-//                   {service.icon}
-//                 </div>
-
-//                 <div>
-//                   <h3 className="text-xl md:text-2xl font-bold text-white mb-4 leading-tight">
-//                     {service.title}
-//                   </h3>
-//                   <button className="flex items-center gap-2 text-white/40 group-hover:text-amber-500 transition-colors text-sm font-bold uppercase tracking-wider">
-//                     {isRtl ? "اكتشف المزيد" : "Learn More"}
-//                     <ArrowUpRight size={16} />
-//                   </button>
-//                 </div>
-//               </div>
-
-//               {/* زخرفة بصرية في زاوية كل بطاقة */}
-//               <div className="absolute -bottom-4 -right-4 w-24 h-24 bg-white/5 rounded-full blur-2xl group-hover:bg-amber-500/20 transition-colors" />
-//             </motion.div>
-//           ))}
-//         </div>
-//       </div>
-//     </section>
-//   );
-// };
-
-// export default ServicesSection;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { 
-  Users, Database, Presentation, TrendingUp, 
-  Settings, ShieldCheck, ArrowUpRight 
+import { Link } from "react-router-dom";
+import {
+  ArrowLeft,
+  BadgeDollarSign,
+  Database,
+  Megaphone,
+  Presentation,
+  Settings,
+  Sparkles,
+  UsersRound,
 } from "lucide-react";
 
-const ServiceCard = ({ service, index, isRtl }) => {
-  const divRef = useRef(null);
-  const [isFocused, setIsFocused] = useState(false);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-
-  const handleMouseMove = (e) => {
-    if (!divRef.current) return;
-    const div = divRef.current;
-    const rect = div.getBoundingClientRect();
-    setPosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-  };
-
-  return (
-    <motion.div
-      ref={divRef}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsFocused(true)}
-      onMouseLeave={() => setIsFocused(false)}
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.1 }}
-      className="group relative h-64 overflow-hidden rounded-3xl border border-white/10 bg-[#0A0A0A] p-6 transition-all duration-500 hover:border-emerald-500/50"
-    >
-      {/* Halo lumineux qui suit la souris */}
-      <div
-        className="pointer-events-none absolute inset-0 z-0 transition-opacity duration-500"
-        style={{
-          opacity: isFocused ? 1 : 0,
-          background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(5, 150, 105, 0.15), transparent 40%)`,
-        }}
-      />
-
-      <div className="relative z-10 flex h-full flex-col justify-between">
-        <div className="flex items-center justify-between">
-          <div className="rounded-2xl bg-emerald-600/10 p-3 text-emerald-500 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-500 shadow-[0_0_20px_rgba(5,150,105,0.2)]">
-            {service.icon}
-          </div>
-          <ArrowUpRight className="text-white/20 group-hover:text-emerald-500 transition-colors duration-500" size={20} />
-        </div>
-
-        <div>
-          <h3 className="mb-2 text-lg font-bold text-white group-hover:text-emerald-400 transition-colors leading-tight">
-            {service.title}
-          </h3>
-          <p className="text-sm text-gray-500 line-clamp-2">
-            {isRtl ? "حلول متقدمة مصممة خصيصاً لتلبية احتياجاتك." : "Solutions avancées conçues pour vos besoins."}
-          </p>
-        </div>
-      </div>
-
-      {/* Ligne émeraude discrète en bas */}
-      <div className="absolute bottom-0 left-0 h-[2px] w-0 bg-emerald-600 transition-all duration-500 group-hover:w-full" />
-    </motion.div>
-  );
-};
+const serviceConfig = [
+  {
+    id: "linking",
+    titleKey: "submenu.services.linking_researchers_industrial_companies",
+    descriptionKey: "services_section.descriptions.linking",
+    to: "/linkingresearcherscompanies",
+    icon: UsersRound,
+    layout: "lg:col-span-7 lg:min-h-[330px]",
+    featured: true,
+  },
+  {
+    id: "database",
+    titleKey: "submenu.services.database_research_technologies_available_industrial_application",
+    descriptionKey: "services_section.descriptions.database",
+    to: "/researchDatabase",
+    icon: Database,
+    layout: "lg:col-span-5 lg:min-h-[330px]",
+  },
+  {
+    id: "workshops",
+    titleKey: "submenu.services.joint_workshops_seminars",
+    descriptionKey: "services_section.descriptions.workshops",
+    to: "/workshopsseminars",
+    icon: Presentation,
+    layout: "lg:col-span-3",
+  },
+  {
+    id: "marketing",
+    titleKey: "submenu.services.supporting_marketing_investment_scientific_research_outputs",
+    descriptionKey: "services_section.descriptions.marketing",
+    to: "/services/marketing",
+    icon: Megaphone,
+    layout: "lg:col-span-3",
+  },
+  {
+    id: "technical",
+    titleKey: "submenu.services.technical_details_how_use_services",
+    descriptionKey: "services_section.descriptions.technical",
+    to: "/services/how-to",
+    icon: Settings,
+    layout: "lg:col-span-3",
+  },
+  {
+    id: "pricing",
+    titleKey: "submenu.services.subscription_prices_terms",
+    descriptionKey: "services_section.descriptions.pricing",
+    to: "/services/pricing",
+    icon: BadgeDollarSign,
+    layout: "lg:col-span-3",
+  },
+];
 
 const ServicesSection = () => {
   const { t, i18n } = useTranslation();
-  const isRtl = i18n.language === "ar";
-
-  const services = [
-    { id: "linking", title: t("submenu.services.linking_researchers_industrial_companies"), icon: <Users size={22} /> },
-    { id: "database", title: t("submenu.services.database_research_technologies_available_industrial_application"), icon: <Database size={22} /> },
-    { id: "workshops", title: t("submenu.services.joint_workshops_seminars"), icon: <Presentation size={22} /> },
-    { id: "marketing", title: t("submenu.services.supporting_marketing_investment_scientific_research_outputs"), icon: <TrendingUp size={22} /> },
-    { id: "technical", title: t("submenu.services.technical_details_how_use_services"), icon: <Settings size={22} /> },
-    { id: "pricing", title: t("submenu.services.subscription_prices_terms"), icon: <ShieldCheck size={22} /> },
-  ];
+  const isRtl = i18n.dir() === "rtl";
 
   return (
-    <section className="bg-[#050505] py-24 relative overflow-hidden">
-      {/* Background Glow */}
-      <div className="absolute top-0 right-0 h-[500px] w-[500px] bg-emerald-600/5 blur-[120px] rounded-full" />
+    <section
+      dir={isRtl ? "rtl" : "ltr"}
+      className="relative overflow-hidden bg-[#f5faf7] py-20 md:py-28"
+    >
+      <div className="pointer-events-none absolute -right-40 top-10 h-96 w-96 rounded-full bg-emerald-200/50 blur-[110px]" />
+      <div className="pointer-events-none absolute -bottom-44 -left-28 h-96 w-96 rounded-full bg-teal-100/70 blur-[100px]" />
+      <div className="pointer-events-none absolute inset-0 opacity-[0.025] [background-image:radial-gradient(circle_at_center,#064e3b_1px,transparent_1px)] [background-size:30px_30px]" />
 
-      <div className="container mx-auto px-6">
-        <div className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div className="max-w-2xl">
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              className="flex items-center gap-2 text-emerald-500 mb-4"
-            >
-              <div className="h-px w-8 bg-emerald-500" />
-              <span className="text-xs font-black uppercase tracking-[0.3em]">{t("menu.services")}</span>
-            </motion.div>
-            <motion.h2 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              className="text-4xl md:text-6xl font-black text-white leading-tight"
-            >
-              {isRtl ? "ابتكار صناعي" : "Innovation"} <br />
-              {/* <span className="text-emerald-600 italic font-serif font-light lowercase opacity-80">sans limites.</span> */}
-            </motion.h2>
+      <div className="container relative z-10 mx-auto px-6">
+        <motion.header
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.65 }}
+          className="mb-14 flex flex-col gap-7 md:mb-16 lg:flex-row lg:items-end lg:justify-between"
+        >
+          <div className="max-w-3xl">
+            <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-emerald-700 shadow-sm">
+              <Sparkles size={14} />
+              {t("menu.services")}
+            </span>
+            <h2 className="text-4xl font-black leading-tight tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
+              {t("services_section.title")}
+            </h2>
           </div>
-        </div>
+          <p className="max-w-md text-sm leading-7 text-slate-600 lg:text-base">
+            {t("services_section.subtitle")}
+          </p>
+        </motion.header>
 
-        {/* Grid compacte et propre */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {services.map((service, index) => (
-            <ServiceCard key={service.id} service={service} index={index} isRtl={isRtl} />
-          ))}
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-12">
+          {serviceConfig.map((service, index) => {
+            const Icon = service.icon;
+
+            return (
+              <motion.article
+                key={service.id}
+                initial={{ opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.55, delay: index * 0.07 }}
+                className={`group relative min-h-[280px] overflow-hidden rounded-[1.75rem] border transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_24px_55px_rgba(5,150,105,0.13)] ${service.layout} ${
+                  service.featured
+                    ? "border-emerald-600 bg-gradient-to-br from-emerald-700 to-teal-600 text-white shadow-[0_22px_50px_rgba(5,150,105,0.18)]"
+                    : "border-emerald-100 bg-white text-slate-900 hover:border-emerald-300"
+                }`}
+              >
+                <Link to={service.to} className="flex h-full min-h-[inherit] flex-col p-7 sm:p-8">
+                  <div className="pointer-events-none absolute -right-16 -top-20 h-52 w-52 rounded-full border-[38px] border-emerald-500/[0.06] transition-transform duration-700 group-hover:scale-125" />
+                  {service.featured && (
+                    <div className="pointer-events-none absolute -bottom-28 -left-20 h-72 w-72 rounded-full bg-white/10 blur-[45px]" />
+                  )}
+
+                  <div className="relative flex items-start justify-between gap-5">
+                    <span className={`grid h-14 w-14 place-items-center rounded-2xl border transition-all duration-300 group-hover:rotate-3 group-hover:scale-105 ${
+                      service.featured
+                        ? "border-white/20 bg-white/15 text-white"
+                        : "border-emerald-100 bg-emerald-50 text-emerald-700 group-hover:bg-emerald-600 group-hover:text-white"
+                    }`}>
+                      <Icon size={24} strokeWidth={1.8} />
+                    </span>
+                    <span className={`text-sm font-black tracking-[0.16em] ${service.featured ? "text-white/35" : "text-emerald-700/25"}`}>
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+
+                  <div className="relative mt-auto pt-9">
+                    <h3 className={`font-black leading-8 ${service.featured ? "max-w-xl text-2xl sm:text-3xl" : "text-xl"}`}>
+                      {t(service.titleKey)}
+                    </h3>
+                    <p className={`mt-3 max-w-xl text-sm leading-6 ${service.featured ? "text-emerald-50/75" : "text-slate-500"}`}>
+                      {t(service.descriptionKey)}
+                    </p>
+
+                    <span className={`mt-6 inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.13em] ${
+                      service.featured ? "text-white" : "text-emerald-700"
+                    }`}>
+                      {t("services_section.discover")}
+                      <ArrowLeft
+                        size={15}
+                        className={`transition-transform group-hover:-translate-x-1 ${isRtl ? "" : "rotate-180 group-hover:translate-x-1"}`}
+                      />
+                    </span>
+                  </div>
+                </Link>
+              </motion.article>
+            );
+          })}
         </div>
       </div>
     </section>

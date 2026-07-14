@@ -54,6 +54,10 @@
   background: #059669;
 }
 
+.flags-swiper .swiper-wrapper {
+  transition-timing-function: linear !important;
+}
+
 /* تخصيص شكل السكرول بار للمتصفحات (Chrome, Safari, Edge) */
 /* .custom-scrollbar::-webkit-scrollbar {
   width: 6px; 

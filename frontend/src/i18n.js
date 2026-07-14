@@ -64,6 +64,7 @@ i18n.use(initReactI18next).init({
         stats: {
           title: "البوابة في أرقام",
           subtitle: "بيانات حية تعكس منظومة البحث العلمي والابتكار في الوطن العربي",
+          coverage_title: "تشمل بيانات 21 دولة عربية",
           live_data: "بيانات مباشرة من المنصة",
           entries: "سجل",
           load_error: "تعذر تحميل الإحصائيات حاليًا",
@@ -88,8 +89,88 @@ i18n.use(initReactI18next).init({
             g2: "تحويل البحوث إلى منتجات تجارية",
             g2_desc: "ندعم رواد الأعمال والمبتكرين لتحويل الأفكار البحثية المختبرية إلى حلول صناعية ملموسة في السوق.",
             g3: "تحقيق التكامل الاقتصادي العربي",
-            g3_desc: "بناء شبكة تواصل قوية بين المؤسسات البحثية والمصانع لتعزيز النمو المشترك وتبادل الخبرات التقنية."
+            g3_desc: "بناء شبكة تواصل قوية بين المؤسسات البحثية والمصانع لتعزيز النمو المشترك وتبادل الخبرات التقنية.",
+            g4: "تطوير منظومة الابتكار الصناعي",
+            g4_desc: "ربط مخرجات التعليم والبحث والتطوير بمنظومات الإنتاج لتسريع تطوير حلول صناعية قابلة للتطبيق.",
+            g5: "دعم التحول الرقمي وريادة الأعمال",
+            g5_desc: "تمكين المؤسسات الصناعية ورواد الأعمال من تبني التقنيات الرقمية وتطوير نماذج أعمال أكثر تنافسية.",
+            g6: "بناء قاعدة معرفة عربية موحدة",
+            g6_desc: "توفير بيانات موثوقة للمشاريع البحثية والابتكارات وفرص الاستثمار وتسهيل الوصول إليها عربياً.",
+            count_label: "أهداف تصنع مستقبلاً صناعياً عربياً أكثر ابتكاراً"
           },
+        },
+
+        services_section: {
+          title: "ابتكار صناعي",
+          subtitle: "خدمات رقمية متكاملة تحول المعرفة والبحث العلمي إلى شراكات وحلول وفرص صناعية قابلة للتطبيق.",
+          discover: "اكتشف الخدمة",
+          descriptions: {
+            linking: "مساحة تواصل تجمع الباحثين والمبتكرين بالشركات الصناعية لبناء شراكات فعالة.",
+            database: "وصول منظم إلى الأبحاث والتقنيات والحلول الجاهزة للتطبيق الصناعي.",
+            workshops: "فعاليات معرفية مشتركة لتبادل الخبرات وبناء القدرات المتخصصة.",
+            marketing: "دعم وصول الابتكارات ومخرجات البحث العلمي إلى المستثمرين والأسواق.",
+            technical: "إرشادات واضحة تساعد المؤسسات والباحثين على الاستفادة من خدمات البوابة.",
+            pricing: "خطط وشروط اشتراك واضحة تناسب احتياجات مختلف مستخدمي المنصة."
+          }
+        },
+
+        registration_guide: {
+          eyebrow: "التسجيل في المنصة",
+          title: "ابدأ رحلتك في ثلاث خطوات",
+          subtitle: "أنشئ حسابك وانضم إلى شبكة تجمع الباحثين والمبتكرين والمؤسسات الصناعية في فضاء عربي واحد.",
+          step_label: "الخطوة",
+          steps: {
+            step1: {
+              title: "اختر إنشاء حساب جديد",
+              description: "انتقل إلى صفحة الدخول واضغط على إنشاء حساب جديد لفتح نموذج التسجيل."
+            },
+            step2: {
+              title: "أدخل بياناتك الأساسية",
+              description: "اكتب اسمك الكامل وبريدك الإلكتروني واختر كلمة مرور آمنة لحسابك."
+            },
+            step3: {
+              title: "أكد التسجيل وابدأ الاستخدام",
+              description: "اضغط على تأكيد التسجيل، ثم سجل الدخول للوصول إلى خدمات وفرص البوابة."
+            }
+          },
+          card: {
+            title: "حساب واحد يفتح لك فرصاً جديدة",
+            subtitle: "التسجيل بسيط وسريع، ولا يحتاج سوى بياناتك الأساسية."
+          },
+          fields: {
+            name: "الاسم الكامل",
+            email: "البريد الإلكتروني",
+            password: "كلمة المرور"
+          },
+          benefits: {
+            b1: "الوصول إلى خدمات البوابة",
+            b2: "التواصل مع الباحثين والشركات",
+            b3: "متابعة الفرص والفعاليات"
+          },
+          cta: "إنشاء حساب الآن",
+          login_hint: "لديك حساب؟ يمكنك تسجيل الدخول من الصفحة نفسها"
+        },
+
+        latest_news: {
+          title: "آخر الأخبار",
+          subtitle: "تابع أحدث المبادرات والشراكات والفعاليات في مجالات البحث العلمي والابتكار الصناعي العربي.",
+          category: "أخبار",
+          view_all: "عرض جميع الأخبار",
+          read_more: "اقرأ المزيد",
+          items: {
+            n1: {
+              title: "إطلاق المبادرة العربية لدعم ابتكارات الذكاء الاصطناعي في الصناعة",
+              description: "إطلاق مبادرة جديدة تهدف إلى تمويل الشراكات بين مراكز الأبحاث والمصانع لتبني حلول الذكاء الاصطناعي."
+            },
+            n2: {
+              title: "توقيع اتفاقية تعاون لنقل التكنولوجيا بين الجامعات والمنشآت الصناعية",
+              description: "اتفاقية جديدة تضمن حماية الملكية الفكرية وتسهيل انتقال أبحاث الحلول التقنية مباشرة إلى خطوط الإنتاج."
+            },
+            n3: {
+              title: "ندوة افتراضية حول مستقبل الطاقة المستدامة في القطاع الصناعي العربي",
+              description: "خبراء ومستثمرون يناقشون آليات تقليل الانبعاثات الكربونية بالاعتماد على الابتكارات الهندسية المحلية."
+            }
+          }
         },
         
         success_stories: {
@@ -201,6 +282,40 @@ i18n.use(initReactI18next).init({
           description: "نعمل على تعزيز التكامل الصناعي العربي من خلال ربط مراكز البحث العلمي بالمنشآت الصناعية."
         },
 
+        contact_page: {
+          eyebrow: "نحن هنا لمساعدتك",
+          title: "لنبنِ جسور التعاون معاً",
+          subtitle: "تواصل مع فريق البوابة للاستفسارات والمقترحات وفرص التعاون بين المؤسسات الصناعية ومراكز البحث والابتكار.",
+          info_title: "معلومات التواصل",
+          email_title: "البريد الإلكتروني",
+          phone_title: "رقم الهاتف",
+          website_title: "الموقع الرسمي",
+          address_title: "العنوان الرسمي",
+          hours_title: "أوقات العمل",
+          hours_value: "الاثنين إلى الجمعة، 08:30 - 16:30",
+          form: {
+            eyebrow: "أرسل رسالة",
+            title: "كيف يمكننا مساعدتك؟",
+            subtitle: "املأ النموذج وسيتم إعداد رسالتك لإرسالها إلى فريق المنظمة.",
+            name: "الاسم الكامل",
+            name_placeholder: "أدخل اسمك الكامل",
+            email: "البريد الإلكتروني",
+            phone: "رقم الهاتف",
+            subject: "موضوع الرسالة",
+            message: "الرسالة",
+            message_placeholder: "اكتب تفاصيل طلبك أو استفسارك هنا...",
+            send: "إرسال الرسالة",
+            notice: "بالضغط على إرسال سيتم فتح تطبيق البريد الإلكتروني الافتراضي لديك.",
+            prepared: "تم إعداد الرسالة. أكمل إرسالها من تطبيق البريد الإلكتروني.",
+            subjects: {
+              general: "استفسار عام",
+              partnership: "تعاون وشراكة",
+              technical: "دعم تقني",
+              media: "الإعلام والتواصل"
+            }
+          }
+        },
+
         submenu: {
           services: {
             linking_researchers_industrial_companies: "ربط الباحثين مع الشركات الصناعية",
@@ -300,6 +415,7 @@ i18n.use(initReactI18next).init({
         stats: {
           title: "Portal in Numbers",
           subtitle: "Live data reflecting the scientific research and innovation ecosystem across the Arab world",
+          coverage_title: "Covering data from 21 Arab countries",
           live_data: "Live platform data",
           entries: "records",
           load_error: "Statistics are temporarily unavailable",
@@ -323,7 +439,14 @@ i18n.use(initReactI18next).init({
             g2: "Commercializing Scientific Research",
             g2_desc: "Supporting entrepreneurs to transform lab research into tangible industrial solutions in the market.",
             g3: "Achieving Arab Economic Integration",
-            g3_desc: "Building a strong network between research institutions and factories for joint growth and tech exchange."
+            g3_desc: "Building a strong network between research institutions and factories for joint growth and tech exchange.",
+            g4: "Developing the Industrial Innovation Ecosystem",
+            g4_desc: "Connecting education, research and development outcomes with production systems to accelerate applicable industrial solutions.",
+            g5: "Supporting Digital Transformation and Entrepreneurship",
+            g5_desc: "Empowering industrial institutions and entrepreneurs to adopt digital technologies and build more competitive business models.",
+            g6: "Building a Unified Arab Knowledge Base",
+            g6_desc: "Providing reliable data on research projects, innovations and investment opportunities with easy access across the Arab region.",
+            count_label: "Goals shaping a more innovative Arab industrial future"
           }
         },
         success_stories: {
@@ -426,6 +549,110 @@ i18n.use(initReactI18next).init({
           need_help: "Need Help?",
           open_ticket: "Open Support Ticket",
           description: "Enhancing Arab industrial integration by linking research centers with industry."
+        },
+
+        contact_page: {
+          eyebrow: "We are here to help",
+          title: "Let's build bridges of collaboration",
+          subtitle: "Contact the portal team for questions, suggestions and collaboration opportunities between industry, research and innovation institutions.",
+          info_title: "Contact information",
+          email_title: "Email address",
+          phone_title: "Phone number",
+          website_title: "Official website",
+          address_title: "Official address",
+          hours_title: "Working hours",
+          hours_value: "Monday to Friday, 08:30 - 16:30",
+          form: {
+            eyebrow: "Send a message",
+            title: "How can we help you?",
+            subtitle: "Complete the form and your message will be prepared for the organization team.",
+            name: "Full name",
+            name_placeholder: "Enter your full name",
+            email: "Email address",
+            phone: "Phone number",
+            subject: "Message subject",
+            message: "Message",
+            message_placeholder: "Write the details of your request or question here...",
+            send: "Send message",
+            notice: "Submitting will open your default email application.",
+            prepared: "Your message is ready. Complete sending it from your email application.",
+            subjects: {
+              general: "General inquiry",
+              partnership: "Collaboration and partnership",
+              technical: "Technical support",
+              media: "Media and communication"
+            }
+          }
+        },
+        services_section: {
+          title: "Industrial Innovation",
+          subtitle: "Integrated digital services that turn knowledge and scientific research into applicable industrial partnerships, solutions and opportunities.",
+          discover: "Discover service",
+          descriptions: {
+            linking: "A collaborative space connecting researchers and innovators with industrial companies to build effective partnerships.",
+            database: "Organized access to research, technologies and solutions ready for industrial application.",
+            workshops: "Shared knowledge events for exchanging expertise and building specialized capabilities.",
+            marketing: "Helping innovations and research outcomes reach investors and markets.",
+            technical: "Clear guidance helping institutions and researchers benefit from the portal services.",
+            pricing: "Transparent subscription plans and terms suited to different platform users."
+          }
+        },
+        registration_guide: {
+          eyebrow: "Platform registration",
+          title: "Start your journey in three steps",
+          subtitle: "Create your account and join a network bringing researchers, innovators and industrial institutions together in one Arab platform.",
+          step_label: "Step",
+          steps: {
+            step1: {
+              title: "Choose Create a New Account",
+              description: "Open the login page and select Create a New Account to display the registration form."
+            },
+            step2: {
+              title: "Enter your basic information",
+              description: "Provide your full name and email address, then choose a secure password for your account."
+            },
+            step3: {
+              title: "Confirm and start using the portal",
+              description: "Confirm your registration, then sign in to access the portal's services and opportunities."
+            }
+          },
+          card: {
+            title: "One account opens new opportunities",
+            subtitle: "Registration is quick and only requires your basic information."
+          },
+          fields: {
+            name: "Full name",
+            email: "Email address",
+            password: "Password"
+          },
+          benefits: {
+            b1: "Access portal services",
+            b2: "Connect with researchers and companies",
+            b3: "Follow opportunities and events"
+          },
+          cta: "Create an account now",
+          login_hint: "Already registered? You can sign in from the same page"
+        },
+        latest_news: {
+          title: "Latest News",
+          subtitle: "Follow the latest initiatives, partnerships and events in Arab scientific research and industrial innovation.",
+          category: "News",
+          view_all: "View all news",
+          read_more: "Read more",
+          items: {
+            n1: {
+              title: "Launch of the Arab Initiative to Support AI Innovations in Industry",
+              description: "A new initiative aims to fund partnerships between research centers and factories adopting artificial intelligence solutions."
+            },
+            n2: {
+              title: "Technology Transfer Agreement Between Universities and Industrial Plants",
+              description: "A new agreement protects intellectual property and facilitates moving technical research directly to production lines."
+            },
+            n3: {
+              title: "Virtual Webinar on Sustainable Energy in the Arab Industrial Sector",
+              description: "Experts and investors discuss reducing carbon emissions through locally developed engineering innovations."
+            }
+          }
         },
 
         submenu: {

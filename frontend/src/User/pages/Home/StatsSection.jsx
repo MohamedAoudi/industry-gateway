@@ -29,6 +29,12 @@ const initialCounts = {
   arab_countries: 0,
 };
 
+const arabCountryCodes = [
+  "jo", "ae", "bh", "tn", "dz", "dj", "sa",
+  "sd", "sy", "so", "iq", "om", "ps", "qa",
+  "kw", "lb", "ly", "eg", "ma", "mr", "ye",
+];
+
 const StatsSection = () => {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.language === "ar";
@@ -37,6 +43,15 @@ const StatsSection = () => {
   const [counts, setCounts] = useState(initialCounts);
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+
+  const countries = useMemo(() => {
+    const displayNames = new Intl.DisplayNames([isRtl ? "ar" : "en"], { type: "region" });
+
+    return arabCountryCodes.map((code) => ({
+      code,
+      name: displayNames.of(code.toUpperCase()),
+    }));
+  }, [isRtl]);
 
   useEffect(() => {
     let isMounted = true;
@@ -126,22 +141,12 @@ const StatsSection = () => {
           initial={{ opacity: 0, y: 24 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.65 }}
-          className="mb-12 flex flex-col gap-6 md:mb-14 md:flex-row md:items-end md:justify-between"
+          className="mb-6 flex flex-col gap-6 md:mb-7 md:flex-row md:items-end md:justify-between"
         >
           <div className="max-w-2xl">
-            <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-4 py-2 text-[11px] font-bold text-emerald-700">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-300 opacity-70" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
-              </span>
-              {t("stats.live_data")}
-            </div>
             <h2 className="text-3xl font-black tracking-tight text-slate-900 md:text-5xl">
               {t("stats.title")}
             </h2>
-            <p className="mt-4 max-w-xl text-sm leading-7 text-slate-500 md:text-base">
-              {t("stats.subtitle")}
-            </p>
           </div>
 
           {hasError && (
@@ -226,6 +231,62 @@ const StatsSection = () => {
             );
           })}
         </Swiper>
+
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.6, delay: 0.12 }}
+          className="mt-10"
+        >
+          <div className="mb-7">
+            <h2 className="text-3xl font-black tracking-tight text-slate-900 md:text-5xl">
+              {t("stats.coverage_title")}
+            </h2>
+          </div>
+
+          <div className="relative overflow-hidden rounded-[1.75rem] border border-emerald-100 bg-gradient-to-r from-emerald-50/80 via-white to-teal-50/70 px-3 py-4 shadow-[0_12px_35px_rgba(15,23,42,0.05)] sm:px-5">
+            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-white/90 to-transparent" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-white/90 to-transparent" />
+            <Swiper
+              key={`flags-${i18n.language}`}
+              modules={[Autoplay]}
+              dir={isRtl ? "rtl" : "ltr"}
+              loop
+              loopAdditionalSlides={7}
+              speed={3500}
+              spaceBetween={12}
+              slidesPerView={2.15}
+              grabCursor
+              autoplay={{ delay: 0, disableOnInteraction: false, pauseOnMouseEnter: true }}
+              breakpoints={{
+                480: { slidesPerView: 3.2 },
+                640: { slidesPerView: 4.2 },
+                768: { slidesPerView: 5.3 },
+                1024: { slidesPerView: 7.2 },
+                1280: { slidesPerView: 8.2 },
+              }}
+              className="flags-swiper"
+            >
+              {countries.map((country) => (
+                <SwiperSlide key={`${i18n.language}-${country.code}`}>
+                  <div className="group flex h-16 items-center gap-3 rounded-2xl border border-white bg-white/90 px-3 shadow-sm transition-all duration-300 hover:border-emerald-200 hover:shadow-md">
+                    <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full border-2 border-white bg-slate-100 shadow-[0_3px_10px_rgba(15,23,42,0.15)] ring-1 ring-slate-200">
+                      <img
+                        src={`https://flagcdn.com/w80/${country.code}.png`}
+                        alt={country.name}
+                        loading="lazy"
+                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                      />
+                    </span>
+                    <span className="truncate text-xs font-extrabold text-slate-700 group-hover:text-emerald-700">
+                      {country.name}
+                    </span>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

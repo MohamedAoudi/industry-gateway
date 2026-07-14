@@ -4,6 +4,7 @@ import StatsSection from "./StatsSection";
 import CoreGoals from "./CoreGoals";
 import ServicesSection from "./ServicesSection";
 import SuccessStoriesSection from "./SuccessStoriesSection";
+import LatestNewsSection from "./LatestNewsSection";
 
 
 
@@ -17,6 +18,7 @@ const Home = () => {
         <StatsSection />
         <CoreGoals />
         <ServicesSection />
+        <LatestNewsSection />
         <SuccessStoriesSection />
     </section>
   );

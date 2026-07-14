@@ -1,96 +1,113 @@
-import React from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { Target, Lightbulb, BarChart, Globe, Plus } from "lucide-react";
+import {
+  ArrowUpRight,
+  Cpu,
+  Database,
+  Globe2,
+  Lightbulb,
+  Network,
+  Rocket,
+  Sparkles,
+} from "lucide-react";
+
+const goalIcons = [Lightbulb, Rocket, Globe2, Network, Cpu, Database];
 
 const CoreGoals = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const isRtl = i18n.dir() === "rtl";
 
-  const goals = [
-    { 
-      title: t("about_sections.goals.g1"), 
-      desc: "توطين المعرفة التقنية لبناء قاعدة صناعية صلبة.",
-      icon: <Lightbulb size={28} strokeWidth={1} />,
-      accent: "from-emerald-800 to-vert-600"
-    },
-    { 
-      title: t("about_sections.goals.g2"), 
-      desc: "تحويل الأفكار البحثية إلى منتجات تجارية منافسة.",
-      icon: <BarChart size={28} strokeWidth={1} />,
-      accent: "from-emerald-700 to-vert-500"
-    },
-    { 
-      title: t("about_sections.goals.g3"), 
-      desc: "تعزيز التعاون العابر للحدود لتحقيق تكامل اقتصادي.",
-      icon: <Globe size={28} strokeWidth={1} />,
-      accent: "from-emerald-600 to-vert-600"
-    },
-  ];
+  const goals = goalIcons.map((icon, index) => ({
+    icon,
+    number: String(index + 1).padStart(2, "0"),
+    title: t(`about_sections.goals.g${index + 1}`),
+    description: t(`about_sections.goals.g${index + 1}_desc`),
+  }));
 
   return (
-    <section className="py-12 bg-[#fafafa] relative overflow-hidden">
-      {/* عناصر فنية في الخلفية */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-slate-100 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-50" />
-      
-      <div className="container mx-auto px-6 relative z-10">
-        <div className="flex flex-col lg:flex-row items-end justify-between mb-20 gap-8">
-          <div className="max-w-xl">
-            <motion.div 
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              className="flex items-center gap-3 text-emerald-600 font-mono text-[18px] tracking-widest uppercase mb-4"
-            >
-              <span className="w-8 h-px bg-emerald-600" />
+    <section
+      dir={isRtl ? "rtl" : "ltr"}
+      className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-950 py-20 text-white md:py-28"
+    >
+      <div className="pointer-events-none absolute inset-0 opacity-[0.035] [background-image:linear-gradient(white_1px,transparent_1px),linear-gradient(90deg,white_1px,transparent_1px)] [background-size:48px_48px]" />
+      <div className="pointer-events-none absolute -left-32 top-10 h-80 w-80 rounded-full bg-emerald-400/20 blur-[100px]" />
+      <div className="pointer-events-none absolute -right-40 bottom-0 h-96 w-96 rounded-full bg-teal-400/15 blur-[110px]" />
+      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 rounded-full border-[80px] border-white/[0.015]" />
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400/70 to-transparent" />
+
+      <div className="container relative z-10 mx-auto px-6">
+        <div className="mb-14 md:mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.6 }}
+            className="max-w-4xl"
+          >
+            <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-400/20 bg-emerald-400/10 px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-emerald-300">
+              <Sparkles size={14} />
               {t("about_sections.goals.subtitle")}
-            </motion.div>
-            <h2 className="text-5xl md:text-6xl font-black text-slate-900 leading-none tracking-tight">
-              {t("about_sections.goals.title")}            
+            </span>
+            <h2 className="max-w-4xl text-4xl font-black leading-tight tracking-tight sm:text-5xl lg:text-6xl">
+              {t("about_sections.goals.title")}
             </h2>
-          </div>
+          </motion.div>
+
         </div>
 
-        {/* شبكة الأهداف بأسلوب الـ Glass Tiles */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-px bg-slate-200 border border-slate-200 rounded-[3rem] overflow-hidden shadow-2xl">
-          {goals.map((goal, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ delay: i * 0.2 }}
-              whileHover="hover"
-              className="relative bg-white p-12 h-[450px] flex flex-col justify-between group overflow-hidden"
-            >
-              {/* خلفية تفاعلية تظهر عند الحوم */}
-              <motion.div 
-                variants={{ hover: { scale: 1.5, opacity: 1 } }}
-                className={`absolute -bottom-20 -right-20 w-64 h-64 bg-gradient-to-br ${goal.accent} opacity-0 blur-[80px] transition-all duration-700`}
-              />
+        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {goals.map((goal, index) => {
+            const Icon = goal.icon;
+            const isFeatured = index === 0 || index === 5;
 
-              <div className="relative z-10">
-                <div className="mb-12 inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-slate-50 text-slate-900 group-hover:bg-white group-hover:shadow-xl transition-all duration-500">
-                  {goal.icon}
+            return (
+              <motion.article
+                key={goal.number}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.55, delay: index * 0.07 }}
+                className={`group relative min-h-[310px] overflow-hidden rounded-[1.75rem] border p-7 transition-all duration-500 hover:-translate-y-1 sm:p-8 ${
+                  isFeatured
+                    ? "border-emerald-400/25 bg-gradient-to-br from-emerald-600 to-teal-700 shadow-[0_22px_60px_rgba(5,150,105,0.16)]"
+                    : "border-white/10 bg-white/[0.045] hover:border-emerald-400/30 hover:bg-white/[0.075]"
+                }`}
+              >
+                <div className="pointer-events-none absolute -bottom-16 -right-16 h-44 w-44 rounded-full border-[35px] border-white/[0.035] transition-transform duration-700 group-hover:scale-125" />
+
+                <div className="relative flex h-full flex-col">
+                  <div className="flex items-start justify-between gap-5">
+                    <span className={`grid h-[3.25rem] w-[3.25rem] place-items-center rounded-2xl border ${
+                      isFeatured
+                        ? "border-white/20 bg-white/15 text-white"
+                        : "border-emerald-400/15 bg-emerald-400/10 text-emerald-300"
+                    }`}>
+                      <Icon size={23} strokeWidth={1.8} />
+                    </span>
+                    <span className={`text-4xl font-black leading-none ${isFeatured ? "text-white/25" : "text-white/[0.08]"}`}>
+                      {goal.number}
+                    </span>
+                  </div>
+
+                  <div className="mt-8 flex-1">
+                    <h3 className="text-xl font-black leading-8 text-white sm:text-2xl">
+                      {goal.title}
+                    </h3>
+                    <p className={`mt-4 text-sm leading-7 ${isFeatured ? "text-emerald-50/80" : "text-slate-400"}`}>
+                      {goal.description}
+                    </p>
+                  </div>
+
+                  <div className={`mt-7 flex items-center gap-2 text-xs font-black uppercase tracking-[0.15em] ${
+                    isFeatured ? "text-white/70" : "text-emerald-300/70"
+                  }`}>
+                    <span className="h-px w-8 bg-current transition-all duration-300 group-hover:w-12" />
+                    <ArrowUpRight size={14} className={isRtl ? "-rotate-90" : ""} />
+                  </div>
                 </div>
-                <h3 className="text-3xl font-bold text-slate-900 mb-6 group-hover:translate-x-2 transition-transform duration-500">
-                  {goal.title}
-                </h3>
-                <p className="text-slate-500 leading-relaxed font-light opacity-0 group-hover:opacity-100 group-hover:translate-y-0 translate-y-4 transition-all duration-500">
-                  {goal.desc}
-                </p>
-              </div>
-
-              <div className="relative z-10 flex justify-between items-end">
-                <span className="text-7xl font-black text-slate-50 group-hover:text-white/20 transition-colors">
-                  0{i + 1}
-                </span>
-                <motion.div 
-                  variants={{ hover: { rotate: 90 } }}
-                  className="w-12 h-12 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 group-hover:border-white group-hover:text-white transition-all"
-                >
-                  <Plus size={20} />
-                </motion.div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.article>
+            );
+          })}
         </div>
       </div>
     </section>

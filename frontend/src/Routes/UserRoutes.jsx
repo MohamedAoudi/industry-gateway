@@ -10,6 +10,7 @@ import CentersExcellenceAI from '../User/pages/Database/CentersExcellenceAI';
 import ScientificResearchInnovationCenters from '../User/pages/Database/ScientificResearchInnovationCenters';
 import MinistriesHigherEducationScientificResearch from '../User/pages/Database/MinistriesHigherEducationScientificResearch';
 import MediaCenterSection from '../User/pages/MediaCenter/MediaCenterSection';
+import ContactPage from '../User/pages/Contact/ContactPage';
 
 import Login from '../Authentification/Login'; 
 import Register from '../Authentification/Register';
@@ -29,6 +30,7 @@ const UserRoutes = () => (
       <Route path="scientificResearchInnovationCenters" element={<ScientificResearchInnovationCenters />} />
       <Route path="ministriesHigherEducationScientificResearch" element={<MinistriesHigherEducationScientificResearch />} />
       <Route path="mediaCenter" element={<MediaCenterSection />} />
+      <Route path="contact" element={<ContactPage />} />
 
 
 
