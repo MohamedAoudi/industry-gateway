@@ -43,20 +43,11 @@ import ProtectedRoute from "../Authentification/ProtectedRoute";
 import AdminLayout from "../Admin/AdminLayout";
 import Dashboard from "../Admin/pages/Dashboard/Dashboard";
 import ResearchersList from "../Admin/pages/Reasearchs/ResearchersList";
-import ScientificResearchInnovationCentersList from "../Admin/pages/DatabaseCenters/ScientificResearchInnovationCenters/ScientificResearchInnovationCentersList";
-import ScientificResearchInnovationCentersForm from "../Admin/pages/DatabaseCenters/ScientificResearchInnovationCenters/ScientificResearchInnovationCentersForm";
-import CentersExcellenceArtificialIntelligenceList from "../Admin/pages/DatabaseCenters/CentersExcellenceArtificialIntelligence/CentersExcellenceArtificialIntelligenceList";
-import CentersExcellenceArtificialIntelligenceForm from "../Admin/pages/DatabaseCenters/CentersExcellenceArtificialIntelligence/CentersExcellenceArtificialIntelligenceForm";
-import MinistriesHigherEducationScientificResearchList from "../Admin/pages/DatabaseCenters/MinistriesHigherEducationScientificResearch/MinistriesHigherEducationScientificResearchList";
-import MinistriesHigherEducationScientificResearchForm from "../Admin/pages/DatabaseCenters/MinistriesHigherEducationScientificResearch/MinistriesHigherEducationScientificResearchForm";
-import IndustrialPropertyPatentOfficesList from "../Admin/pages/DatabaseCenters/IndustrialPropertyPatentOffices/IndustrialPropertyPatentOfficesList";
-import IndustrialPropertyPatentOfficesForm from "../Admin/pages/DatabaseCenters/IndustrialPropertyPatentOffices/IndustrialPropertyPatentOfficesForm";
-import SupportingBodiesScientificResearchList from "../Admin/pages/DatabaseCenters/SupportingBodiesScientificResearch/SupportingBodiesScientificResearchList";
-import SupportingBodiesScientificResearchForm from "../Admin/pages/DatabaseCenters/SupportingBodiesScientificResearch/SupportingBodiesScientificResearchForm";
 import CompaniesList from "../Admin/pages/Companies/CompaniesList";
 import CompanyRequests from "../Admin/pages/Companies/CompanyRequests";
 import ManageOffers from "../Admin/pages/Offer/ManageOffers";
 import ManageFaq from "../Admin/pages/Faq/ManageFaq";
+import ManageResearchDatabase from "../Admin/pages/ResearchDatabase/ManageResearchDatabase";
 
 
 const AdminRoutes = () => (
@@ -67,16 +58,12 @@ const AdminRoutes = () => (
         <Route index element={<Dashboard />} /> 
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="researchers" element={<ResearchersList />} />
-        <Route path="scientificResearchInnovationCentersList" element={<ScientificResearchInnovationCentersList />} />
-        <Route path="scientificResearchInnovationCentersForm" element={<ScientificResearchInnovationCentersForm />} />
-        <Route path="ministriesHigherEducationScientificResearchList" element={<MinistriesHigherEducationScientificResearchList />} />
-        <Route path="ministriesHigherEducationScientificResearchForm" element={<MinistriesHigherEducationScientificResearchForm />} />
-        <Route path="centersExcellenceArtificialIntelligenceList" element={<CentersExcellenceArtificialIntelligenceList />} />
-        <Route path="centersExcellenceArtificialIntelligenceForm" element={<CentersExcellenceArtificialIntelligenceForm />} />
-        <Route path="industrialPropertyPatentOfficesList" element={<IndustrialPropertyPatentOfficesList />} />
-        <Route path="industrialPropertyPatentOfficesForm" element={<IndustrialPropertyPatentOfficesForm />} />
-        <Route path="supportingBodiesScientificResearchList" element={<SupportingBodiesScientificResearchList />} />
-        <Route path="supportingBodiesScientificResearchForm" element={<SupportingBodiesScientificResearchForm />} />
+        <Route path="research-database/research-innovation-ai" element={<ManageResearchDatabase lockedCategory="research-innovation-ai" />} />
+        <Route path="research-database/universities" element={<ManageResearchDatabase lockedCategory="universities" />} />
+        <Route path="research-database/incubators-technology-labs" element={<ManageResearchDatabase lockedCategory="incubators-technology-labs" />} />
+        <Route path="research-database/programs-initiatives-strategies" element={<ManageResearchDatabase lockedCategory="programs-initiatives-strategies" />} />
+        <Route path="research-database/industrial-property-patents" element={<ManageResearchDatabase lockedCategory="industrial-property-patents" />} />
+        <Route path="research-database/experts-specialists" element={<ManageResearchDatabase lockedCategory="experts-specialists" />} />
 
 
         <Route path="companies" element={<CompaniesList />} />

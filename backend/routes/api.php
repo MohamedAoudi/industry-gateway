@@ -1,41 +1,38 @@
 <?php
 
+use App\Http\Controllers\AICompanieController;
+use App\Http\Controllers\AIResearcherController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CentersExcellenceArtificialIntelligenceController;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\FaqQuestionController;
+use App\Http\Controllers\IndustrialPropertyPatentOfficesController;
+use App\Http\Controllers\MinistriesHigherEducationScientificResearchController;
+use App\Http\Controllers\OfferController;
+use App\Http\Controllers\PaysController;
+use App\Http\Controllers\PortalStatsController;
+use App\Http\Controllers\registerCompanyController;
+use App\Http\Controllers\registerResearcherController;
+use App\Http\Controllers\ResearchDatabaseEntryController;
+use App\Http\Controllers\ResearcherController;
+use App\Http\Controllers\ScientificResearchInnovationCentersController;
+use App\Http\Controllers\SupportingBodiesScientificResearchController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\registerResearcherController;
-use App\Http\Controllers\registerCompanyController;
-use App\Http\Controllers\OffersController;
-use App\Http\Controllers\ResearcherController;
-use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\OfferController;
-use App\Http\Controllers\AIResearcherController;
-use App\Http\Controllers\AICompanieController;
-use App\Http\Controllers\PaysController;
-use App\Http\Controllers\ScientificResearchInnovationCentersController;
-use App\Http\Controllers\CentersExcellenceArtificialIntelligenceController;
-use App\Http\Controllers\MinistriesHigherEducationScientificResearchController;
-use App\Http\Controllers\IndustrialPropertyPatentOfficesController;
-use App\Http\Controllers\SupportingBodiesScientificResearchController;
-use App\Http\Controllers\PortalStatsController;
-use App\Http\Controllers\FaqQuestionController;
-
-
-
-
 
 Route::post('/tokens/create', function (Request $request) {
     $token = $request->user()->createToken($request->token_name);
- 
+
     return ['token' => $token->plainTextToken];
 });
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::get('/pays', [PaysController::class, 'index']); 
+Route::get('/pays', [PaysController::class, 'index']);
 Route::get('/portal-stats', [PortalStatsController::class, 'index']);
 Route::get('/faqs', [FaqQuestionController::class, 'index']);
 Route::post('/faqs', [FaqQuestionController::class, 'store']);
+Route::get('/research-database', [ResearchDatabaseEntryController::class, 'index']);
 
 Route::get('/scientificResearchInnovationCenters', [ScientificResearchInnovationCentersController::class, 'index']);
 
@@ -47,7 +44,6 @@ Route::get('/industrialPropertyPatentOffices', [IndustrialPropertyPatentOfficesC
 
 Route::get('/supportingBodiesScientificResearch', [SupportingBodiesScientificResearchController::class, 'index']);
 
-
 Route::post('/register-researcher', [registerResearcherController::class, 'registerResearcher']);
 Route::post('/register-company', [registerCompanyController::class, 'registerCompany']);
 Route::get('/researchers', [ResearcherController::class, 'index']);
@@ -56,7 +52,6 @@ Route::get('/companies', [CompanyController::class, 'index']);
 Route::get('/companies/pending', [CompanyController::class, 'getPendingRequests']);
 Route::put('/companies/{id}/status', [CompanyController::class, 'updateStatus']);
 Route::delete('/companies/{id}', [CompanyController::class, 'destroy']);
-
 
 Route::get('/offers', [OfferController::class, 'index']);
 Route::post('/offers', [OfferController::class, 'store']);
@@ -68,6 +63,14 @@ Route::post('/companies/import-ai', [AICompanieController::class, 'importCompani
 
 // Routes privées (Nécessitent un Token valide dans le Header)
 Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('/research-database/admin', [ResearchDatabaseEntryController::class, 'adminIndex']);
+    Route::post('/research-database', [ResearchDatabaseEntryController::class, 'store']);
+    Route::match(['put', 'patch', 'post'], '/research-database/{researchDatabaseEntry}', [ResearchDatabaseEntryController::class, 'update']);
+    Route::delete('/research-database/{researchDatabaseEntry}', [ResearchDatabaseEntryController::class, 'destroy']);
+
+    Route::put('/researchers/{id}', [ResearcherController::class, 'update']);
+    Route::delete('/researchers/{id}', [ResearcherController::class, 'destroy']);
 
     Route::post('/scientificResearchInnovationCenters', [ScientificResearchInnovationCentersController::class, 'store']);
     Route::match(['put', 'patch', 'post'], '/scientificResearchInnovationCenters/{id}', [ScientificResearchInnovationCentersController::class, 'update']);

@@ -11,13 +11,12 @@ import {
   Network,
   Database,
   Microscope,
-  BrainCircuit,
   GraduationCap,
   FileBadge,
-  HandHeart,
   Building2,
   BookOpen,
   UserPlus,
+  UsersRound,
   CircleHelp,
 } from "lucide-react";
 
@@ -101,29 +100,34 @@ const AdminSidebar = () => {
       hasSubmenu: true,
       submenu: [
         {
-          label: t("submenu.database.scientific_research_innovation_centers"),
+          label: t("submenu.database.research_innovation_ai_centers"),
           icon: <Microscope size={14} />,
-          path: "/admin/scientificResearchInnovationCentersList",
+          path: "/admin/research-database/research-innovation-ai",
         },
         {
-          label: t("submenu.database.centers_excellence_artificial_intelligence"),
-          icon: <BrainCircuit size={14} />,
-          path: "/admin/centersExcellenceArtificialIntelligenceList",
-        },
-        {
-          label: t("submenu.database.ministries_higher_education_scientific_research"),
+          label: t("submenu.database.universities_academic_scientific_institutions"),
           icon: <GraduationCap size={14} />,
-          path: "/admin/ministriesHigherEducationScientificResearchList",
+          path: "/admin/research-database/universities",
+        },
+        {
+          label: t("submenu.database.incubators_technology_poles_laboratories"),
+          icon: <FlaskConical size={14} />,
+          path: "/admin/research-database/incubators-technology-labs",
+        },
+        {
+          label: t("submenu.database.programs_initiatives_strategies"),
+          icon: <ClipboardList size={14} />,
+          path: "/admin/research-database/programs-initiatives-strategies",
         },
         {
           label: t("submenu.database.industrial_property_patent_offices"),
           icon: <FileBadge size={14} />,
-          path: "/admin/industrialPropertyPatentOfficesList",
+          path: "/admin/research-database/industrial-property-patents",
         },
         {
-          label: t("submenu.database.supporting_bodies_scientific_research"),
-          icon: <HandHeart size={14} />,
-          path: "/admin/supportingBodiesScientificResearchList",
+          label: t("submenu.database.experts_specialists_database"),
+          icon: <UsersRound size={14} />,
+          path: "/admin/research-database/experts-specialists",
         },
       ],
     },

@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 import { useSearchParams } from "react-router-dom";
 import {
   ArrowLeft,
+  ChevronLeft,
+  ChevronRight,
   Database,
   ExternalLink,
   FileBadge,
@@ -22,42 +24,55 @@ const categoryConfig = [
     key: "research-innovation-ai",
     labelKey: "submenu.database.research_innovation_ai_centers",
     descriptionKey: "database_pages.descriptions.research",
-    endpoint: "/scientificResearchInnovationCenters?per_page=100",
+    endpoints: [
+      "/research-database?category=research-innovation-ai&per_page=100",
+      "/scientificResearchInnovationCenters?per_page=100",
+      "/centersExcellenceArtificialIntelligence?per_page=100",
+    ],
     icon: Microscope,
   },
   {
     key: "universities",
     labelKey: "submenu.database.universities_academic_scientific_institutions",
     descriptionKey: "database_pages.descriptions.universities",
-    endpoint: "/ministriesHigherEducationScientificResearch?per_page=100",
+    endpoints: [
+      "/research-database?category=universities&per_page=100",
+      "/ministriesHigherEducationScientificResearch?per_page=100",
+    ],
     icon: GraduationCap,
   },
   {
     key: "incubators-technology-labs",
     labelKey: "submenu.database.incubators_technology_poles_laboratories",
     descriptionKey: "database_pages.descriptions.incubators",
-    endpoint: null,
+    endpoints: ["/research-database?category=incubators-technology-labs&per_page=100"],
     icon: FlaskConical,
   },
   {
     key: "programs-initiatives-strategies",
     labelKey: "submenu.database.programs_initiatives_strategies",
     descriptionKey: "database_pages.descriptions.programs",
-    endpoint: null,
+    endpoints: ["/research-database?category=programs-initiatives-strategies&per_page=100"],
     icon: Workflow,
   },
   {
     key: "industrial-property-patents",
     labelKey: "submenu.database.industrial_property_patent_offices",
     descriptionKey: "database_pages.descriptions.patents",
-    endpoint: "/industrialPropertyPatentOffices?per_page=100",
+    endpoints: [
+      "/research-database?category=industrial-property-patents&per_page=100",
+      "/industrialPropertyPatentOffices?per_page=100",
+    ],
     icon: FileBadge,
   },
   {
     key: "experts-specialists",
     labelKey: "submenu.database.experts_specialists_database",
     descriptionKey: "database_pages.descriptions.experts",
-    endpoint: "/researchers",
+    endpoints: [
+      "/research-database?category=experts-specialists&per_page=100",
+      "/researchers",
+    ],
     icon: UsersRound,
   },
 ];
@@ -74,26 +89,32 @@ const ResearchDatabase = () => {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 9;
 
   useEffect(() => {
     let isMounted = true;
     setSearch("");
     setHasError(false);
 
-    if (!activeCategory.endpoint) {
-      setRecords([]);
-      setLoading(false);
-      return () => {
-        isMounted = false;
-      };
-    }
-
     const loadRecords = async () => {
       setLoading(true);
       try {
-        const response = await apiAdmin.get(activeCategory.endpoint);
-        const payload = response.data?.data ?? response.data ?? [];
-        if (isMounted) setRecords(Array.isArray(payload) ? payload : []);
+        const responses = await Promise.allSettled(
+          activeCategory.endpoints.map((endpoint) => apiAdmin.get(endpoint))
+        );
+        const payload = responses.flatMap((result, sourceIndex) => {
+          if (result.status !== "fulfilled") return [];
+          const data = result.value.data?.data ?? result.value.data ?? [];
+          return Array.isArray(data)
+            ? data.map((record) => ({ ...record, __source: sourceIndex }))
+            : [];
+        });
+
+        if (isMounted) {
+          setRecords(payload);
+          setHasError(responses.every((result) => result.status === "rejected"));
+        }
       } catch (error) {
         console.error(`Failed loading database category ${activeCategory.key}:`, error);
         if (isMounted) {
@@ -109,22 +130,21 @@ const ResearchDatabase = () => {
     return () => {
       isMounted = false;
     };
-  }, [activeCategory.endpoint, activeCategory.key]);
+  }, [activeCategory.key]);
 
   const normalizedRecords = useMemo(
     () => records.map((record, index) => {
-      const isResearcher = activeCategory.key === "experts-specialists";
       return {
-        id: record.idCenter || record.idResearcher || index,
-        title: isResearcher
-          ? record.full_name
-          : (isRtl ? record.titre_ar || record.titre_en : record.titre_en || record.titre_ar),
-        description: isResearcher
-          ? record.research_field
-          : (isRtl ? record.description_ar || record.description_en : record.description_en || record.description_ar),
-        country: record.pays?.nomPays || record.country || "",
-        image: isResearcher ? null : record.photo_url,
-        url: record.url || (isResearcher ? `mailto:${record.email}` : null),
+        id: `${record.__source}-${record.id || record.idCenter || record.idResearcher || index}`,
+        title: record.full_name || (isRtl
+          ? record.title_ar || record.titre_ar || record.title_en || record.titre_en
+          : record.title_en || record.titre_en || record.title_ar || record.titre_ar),
+        description: record.research_field || (isRtl
+          ? record.description_ar || record.description_en
+          : record.description_en || record.description_ar),
+        country: record.country?.nomPays || record.pays?.nomPays || record.country || "",
+        image: record.image_url || record.photo_url,
+        url: record.url || (record.email ? `mailto:${record.email}` : null),
       };
     }),
     [activeCategory.key, isRtl, records]
@@ -140,6 +160,17 @@ const ResearchDatabase = () => {
         .some((value) => String(value).toLocaleLowerCase().includes(query))
     );
   }, [normalizedRecords, search]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredRecords.length / pageSize));
+  const paginatedRecords = filteredRecords.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [activeCategory.key, search]);
+
+  useEffect(() => {
+    if (currentPage > totalPages) setCurrentPage(totalPages);
+  }, [currentPage, totalPages]);
 
   return (
     <div dir={isRtl ? "rtl" : "ltr"} className="min-h-screen bg-slate-50">
@@ -205,7 +236,7 @@ const ResearchDatabase = () => {
             </div>
           ) : (
             <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-              {filteredRecords.map((record) => (
+              {paginatedRecords.map((record) => (
                 <article key={record.id} className="group flex min-h-[260px] flex-col overflow-hidden rounded-[1.6rem] border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-[0_20px_50px_rgba(5,150,105,0.1)]">
                   <div className="flex items-start justify-between gap-4">
                     {record.image && !record.image.endsWith("/null") ? (
@@ -235,6 +266,40 @@ const ResearchDatabase = () => {
                 </article>
               ))}
             </div>
+          )}
+
+          {!loading && filteredRecords.length > pageSize && (
+            <nav className="mt-8 flex flex-wrap items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm" aria-label="Pagination">
+              <button
+                type="button"
+                disabled={currentPage === 1}
+                onClick={() => setCurrentPage((page) => page - 1)}
+                className="inline-flex h-10 items-center gap-1 rounded-xl border border-slate-200 px-3 text-sm font-bold text-slate-600 disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                <ChevronRight size={17} /> {isRtl ? "السابق" : "Previous"}
+              </button>
+              {Array.from(
+                { length: Math.min(5, totalPages) },
+                (_, index) => Math.min(Math.max(1, currentPage - 2), Math.max(1, totalPages - 4)) + index
+              ).map((page) => (
+                <button
+                  type="button"
+                  key={page}
+                  onClick={() => setCurrentPage(page)}
+                  className={`h-10 min-w-10 rounded-xl px-3 text-sm font-black ${page === currentPage ? "bg-emerald-600 text-white" : "border border-slate-200 bg-white text-slate-600 hover:border-emerald-300"}`}
+                >
+                  {page}
+                </button>
+              ))}
+              <button
+                type="button"
+                disabled={currentPage === totalPages}
+                onClick={() => setCurrentPage((page) => page + 1)}
+                className="inline-flex h-10 items-center gap-1 rounded-xl border border-slate-200 px-3 text-sm font-bold text-slate-600 disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                {isRtl ? "التالي" : "Next"} <ChevronLeft size={17} />
+              </button>
+            </nav>
           )}
         </section>
       </main>
