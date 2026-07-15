@@ -12,6 +12,8 @@ import MinistriesHigherEducationScientificResearch from '../User/pages/Database/
 import MediaCenterSection from '../User/pages/MediaCenter/MediaCenterSection';
 import ContactPage from '../User/pages/Contact/ContactPage';
 import FaqPage from '../User/pages/Faq/FaqPage';
+import ProfilePage from '../User/pages/Profile/ProfilePage';
+import ProtectedRoute from '../Authentification/ProtectedRoute';
 
 import Login from '../Authentification/Login'; 
 import Register from '../Authentification/Register';
@@ -33,6 +35,9 @@ const UserRoutes = () => (
       <Route path="mediaCenter" element={<MediaCenterSection />} />
       <Route path="contact" element={<ContactPage />} />
       <Route path="faq" element={<FaqPage />} />
+      <Route element={<ProtectedRoute allowedRoles={['user', 'superviseur']} />}>
+        <Route path="profile" element={<ProfilePage />} />
+      </Route>
 
 
 

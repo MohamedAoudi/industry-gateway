@@ -140,15 +140,12 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Search, 
-  Bell, 
   LogOut, 
   ChevronDown, 
-  Settings, 
   ShieldCheck, 
-  UserCircle,
-  Command,
-  Sparkles
+  UserCircle
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const AdminHeader = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -191,20 +188,9 @@ const AdminHeader = () => {
           />
         </div>
 
-        {/* 2. منطقة الإشعارات والملف الشخصي */}
+        {/* 2. منطقة الملف الشخصي */}
         <div className="flex items-center gap-4">
           
-          {/* زر الإشعارات الذكي */}
-          <button className="relative p-3 rounded-xl hover:bg-slate-100 transition-colors group">
-            <Bell size={20} className="text-emerald-600 group-hover:text-slate-900" />
-            <span className="absolute top-2.5 right-2.5 w-4 h-4 bg-emerald-600 text-[9px] font-black text-white rounded-full border-2 border-white flex items-center justify-center">
-              3
-            </span>
-          </button>
-
-          {/* خط فاصل عمودي */}
-          <div className="h-8 w-[1px] bg-slate-200 mx-2" />
-
           {/* قائمة المستخدم */}
           <div className="relative">
             <button 
@@ -254,8 +240,7 @@ const AdminHeader = () => {
                     </div>
 
                     <div className="space-y-1">
-                      <MenuButton Icon={UserCircle} label="الملف الشخصي" />
-                      <MenuButton Icon={Settings} label="إعدادات الحساب" />
+                      <MenuButton Icon={UserCircle} label="الملف الشخصي" to="/profile" />
                     </div>
 
                     <div className="h-px bg-slate-100 my-2 mx-2" />
@@ -281,8 +266,11 @@ const AdminHeader = () => {
 };
 
 // مكون زر القائمة الفرعي لسهولة التعديل
-const MenuButton = ({ Icon, label, tag }) => (
-  <button className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all group">
+const MenuButton = ({ Icon, label, tag, to }) => {
+  const Component = to ? Link : 'button';
+
+  return (
+  <Component {...(to ? { to } : { type: 'button' })} className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all group">
     <div className="flex items-center gap-3">
       <Icon size={18} className="text-slate-400 group-hover:text-amber-600 transition-colors" />
       <span className="text-sm font-bold">{label}</span>
@@ -292,7 +280,8 @@ const MenuButton = ({ Icon, label, tag }) => (
         {tag}
       </span>
     )}
-  </button>
-);
+  </Component>
+  );
+};
 
 export default AdminHeader;

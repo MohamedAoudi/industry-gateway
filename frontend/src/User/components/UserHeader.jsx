@@ -258,7 +258,7 @@ import {
   Zap, Database, LogOut, User, Layers, Info, Handshake, Library,
   Presentation, Megaphone, Microscope,
   GraduationCap, FlaskConical, Workflow, FileBadge, UsersRound,
-  Newspaper, Mail, CircleHelp
+  Newspaper, Mail, CircleHelp, LayoutDashboard
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -342,6 +342,7 @@ const UserHeader = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [userData, setUserData] = useState({ prenom: "", nom: "" });
+  const [userRole, setUserRole] = useState("");
 
   useEffect(() => {
     const checkAuth = () => {
@@ -349,6 +350,7 @@ const UserHeader = () => {
       const prenom = localStorage.getItem('prenomUtilisateur');
       const nom = localStorage.getItem('nomUtilisateur');
       setIsLoggedIn(!!role);
+      setUserRole(role || "");
       setUserData({ prenom: prenom || "", nom: nom || "" });
     };
 
@@ -361,6 +363,7 @@ const UserHeader = () => {
   const handleLogout = () => {
     localStorage.clear();
     setIsLoggedIn(false);
+    setUserRole("");
     window.location.href = '/login'; 
   };
 
@@ -532,6 +535,16 @@ const UserHeader = () => {
                     {t("menu.profile") || "Mon Profil"}
                   </Link>
 
+                  {userRole === "superviseur" && (
+                    <Link
+                      to="/admin/dashboard"
+                      className="flex items-center gap-2.5 px-3 py-2 text-[13px] font-medium text-slate-700 rounded-xl hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
+                    >
+                      <LayoutDashboard size={15} />
+                      {i18n.language === "ar" ? "لوحة الإدارة" : "Admin dashboard"}
+                    </Link>
+                  )}
+
                   <div className="h-px bg-slate-100 my-1 mx-1.5"></div>
 
                   <button
@@ -615,6 +628,24 @@ const UserHeader = () => {
             <Mail size={17} className="text-emerald-600" />
             {t("menu.contact")}
           </Link>
+          {isLoggedIn && (
+            <>
+              <Link onClick={() => setIsMobileMenuOpen(false)} to="/profile" className="mt-2 flex items-center gap-3 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-bold text-emerald-800">
+                <User size={17} />
+                {t("menu.profile")}
+              </Link>
+              {userRole === "superviseur" && (
+                <Link onClick={() => setIsMobileMenuOpen(false)} to="/admin/dashboard" className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700">
+                  <LayoutDashboard size={17} />
+                  {i18n.language === "ar" ? "لوحة الإدارة" : "Admin dashboard"}
+                </Link>
+              )}
+              <button onClick={handleLogout} className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-red-600 hover:bg-red-50">
+                <LogOut size={17} />
+                {t("menu.logout")}
+              </button>
+            </>
+          )}
           {!isLoggedIn && (
             <Link onClick={() => setIsMobileMenuOpen(false)} to="/login" className="mt-2 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-l from-emerald-600 to-teal-500 px-4 py-3 text-sm font-bold text-white shadow-[0_8px_20px_rgba(5,150,105,0.25)] transition-all hover:from-emerald-500 hover:to-teal-400">
               <User size={16} />
