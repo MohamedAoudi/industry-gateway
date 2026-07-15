@@ -20,6 +20,9 @@ import {
 } from "lucide-react";
 
 import apiAdmin from "../../../api/apiAdmin";
+import Pagination from "../../../components/Pagination";
+
+const PAGE_SIZE = 8;
 
 const translations = {
   ar: {
@@ -69,6 +72,7 @@ const ManageFaq = () => {
   const [loading, setLoading] = useState(true);
   const [savingId, setSavingId] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const loadQuestions = useCallback(async () => {
     setLoading(true);
@@ -104,6 +108,16 @@ const ManageFaq = () => {
       return matchesFilter && matchesSearch;
     });
   }, [filter, query, questions]);
+  const totalPages = Math.max(1, Math.ceil(visibleQuestions.length / PAGE_SIZE));
+  const paginatedQuestions = visibleQuestions.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filter, query]);
+
+  useEffect(() => {
+    if (currentPage > totalPages) setCurrentPage(totalPages);
+  }, [currentPage, totalPages]);
 
   const updateDraft = (id, changes) => {
     setDrafts((current) => ({ ...current, [id]: { ...current[id], ...changes } }));
@@ -203,7 +217,7 @@ const ManageFaq = () => {
       ) : (
         <div className="space-y-5">
           <AnimatePresence mode="popLayout">
-            {visibleQuestions.map((item) => {
+            {paginatedQuestions.map((item) => {
               const draft = drafts[item.id] ?? { answer: "", isPublished: false };
               const isSaving = savingId === item.id;
               const isDeleting = deletingId === item.id;
@@ -245,6 +259,7 @@ const ManageFaq = () => {
               );
             })}
           </AnimatePresence>
+          <Pagination page={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} className="pt-3" />
         </div>
       )}
     </div>

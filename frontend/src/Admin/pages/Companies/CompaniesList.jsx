@@ -2,11 +2,15 @@ import React, { useEffect, useState } from 'react';
 import apiAdmin from '../../../api/apiAdmin';
 import { Trash2, Edit, Mail, Factory, Search, Building2, ExternalLink } from 'lucide-react';
 import { toast, Toaster } from 'react-hot-toast';
+import Pagination from '../../../components/Pagination';
+
+const PAGE_SIZE = 10;
 
 const CompaniesList = () => {
   const [companies, setCompanies] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     const fetchCompanies = async () => {
@@ -26,6 +30,16 @@ const CompaniesList = () => {
   const filteredCompanies = companies.filter(company =>
     company.company_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  const totalPages = Math.max(1, Math.ceil(filteredCompanies.length / PAGE_SIZE));
+  const paginatedCompanies = filteredCompanies.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
+
+  useEffect(() => {
+    if (currentPage > totalPages) setCurrentPage(totalPages);
+  }, [currentPage, totalPages]);
 
   return (
     <div className="p-8 bg-slate-50 min-h-screen" dir="rtl">
@@ -62,7 +76,7 @@ const CompaniesList = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-50">
-            {filteredCompanies.map((company) => (
+            {paginatedCompanies.map((company) => (
               <tr key={company.id} className="hover:bg-slate-50/50 transition-colors">
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
@@ -107,6 +121,7 @@ const CompaniesList = () => {
           </div>
         )}
       </div>
+      <Pagination page={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} className="mt-6" />
     </div>
   );
 };

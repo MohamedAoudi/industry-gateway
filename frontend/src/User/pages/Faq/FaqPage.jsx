@@ -7,6 +7,9 @@ import {
 } from "lucide-react";
 
 import apiAdmin from "../../../api/apiAdmin";
+import Pagination from "../../../components/Pagination";
+
+const PAGE_SIZE = 8;
 
 const copy = {
   ar: {
@@ -56,6 +59,7 @@ const FaqPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [notice, setNotice] = useState(null);
   const [form, setForm] = useState({ name: "", email: "", question: "" });
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     let isMounted = true;
@@ -78,6 +82,17 @@ const FaqPage = () => {
       `${item.question ?? ""} ${item.answer ?? ""}`.toLocaleLowerCase().includes(term),
     );
   }, [query, questions]);
+  const totalPages = Math.max(1, Math.ceil(filteredQuestions.length / PAGE_SIZE));
+  const paginatedQuestions = filteredQuestions.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+  useEffect(() => {
+    setCurrentPage(1);
+    setOpenId(null);
+  }, [query]);
+
+  useEffect(() => {
+    if (currentPage > totalPages) setCurrentPage(totalPages);
+  }, [currentPage, totalPages]);
 
   const updateForm = ({ target: { name, value } }) => {
     setForm((current) => ({ ...current, [name]: value }));
@@ -135,7 +150,7 @@ const FaqPage = () => {
               {isLoading && <div className="flex items-center justify-center gap-3 rounded-2xl border border-dashed border-slate-200 py-16 text-sm font-semibold text-slate-500"><LoaderCircle size={20} className="animate-spin text-emerald-600" />{text.loading}</div>}
               {!isLoading && loadError && <div className="flex items-center gap-3 rounded-2xl border border-red-100 bg-red-50 p-5 text-sm font-semibold text-red-700"><AlertCircle size={19} className="shrink-0" />{text.loadError}</div>}
               {!isLoading && !loadError && filteredQuestions.length === 0 && <div className="rounded-2xl border border-dashed border-slate-200 py-16 text-center text-sm font-semibold text-slate-500"><HelpCircle size={28} className="mx-auto mb-3 text-emerald-500" />{questions.length === 0 ? text.empty : text.noResults}</div>}
-              {!isLoading && !loadError && filteredQuestions.map((item) => {
+              {!isLoading && !loadError && paginatedQuestions.map((item) => {
                 const isOpen = openId === item.id;
                 return (
                   <article key={item.id} className={`overflow-hidden rounded-2xl border transition-colors ${isOpen ? "border-emerald-200 bg-emerald-50/40" : "border-slate-200 bg-white hover:border-emerald-200"}`}>
@@ -147,6 +162,7 @@ const FaqPage = () => {
                   </article>
                 );
               })}
+              {!isLoading && !loadError && <Pagination page={currentPage} totalPages={totalPages} onPageChange={(page) => { setCurrentPage(page); setOpenId(null); }} className="pt-4" />}
             </div>
           </section>
 

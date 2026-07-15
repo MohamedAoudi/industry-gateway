@@ -3,11 +3,22 @@ import apiAdmin from '../../../api/apiAdmin';
 import { Check, X, Building2, Clock, ShieldCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast, Toaster } from 'react-hot-toast';
+import Pagination from '../../../components/Pagination';
+
+const PAGE_SIZE = 9;
 
 const CompanyRequests = () => {
   const [requests, setRequests] = useState([]);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiMessage, setAiMessage] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.max(1, Math.ceil(requests.length / PAGE_SIZE));
+  const paginatedRequests = requests.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+  useEffect(() => {
+    if (currentPage > totalPages) setCurrentPage(totalPages);
+  }, [currentPage, totalPages]);
 
   useEffect(() => {
     fetchRequests();
@@ -86,7 +97,7 @@ const CompanyRequests = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <AnimatePresence>
-          {requests.map((req) => (
+          {paginatedRequests.map((req) => (
             <motion.div
               key={req.idCompany} // ✅ التعديل هنا: استخدام idCompany كمفتاح
               initial={{ opacity: 0, y: 20 }}
@@ -122,6 +133,8 @@ const CompanyRequests = () => {
           ))}
         </AnimatePresence>
       </div>
+
+      <Pagination page={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} className="mt-8" />
 
       {requests.length === 0 && (
         <div className="text-center py-40">

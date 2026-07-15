@@ -127,6 +127,9 @@ import React, { useEffect, useState } from 'react';
 import apiAdmin from '../../../api/apiAdmin';
 import { Trash2, Edit, Mail, Microscope, Globe, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Pagination from '../../../components/Pagination';
+
+const PAGE_SIZE = 10;
 
 const ResearchersList = () => {
   const [researchers, setResearchers] = useState([]);
@@ -134,6 +137,7 @@ const ResearchersList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiMessage, setAiMessage] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
 
   // État pour le formulaire
   const [formData, setFormData] = useState({
@@ -156,6 +160,12 @@ const ResearchersList = () => {
   useEffect(() => {
     fetchResearchers();
   }, []);
+
+  const totalPages = Math.max(1, Math.ceil(researchers.length / PAGE_SIZE));
+
+  useEffect(() => {
+    if (currentPage > totalPages) setCurrentPage(totalPages);
+  }, [currentPage, totalPages]);
 
   const handleCreate = async (e) => {
     e.preventDefault();
@@ -191,6 +201,8 @@ const handleImportWithAI = async () => {
 };
 
   if (loading) return <div className="p-10 text-center font-bold text-slate-600">جاري تحميل البيانات...</div>;
+
+  const paginatedResearchers = researchers.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
   return (
     <div className="p-8 bg-slate-50 min-h-screen" dir="rtl">
@@ -235,7 +247,7 @@ const handleImportWithAI = async () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-50">
-            {researchers.map((res) => (
+            {paginatedResearchers.map((res) => (
               <tr key={res.idResearcher} className="hover:bg-slate-50/50 transition-colors">
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
@@ -275,6 +287,8 @@ const handleImportWithAI = async () => {
           </tbody>
         </table>
       </div>
+
+      <Pagination page={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} className="mt-6" />
 
       {/* MODAL - Utilisation de Framer Motion pour l'animation */}
       <AnimatePresence>

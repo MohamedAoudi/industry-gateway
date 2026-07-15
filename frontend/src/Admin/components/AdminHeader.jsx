@@ -215,14 +215,14 @@ const AdminHeader = () => {
         
         {/* 1. نظام البحث المتطور */}
         <form
-          className="relative group w-full max-w-lg"
+          className="relative group w-52 sm:w-64"
           onSubmit={(event) => {
             event.preventDefault();
             if (filteredMenuItems[0]) goToMenu(filteredMenuItems[0]);
           }}
         >
-          <div className="absolute inset-y-0 left-2 pr-4 flex items-center pointer-events-none">
-            <Search size={18} className="text-slate-400 group-focus-within:text-emerald-600 transition-colors" />
+          <div className="absolute inset-y-0 left-1.5 pr-3 flex items-center pointer-events-none">
+            <Search size={15} className="text-slate-400 group-focus-within:text-emerald-600 transition-colors" />
           </div>
           <input 
             type="text" 
@@ -231,7 +231,7 @@ const AdminHeader = () => {
             onFocus={() => setSearchFocused(true)}
             onBlur={() => setTimeout(() => setSearchFocused(false), 120)}
             placeholder={i18n.language === 'ar' ? 'ابحث في قائمة الإدارة...' : 'Search admin menu...'}
-            className="w-full bg-slate-100/50 border-none rounded-2xl pr-12 pl-4 py-3 text-xs font-medium focus:ring-2 focus:ring-emerald-600 focus:bg-white transition-all outline-none"
+            className="w-full bg-slate-100/50 border-none rounded-xl pr-4 pl-9 py-2 text-[11px] font-medium focus:ring-2 focus:ring-emerald-600 focus:bg-white transition-all outline-none"
           />
           {searchFocused && menuSearch.trim() && (
             <div className="absolute inset-x-0 top-full z-50 mt-2 max-h-80 overflow-y-auto rounded-2xl border border-slate-100 bg-white p-2 shadow-2xl">

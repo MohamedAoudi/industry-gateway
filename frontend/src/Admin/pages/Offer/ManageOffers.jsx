@@ -428,6 +428,9 @@ import {
   Loader2, ChevronDown, LayoutGrid 
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import Pagination from '../../../components/Pagination';
+
+const PAGE_SIZE = 8;
 
 // إعدادات الثيم لكل حالة
 const statusThemes = {
@@ -510,6 +513,14 @@ const StatusDropdown = ({ currentStatus, offerId, onStatusUpdate }) => {
 
 const ManageOffers = () => {
   const [offers, setOffers] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.max(1, Math.ceil(offers.length / PAGE_SIZE));
+  const paginatedOffers = offers.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+  useEffect(() => {
+    if (currentPage > totalPages) setCurrentPage(totalPages);
+  }, [currentPage, totalPages]);
 
   useEffect(() => {
     apiAdmin.get('/offers').then(res => setOffers(res.data.data));
@@ -539,7 +550,7 @@ const ManageOffers = () => {
 
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10">
         <AnimatePresence mode='popLayout'>
-          {offers.map((offer) => {
+          {paginatedOffers.map((offer) => {
             const theme = statusThemes[offer.status] || statusThemes.open;
             return (
               <motion.div
@@ -602,6 +613,7 @@ const ManageOffers = () => {
           })}
         </AnimatePresence>
       </div>
+      <Pagination page={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} className="mt-10" />
     </div>
   );
 };
