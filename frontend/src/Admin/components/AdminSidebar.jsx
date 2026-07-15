@@ -8,7 +8,6 @@ import {
   Briefcase,
   ClipboardList,
   ChevronDown,
-  Network,
   Database,
   Microscope,
   GraduationCap,
@@ -18,7 +17,13 @@ import {
   UserPlus,
   UsersRound,
   CircleHelp,
+  Newspaper,
+  CalendarDays,
+  FileText,
+  Trophy,
+  Sparkles,
 } from "lucide-react";
+import portalLogo from "../../User/assets/images/logos/logo.png";
 
 const NavItem = ({
   icon,
@@ -159,6 +164,20 @@ const AdminSidebar = () => {
     },
 
     {
+      id: "media_center",
+      icon: <Newspaper />,
+      label: i18n.language === "ar" ? "المركز الإعلامي" : "Media center",
+      hasSubmenu: true,
+      submenu: [
+        { label: i18n.language === "ar" ? "أخبار" : "News", icon: <Newspaper size={14} />, path: "/admin/media-center/news" },
+        { label: i18n.language === "ar" ? "فعاليات" : "Events", icon: <CalendarDays size={14} />, path: "/admin/media-center/events" },
+        { label: i18n.language === "ar" ? "إصدارات" : "Releases", icon: <FileText size={14} />, path: "/admin/media-center/releases" },
+        { label: i18n.language === "ar" ? "مسابقات وجوائز" : "Competitions and awards", icon: <Trophy size={14} />, path: "/admin/media-center/competitions" },
+        { label: i18n.language === "ar" ? "قصص نجاح" : "Success stories", icon: <Sparkles size={14} />, path: "/admin/media-center/stories" },
+      ],
+    },
+
+    {
       id: "users",
       icon: <UsersRound />,
       label: i18n.language === "ar" ? "إدارة المستخدمين" : "User management",
@@ -221,34 +240,10 @@ const AdminSidebar = () => {
       "
     >
       {/* Logo */}
-      <div className="px-6 py-8 border-b border-slate-100">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-2xl bg-emerald-600 flex items-center justify-center text-white shadow-lg shadow-emerald-200">
-            <Network size={24} />
-          </div>
-
-          <div>
-            <h1 className="font-black text-lg text-slate-900 leading-tight">
-              {i18n.language === "ar" ? (
-                <>
-                  منصة الربط
-                  <span className="text-emerald-600"> الصناعي</span>
-                </>
-              ) : (
-                <>
-                  Industrial
-                  <span className="text-emerald-600"> Link</span>
-                </>
-              )}
-            </h1>
-
-            <p className="text-xs text-slate-500 mt-1">
-              {i18n.language === "ar"
-                ? "لوحة الإدارة"
-                : "Administration Panel"}
-            </p>
-          </div>
-        </div>
+      <div className="border-b border-slate-100 px-4 py-4">
+        <Link to="/" className="flex items-center justify-center rounded-2xl bg-white p-2 transition hover:bg-slate-50">
+          <img src={portalLogo} alt={i18n.language === "ar" ? "شعار البوابة" : "Portal logo"} className="h-24 w-auto max-w-full object-contain" />
+        </Link>
       </div>
 
       {/* Navigation */}

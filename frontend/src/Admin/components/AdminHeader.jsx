@@ -145,12 +145,49 @@ import {
   ShieldCheck, 
   UserCircle
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
+const adminMenuItems = [
+  { ar: 'الرئيسية', en: 'Dashboard', path: '/admin/dashboard' },
+  { ar: 'إدارة المستخدمين', en: 'User management', path: '/admin/users' },
+  { ar: 'الباحثون والمبتكرون', en: 'Researchers and innovators', path: '/admin/researchers' },
+  { ar: 'مراكز البحث العلمي والإبتكار والذكاء الصناعي', en: 'Scientific Research, Innovation and AI Centers', path: '/admin/research-database/research-innovation-ai' },
+  { ar: 'الجامعات والمؤسسات الأكاديمية والعلمية', en: 'Universities and academic institutions', path: '/admin/research-database/universities' },
+  { ar: 'الحاضنات والأقطاب التكنولوجية والمختبرات', en: 'Incubators, technology poles and laboratories', path: '/admin/research-database/incubators-technology-labs' },
+  { ar: 'البرامج والمبادرات والاستراتيجيات', en: 'Programs, initiatives and strategies', path: '/admin/research-database/programs-initiatives-strategies' },
+  { ar: 'مكاتب الملكية الصناعية وبراءات الإختراع', en: 'Industrial property and patent offices', path: '/admin/research-database/industrial-property-patents' },
+  { ar: 'قاعدة الخبراء والمختصين', en: 'Experts and specialists', path: '/admin/research-database/experts-specialists' },
+  { ar: 'دليل الشركات الصناعية', en: 'Industrial companies directory', path: '/admin/companies' },
+  { ar: 'طلبات انضمام الشركات', en: 'Company applications', path: '/admin/companies/requests' },
+  { ar: 'عروض التعاون', en: 'Collaboration offers', path: '/admin/offers' },
+  { ar: 'الأسئلة الشائعة', en: 'FAQ', path: '/admin/faq' },
+  { ar: 'أخبار المركز الإعلامي', en: 'Media center news', path: '/admin/media-center/news' },
+  { ar: 'فعاليات المركز الإعلامي', en: 'Media center events', path: '/admin/media-center/events' },
+  { ar: 'إصدارات المركز الإعلامي', en: 'Media center releases', path: '/admin/media-center/releases' },
+  { ar: 'مسابقات وجوائز', en: 'Competitions and awards', path: '/admin/media-center/competitions' },
+  { ar: 'قصص نجاح', en: 'Success stories', path: '/admin/media-center/stories' },
+  { ar: 'الملف الشخصي', en: 'Profile', path: '/profile' },
+];
 
 const AdminHeader = () => {
+  const navigate = useNavigate();
+  const { i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [adminData, setAdminData] = useState({ prenom: "", nom: "", email: "" });
+  const [menuSearch, setMenuSearch] = useState("");
+  const [searchFocused, setSearchFocused] = useState(false);
+
+  const filteredMenuItems = menuSearch.trim()
+    ? adminMenuItems.filter((item) => `${item.ar} ${item.en}`.toLocaleLowerCase().includes(menuSearch.trim().toLocaleLowerCase()))
+    : [];
+
+  const goToMenu = (item) => {
+    setMenuSearch("");
+    setSearchFocused(false);
+    navigate(item.path);
+  };
 
   // تأثير عند التمرير لتغيير شفافية الخلفية
   useEffect(() => {
@@ -177,16 +214,48 @@ const AdminHeader = () => {
       <div className="max-w-[1600px] mx-auto flex justify-between items-center">
         
         {/* 1. نظام البحث المتطور */}
-        <div className="relative group w-full max-w-lg">
+        <form
+          className="relative group w-full max-w-lg"
+          onSubmit={(event) => {
+            event.preventDefault();
+            if (filteredMenuItems[0]) goToMenu(filteredMenuItems[0]);
+          }}
+        >
           <div className="absolute inset-y-0 left-2 pr-4 flex items-center pointer-events-none">
             <Search size={18} className="text-slate-400 group-focus-within:text-emerald-600 transition-colors" />
           </div>
           <input 
             type="text" 
-            placeholder="ابحث هنا..." 
+            value={menuSearch}
+            onChange={(event) => setMenuSearch(event.target.value)}
+            onFocus={() => setSearchFocused(true)}
+            onBlur={() => setTimeout(() => setSearchFocused(false), 120)}
+            placeholder={i18n.language === 'ar' ? 'ابحث في قائمة الإدارة...' : 'Search admin menu...'}
             className="w-full bg-slate-100/50 border-none rounded-2xl pr-12 pl-4 py-3 text-xs font-medium focus:ring-2 focus:ring-emerald-600 focus:bg-white transition-all outline-none"
           />
-        </div>
+          {searchFocused && menuSearch.trim() && (
+            <div className="absolute inset-x-0 top-full z-50 mt-2 max-h-80 overflow-y-auto rounded-2xl border border-slate-100 bg-white p-2 shadow-2xl">
+              {filteredMenuItems.length > 0 ? filteredMenuItems.map((item) => (
+                <button
+                  type="button"
+                  key={item.path}
+                  onMouseDown={(event) => {
+                    event.preventDefault();
+                    goToMenu(item);
+                  }}
+                  className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-start text-sm font-bold text-slate-700 transition hover:bg-emerald-50 hover:text-emerald-700"
+                >
+                  <Search size={15} className="shrink-0 text-emerald-600" />
+                  <span>{i18n.language === 'ar' ? item.ar : item.en}</span>
+                </button>
+              )) : (
+                <p className="px-4 py-5 text-center text-sm font-bold text-slate-400">
+                  {i18n.language === 'ar' ? 'لا توجد صفحة بهذا الاسم' : 'No matching menu item'}
+                </p>
+              )}
+            </div>
+          )}
+        </form>
 
         {/* 2. منطقة الملف الشخصي */}
         <div className="flex items-center gap-4">

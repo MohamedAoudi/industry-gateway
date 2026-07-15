@@ -1,16 +1,20 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import {
   ArrowLeft,
   CalendarDays,
+  ChevronLeft,
+  ChevronRight,
   FileText,
   MapPin,
   Newspaper,
   Quote,
   Sparkles,
   Trophy,
+  Loader2,
 } from "lucide-react";
+import apiAdmin from "../../../api/apiAdmin";
 
 const tabs = [
   { id: "news", labelKey: "submenu.media_center.news", icon: Newspaper },
@@ -133,9 +137,41 @@ const MediaCenterSection = () => {
   const isRtl = i18n.dir() === "rtl";
   const locale = isRtl ? "ar-MA" : "en-US";
   const [activeTab, setActiveTab] = useState("news");
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const pageSize = 2;
   const currentTab = tabs.find((tab) => tab.id === activeTab);
   const CurrentIcon = currentTab.icon;
-  const items = mediaContent[activeTab];
+
+  useEffect(() => {
+    let mounted = true;
+    setLoading(true);
+    apiAdmin.get("/media-items", { params: { category: activeTab } })
+      .then(({ data }) => {
+        if (!mounted) return;
+        setItems((data.data ?? []).map((item) => ({
+          ...item,
+          titleAr: item.title_ar,
+          titleEn: item.title_en,
+          descriptionAr: item.description_ar,
+          descriptionEn: item.description_en,
+          date: item.event_date,
+          locationAr: item.location_ar,
+          locationEn: item.location_en,
+          image: item.image_url,
+          type: item.content_type,
+        })));
+      })
+      .catch(() => { if (mounted) setItems([]); })
+      .finally(() => { if (mounted) setLoading(false); });
+    return () => { mounted = false; };
+  }, [activeTab]);
+
+  useEffect(() => { setPage(1); }, [activeTab]);
+
+  const totalPages = Math.max(1, Math.ceil(items.length / pageSize));
+  const paginatedItems = items.slice((page - 1) * pageSize, page * pageSize);
 
   const getTitle = (item) => isRtl ? item.titleAr : item.titleEn;
   const getDescription = (item) => isRtl ? item.descriptionAr : item.descriptionEn;
@@ -214,9 +250,11 @@ const MediaCenterSection = () => {
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.35 }}
           >
-            {activeTab === "news" && (
+            {loading && <div className="flex min-h-64 items-center justify-center text-emerald-700"><Loader2 size={32} className="animate-spin" /></div>}
+            {!loading && items.length === 0 && <div className="rounded-[1.75rem] border border-dashed border-slate-300 bg-white p-14 text-center text-slate-500">{isRtl ? "لا يوجد محتوى منشور في هذا القسم." : "No published content in this section."}</div>}
+            {!loading && items.length > 0 && activeTab === "news" && (
               <div className="grid gap-6 lg:grid-cols-3">
-                {items.map((item, index) => (
+                {paginatedItems.map((item, index) => (
                   <article key={item.id} className={`group overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-[0_15px_45px_rgba(15,23,42,0.06)] transition-all duration-500 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-[0_24px_55px_rgba(5,150,105,0.13)] ${index === 0 ? "lg:col-span-2" : ""}`}>
                     <div className={`relative overflow-hidden bg-slate-200 ${index === 0 ? "h-72 sm:h-96" : "h-64"}`}>
                       <img src={item.image} alt={getTitle(item)} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
@@ -224,7 +262,7 @@ const MediaCenterSection = () => {
                       <div className="absolute inset-x-0 bottom-0 p-6 text-white sm:p-8">
                         <span className="flex items-center gap-2 text-xs font-bold text-emerald-300">
                           <CalendarDays size={14} />
-                          {formatDate(item.date)}
+                          {item.date && formatDate(item.date)}
                         </span>
                         <h3 className={`mt-3 font-black leading-tight ${index === 0 ? "text-2xl sm:text-3xl" : "text-xl"}`}>{getTitle(item)}</h3>
                       </div>
@@ -241,9 +279,9 @@ const MediaCenterSection = () => {
               </div>
             )}
 
-            {activeTab === "events" && (
+            {!loading && items.length > 0 && activeTab === "events" && (
               <div className="grid gap-6 lg:grid-cols-2">
-                {items.map((item) => {
+                {paginatedItems.map((item) => {
                   const date = new Date(item.date);
                   return (
                     <article key={item.id} className="group flex flex-col overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:border-emerald-300 hover:shadow-[0_20px_50px_rgba(5,150,105,0.1)] sm:flex-row">
@@ -263,9 +301,9 @@ const MediaCenterSection = () => {
               </div>
             )}
 
-            {activeTab === "releases" && (
+            {!loading && items.length > 0 && activeTab === "releases" && (
               <div className="space-y-4">
-                {items.map((item, index) => (
+                {paginatedItems.map((item, index) => (
                   <article key={item.id} className="group flex flex-col gap-6 rounded-[1.6rem] border border-slate-200 bg-white p-6 transition-all hover:border-emerald-300 hover:shadow-[0_18px_45px_rgba(5,150,105,0.09)] sm:flex-row sm:items-center">
                     <span className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-emerald-50 text-emerald-700"><FileText size={27} /></span>
                     <div className="flex-1">
@@ -279,9 +317,9 @@ const MediaCenterSection = () => {
               </div>
             )}
 
-            {activeTab === "competitions" && (
+            {!loading && items.length > 0 && activeTab === "competitions" && (
               <div className="grid gap-6 lg:grid-cols-2">
-                {items.map((item, index) => (
+                {paginatedItems.map((item, index) => (
                   <article key={item.id} className="group relative overflow-hidden rounded-[2rem] border border-amber-200 bg-gradient-to-br from-amber-50 via-white to-emerald-50 p-8 shadow-sm transition-all hover:-translate-y-1 hover:shadow-[0_22px_55px_rgba(217,119,6,0.12)]">
                     <div className="pointer-events-none absolute -right-16 -top-20 h-52 w-52 rounded-full border-[38px] border-amber-500/[0.06]" />
                     <div className="flex items-start justify-between">
@@ -296,9 +334,9 @@ const MediaCenterSection = () => {
               </div>
             )}
 
-            {activeTab === "stories" && (
+            {!loading && items.length > 0 && activeTab === "stories" && (
               <div className="grid gap-6 lg:grid-cols-2">
-                {items.map((item) => (
+                {paginatedItems.map((item) => (
                   <article key={item.id} className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-emerald-800 to-teal-700 p-8 text-white shadow-[0_24px_60px_rgba(5,150,105,0.16)] sm:p-10">
                     <Quote size={48} className="text-white/15" />
                     <blockquote className="mt-6 text-xl font-semibold leading-10 text-emerald-50/90">“{getDescription(item)}”</blockquote>
@@ -309,6 +347,13 @@ const MediaCenterSection = () => {
             )}
           </motion.section>
         </AnimatePresence>
+        {!loading && items.length > pageSize && (
+          <nav className="mt-8 flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+            <button disabled={page === 1} onClick={() => setPage((current) => current - 1)} className="rounded-xl border border-slate-200 p-2.5 text-slate-600 disabled:opacity-40"><ChevronRight size={18} /></button>
+            {Array.from({ length: totalPages }, (_, index) => index + 1).map((number) => <button key={number} onClick={() => setPage(number)} className={`h-10 min-w-10 rounded-xl px-3 text-sm font-black ${page === number ? "bg-emerald-600 text-white" : "border border-slate-200 text-slate-600"}`}>{number}</button>)}
+            <button disabled={page === totalPages} onClick={() => setPage((current) => current + 1)} className="rounded-xl border border-slate-200 p-2.5 text-slate-600 disabled:opacity-40"><ChevronLeft size={18} /></button>
+          </nav>
+        )}
       </main>
     </div>
   );

@@ -38,7 +38,7 @@
 
 
 
-import { Routes, Route } from "react-router-dom";
+import { Navigate, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "../Authentification/ProtectedRoute";
 import AdminLayout from "../Admin/AdminLayout";
 import Dashboard from "../Admin/pages/Dashboard/Dashboard";
@@ -49,6 +49,7 @@ import ManageOffers from "../Admin/pages/Offer/ManageOffers";
 import ManageFaq from "../Admin/pages/Faq/ManageFaq";
 import ManageResearchDatabase from "../Admin/pages/ResearchDatabase/ManageResearchDatabase";
 import ManageUsers from "../Admin/pages/Users/ManageUsers";
+import ManageMediaCenter from "../Admin/pages/MediaCenter/ManageMediaCenter";
 
 
 const AdminRoutes = () => (
@@ -59,6 +60,12 @@ const AdminRoutes = () => (
         <Route index element={<Dashboard />} /> 
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="users" element={<ManageUsers />} />
+        <Route path="media-center/news" element={<ManageMediaCenter lockedCategory="news" />} />
+        <Route path="media-center" element={<Navigate to="/admin/media-center/news" replace />} />
+        <Route path="media-center/events" element={<ManageMediaCenter lockedCategory="events" />} />
+        <Route path="media-center/releases" element={<ManageMediaCenter lockedCategory="releases" />} />
+        <Route path="media-center/competitions" element={<ManageMediaCenter lockedCategory="competitions" />} />
+        <Route path="media-center/stories" element={<ManageMediaCenter lockedCategory="stories" />} />
         <Route path="researchers" element={<ResearchersList />} />
         <Route path="research-database/research-innovation-ai" element={<ManageResearchDatabase lockedCategory="research-innovation-ai" />} />
         <Route path="research-database/universities" element={<ManageResearchDatabase lockedCategory="universities" />} />

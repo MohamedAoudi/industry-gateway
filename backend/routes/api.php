@@ -7,6 +7,7 @@ use App\Http\Controllers\CentersExcellenceArtificialIntelligenceController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\FaqQuestionController;
 use App\Http\Controllers\IndustrialPropertyPatentOfficesController;
+use App\Http\Controllers\MediaItemController;
 use App\Http\Controllers\MinistriesHigherEducationScientificResearchController;
 use App\Http\Controllers\OfferController;
 use App\Http\Controllers\PaysController;
@@ -34,6 +35,7 @@ Route::get('/portal-stats', [PortalStatsController::class, 'index']);
 Route::get('/faqs', [FaqQuestionController::class, 'index']);
 Route::post('/faqs', [FaqQuestionController::class, 'store']);
 Route::get('/research-database', [ResearchDatabaseEntryController::class, 'index']);
+Route::get('/media-items', [MediaItemController::class, 'index']);
 
 Route::get('/scientificResearchInnovationCenters', [ScientificResearchInnovationCentersController::class, 'index']);
 
@@ -69,6 +71,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/admin/users', [UserManagementController::class, 'store']);
     Route::put('/admin/users/{user}', [UserManagementController::class, 'update']);
     Route::delete('/admin/users/{user}', [UserManagementController::class, 'destroy']);
+
+    Route::get('/media-items/admin', [MediaItemController::class, 'adminIndex']);
+    Route::post('/media-items', [MediaItemController::class, 'store']);
+    Route::post('/media-items/{mediaItem}', [MediaItemController::class, 'update']);
+    Route::delete('/media-items/{mediaItem}', [MediaItemController::class, 'destroy']);
 
     Route::get('/research-database/admin', [ResearchDatabaseEntryController::class, 'adminIndex']);
     Route::post('/research-database', [ResearchDatabaseEntryController::class, 'store']);
