@@ -48,6 +48,7 @@ import CompanyRequests from "../Admin/pages/Companies/CompanyRequests";
 import ManageOffers from "../Admin/pages/Offer/ManageOffers";
 import ManageFaq from "../Admin/pages/Faq/ManageFaq";
 import ManageResearchDatabase from "../Admin/pages/ResearchDatabase/ManageResearchDatabase";
+import ManageUsers from "../Admin/pages/Users/ManageUsers";
 
 
 const AdminRoutes = () => (
@@ -57,6 +58,7 @@ const AdminRoutes = () => (
       <Route element={<AdminLayout />}>
         <Route index element={<Dashboard />} /> 
         <Route path="dashboard" element={<Dashboard />} />
+        <Route path="users" element={<ManageUsers />} />
         <Route path="researchers" element={<ResearchersList />} />
         <Route path="research-database/research-innovation-ai" element={<ManageResearchDatabase lockedCategory="research-innovation-ai" />} />
         <Route path="research-database/universities" element={<ManageResearchDatabase lockedCategory="universities" />} />

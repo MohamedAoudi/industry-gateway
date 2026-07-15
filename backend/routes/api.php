@@ -17,6 +17,7 @@ use App\Http\Controllers\ResearchDatabaseEntryController;
 use App\Http\Controllers\ResearcherController;
 use App\Http\Controllers\ScientificResearchInnovationCentersController;
 use App\Http\Controllers\SupportingBodiesScientificResearchController;
+use App\Http\Controllers\UserManagementController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -63,6 +64,11 @@ Route::post('/companies/import-ai', [AICompanieController::class, 'importCompani
 
 // Routes privées (Nécessitent un Token valide dans le Header)
 Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('/admin/users', [UserManagementController::class, 'index']);
+    Route::post('/admin/users', [UserManagementController::class, 'store']);
+    Route::put('/admin/users/{user}', [UserManagementController::class, 'update']);
+    Route::delete('/admin/users/{user}', [UserManagementController::class, 'destroy']);
 
     Route::get('/research-database/admin', [ResearchDatabaseEntryController::class, 'adminIndex']);
     Route::post('/research-database', [ResearchDatabaseEntryController::class, 'store']);

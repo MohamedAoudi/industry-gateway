@@ -159,6 +159,13 @@ const AdminSidebar = () => {
     },
 
     {
+      id: "users",
+      icon: <UsersRound />,
+      label: i18n.language === "ar" ? "إدارة المستخدمين" : "User management",
+      path: "/admin/users",
+    },
+
+    {
       id: "faq",
       icon: <CircleHelp />,
       label: i18n.language === "ar" ? "الأسئلة الشائعة" : "FAQ",
