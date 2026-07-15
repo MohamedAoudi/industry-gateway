@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import {
   ArrowLeft,
   ChevronLeft,
@@ -11,11 +11,13 @@ import {
   FlaskConical,
   GraduationCap,
   Loader2,
+  Mail,
   MapPin,
   Microscope,
   Search,
   UsersRound,
   Workflow,
+  X,
 } from "lucide-react";
 import apiAdmin from "../../../api/apiAdmin";
 
@@ -81,6 +83,8 @@ const ResearchDatabase = () => {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.dir() === "rtl";
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const location = useLocation();
   const requestedCategory = searchParams.get("category");
   const activeCategory = categoryConfig.find((item) => item.key === requestedCategory) || categoryConfig[0];
   const ActiveIcon = activeCategory.icon;
@@ -90,6 +94,7 @@ const ResearchDatabase = () => {
   const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedRecord, setSelectedRecord] = useState(null);
   const pageSize = 9;
 
   useEffect(() => {
@@ -134,17 +139,23 @@ const ResearchDatabase = () => {
 
   const normalizedRecords = useMemo(
     () => records.map((record, index) => {
+      const titleAr = record.full_name || record.title_ar || record.titre_ar || "";
+      const titleEn = record.title_en || record.titre_en || "";
+      const descriptionAr = record.research_field || record.description_ar || "";
+      const descriptionEn = record.description_en || "";
+
       return {
         id: `${record.__source}-${record.id || record.idCenter || record.idResearcher || index}`,
-        title: record.full_name || (isRtl
-          ? record.title_ar || record.titre_ar || record.title_en || record.titre_en
-          : record.title_en || record.titre_en || record.title_ar || record.titre_ar),
-        description: record.research_field || (isRtl
-          ? record.description_ar || record.description_en
-          : record.description_en || record.description_ar),
+        title: isRtl ? titleAr || titleEn : titleEn || titleAr,
+        titleAr,
+        titleEn,
+        description: isRtl ? descriptionAr || descriptionEn : descriptionEn || descriptionAr,
+        descriptionAr,
+        descriptionEn,
         country: record.country?.nomPays || record.pays?.nomPays || record.country || "",
         image: record.image_url || record.photo_url,
-        url: record.url || (record.email ? `mailto:${record.email}` : null),
+        email: record.email || "",
+        website: record.url || "",
       };
     }),
     [activeCategory.key, isRtl, records]
@@ -171,6 +182,30 @@ const ResearchDatabase = () => {
   useEffect(() => {
     if (currentPage > totalPages) setCurrentPage(totalPages);
   }, [currentPage, totalPages]);
+
+  useEffect(() => {
+    if (!selectedRecord) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") setSelectedRecord(null);
+    };
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [selectedRecord]);
+
+  const openDetails = (record) => {
+    if (!localStorage.getItem("auth_token")) {
+      navigate("/login", {
+        state: { from: `${location.pathname}${location.search}` },
+      });
+      return;
+    }
+    setSelectedRecord(record);
+  };
 
   return (
     <div dir={isRtl ? "rtl" : "ltr"} className="min-h-screen bg-slate-50">
@@ -257,12 +292,14 @@ const ResearchDatabase = () => {
                     {record.title || t("database_pages.untitled")}
                   </h2>
                   {record.description && <p className="mt-3 line-clamp-3 text-sm leading-7 text-slate-500">{record.description}</p>}
-                  {record.url && (
-                    <a href={record.url} target={record.url.startsWith("mailto:") ? undefined : "_blank"} rel="noreferrer" className="mt-auto inline-flex items-center gap-2 pt-6 text-xs font-black uppercase tracking-[0.13em] text-emerald-700">
-                      {t("database_pages.view")}
-                      {record.url.startsWith("mailto:") ? <ArrowLeft size={14} className={isRtl ? "" : "rotate-180"} /> : <ExternalLink size={14} />}
-                    </a>
-                  )}
+                  <button
+                    type="button"
+                    onClick={() => openDetails(record)}
+                    className="mt-auto inline-flex items-center gap-2 pt-6 text-xs font-black uppercase tracking-[0.13em] text-emerald-700"
+                  >
+                    {t("database_pages.view")}
+                    <ArrowLeft size={14} className={isRtl ? "" : "rotate-180"} />
+                  </button>
                 </article>
               ))}
             </div>
@@ -303,6 +340,54 @@ const ResearchDatabase = () => {
           )}
         </section>
       </main>
+
+      {selectedRecord && (
+        <div
+          className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-slate-950/65 p-4 backdrop-blur-sm"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setSelectedRecord(null);
+          }}
+          role="dialog"
+          aria-modal="true"
+          aria-label={selectedRecord.title}
+        >
+          <article className="my-auto w-full max-w-3xl overflow-hidden rounded-[1.75rem] bg-white shadow-2xl">
+            <header className="flex items-start justify-between gap-4 border-b border-slate-100 bg-gradient-to-br from-emerald-50 to-white p-6 sm:p-8">
+              <div className="flex min-w-0 items-start gap-4">
+                {selectedRecord.image ? (
+                  <img src={selectedRecord.image} alt="" className="h-20 w-20 shrink-0 rounded-2xl border border-emerald-100 bg-white object-contain p-2" />
+                ) : (
+                  <span className="grid h-20 w-20 shrink-0 place-items-center rounded-2xl bg-emerald-100 text-emerald-700"><ActiveIcon size={30} /></span>
+                )}
+                <div>
+                  <p className="mb-2 text-xs font-black text-emerald-700">{t(activeCategory.labelKey)}</p>
+                  <h2 className="text-xl font-black leading-8 text-slate-900 sm:text-2xl">{selectedRecord.title}</h2>
+                  {selectedRecord.country && <p className="mt-2 inline-flex items-center gap-1.5 text-sm font-bold text-slate-500"><MapPin size={15} />{selectedRecord.country}</p>}
+                </div>
+              </div>
+              <button type="button" onClick={() => setSelectedRecord(null)} className="shrink-0 rounded-xl border border-slate-200 bg-white p-2.5 text-slate-500 hover:text-slate-900" aria-label={isRtl ? "إغلاق" : "Close"}><X size={20} /></button>
+            </header>
+
+            <div className="space-y-6 p-6 sm:p-8">
+              {selectedRecord.titleAr && selectedRecord.titleEn && (
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="rounded-xl bg-slate-50 p-4"><span className="text-xs font-bold text-slate-400">الاسم بالعربية</span><p className="mt-2 font-bold text-slate-800" dir="rtl">{selectedRecord.titleAr}</p></div>
+                  <div className="rounded-xl bg-slate-50 p-4"><span className="text-xs font-bold text-slate-400">English name</span><p className="mt-2 font-bold text-slate-800" dir="ltr">{selectedRecord.titleEn}</p></div>
+                </div>
+              )}
+              {selectedRecord.descriptionAr && <div><h3 className="mb-2 text-sm font-black text-slate-900">الوصف بالعربية</h3><p className="whitespace-pre-line text-sm leading-8 text-slate-600" dir="rtl">{selectedRecord.descriptionAr}</p></div>}
+              {selectedRecord.descriptionEn && <div><h3 className="mb-2 text-sm font-black text-slate-900">English description</h3><p className="whitespace-pre-line text-sm leading-8 text-slate-600" dir="ltr">{selectedRecord.descriptionEn}</p></div>}
+
+              {(selectedRecord.email || selectedRecord.website) && (
+                <div className="flex flex-wrap gap-3 border-t border-slate-100 pt-6">
+                  {selectedRecord.email && <a href={`mailto:${selectedRecord.email}`} className="inline-flex items-center gap-2 rounded-xl bg-slate-100 px-4 py-3 text-sm font-bold text-slate-700"><Mail size={17} />{selectedRecord.email}</a>}
+                  {selectedRecord.website && <a href={selectedRecord.website} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-3 text-sm font-black text-white"><ExternalLink size={17} />{isRtl ? "زيارة الموقع" : "Visit website"}</a>}
+                </div>
+              )}
+            </div>
+          </article>
+        </div>
+      )}
     </div>
   );
 };

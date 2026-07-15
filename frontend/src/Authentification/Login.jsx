@@ -211,10 +211,11 @@
 
 import React, { useState } from 'react';
 import apiAdmin from '../api/apiAdmin';
-import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 
 const Auth = () => {
+    const location = useLocation();
     const [isLogin, setIsLogin] = useState(true);
     const [formData, setFormData] = useState({ nomComplet: '', email: '', password: '' });
     const [loading, setLoading] = useState(false);
@@ -251,7 +252,10 @@ const Auth = () => {
                     localStorage.setItem('nomUtilisateur', response.data.user.nomUtilisateur);
                     localStorage.setItem('emailUtilisateur', response.data.user.email);
 
-                    window.location.href = response.data.user.role === 'superviseur' ? '/admin/dashboard' : '/';
+                    const returnTo = typeof location.state?.from === 'string' && location.state.from.startsWith('/')
+                        ? location.state.from
+                        : '/';
+                    window.location.href = response.data.user.role === 'superviseur' ? '/admin/dashboard' : returnTo;
                 }
             } else {
                 const response = await apiAdmin.post('/register', formData);
