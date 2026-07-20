@@ -24,6 +24,54 @@ const tabs = [
   { id: "stories", labelKey: "submenu.media_center.success_stories", icon: Sparkles },
 ];
 
+const countryAliases = [
+  { code: "ae", names: ["united arab emirates", "uae", "الإمارات"] },
+  { code: "sa", names: ["saudi arabia", "السعودية"] },
+  { code: "eg", names: ["egypt", "مصر"] },
+  { code: "ma", names: ["morocco", "المغرب"] },
+  { code: "jo", names: ["jordan", "الأردن"] },
+  { code: "bh", names: ["bahrain", "البحرين"] },
+  { code: "tn", names: ["tunisia", "تونس", "التونسية"] },
+  { code: "dz", names: ["algeria", "الجزائر"] },
+  { code: "dj", names: ["djibouti", "جيبوتي"] },
+  { code: "sd", names: ["sudan", "السودان"] },
+  { code: "sy", names: ["syria", "سوريا", "السورية"] },
+  { code: "so", names: ["somalia", "الصومال"] },
+  { code: "iq", names: ["iraq", "العراق"] },
+  { code: "om", names: ["oman", "عمان", "عُمان"] },
+  { code: "ps", names: ["palestine", "فلسطين"] },
+  { code: "qa", names: ["qatar", "قطر"] },
+  { code: "kw", names: ["kuwait", "الكويت"] },
+  { code: "lb", names: ["lebanon", "لبنان", "اللبنانية"] },
+  { code: "ly", names: ["libya", "ليبيا"] },
+  { code: "mr", names: ["mauritania", "موريتانيا", "الموريتانية"] },
+  { code: "ye", names: ["yemen", "اليمن", "اليمنية"] },
+];
+
+const getCountryFlagUrl = (item) => {
+  const location = `${item.locationEn ?? ""} ${item.locationAr ?? ""}`.toLocaleLowerCase();
+  const country = countryAliases.find(({ names }) => names.some((name) => location.includes(name)));
+  return country ? `https://flagcdn.com/w40/${country.code}.png` : null;
+};
+
+const LocationLabel = ({ item, location }) => {
+  const flagUrl = getCountryFlagUrl(item);
+
+  return (
+    <span className="inline-flex items-center gap-2 text-xs font-bold text-emerald-700">
+      <MapPin size={14} />
+      {flagUrl && (
+        <img
+          src={flagUrl}
+          alt=""
+          className="h-4 w-6 rounded-sm border border-slate-200 object-cover shadow-sm"
+        />
+      )}
+      <span>{location}</span>
+    </span>
+  );
+};
+
 const mediaContent = {
   news: [
     {
@@ -291,7 +339,7 @@ const MediaCenterSection = () => {
                         <span className="mt-1 text-sm text-white/70">{date.getFullYear()}</span>
                       </div>
                       <div className="p-7">
-                        <span className="inline-flex items-center gap-2 text-xs font-bold text-emerald-700"><MapPin size={14} />{getLocation(item)}</span>
+                        <LocationLabel item={item} location={getLocation(item)} />
                         <h3 className="mt-4 text-2xl font-black leading-9 text-slate-900">{getTitle(item)}</h3>
                         <p className="mt-3 text-sm leading-7 text-slate-500">{getDescription(item)}</p>
                       </div>
@@ -323,10 +371,16 @@ const MediaCenterSection = () => {
                   <article key={item.id} className="group relative overflow-hidden rounded-[2rem] border border-amber-200 bg-gradient-to-br from-amber-50 via-white to-emerald-50 p-8 shadow-sm transition-all hover:-translate-y-1 hover:shadow-[0_22px_55px_rgba(217,119,6,0.12)]">
                     <div className="pointer-events-none absolute -right-16 -top-20 h-52 w-52 rounded-full border-[38px] border-amber-500/[0.06]" />
                     <div className="flex items-start justify-between">
-                      <span className="grid h-14 w-14 place-items-center rounded-2xl bg-amber-500 text-white shadow-lg shadow-amber-500/20"><Trophy size={25} /></span>
+                      {item.image ? (
+                        <span className="grid h-14 w-14 place-items-center overflow-hidden rounded-2xl border border-amber-200 bg-white p-1.5 shadow-lg shadow-amber-500/15">
+                          <img src={item.image} alt="" className="h-full w-full object-contain" />
+                        </span>
+                      ) : (
+                        <span className="grid h-14 w-14 place-items-center rounded-2xl bg-amber-500 text-white shadow-lg shadow-amber-500/20"><Trophy size={25} /></span>
+                      )}
                       <span className="text-4xl font-black text-amber-500/15">0{index + 1}</span>
                     </div>
-                    <span className="mt-8 inline-flex items-center gap-2 text-xs font-bold text-emerald-700"><MapPin size={14} />{getLocation(item)}</span>
+                    <div className="mt-8"><LocationLabel item={item} location={getLocation(item)} /></div>
                     <h3 className="mt-4 text-2xl font-black leading-9 text-slate-900">{getTitle(item)}</h3>
                     <p className="mt-3 text-sm leading-7 text-slate-500">{getDescription(item)}</p>
                   </article>

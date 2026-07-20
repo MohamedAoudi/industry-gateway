@@ -15,7 +15,10 @@ class MediaItemController extends Controller
 
         return MediaItem::query()->where('is_published', true)
             ->when($data['category'] ?? null, fn ($query, $category) => $query->where('category', $category))
-            ->latest('event_date')->latest()->paginate(100);
+            ->orderByRaw('CASE WHEN event_date IS NULL THEN 1 ELSE 0 END')
+            ->orderByDesc('event_date')
+            ->orderByDesc('created_at')
+            ->paginate(100);
     }
 
     public function adminIndex(Request $request)
@@ -25,7 +28,10 @@ class MediaItemController extends Controller
 
         return MediaItem::query()
             ->when($data['category'] ?? null, fn ($query, $category) => $query->where('category', $category))
-            ->latest()->paginate(100);
+            ->orderByRaw('CASE WHEN event_date IS NULL THEN 1 ELSE 0 END')
+            ->orderByDesc('event_date')
+            ->orderByDesc('created_at')
+            ->paginate(100);
     }
 
     public function store(Request $request)

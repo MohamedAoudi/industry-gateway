@@ -4,10 +4,13 @@ import {
   ArrowRight,
   Database,
   ExternalLink,
+  Facebook,
   Handshake,
   Home,
   Info,
+  Instagram,
   Library,
+  Linkedin,
   Mail,
   MapPin,
   Newspaper,
@@ -15,10 +18,20 @@ import {
   Presentation,
   CircleHelp,
   UserRound,
+  Youtube,
 } from "lucide-react";
 
 import aidsmoLogo from "../assets/images/logos/aidsmo_logo.png";
 import portalLogo from "../assets/images/logos/logo.png";
+
+const XIcon = ({ size = 18 }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path
+      fill="currentColor"
+      d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.657l-5.214-6.817-5.967 6.817H1.68l7.73-8.835L1.254 2.25h6.826l4.713 6.231 5.45-6.231Zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77Z"
+    />
+  </svg>
+);
 
 const UserFooter = () => {
   const { t, i18n } = useTranslation();
@@ -48,6 +61,14 @@ const UserFooter = () => {
       to: "/workshopsseminars",
       icon: Presentation,
     },
+  ];
+
+  const socialLinks = [
+    { label: "Facebook", icon: Facebook },
+    { label: "LinkedIn", icon: Linkedin },
+    { label: "Instagram", icon: Instagram },
+    { label: "YouTube", icon: Youtube },
+    { label: "X", icon: XIcon },
   ];
 
   const ContactItem = ({ icon: Icon, label, children, href }) => {
@@ -142,6 +163,23 @@ const UserFooter = () => {
               www.aidsmo.org
               <ExternalLink size={14} />
             </a>
+            <div className="mt-6">
+              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-emerald-50/50">
+                {t("footer.social_media")}
+              </p>
+              <div className="mt-3 flex items-center gap-3">
+                {socialLinks.map(({ label, icon: Icon }) => (
+                  <span
+                    key={label}
+                    aria-label={label}
+                    title={label}
+                    className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-white/[0.06] text-emerald-200"
+                  >
+                    <Icon size={18} />
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
 
           <div className="sm:grid sm:grid-cols-2 sm:gap-10 lg:col-span-5">
