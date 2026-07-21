@@ -41,7 +41,7 @@
 import { Navigate, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "../Authentification/ProtectedRoute";
 import AdminLayout from "../Admin/AdminLayout";
-import Dashboard from "../Admin/pages/Dashboard/Dashboard";
+import Dashboard from "../Admin/pages/Dashboard/DashboardOverview";
 import ResearchersList from "../Admin/pages/Reasearchs/ResearchersList";
 import CompaniesList from "../Admin/pages/Companies/CompaniesList";
 import CompanyRequests from "../Admin/pages/Companies/CompanyRequests";
@@ -50,6 +50,7 @@ import ManageFaq from "../Admin/pages/Faq/ManageFaq";
 import ManageResearchDatabase from "../Admin/pages/ResearchDatabase/ManageResearchDatabase";
 import ManageUsers from "../Admin/pages/Users/ManageUsers";
 import ManageMediaCenter from "../Admin/pages/MediaCenter/ManageMediaCenter";
+import ProfilePage from "../User/pages/Profile/ProfilePage";
 
 
 const AdminRoutes = () => (
@@ -60,6 +61,7 @@ const AdminRoutes = () => (
         <Route index element={<Dashboard />} /> 
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="users" element={<ManageUsers />} />
+        <Route path="profile" element={<ProfilePage />} />
         <Route path="media-center/news" element={<ManageMediaCenter lockedCategory="news" />} />
         <Route path="media-center" element={<Navigate to="/admin/media-center/news" replace />} />
         <Route path="media-center/events" element={<ManageMediaCenter lockedCategory="events" />} />

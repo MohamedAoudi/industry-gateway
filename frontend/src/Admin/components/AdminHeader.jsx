@@ -169,7 +169,7 @@ const adminMenuItems = [
   { ar: 'إصدارات المركز الإعلامي', en: 'Media center releases', path: '/admin/media-center/releases' },
   { ar: 'مسابقات وجوائز', en: 'Competitions and awards', path: '/admin/media-center/competitions' },
   { ar: 'قصص نجاح', en: 'Success stories', path: '/admin/media-center/stories' },
-  { ar: 'الملف الشخصي', en: 'Profile', path: '/profile' },
+  { ar: 'الملف الشخصي', en: 'Profile', path: '/admin/profile' },
 ];
 
 const AdminHeader = () => {
@@ -311,7 +311,7 @@ const AdminHeader = () => {
                     </div>
 
                     <div className="space-y-1">
-                      <MenuButton Icon={UserCircle} label="الملف الشخصي" to="/profile" />
+                      <MenuButton Icon={UserCircle} label="الملف الشخصي" to="/admin/profile" />
                     </div>
 
                     <div className="h-px bg-slate-100 my-2 mx-2" />
