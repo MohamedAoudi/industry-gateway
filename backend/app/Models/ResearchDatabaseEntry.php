@@ -16,6 +16,8 @@ class ResearchDatabaseEntry extends Model
         'programs-initiatives-strategies',
         'industrial-property-patents',
         'experts-specialists',
+        'supporting-bodies',
+        'industrial-institutions',
     ];
 
     protected $fillable = [

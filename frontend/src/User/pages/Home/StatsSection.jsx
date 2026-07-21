@@ -255,21 +255,14 @@ const StatsSection = () => {
               loopAdditionalSlides={7}
               speed={3500}
               spaceBetween={12}
-              slidesPerView={2.15}
+              slidesPerView="auto"
               grabCursor
               autoplay={{ delay: 0, disableOnInteraction: false, pauseOnMouseEnter: true }}
-              breakpoints={{
-                480: { slidesPerView: 3.2 },
-                640: { slidesPerView: 4.2 },
-                768: { slidesPerView: 5.3 },
-                1024: { slidesPerView: 7.2 },
-                1280: { slidesPerView: 8.2 },
-              }}
               className="flags-swiper"
             >
               {countries.map((country) => (
-                <SwiperSlide key={`${i18n.language}-${country.code}`}>
-                  <div className="group flex h-16 items-center gap-3 rounded-2xl border border-white bg-white/90 px-3 shadow-sm transition-all duration-300 hover:border-emerald-200 hover:shadow-md">
+                <SwiperSlide key={`${i18n.language}-${country.code}`} className="!w-auto">
+                  <div className="group flex h-16 min-w-max items-center gap-3 rounded-2xl border border-white bg-white/90 px-4 shadow-sm transition-all duration-300 hover:border-emerald-200 hover:shadow-md">
                     <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full border-2 border-white bg-slate-100 shadow-[0_3px_10px_rgba(15,23,42,0.15)] ring-1 ring-slate-200">
                       <img
                         src={`https://flagcdn.com/w80/${country.code}.png`}
@@ -278,7 +271,7 @@ const StatsSection = () => {
                         className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
                       />
                     </span>
-                    <span className="truncate text-xs font-extrabold text-slate-700 group-hover:text-emerald-700">
+                    <span className="whitespace-nowrap text-xs font-extrabold text-slate-700 group-hover:text-emerald-700 sm:text-sm">
                       {country.name}
                     </span>
                   </div>

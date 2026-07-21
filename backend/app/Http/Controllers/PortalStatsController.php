@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Center;
+use App\Models\Company;
 use App\Models\Pays;
 use App\Models\ResearchDatabaseEntry;
 use App\Models\Researcher;
@@ -28,6 +29,10 @@ class PortalStatsController extends Controller
                 + $countNew('industrial-property-patents'),
             'experts_specialists' => Researcher::count()
                 + $countNew('experts-specialists'),
+            'supporting_bodies' => Center::where('idTypeCenter', 5)->count()
+                + $countNew('supporting-bodies'),
+            'industrial_institutions' => Company::where('status', 'approved')->count()
+                + $countNew('industrial-institutions'),
             'arab_countries' => Pays::count(),
         ]);
     }

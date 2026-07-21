@@ -24,6 +24,8 @@ const categories = [
   { value: "programs-initiatives-strategies", label: "البرامج والمبادرات والاستراتيجيات" },
   { value: "industrial-property-patents", label: "مكاتب الملكية الصناعية وبراءات الاختراع" },
   { value: "experts-specialists", label: "قاعدة الخبراء والمختصين" },
+  { value: "supporting-bodies", label: "الجهات الداعمة للبحث العلمي والابتكار" },
+  { value: "industrial-institutions", label: "المؤسسات الصناعية" },
 ];
 
 const legacySources = {
@@ -42,23 +44,30 @@ const legacySources = {
   "experts-specialists": [
     { list: "/researchers", resource: "/researchers", type: "researcher" },
   ],
+  "supporting-bodies": [
+    { list: "/supportingBodiesScientificResearch?per_page=100", resource: "/supportingBodiesScientificResearch", type: "center" },
+  ],
+  "industrial-institutions": [
+    { list: "/companies", resource: "/companies", type: "company" },
+  ],
 };
 
 const normalizeEntry = (record, source, category) => {
   if (source.type === "new") return { ...record, __source: source };
 
   const isResearcher = source.type === "researcher";
+  const isCompany = source.type === "company";
   return {
     ...record,
-    id: isResearcher ? record.idResearcher : record.idCenter,
+    id: isResearcher ? record.idResearcher : isCompany ? record.idCompany : record.idCenter,
     category,
-    title_ar: isResearcher ? record.full_name : record.titre_ar,
-    title_en: isResearcher ? "" : record.titre_en,
-    description_ar: isResearcher ? record.research_field : record.description_ar,
-    description_en: isResearcher ? "" : record.description_en,
-    country_id: isResearcher ? "" : record.idPays,
-    country: isResearcher ? { nomPays: record.country } : record.pays,
-    image_url: isResearcher ? null : record.photo_url,
+    title_ar: isResearcher ? record.full_name : isCompany ? record.company_name : record.titre_ar,
+    title_en: isResearcher || isCompany ? "" : record.titre_en,
+    description_ar: isResearcher ? record.research_field : isCompany ? record.industry_sector : record.description_ar,
+    description_en: isResearcher || isCompany ? "" : record.description_en,
+    country_id: isResearcher || isCompany ? "" : record.idPays,
+    country: isResearcher || isCompany ? { nomPays: record.country } : record.pays,
+    image_url: isResearcher || isCompany ? null : record.photo_url,
     is_published: true,
     __source: source,
   };
@@ -238,6 +247,14 @@ const ManageResearchDatabase = ({ lockedCategory }) => {
             full_name: form.title_ar || form.title_en,
             email: form.email || null,
             research_field: form.description_ar || form.description_en || "",
+            country: selectedCountry?.nomPays || null,
+          });
+        } else if (editingSource?.type === "company") {
+          const selectedCountry = countries.find((item) => String(item.idPays) === String(form.country_id));
+          await apiAdmin.put(`${editingSource.resource}/${editingId}`, {
+            company_name: form.title_ar || form.title_en,
+            industry_sector: form.description_ar || form.description_en || null,
+            email: form.email || null,
             country: selectedCountry?.nomPays || null,
           });
         } else if (editingSource?.type === "center") {

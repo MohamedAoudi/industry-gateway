@@ -73,6 +73,8 @@ const AdminRoutes = () => (
         <Route path="research-database/programs-initiatives-strategies" element={<ManageResearchDatabase lockedCategory="programs-initiatives-strategies" />} />
         <Route path="research-database/industrial-property-patents" element={<ManageResearchDatabase lockedCategory="industrial-property-patents" />} />
         <Route path="research-database/experts-specialists" element={<ManageResearchDatabase lockedCategory="experts-specialists" />} />
+        <Route path="research-database/supporting-bodies" element={<ManageResearchDatabase lockedCategory="supporting-bodies" />} />
+        <Route path="research-database/industrial-institutions" element={<ManageResearchDatabase lockedCategory="industrial-institutions" />} />
 
 
         <Route path="companies" element={<CompaniesList />} />

@@ -84,6 +84,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::put('/researchers/{id}', [ResearcherController::class, 'update']);
     Route::delete('/researchers/{id}', [ResearcherController::class, 'destroy']);
+    Route::put('/companies/{id}', [CompanyController::class, 'update']);
 
     Route::post('/scientificResearchInnovationCenters', [ScientificResearchInnovationCentersController::class, 'store']);
     Route::match(['put', 'patch', 'post'], '/scientificResearchInnovationCenters/{id}', [ScientificResearchInnovationCentersController::class, 'update']);

@@ -205,7 +205,9 @@ i18n.use(initReactI18next).init({
             incubators: "تعرف على الحاضنات والأقطاب التكنولوجية والمختبرات التي تدعم تحويل الأفكار إلى مشاريع.",
             programs: "تصفح البرامج والمبادرات والاستراتيجيات الوطنية والإقليمية الداعمة للابتكار الصناعي.",
             patents: "دليل مكاتب الملكية الصناعية وبراءات الاختراع وخدمات حماية الابتكارات.",
-            experts: "تواصل مع الخبراء والباحثين والمختصين في مختلف المجالات العلمية والصناعية."
+            experts: "تواصل مع الخبراء والباحثين والمختصين في مختلف المجالات العلمية والصناعية.",
+            supporting_bodies: "دليل الجهات والهيئات التي تمول وتدعم البحث العلمي والابتكار في المنطقة العربية.",
+            industrial_institutions: "تصفح المؤسسات الصناعية المشاركة وتعرف على قطاعاتها ومجالات نشاطها."
           }
         },
 
@@ -378,12 +380,13 @@ i18n.use(initReactI18next).init({
             centers_excellence_artificial_intelligence: "مراكز التميز والذكاء الإصطناعي",
             ministries_higher_education_scientific_research: "وزارات التعليم العالي والبحث العلمي",
             industrial_property_patent_offices: "مكاتب الملكية الصناعية وبراءات الإختراع",
-            supporting_bodies_scientific_research: "الجهات الداعمة للبحث العلمي",
+            supporting_bodies_scientific_research: "الجهات الداعمة للبحث العلمي والابتكار",
             research_innovation_ai_centers: "مراكز البحث العلمي والإبتكار والذكاء الصناعي",
             universities_academic_scientific_institutions: "الجامعات والمؤسسات الأكاديمية والعلمية",
             incubators_technology_poles_laboratories: "الحاضنات والأقطاب التكنولوجية والمختبرات",
             programs_initiatives_strategies: "البرامج والمبادرات والاستراتيجيات",
             experts_specialists_database: "قاعدة الخبراء والمختصين",
+            industrial_institutions: "المؤسسات الصناعية",
           },
           media_center: {
             news: "أخبار",
@@ -738,7 +741,9 @@ i18n.use(initReactI18next).init({
             incubators: "Discover incubators, technology poles and laboratories helping transform ideas into projects.",
             programs: "Browse national and regional programs, initiatives and strategies supporting industrial innovation.",
             patents: "A directory of industrial property and patent offices offering innovation protection services.",
-            experts: "Connect with experts, researchers and specialists across scientific and industrial fields."
+            experts: "Connect with experts, researchers and specialists across scientific and industrial fields.",
+            supporting_bodies: "A directory of organizations funding and supporting scientific research and innovation across the Arab region.",
+            industrial_institutions: "Browse participating industrial institutions and discover their sectors and fields of activity."
           }
         },
         media_page: {
@@ -765,12 +770,13 @@ i18n.use(initReactI18next).init({
             centers_excellence_artificial_intelligence: "Centers of Excellence and Artificial Intelligence",
             ministries_higher_education_scientific_research: "Ministries of Higher Education and Scientific Research",
             industrial_property_patent_offices: "Industrial Property and Patent Offices",
-            supporting_bodies_scientific_research: "Supporting bodies for scientific research",
+            supporting_bodies_scientific_research: "Supporting Bodies for Scientific Research and Innovation",
             research_innovation_ai_centers: "Scientific Research, Innovation and AI Centers",
             universities_academic_scientific_institutions: "Universities and Academic and Scientific Institutions",
             incubators_technology_poles_laboratories: "Incubators, Technology Poles and Laboratories",
             programs_initiatives_strategies: "Programs, Initiatives and Strategies",
             experts_specialists_database: "Experts and Specialists Database",
+            industrial_institutions: "Industrial Institutions",
 
           },
           media_center: {

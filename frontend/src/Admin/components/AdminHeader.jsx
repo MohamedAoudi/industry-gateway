@@ -158,6 +158,8 @@ const adminMenuItems = [
   { ar: 'البرامج والمبادرات والاستراتيجيات', en: 'Programs, initiatives and strategies', path: '/admin/research-database/programs-initiatives-strategies' },
   { ar: 'مكاتب الملكية الصناعية وبراءات الإختراع', en: 'Industrial property and patent offices', path: '/admin/research-database/industrial-property-patents' },
   { ar: 'قاعدة الخبراء والمختصين', en: 'Experts and specialists', path: '/admin/research-database/experts-specialists' },
+  { ar: 'الجهات الداعمة للبحث العلمي والابتكار', en: 'Supporting bodies for scientific research and innovation', path: '/admin/research-database/supporting-bodies' },
+  { ar: 'المؤسسات الصناعية', en: 'Industrial institutions', path: '/admin/research-database/industrial-institutions' },
   { ar: 'دليل الشركات الصناعية', en: 'Industrial companies directory', path: '/admin/companies' },
   { ar: 'طلبات انضمام الشركات', en: 'Company applications', path: '/admin/companies/requests' },
   { ar: 'عروض التعاون', en: 'Collaboration offers', path: '/admin/offers' },

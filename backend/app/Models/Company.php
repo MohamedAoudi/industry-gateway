@@ -8,7 +8,7 @@ class Company extends Model
 {
     protected $primaryKey = 'idCompany'; 
     protected $keyType = 'int';   
-    protected $fillable = ['company_name', 'industry_sector', 'email', 'status'];
+    protected $fillable = ['company_name', 'industry_sector', 'email', 'country', 'status'];
 
     public function offers()
     {

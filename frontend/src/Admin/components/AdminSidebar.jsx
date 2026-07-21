@@ -22,6 +22,8 @@ import {
   FileText,
   Trophy,
   Sparkles,
+  HandCoins,
+  Factory,
 } from "lucide-react";
 import portalLogo from "../../User/assets/images/logos/logo.png";
 
@@ -133,6 +135,16 @@ const AdminSidebar = () => {
           label: t("submenu.database.experts_specialists_database"),
           icon: <UsersRound size={14} />,
           path: "/admin/research-database/experts-specialists",
+        },
+        {
+          label: t("submenu.database.supporting_bodies_scientific_research"),
+          icon: <HandCoins size={14} />,
+          path: "/admin/research-database/supporting-bodies",
+        },
+        {
+          label: t("submenu.database.industrial_institutions"),
+          icon: <Factory size={14} />,
+          path: "/admin/research-database/industrial-institutions",
         },
       ],
     },

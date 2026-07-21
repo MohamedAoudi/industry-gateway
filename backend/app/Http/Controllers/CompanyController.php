@@ -40,6 +40,26 @@ class CompanyController extends Controller
         ]);
     }
 
+    public function update(Request $request, $id) {
+        abort_unless($request->user()?->role === 'superviseur', 403);
+
+        $company = Company::where('idCompany', $id)->firstOrFail();
+        $data = $request->validate([
+            'company_name' => ['required', 'string', 'max:255'],
+            'industry_sector' => ['nullable', 'string', 'max:255'],
+            'email' => ['nullable', 'email', 'max:255'],
+            'country' => ['nullable', 'string', 'max:255'],
+        ]);
+
+        $company->update($data);
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'تم تحديث المؤسسة الصناعية بنجاح',
+            'data' => $company->fresh(),
+        ]);
+    }
+
     // حذف شركة نهائياً
     public function destroy($id) {
         $company = Company::where('idCompany', $id)->firstOrFail();

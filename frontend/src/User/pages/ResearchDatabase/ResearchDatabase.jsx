@@ -8,6 +8,7 @@ import {
   Database,
   ExternalLink,
   FileBadge,
+  Factory,
   FlaskConical,
   GraduationCap,
   Loader2,
@@ -15,6 +16,7 @@ import {
   MapPin,
   Microscope,
   Search,
+  HandCoins,
   UsersRound,
   Workflow,
   X,
@@ -77,7 +79,60 @@ const categoryConfig = [
     ],
     icon: UsersRound,
   },
+  {
+    key: "supporting-bodies",
+    labelKey: "submenu.database.supporting_bodies_scientific_research",
+    descriptionKey: "database_pages.descriptions.supporting_bodies",
+    endpoints: [
+      "/research-database?category=supporting-bodies&per_page=100",
+      "/supportingBodiesScientificResearch?per_page=100",
+    ],
+    icon: HandCoins,
+  },
+  {
+    key: "industrial-institutions",
+    labelKey: "submenu.database.industrial_institutions",
+    descriptionKey: "database_pages.descriptions.industrial_institutions",
+    endpoints: [
+      "/research-database?category=industrial-institutions&per_page=100",
+      "/companies",
+    ],
+    icon: Factory,
+  },
 ];
+
+const countryAliases = [
+  { code: "jo", names: ["الأردن", "jordan"] },
+  { code: "ae", names: ["الإمارات", "emirates", "united arab emirates", "uae"] },
+  { code: "bh", names: ["البحرين", "bahrain"] },
+  { code: "tn", names: ["تونس", "tunisia"] },
+  { code: "dz", names: ["الجزائر", "algeria"] },
+  { code: "dj", names: ["جيبوتي", "djibouti"] },
+  { code: "sa", names: ["السعودية", "saudi arabia"] },
+  { code: "sd", names: ["السودان", "sudan"] },
+  { code: "sy", names: ["سوريا", "السورية", "syria"] },
+  { code: "so", names: ["الصومال", "somalia"] },
+  { code: "iq", names: ["العراق", "iraq"] },
+  { code: "om", names: ["عمان", "عُمان", "oman"] },
+  { code: "ps", names: ["فلسطين", "palestine"] },
+  { code: "qa", names: ["قطر", "qatar"] },
+  { code: "kw", names: ["الكويت", "kuwait"] },
+  { code: "lb", names: ["لبنان", "اللبنانية", "lebanon"] },
+  { code: "ly", names: ["ليبيا", "libya"] },
+  { code: "eg", names: ["مصر", "egypt"] },
+  { code: "ma", names: ["المغرب", "المغربية", "morocco"] },
+  { code: "mr", names: ["موريتانيا", "الموريتانية", "mauritania"] },
+  { code: "ye", names: ["اليمن", "اليمنية", "yemen"] },
+];
+
+const getCountryFlag = (countryName) => {
+  const normalizedName = String(countryName || "").trim().toLocaleLowerCase();
+  const match = countryAliases.find(({ names }) =>
+    names.some((name) => normalizedName.includes(name.toLocaleLowerCase()))
+  );
+
+  return match ? `https://flagcdn.com/w40/${match.code}.png` : null;
+};
 
 const ResearchDatabase = () => {
   const { t, i18n } = useTranslation();
@@ -139,9 +194,9 @@ const ResearchDatabase = () => {
 
   const normalizedRecords = useMemo(
     () => records.map((record, index) => {
-      const titleAr = record.full_name || record.title_ar || record.titre_ar || "";
+      const titleAr = record.full_name || record.company_name || record.title_ar || record.titre_ar || "";
       const titleEn = record.title_en || record.titre_en || "";
-      const descriptionAr = record.research_field || record.description_ar || "";
+      const descriptionAr = record.research_field || record.industry_sector || record.description_ar || "";
       const descriptionEn = record.description_en || "";
 
       return {
@@ -153,6 +208,7 @@ const ResearchDatabase = () => {
         descriptionAr,
         descriptionEn,
         country: record.country?.nomPays || record.pays?.nomPays || record.country || "",
+        countryFlag: getCountryFlag(record.country?.nomPays || record.pays?.nomPays || record.country),
         image: record.image_url || record.photo_url,
         email: record.email || "",
         website: record.url || "",
@@ -275,15 +331,19 @@ const ResearchDatabase = () => {
                 <article key={record.id} className="group flex min-h-[260px] flex-col overflow-hidden rounded-[1.6rem] border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-[0_20px_50px_rgba(5,150,105,0.1)]">
                   <div className="flex items-start justify-between gap-4">
                     {record.image && !record.image.endsWith("/null") ? (
-                      <img src={record.image} alt="" className="h-14 w-14 rounded-xl border border-slate-100 object-contain p-1" />
+                      <img src={record.image} alt="" className="h-24 w-24 rounded-2xl border border-slate-100 bg-white object-contain p-2 shadow-sm sm:h-28 sm:w-28" />
                     ) : (
-                      <span className="grid h-14 w-14 place-items-center rounded-xl bg-emerald-50 text-emerald-700">
-                        <ActiveIcon size={23} />
+                      <span className="grid h-24 w-24 place-items-center rounded-2xl bg-emerald-50 text-emerald-700 sm:h-28 sm:w-28">
+                        <ActiveIcon size={34} />
                       </span>
                     )}
                     {record.country && (
                       <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1.5 text-[10px] font-bold text-slate-500">
-                        <MapPin size={11} />
+                        {record.countryFlag ? (
+                          <img src={record.countryFlag} alt="" className="h-3.5 w-5 rounded-sm object-cover shadow-sm" />
+                        ) : (
+                          <MapPin size={11} />
+                        )}
                         {record.country}
                       </span>
                     )}
@@ -355,14 +415,23 @@ const ResearchDatabase = () => {
             <header className="flex items-start justify-between gap-4 border-b border-slate-100 bg-gradient-to-br from-emerald-50 to-white p-6 sm:p-8">
               <div className="flex min-w-0 items-start gap-4">
                 {selectedRecord.image ? (
-                  <img src={selectedRecord.image} alt="" className="h-20 w-20 shrink-0 rounded-2xl border border-emerald-100 bg-white object-contain p-2" />
+                  <img src={selectedRecord.image} alt="" className="h-28 w-28 shrink-0 rounded-2xl border border-emerald-100 bg-white object-contain p-3 shadow-sm sm:h-36 sm:w-36" />
                 ) : (
-                  <span className="grid h-20 w-20 shrink-0 place-items-center rounded-2xl bg-emerald-100 text-emerald-700"><ActiveIcon size={30} /></span>
+                  <span className="grid h-28 w-28 shrink-0 place-items-center rounded-2xl bg-emerald-100 text-emerald-700 sm:h-36 sm:w-36"><ActiveIcon size={42} /></span>
                 )}
                 <div>
                   <p className="mb-2 text-xs font-black text-emerald-700">{t(activeCategory.labelKey)}</p>
                   <h2 className="text-xl font-black leading-8 text-slate-900 sm:text-2xl">{selectedRecord.title}</h2>
-                  {selectedRecord.country && <p className="mt-2 inline-flex items-center gap-1.5 text-sm font-bold text-slate-500"><MapPin size={15} />{selectedRecord.country}</p>}
+                  {selectedRecord.country && (
+                    <p className="mt-2 inline-flex items-center gap-2 text-sm font-bold text-slate-500">
+                      {selectedRecord.countryFlag ? (
+                        <img src={selectedRecord.countryFlag} alt="" className="h-4 w-6 rounded-sm object-cover shadow-sm" />
+                      ) : (
+                        <MapPin size={15} />
+                      )}
+                      {selectedRecord.country}
+                    </p>
+                  )}
                 </div>
               </div>
               <button type="button" onClick={() => setSelectedRecord(null)} className="shrink-0 rounded-xl border border-slate-200 bg-white p-2.5 text-slate-500 hover:text-slate-900" aria-label={isRtl ? "إغلاق" : "Close"}><X size={20} /></button>

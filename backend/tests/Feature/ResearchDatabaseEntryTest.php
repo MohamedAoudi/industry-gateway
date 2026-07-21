@@ -72,3 +72,16 @@ it('forbids regular users from managing entries', function () {
         'is_published' => true,
     ])->assertForbidden();
 });
+
+it('accepts the supporting bodies and industrial institutions categories', function (string $category) {
+    ResearchDatabaseEntry::create([
+        'category' => $category,
+        'title_ar' => 'سجل تجريبي',
+        'is_published' => true,
+    ]);
+
+    $this->getJson('/api/research-database?category='.$category)
+        ->assertOk()
+        ->assertJsonCount(1, 'data')
+        ->assertJsonPath('data.0.category', $category);
+})->with(['supporting-bodies', 'industrial-institutions']);
