@@ -188,34 +188,45 @@ const AboutPage = () => {
           </div>
         </section>
 
-        <section className="relative overflow-hidden bg-white py-16 md:py-20">
+        <section className="relative overflow-hidden bg-slate-50 py-16 md:py-20">
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-300 to-transparent" />
           <div className="mx-auto max-w-7xl px-6">
-            <div className="mb-10 text-center">
-              <span className="mb-4 block text-xs font-black uppercase tracking-[0.2em] text-emerald-600">
-                {t("about_page.goals_eyebrow")}
-              </span>
-              <h2 className="text-4xl font-black tracking-tight text-slate-950 sm:text-5xl">
-                {t("about_platform.goals.title")}
-              </h2>
+            <div className="mb-10 grid gap-6 lg:grid-cols-12 lg:items-end">
+              <div className="lg:col-span-7">
+                <span className="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-emerald-700">
+                  <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                  {t("about_page.goals_eyebrow")}
+                </span>
+                <h2 className="mt-5 text-4xl font-black tracking-tight text-slate-950 sm:text-5xl">
+                  {t("about_platform.goals.title")}
+                </h2>
+              </div>
+              <div className={`lg:col-span-5 ${isRtl ? "lg:justify-self-end" : "lg:justify-self-start"}`}>
+                <div className="h-1 w-32 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500" />
+              </div>
             </div>
 
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
               {goalIcons.map((Icon, index) => (
                 <motion.article
                   key={index}
-                  initial={{ opacity: 0, y: 28 }}
+                  initial={{ opacity: 0, y: 24 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, amount: 0.2 }}
                   transition={{ duration: 0.5, delay: index * 0.06 }}
-                  className="group relative overflow-hidden rounded-[1.6rem] border border-slate-200 bg-slate-50/60 p-7 transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300 hover:bg-white hover:shadow-[0_20px_50px_rgba(5,150,105,0.1)]"
+                  className="group relative overflow-hidden rounded-[1.4rem] border border-slate-200 bg-white p-6 shadow-[0_12px_30px_rgba(15,23,42,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-[0_20px_45px_rgba(5,150,105,0.12)]"
                 >
-                  <div className="flex items-start justify-between gap-5">
-                    <span className="grid h-12 w-12 place-items-center rounded-xl bg-emerald-100 text-emerald-700 transition-colors group-hover:bg-emerald-600 group-hover:text-white">
-                      <Icon size={21} />
+                  <div className={`absolute top-0 h-full w-1 bg-gradient-to-b from-emerald-500 to-teal-500 ${isRtl ? "right-0" : "left-0"}`} />
+                  <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-emerald-100/70 blur-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                  <div className="flex items-center justify-between gap-4">
+                    <span className="grid h-11 w-11 place-items-center rounded-xl bg-emerald-100 text-emerald-700 transition-colors group-hover:bg-emerald-600 group-hover:text-white">
+                      <Icon size={20} />
                     </span>
-                    <span className="text-3xl font-black text-slate-200">{String(index + 1).padStart(2, "0")}</span>
+                    <span className="rounded-full border border-slate-200 px-3 py-1 text-sm font-black text-slate-400">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
                   </div>
-                  <p className="mt-7 text-base font-bold leading-8 text-slate-700">
+                  <p className="mt-6 text-base font-bold leading-8 text-slate-700">
                     {t(`about_platform.goals.g${index + 1}`)}
                   </p>
                 </motion.article>
