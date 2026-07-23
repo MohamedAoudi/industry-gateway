@@ -153,6 +153,7 @@ const ResearchDatabase = () => {
   const requestedCategory = searchParams.get("category");
   const requestedSearch = searchParams.get("q") || "";
   const requestedCountry = searchParams.get("country") || "";
+  const requestedCountryId = searchParams.get("country_id") || "";
   const activeCategory = searchableCategoryConfig.find((item) => item.key === requestedCategory) || categoryConfig[0];
   const ActiveIcon = activeCategory.icon;
 
@@ -220,6 +221,7 @@ const ResearchDatabase = () => {
         descriptionAr,
         descriptionEn,
         country: record.country?.nomPays || record.pays?.nomPays || record.country || "",
+        countryId: record.country?.idPays || record.pays?.idPays || record.country_id || record.idPays || "",
         countryFlag: getCountryFlag(record.country?.nomPays || record.pays?.nomPays || record.country),
         image: record.image_url || record.photo_url,
         email: record.email || "",
@@ -237,17 +239,21 @@ const ResearchDatabase = () => {
       const matchesSearch = !query || [record.title, record.titleAr, record.titleEn, record.description, record.descriptionAr, record.descriptionEn, record.country]
         .filter(Boolean)
         .some((value) => String(value).toLocaleLowerCase().includes(query));
-      const matchesCountry = !country || String(record.country || "").toLocaleLowerCase().includes(country);
+      const matchesCountry = !requestedCountryId && !country
+        ? true
+        : record.countryId
+          ? String(record.countryId) === requestedCountryId
+          : String(record.country || "").toLocaleLowerCase().includes(country);
       return matchesSearch && matchesCountry;
     });
-  }, [normalizedRecords, requestedCountry, search]);
+  }, [normalizedRecords, requestedCountry, requestedCountryId, search]);
 
   const totalPages = Math.max(1, Math.ceil(filteredRecords.length / pageSize));
   const paginatedRecords = filteredRecords.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [activeCategory.key, search]);
+  }, [activeCategory.key, requestedCountry, requestedCountryId, search]);
 
   useEffect(() => {
     if (currentPage > totalPages) setCurrentPage(totalPages);

@@ -1010,40 +1010,34 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { Search, ChevronDown, MapPin, Building2, ArrowLeft, Check, Sparkles } from "lucide-react";
+import { Search, ChevronDown, MapPin, ArrowLeft, Check, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import apiAdmin from "../../../api/apiAdmin";
 
 import backgroundVideo from '../../assets/videos/bg home.mp4';
 
-const countries = [
-  { name: "المملكة الأردنية الهاشمية", code: "jo", flag: "https://flagcdn.com/w40/jo.png" },
-  { name: "دولة الإمارات العربية المتحدة", code: "ae", flag: "https://flagcdn.com/w40/ae.png" },
-  { name: "مملكة البحرين", code: "bh", flag: "https://flagcdn.com/w40/bh.png" },
-  { name: "الجمهورية التونسية", code: "tn", flag: "https://flagcdn.com/w40/tn.png" },
-  { name: "الجمهورية الجزائرية الديمقراطية الشعبية", code: "dz", flag: "https://flagcdn.com/w40/dz.png" },
-  { name: "جمهورية جيبوتي", code: "dj", flag: "https://flagcdn.com/w40/dj.png" },
-  { name: "المملكة العربية السعودية", code: "sa", flag: "https://flagcdn.com/w40/sa.png" },
-  { name: "جمهورية السودان", code: "sd", flag: "https://flagcdn.com/w40/sd.png" },
-  { name: "الجمهورية العربية السورية", code: "sy", flag: "https://flagcdn.com/w40/sy.png" },
-  { name: "جمهورية الصومال", code: "so", flag: "https://flagcdn.com/w40/so.png" },
-  { name: "جمهورية العراق", code: "iq", flag: "https://flagcdn.com/w40/iq.png" },
-  { name: "سلطنة عمان", code: "om", flag: "https://flagcdn.com/w40/om.png" },
-  { name: "دولة فلسطين", code: "ps", flag: "https://flagcdn.com/w40/ps.png" },
-  { name: "دولة قطر", code: "qa", flag: "https://flagcdn.com/w40/qa.png" },
-  { name: "دولة الكويت", code: "kw", flag: "https://flagcdn.com/w40/kw.png" },
-  { name: "الجمهورية اللبنانية", code: "lb", flag: "https://flagcdn.com/w40/lb.png" },
-  { name: "دولة ليبيا", code: "ly", flag: "https://flagcdn.com/w40/ly.png" },
-  { name: "جمهورية مصر العربية", code: "eg", flag: "https://flagcdn.com/w40/eg.png" },
-  { name: "المملكة المغربية", code: "ma", flag: "https://flagcdn.com/w40/ma.png" },
-  { name: "الجمهورية الإسلامية الموريتانية", code: "mr", flag: "https://flagcdn.com/w40/mr.png" },
-  { name: "الجمهورية اليمنية", code: "ye", flag: "https://flagcdn.com/w40/ye.png" },
-];
-
-const databases = [
-  { id: "scientific_research", name: "مراكز البحث العلمي" },
-  { id: "ai_centers", name: "مراكز الذكاء الإصطناعي" },
-  { id: "ministries", name: "وزارات التعليم العالي" },
-  { id: "patents", name: "مكاتب براءات الإختراع" },
+const fallbackCountries = [
+  { id: 1, name: "المملكة الأردنية الهاشمية", code: "jo", flag: "https://flagcdn.com/w40/jo.png" },
+  { id: 2, name: "دولة الإمارات العربية المتحدة", code: "ae", flag: "https://flagcdn.com/w40/ae.png" },
+  { id: 3, name: "مملكة البحرين", code: "bh", flag: "https://flagcdn.com/w40/bh.png" },
+  { id: 4, name: "الجمهورية التونسية", code: "tn", flag: "https://flagcdn.com/w40/tn.png" },
+  { id: 5, name: "الجمهورية الجزائرية الديمقراطية الشعبية", code: "dz", flag: "https://flagcdn.com/w40/dz.png" },
+  { id: 6, name: "جمهورية جيبوتي", code: "dj", flag: "https://flagcdn.com/w40/dj.png" },
+  { id: 7, name: "المملكة العربية السعودية", code: "sa", flag: "https://flagcdn.com/w40/sa.png" },
+  { id: 8, name: "جمهورية السودان", code: "sd", flag: "https://flagcdn.com/w40/sd.png" },
+  { id: 9, name: "الجمهورية العربية السورية", code: "sy", flag: "https://flagcdn.com/w40/sy.png" },
+  { id: 10, name: "جمهورية الصومال", code: "so", flag: "https://flagcdn.com/w40/so.png" },
+  { id: 11, name: "جمهورية العراق", code: "iq", flag: "https://flagcdn.com/w40/iq.png" },
+  { id: 12, name: "سلطنة عمان", code: "om", flag: "https://flagcdn.com/w40/om.png" },
+  { id: 13, name: "دولة فلسطين", code: "ps", flag: "https://flagcdn.com/w40/ps.png" },
+  { id: 14, name: "دولة قطر", code: "qa", flag: "https://flagcdn.com/w40/qa.png" },
+  { id: 15, name: "دولة الكويت", code: "kw", flag: "https://flagcdn.com/w40/kw.png" },
+  { id: 16, name: "الجمهورية اللبنانية", code: "lb", flag: "https://flagcdn.com/w40/lb.png" },
+  { id: 17, name: "دولة ليبيا", code: "ly", flag: "https://flagcdn.com/w40/ly.png" },
+  { id: 18, name: "جمهورية مصر العربية", code: "eg", flag: "https://flagcdn.com/w40/eg.png" },
+  { id: 19, name: "المملكة المغربية", code: "ma", flag: "https://flagcdn.com/w40/ma.png" },
+  { id: 20, name: "الجمهورية الإسلامية الموريتانية", code: "mr", flag: "https://flagcdn.com/w40/mr.png" },
+  { id: 21, name: "الجمهورية اليمنية", code: "ye", flag: "https://flagcdn.com/w40/ye.png" },
 ];
 
 const HeroSection = () => {
@@ -1052,11 +1046,43 @@ const HeroSection = () => {
   const navigate = useNavigate();
 
   const [selectedCountry, setSelectedCountry] = useState("");
-  const [selectedDatabase, setSelectedDatabase] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [countries, setCountries] = useState(fallbackCountries);
 
   const [activeDropdown, setActiveDropdown] = useState(null);
   const searchBarRef = useRef(null);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    apiAdmin.get("/pays")
+      .then(({ data }) => {
+        const records = Array.isArray(data?.data) ? data.data : data;
+        if (!isMounted || !Array.isArray(records)) return;
+
+        const allCountries = records.map((country) => {
+          const fallback = fallbackCountries.find(
+            (item) => String(item.id) === String(country.idPays)
+          );
+
+          return {
+            id: country.idPays,
+            name: country.nomPays,
+            code: fallback?.code || String(country.idPays),
+            flag: fallback?.flag || null,
+          };
+        });
+
+        setCountries(allCountries);
+      })
+      .catch(() => {
+        // La liste locale reste disponible si l'API est momentanément inaccessible.
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -1070,18 +1096,13 @@ const HeroSection = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    const categoryByDatabase = {
-      scientific_research: "research-innovation-ai",
-      ai_centers: "research-innovation-ai",
-      ministries: "universities",
-      patents: "industrial-property-patents",
-    };
-    const params = new URLSearchParams({
-      category: categoryByDatabase[selectedDatabase] || "all",
-    });
+    const params = new URLSearchParams({ category: "all" });
     const query = searchQuery.trim();
     if (query) params.set("q", query);
-    if (currentSelectedCountryObj?.name) params.set("country", currentSelectedCountryObj.name);
+    if (currentSelectedCountryObj) {
+      params.set("country", currentSelectedCountryObj.name);
+      params.set("country_id", String(currentSelectedCountryObj.id));
+    }
 
     setActiveDropdown(null);
     navigate(`/researchDatabase?${params.toString()}`);
@@ -1104,7 +1125,7 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative h-[80vh] w-full overflow-hidden flex items-center justify-center select-none font-sans">
+    <section className="relative h-[80vh] w-full flex items-center justify-center select-none font-sans">
       
       {/* ======================= VIDÉO EN PLEIN ÉCRAN ======================= */}
       <div className="absolute inset-0 z-0">
@@ -1195,58 +1216,7 @@ const HeroSection = () => {
                 </div>
               </div>
 
-              {/* Champ 2 : Type d'institution */}
-              <div className="relative md:min-w-[180px]">
-                <div 
-                  onClick={() => toggleDropdown('database')}
-                  className={`group/select flex min-h-[64px] h-full cursor-pointer select-none items-center gap-3 rounded-2xl border px-4 py-2.5 transition-all ${activeDropdown === 'database' ? 'border-emerald-400/50 bg-emerald-50/70 shadow-[0_0_0_4px_rgba(52,211,153,0.08)]' : 'border-transparent bg-slate-50/90 hover:border-slate-200 hover:bg-white'}`}
-                >
-                  <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl transition-colors ${activeDropdown === 'database' ? 'bg-emerald-500 text-white' : 'bg-emerald-50 text-emerald-600'}`}>
-                    <Building2 size={18} />
-                  </span>
-                  <div className="flex flex-col text-start w-full">
-                    <span className="mb-0.5 text-[9px] font-extrabold uppercase tracking-[0.12em] text-slate-400">{t("hero.type_label", "نوع المؤسسة")}</span>
-                    <span className="truncate text-sm font-bold text-slate-800">
-                      {selectedDatabase ? databases.find(d => d.id === selectedDatabase)?.name : t("hero.all", "اختر النوع")}
-                    </span>
-                  </div>
-                  <motion.div animate={{ rotate: activeDropdown === 'database' ? 180 : 0 }} transition={{ duration: 0.2 }} className="shrink-0">
-                    <ChevronDown size={16} className="text-slate-400" />
-                  </motion.div>
-                </div>
-
-                <AnimatePresence>
-                  {activeDropdown === 'database' && (
-                    <motion.ul
-                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                      className="absolute left-0 right-0 top-[112%] z-50 flex max-h-60 flex-col gap-1 overflow-y-auto rounded-2xl border border-slate-200 bg-white/95 p-2 shadow-[0_20px_55px_rgba(15,23,42,0.22)] backdrop-blur-xl md:right-auto md:min-w-full"
-                    >
-                      <li 
-                        onClick={() => { setSelectedDatabase(""); setActiveDropdown(null); }}
-                        className={`flex cursor-pointer items-center justify-between rounded-xl px-3 py-2.5 text-sm font-bold transition-colors ${!selectedDatabase ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
-                      >
-                        <span>{t("hero.all", "كل الأنواع")}</span>
-                        {!selectedDatabase && <Check size={16} />}
-                      </li>
-                      {databases.map((db) => (
-                        <li 
-                          key={db.id}
-                          onClick={() => { setSelectedDatabase(db.id); setActiveDropdown(null); }}
-                          className={`flex cursor-pointer items-center justify-between rounded-xl px-3 py-2.5 text-sm font-bold transition-colors ${selectedDatabase === db.id ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
-                        >
-                          <span>{db.name}</span>
-                          {selectedDatabase === db.id && <Check size={16} />}
-                        </li>
-                      ))}
-                    </motion.ul>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              {/* Champ 3 : Pays */}
+              {/* Champ 2 : Pays */}
               <div className="relative md:min-w-[160px]">
                 <div 
                   onClick={() => toggleDropdown('country')}
@@ -1259,7 +1229,7 @@ const HeroSection = () => {
                     <span className="mb-0.5 text-[9px] font-extrabold uppercase tracking-[0.12em] text-slate-400">{t("hero.country_label", "الدولة")}</span>
                     
                     <div className="flex items-center gap-2 max-w-full">
-                      {selectedCountry && currentSelectedCountryObj && (
+                      {selectedCountry && currentSelectedCountryObj?.flag && (
                         <img src={currentSelectedCountryObj.flag} alt="" className="w-4 h-3 object-cover rounded-[2px] shadow-sm shrink-0" />
                       )}
                       <span className="truncate text-sm font-bold text-slate-800">
@@ -1279,7 +1249,7 @@ const HeroSection = () => {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
                       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                      className="absolute left-0 right-0 top-[112%] z-50 flex max-h-56 flex-col gap-1 overflow-y-auto rounded-2xl border border-slate-200 bg-white/95 p-2 shadow-[0_20px_55px_rgba(15,23,42,0.22)] backdrop-blur-xl md:right-auto md:min-w-full"
+                      className={`absolute top-[112%] z-50 grid max-h-[55vh] w-[min(760px,calc(100vw-3rem))] grid-cols-1 gap-1 overflow-y-auto rounded-2xl border border-slate-200 bg-white/95 p-2 shadow-[0_20px_55px_rgba(15,23,42,0.22)] backdrop-blur-xl sm:grid-cols-2 md:max-h-none md:grid-cols-3 md:overflow-visible ${isRtl ? "right-0" : "left-0"}`}
                     >
                       <li 
                         onClick={() => { setSelectedCountry(""); setActiveDropdown(null); }}
@@ -1295,7 +1265,11 @@ const HeroSection = () => {
                           className={`flex cursor-pointer items-center justify-between rounded-xl px-3 py-2.5 text-sm font-bold transition-colors ${selectedCountry === country.code ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
                         >
                           <div className="flex items-center gap-2">
-                            <img src={country.flag} alt="" className="w-4 h-3 object-cover rounded-[2px] shadow-sm shrink-0" />
+                            {country.flag ? (
+                              <img src={country.flag} alt="" className="w-4 h-3 object-cover rounded-[2px] shadow-sm shrink-0" />
+                            ) : (
+                              <MapPin size={14} className="shrink-0 text-slate-400" />
+                            )}
                             <span className="truncate">{country.name}</span>
                           </div>
                           {selectedCountry === country.code && <Check size={16} />}
