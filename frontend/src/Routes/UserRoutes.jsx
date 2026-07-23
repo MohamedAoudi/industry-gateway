@@ -13,6 +13,8 @@ import MediaCenterSection from '../User/pages/MediaCenter/MediaCenterSection';
 import ContactPage from '../User/pages/Contact/ContactPage';
 import FaqPage from '../User/pages/Faq/FaqPage';
 import ProfilePage from '../User/pages/Profile/ProfilePage';
+import SiteSearchPage from '../User/pages/Search/SiteSearchPage';
+import CountryDatabase from '../User/pages/CountryDatabase/CountryDatabase';
 import ProtectedRoute from '../Authentification/ProtectedRoute';
 
 import Login from '../Authentification/Login'; 
@@ -35,6 +37,8 @@ const UserRoutes = () => (
       <Route path="mediaCenter" element={<MediaCenterSection />} />
       <Route path="contact" element={<ContactPage />} />
       <Route path="faq" element={<FaqPage />} />
+      <Route path="search" element={<SiteSearchPage />} />
+      <Route path="countryDatabase" element={<CountryDatabase />} />
       <Route element={<ProtectedRoute allowedRoles={['user', 'superviseur']} />}>
         <Route path="profile" element={<ProfilePage />} />
       </Route>

@@ -9,7 +9,7 @@ import {
   GraduationCap, FlaskConical, Workflow, FileBadge, UsersRound, HandCoins, Factory,
   Newspaper, Mail, CircleHelp, LayoutDashboard
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import aidsmoLogo from '../assets/images/logos/aidsmo_logo.png';
 import logo from '../assets/images/logos/logo.png';
@@ -86,10 +86,12 @@ const MenuItem = ({ label }) => {
 
 const UserHeader = () => {
   const { t, i18n } = useTranslation();
+  const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [headerSearch, setHeaderSearch] = useState("");
   const [userData, setUserData] = useState({ prenom: "", nom: "" });
   const [userRole, setUserRole] = useState("");
 
@@ -119,6 +121,17 @@ const UserHeader = () => {
   const switchLang = (lng) => {
     i18n.changeLanguage(lng);
     document.documentElement.dir = lng === "ar" ? "rtl" : "ltr";
+  };
+
+  const handleHeaderSearch = (event) => {
+    event.preventDefault();
+    const query = headerSearch.trim();
+    if (!query) return;
+
+    setIsSearchOpen(false);
+    setIsMobileMenuOpen(false);
+    setHeaderSearch("");
+    navigate(`/search?q=${encodeURIComponent(query)}`);
   };
 
   return (
@@ -224,27 +237,37 @@ const UserHeader = () => {
           </div>
 
           <div className="flex shrink-0 items-center gap-3">
-            <div className={`group flex h-9 shrink-0 items-center overflow-hidden rounded-lg border transition-all duration-300 focus-within:border-emerald-400 focus-within:bg-white focus-within:shadow-[0_0_0_3px_rgba(52,211,153,0.08)] ${
-              isSearchOpen ? "w-[190px] border-slate-200 bg-slate-50/80" : "w-9 border-emerald-100 bg-emerald-50"
+            <form onSubmit={handleHeaderSearch} className={`group flex h-9 shrink-0 items-center overflow-hidden rounded-lg border transition-all duration-300 focus-within:border-emerald-400 focus-within:bg-white focus-within:shadow-[0_0_0_3px_rgba(52,211,153,0.08)] ${
+              isSearchOpen ? "w-[240px] border-slate-200 bg-slate-50/80" : "w-9 border-emerald-100 bg-emerald-50"
             }`}>
             {isSearchOpen && (
               <input
                 autoFocus
                 type="text"
+                value={headerSearch}
+                onChange={(event) => setHeaderSearch(event.target.value)}
                 placeholder={t('search')}
                 className="min-w-0 flex-1 border-none bg-transparent px-2.5 text-[11px] text-slate-700 outline-none placeholder:text-slate-400"
               />
             )}
+            {isSearchOpen && headerSearch.trim() && (
+              <button type="submit" className="grid h-9 w-9 shrink-0 place-items-center text-slate-500 transition hover:text-emerald-600" aria-label={t("search")}>
+                <Search size={14} />
+              </button>
+            )}
             <button
               type="button"
-              onClick={() => setIsSearchOpen((isOpen) => !isOpen)}
+              onClick={() => {
+                setIsSearchOpen((isOpen) => !isOpen);
+                if (isSearchOpen) setHeaderSearch("");
+              }}
               aria-label={isSearchOpen ? "Fermer la recherche" : "Ouvrir la recherche"}
               aria-expanded={isSearchOpen}
               className="grid h-9 w-9 shrink-0 place-items-center text-emerald-600 transition-colors hover:bg-emerald-100"
             >
               {isSearchOpen ? <X size={15} /> : <Search size={15} />}
             </button>
-            </div>
+            </form>
 
             <div className="flex shrink-0 rounded-xl border border-slate-200/60 bg-slate-100/80 p-1">
               {['ar', 'en'].map(lng => (
@@ -331,6 +354,19 @@ const UserHeader = () => {
         }`}
       >
         <div className="max-h-[calc(100vh-6rem)] space-y-1 overflow-y-auto p-3" dir={i18n.language === "ar" ? "rtl" : "ltr"}>
+          <form onSubmit={handleHeaderSearch} className="mb-3 flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 p-2">
+            <Search size={17} className="shrink-0 text-emerald-600" />
+            <input
+              type="search"
+              value={headerSearch}
+              onChange={(event) => setHeaderSearch(event.target.value)}
+              placeholder={t("search")}
+              className="min-w-0 flex-1 border-none bg-transparent px-1 py-1.5 text-sm font-medium text-slate-700 outline-none"
+            />
+            <button type="submit" disabled={!headerSearch.trim()} className="rounded-lg bg-emerald-600 px-3 py-2 text-xs font-bold text-white disabled:opacity-40">
+              {i18n.language === "ar" ? "بحث" : "Search"}
+            </button>
+          </form>
           <Link onClick={() => setIsMobileMenuOpen(false)} to="/" className="flex items-center gap-3 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-bold text-emerald-800">
             <Home size={17} />
             {t("menu.home")}

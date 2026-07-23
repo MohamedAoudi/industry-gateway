@@ -17,6 +17,7 @@ use App\Http\Controllers\registerResearcherController;
 use App\Http\Controllers\ResearchDatabaseEntryController;
 use App\Http\Controllers\ResearcherController;
 use App\Http\Controllers\ScientificResearchInnovationCentersController;
+use App\Http\Controllers\SiteSearchController;
 use App\Http\Controllers\SupportingBodiesScientificResearchController;
 use App\Http\Controllers\UserManagementController;
 use Illuminate\Http\Request;
@@ -36,6 +37,7 @@ Route::get('/faqs', [FaqQuestionController::class, 'index']);
 Route::post('/faqs', [FaqQuestionController::class, 'store']);
 Route::get('/research-database', [ResearchDatabaseEntryController::class, 'index']);
 Route::get('/media-items', [MediaItemController::class, 'index']);
+Route::get('/site-search', [SiteSearchController::class, 'index']);
 
 Route::get('/scientificResearchInnovationCenters', [ScientificResearchInnovationCentersController::class, 'index']);
 

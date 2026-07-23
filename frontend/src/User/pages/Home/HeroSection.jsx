@@ -1011,6 +1011,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { Search, ChevronDown, MapPin, Building2, ArrowLeft, Check, Sparkles } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 import backgroundVideo from '../../assets/videos/bg home.mp4';
 
@@ -1048,6 +1049,7 @@ const databases = [
 const HeroSection = () => {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.language === "ar";
+  const navigate = useNavigate();
 
   const [selectedCountry, setSelectedCountry] = useState("");
   const [selectedDatabase, setSelectedDatabase] = useState("");
@@ -1068,8 +1070,21 @@ const HeroSection = () => {
 
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log({ searchQuery, selectedCountry, selectedDatabase });
+    const categoryByDatabase = {
+      scientific_research: "research-innovation-ai",
+      ai_centers: "research-innovation-ai",
+      ministries: "universities",
+      patents: "industrial-property-patents",
+    };
+    const params = new URLSearchParams({
+      category: categoryByDatabase[selectedDatabase] || "all",
+    });
+    const query = searchQuery.trim();
+    if (query) params.set("q", query);
+    if (currentSelectedCountryObj?.name) params.set("country", currentSelectedCountryObj.name);
+
     setActiveDropdown(null);
+    navigate(`/researchDatabase?${params.toString()}`);
   };
 
   const toggleDropdown = (type) => {

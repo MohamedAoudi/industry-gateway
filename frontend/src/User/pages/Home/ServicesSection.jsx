@@ -65,20 +65,38 @@ const ServicesSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.5 }}
           transition={{ duration: 0.65 }}
-          className="mb-14 flex flex-col gap-7 md:mb-16 lg:flex-row lg:items-end lg:justify-between"
+          className="relative mb-14 overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-slate-950 via-emerald-950 to-emerald-800 px-7 py-12 text-white shadow-[0_28px_70px_rgba(6,78,59,0.22)] sm:px-10 sm:py-14 md:mb-16 lg:px-14 lg:py-16"
         >
-          <div className="max-w-3xl">
-            <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-emerald-700 shadow-sm">
-              <Sparkles size={14} />
-              {t("menu.services")}
-            </span>
-            <h2 className="text-4xl font-black leading-tight tracking-tight text-slate-950 sm:text-5xl lg:text-6xl">
-              {t("services_section.title")}
-            </h2>
+          <div className="pointer-events-none absolute -right-24 -top-32 h-80 w-80 rounded-full border-[55px] border-white/[0.04]" />
+          <div className="pointer-events-none absolute -bottom-28 left-1/3 h-72 w-72 rounded-full bg-emerald-400/10 blur-[80px]" />
+          <div className="pointer-events-none absolute inset-0 opacity-[0.04] [background-image:linear-gradient(white_1px,transparent_1px),linear-gradient(90deg,white_1px,transparent_1px)] [background-size:42px_42px]" />
+
+          <div className="relative grid gap-10 lg:grid-cols-[1fr_0.42fr] lg:items-end">
+            <div>
+              <span className="mb-6 inline-flex items-center gap-2 text-sm font-black uppercase tracking-[0.22em] text-emerald-300">
+                <Sparkles size={18} />
+                {isRtl ? "حلول متكاملة" : "Integrated solutions"}
+              </span>
+              <h2 className="max-w-5xl text-2xl font-black leading-tight tracking-[-0.03em] sm:text-4xl lg:text-5xl xl:text-6xl">
+                {t("menu.services")}
+              </h2>
+              <div className="mt-8 flex items-center gap-4">
+                <span className="h-1.5 w-24 rounded-full bg-emerald-400 sm:w-36" />
+                <span className="text-2xl font-black text-emerald-300 sm:text-4xl">
+                  {t("services_section.title")}
+                </span>
+              </div>
+            </div>
+
+            <div className="border-emerald-300/20 lg:border-s lg:ps-8">
+              <p className="text-base font-medium leading-8 text-emerald-50/75 sm:text-lg">
+                {t("services_section.subtitle")}
+              </p>
+              <span className="mt-7 inline-flex h-12 w-12 items-center justify-center rounded-full border border-emerald-300/30 bg-white/10 text-emerald-300 backdrop-blur-sm">
+                <ArrowLeft size={21} className={isRtl ? "-rotate-90" : "rotate-90"} />
+              </span>
+            </div>
           </div>
-          <p className="max-w-md text-sm leading-7 text-slate-600 lg:text-base">
-            {t("services_section.subtitle")}
-          </p>
         </motion.header>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-12">

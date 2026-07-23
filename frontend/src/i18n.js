@@ -200,6 +200,7 @@ i18n.use(initReactI18next).init({
           untitled: "بدون عنوان",
           view: "عرض التفاصيل",
           descriptions: {
+            all: "ابحث في جميع أقسام قاعدة البيانات حسب الاسم أو الوصف أو الدولة.",
             research: "استكشف مراكز البحث العلمي والابتكار والذكاء الصناعي المسجلة في مختلف الدول العربية.",
             universities: "دليل الجامعات والمؤسسات الأكاديمية والعلمية الداعمة للبحث والتطوير في المنطقة العربية.",
             incubators: "تعرف على الحاضنات والأقطاب التكنولوجية والمختبرات التي تدعم تحويل الأفكار إلى مشاريع.",
@@ -736,6 +737,7 @@ i18n.use(initReactI18next).init({
           untitled: "Untitled",
           view: "View details",
           descriptions: {
+            all: "Search all database categories by name, description or country.",
             research: "Explore registered scientific research, innovation and artificial intelligence centers across Arab countries.",
             universities: "A directory of universities and academic institutions supporting research and development across the Arab region.",
             incubators: "Discover incubators, technology poles and laboratories helping transform ideas into projects.",

@@ -101,6 +101,16 @@ const categoryConfig = [
   },
 ];
 
+const allCategoriesConfig = {
+  key: "all",
+  labelKey: "menu.database",
+  descriptionKey: "database_pages.descriptions.all",
+  endpoints: [...new Set(categoryConfig.flatMap((category) => category.endpoints))],
+  icon: Database,
+};
+
+const searchableCategoryConfig = [...categoryConfig, allCategoriesConfig];
+
 const countryAliases = [
   { code: "jo", names: ["الأردن", "jordan"] },
   { code: "ae", names: ["الإمارات", "emirates", "united arab emirates", "uae"] },
@@ -141,7 +151,9 @@ const ResearchDatabase = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const requestedCategory = searchParams.get("category");
-  const activeCategory = categoryConfig.find((item) => item.key === requestedCategory) || categoryConfig[0];
+  const requestedSearch = searchParams.get("q") || "";
+  const requestedCountry = searchParams.get("country") || "";
+  const activeCategory = searchableCategoryConfig.find((item) => item.key === requestedCategory) || categoryConfig[0];
   const ActiveIcon = activeCategory.icon;
 
   const [records, setRecords] = useState([]);
@@ -154,7 +166,7 @@ const ResearchDatabase = () => {
 
   useEffect(() => {
     let isMounted = true;
-    setSearch("");
+    setSearch(requestedSearch);
     setHasError(false);
 
     const loadRecords = async () => {
@@ -190,7 +202,7 @@ const ResearchDatabase = () => {
     return () => {
       isMounted = false;
     };
-  }, [activeCategory.key]);
+  }, [activeCategory.key, requestedSearch]);
 
   const normalizedRecords = useMemo(
     () => records.map((record, index) => {
@@ -219,14 +231,16 @@ const ResearchDatabase = () => {
 
   const filteredRecords = useMemo(() => {
     const query = search.trim().toLocaleLowerCase();
-    if (!query) return normalizedRecords;
+    const country = requestedCountry.trim().toLocaleLowerCase();
 
-    return normalizedRecords.filter((record) =>
-      [record.title, record.description, record.country]
+    return normalizedRecords.filter((record) => {
+      const matchesSearch = !query || [record.title, record.titleAr, record.titleEn, record.description, record.descriptionAr, record.descriptionEn, record.country]
         .filter(Boolean)
-        .some((value) => String(value).toLocaleLowerCase().includes(query))
-    );
-  }, [normalizedRecords, search]);
+        .some((value) => String(value).toLocaleLowerCase().includes(query));
+      const matchesCountry = !country || String(record.country || "").toLocaleLowerCase().includes(country);
+      return matchesSearch && matchesCountry;
+    });
+  }, [normalizedRecords, requestedCountry, search]);
 
   const totalPages = Math.max(1, Math.ceil(filteredRecords.length / pageSize));
   const paginatedRecords = filteredRecords.slice((currentPage - 1) * pageSize, currentPage * pageSize);

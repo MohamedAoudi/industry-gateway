@@ -35,6 +35,30 @@ const arabCountryCodes = [
   "kw", "lb", "ly", "eg", "ma", "mr", "ye",
 ];
 
+const officialCountryNames = {
+  jo: { ar: "المملكة الأردنية الهاشمية", en: "Hashemite Kingdom of Jordan" },
+  ae: { ar: "دولة الإمارات العربية المتحدة", en: "United Arab Emirates" },
+  bh: { ar: "مملكة البحرين", en: "Kingdom of Bahrain" },
+  tn: { ar: "الجمهورية التونسية", en: "Republic of Tunisia" },
+  dz: { ar: "الجمهورية الجزائرية الديمقراطية الشعبية", en: "People's Democratic Republic of Algeria" },
+  dj: { ar: "جمهورية جيبوتي", en: "Republic of Djibouti" },
+  sa: { ar: "المملكة العربية السعودية", en: "Kingdom of Saudi Arabia" },
+  sd: { ar: "جمهورية السودان", en: "Republic of the Sudan" },
+  sy: { ar: "الجمهورية العربية السورية", en: "Syrian Arab Republic" },
+  so: { ar: "جمهورية الصومال", en: "Federal Republic of Somalia" },
+  iq: { ar: "جمهورية العراق", en: "Republic of Iraq" },
+  om: { ar: "سلطنة عُمان", en: "Sultanate of Oman" },
+  ps: { ar: "دولة فلسطين", en: "State of Palestine" },
+  qa: { ar: "دولة قطر", en: "State of Qatar" },
+  kw: { ar: "دولة الكويت", en: "State of Kuwait" },
+  lb: { ar: "الجمهورية اللبنانية", en: "Lebanese Republic" },
+  ly: { ar: "دولة ليبيا", en: "State of Libya" },
+  eg: { ar: "جمهورية مصر العربية", en: "Arab Republic of Egypt" },
+  ma: { ar: "المملكة المغربية", en: "Kingdom of Morocco" },
+  mr: { ar: "الجمهورية الإسلامية الموريتانية", en: "Islamic Republic of Mauritania" },
+  ye: { ar: "الجمهورية اليمنية", en: "Republic of Yemen" },
+};
+
 const StatsSection = () => {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.language === "ar";
@@ -45,11 +69,9 @@ const StatsSection = () => {
   const [hasError, setHasError] = useState(false);
 
   const countries = useMemo(() => {
-    const displayNames = new Intl.DisplayNames([isRtl ? "ar" : "en"], { type: "region" });
-
     return arabCountryCodes.map((code) => ({
       code,
-      name: displayNames.of(code.toUpperCase()),
+      name: officialCountryNames[code][isRtl ? "ar" : "en"],
     }));
   }, [isRtl]);
 
@@ -120,7 +142,7 @@ const StatsSection = () => {
         key: "arab_countries",
         label: t("stats.countries"),
         icon: Globe2,
-        href: "/researchDatabase?category=countries",
+        href: "/countryDatabase",
       },
     ],
     [t]
@@ -239,12 +261,18 @@ const StatsSection = () => {
           className="mt-10"
         >
           <div className="mb-7">
-            <h2 className="text-3xl font-black tracking-tight text-slate-900 md:text-5xl">
+            <Link
+              to="/countryDatabase"
+              className="group inline-flex items-center gap-3 text-3xl font-black tracking-tight text-slate-900 transition-colors hover:text-emerald-700 md:text-5xl"
+            >
               {t("stats.coverage_title")}
-            </h2>
+              <span className="grid h-10 w-10 place-items-center rounded-full border border-emerald-200 bg-emerald-50 text-emerald-700 transition group-hover:border-emerald-600 group-hover:bg-emerald-600 group-hover:text-white md:h-12 md:w-12">
+                <ArrowLeft size={19} className={isRtl ? "" : "rotate-180"} />
+              </span>
+            </Link>
           </div>
 
-          <div className="relative overflow-hidden rounded-[1.75rem] border border-emerald-100 bg-gradient-to-r from-emerald-50/80 via-white to-teal-50/70 px-3 py-4 shadow-[0_12px_35px_rgba(15,23,42,0.05)] sm:px-5">
+          <div className="relative overflow-hidden px-3 py-6 sm:px-5">
             <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-white/90 to-transparent" />
             <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-white/90 to-transparent" />
             <Swiper
@@ -254,7 +282,7 @@ const StatsSection = () => {
               loop
               loopAdditionalSlides={7}
               speed={3500}
-              spaceBetween={12}
+              spaceBetween={16}
               slidesPerView="auto"
               grabCursor
               autoplay={{ delay: 0, disableOnInteraction: false, pauseOnMouseEnter: true }}
@@ -262,19 +290,22 @@ const StatsSection = () => {
             >
               {countries.map((country) => (
                 <SwiperSlide key={`${i18n.language}-${country.code}`} className="!w-auto">
-                  <div className="group flex h-16 min-w-max items-center gap-3 rounded-2xl border border-white bg-white/90 px-4 shadow-sm transition-all duration-300 hover:border-emerald-200 hover:shadow-md">
-                    <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-full border-2 border-white bg-slate-100 shadow-[0_3px_10px_rgba(15,23,42,0.15)] ring-1 ring-slate-200">
+                  <Link
+                    to={`/countryDatabase?country=${country.code}`}
+                    className="group flex h-32 min-w-[330px] items-center gap-6 px-6 transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.03]"
+                  >
+                    <span className="relative h-20 w-28 shrink-0 overflow-hidden rounded-2xl shadow-[0_6px_20px_rgba(15,23,42,0.18)] transition-all duration-300 group-hover:shadow-[0_16px_35px_rgba(5,150,105,0.28)]">
                       <img
-                        src={`https://flagcdn.com/w80/${country.code}.png`}
+                        src={`https://flagcdn.com/w320/${country.code}.png`}
                         alt={country.name}
                         loading="lazy"
                         className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
                       />
                     </span>
-                    <span className="whitespace-nowrap text-xs font-extrabold text-slate-700 group-hover:text-emerald-700 sm:text-sm">
+                    <span className="max-w-[190px] text-base font-black leading-7 text-slate-700 group-hover:text-emerald-700 sm:text-lg">
                       {country.name}
                     </span>
-                  </div>
+                  </Link>
                 </SwiperSlide>
               ))}
             </Swiper>
