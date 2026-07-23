@@ -82,7 +82,6 @@ const AboutPage = () => {
           >
             <div className="relative overflow-hidden bg-gradient-to-br from-emerald-700 to-teal-600 p-8 text-white sm:p-10 lg:col-span-4 lg:p-12">
               <div className="pointer-events-none absolute -right-16 -top-20 h-56 w-56 rounded-full border-[40px] border-white/10" />
-              <span className="text-7xl font-black leading-none text-white/20">01</span>
               <h2 className="relative mt-10 text-3xl font-black leading-tight sm:text-4xl">
                 {t("about_page.identity_title")}
               </h2>
@@ -92,10 +91,6 @@ const AboutPage = () => {
             </div>
 
             <div className="p-8 sm:p-10 lg:col-span-8 lg:p-12 xl:p-14">
-              <span className="mb-5 inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.18em] text-emerald-600">
-                <span className="h-px w-8 bg-emerald-500" />
-                {t("about_platform.about.title")}
-              </span>
               <p className="text-lg font-medium leading-9 text-slate-700 sm:text-xl">
                 <strong className="font-black text-emerald-700">{t("about_platform.about.description_about")}</strong>
                 {t("about_platform.about.description_about1")}
