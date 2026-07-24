@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import {
   ArrowLeft,
+  BookOpen,
   Building2,
   CalendarDays,
   ChevronLeft,
@@ -76,8 +77,8 @@ const LocationLabel = ({ item, location }) => {
 const PdfCover3D = ({ url, thumbnailUrl, title }) => {
   if (!url || !thumbnailUrl) {
     return (
-      <span className="grid h-44 w-32 shrink-0 place-items-center rounded-2xl bg-emerald-50 text-emerald-700">
-        <FileText size={32} />
+      <span className="grid h-56 w-40 shrink-0 place-items-center rounded-xl border border-white/15 bg-white/10 text-emerald-100 shadow-2xl">
+        <FileText size={38} />
       </span>
     );
   }
@@ -88,10 +89,10 @@ const PdfCover3D = ({ url, thumbnailUrl, title }) => {
       target="_blank"
       rel="noreferrer"
       aria-label={title}
-      className="group/cover relative mx-auto block h-48 w-36 shrink-0 sm:mx-2 [perspective:900px]"
+      className="group/cover relative mx-auto block h-56 w-40 shrink-0 [perspective:1000px]"
     >
       <span className="absolute bottom-0 left-3 right-0 h-5 rounded-[50%] bg-slate-950/25 blur-md transition-all duration-500 group-hover/cover:scale-110" />
-      <span className="absolute inset-y-2 -left-1 w-4 rounded-l-md bg-gradient-to-r from-emerald-950 to-emerald-700 shadow-lg [transform:rotateY(-18deg)]" />
+      <span className="absolute inset-y-2 -left-1 w-4 rounded-l-md bg-gradient-to-r from-slate-950 to-emerald-800 shadow-lg [transform:rotateY(-18deg)]" />
       <span className="absolute inset-0 overflow-hidden rounded-r-lg border border-slate-200 bg-white shadow-[12px_16px_28px_rgba(15,23,42,0.24)] transition-all duration-500 [transform:rotateY(-12deg)_rotateX(2deg)] [transform-origin:left_center] group-hover/cover:[transform:rotateY(-4deg)_rotateX(0deg)_translateY(-4px)]">
         <img src={thumbnailUrl} alt="" className="pointer-events-none h-full w-full object-contain object-top" />
         <span className="pointer-events-none absolute inset-0 bg-gradient-to-r from-slate-950/10 via-transparent to-white/10" />
@@ -382,15 +383,46 @@ const MediaCenterSection = () => {
             )}
 
             {!loading && items.length > 0 && activeTab === "releases" && (
-              <div className="space-y-4">
+              <div className="grid gap-7 xl:grid-cols-2">
                 {paginatedItems.map((item) => (
-                  <article key={item.id} className="group flex flex-col gap-7 overflow-hidden rounded-[1.6rem] border border-slate-200 bg-white p-6 transition-all hover:border-emerald-300 hover:shadow-[0_18px_45px_rgba(5,150,105,0.09)] sm:flex-row sm:items-center sm:p-7">
-                    <PdfCover3D url={item.pdf} thumbnailUrl={item.pdfThumbnail} title={getTitle(item)} />
-                    <div className="flex-1">
-                      <h3 className="mt-2 text-xl font-black text-slate-900 sm:text-2xl">{getTitle(item)}</h3>
-                      <p className="mt-2 text-sm leading-7 text-slate-500">{getDescription(item)}</p>
+                  <article key={item.id} className="group relative flex min-h-[360px] flex-col overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-[0_18px_55px_rgba(15,23,42,0.07)] transition-all duration-500 hover:-translate-y-1.5 hover:border-emerald-300 hover:shadow-[0_30px_70px_rgba(5,150,105,0.14)] sm:flex-row">
+                    <div className="relative flex min-h-[300px] w-full shrink-0 items-center justify-center overflow-hidden bg-gradient-to-br from-slate-950 via-emerald-950 to-emerald-800 px-8 py-10 sm:w-[46%]">
+                      <div className="pointer-events-none absolute -left-14 -top-16 h-48 w-48 rounded-full border-[32px] border-white/[0.035]" />
+                      <div className="pointer-events-none absolute -bottom-20 -right-16 h-56 w-56 rounded-full bg-emerald-400/10 blur-2xl" />
+                      <div className="pointer-events-none absolute inset-0 opacity-[0.035] [background-image:linear-gradient(white_1px,transparent_1px),linear-gradient(90deg,white_1px,transparent_1px)] [background-size:28px_28px]" />
+                      <div className="relative">
+                        <PdfCover3D url={item.pdf} thumbnailUrl={item.pdfThumbnail} title={getTitle(item)} />
+                        <span className="absolute -bottom-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 rounded-full border border-white/15 bg-slate-950/75 px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.16em] text-emerald-200 backdrop-blur-md">
+                          <FileText size={11} />
+                          PDF
+                        </span>
+                      </div>
                     </div>
-                    {item.pdf && <a href={item.pdf} target="_blank" rel="noreferrer" className="inline-flex shrink-0 items-center gap-2 text-xs font-black text-emerald-700">{isRtl ? "تحميل PDF" : "Download PDF"}<ArrowLeft size={14} className={isRtl ? "" : "rotate-180"} /></a>}
+
+                    <div className="relative flex flex-1 flex-col p-7 sm:p-8">
+                      <div className="flex flex-wrap items-center gap-3">
+                        <span className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] text-emerald-700">
+                          <BookOpen size={13} />
+                          {isRtl ? "من إصدارات البوابة" : "Portal publication"}
+                        </span>
+                        {item.date && <span className="text-xs font-bold text-slate-400">{formatDate(item.date)}</span>}
+                      </div>
+
+                      <h3 className="mt-6 text-2xl font-black leading-10 text-slate-950 transition-colors group-hover:text-emerald-800">{getTitle(item)}</h3>
+                      <p className="mt-4 line-clamp-4 text-sm leading-8 text-slate-500">{getDescription(item)}</p>
+
+                      <div className="mt-auto border-t border-slate-100 pt-6">
+                        {item.pdf ? (
+                          <a href={item.pdf} target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 rounded-xl bg-slate-950 px-5 py-3 text-xs font-black text-white shadow-lg transition-all hover:bg-emerald-600 hover:shadow-emerald-600/20">
+                            <BookOpen size={16} />
+                            {isRtl ? "فتح الإصدار" : "Open publication"}
+                            <ArrowLeft size={14} className={isRtl ? "" : "rotate-180"} />
+                          </a>
+                        ) : (
+                          <span className="text-xs font-bold text-slate-400">{isRtl ? "الملف غير متوفر" : "File unavailable"}</span>
+                        )}
+                      </div>
+                    </div>
                   </article>
                 ))}
               </div>
