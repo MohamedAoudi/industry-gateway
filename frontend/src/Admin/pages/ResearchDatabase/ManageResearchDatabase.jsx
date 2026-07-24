@@ -8,6 +8,7 @@ import {
   EyeOff,
   ImagePlus,
   Loader2,
+  MapPin,
   Pencil,
   Plus,
   Search,
@@ -27,6 +28,35 @@ const categories = [
   { value: "supporting-bodies", label: "الجهات الداعمة للبحث العلمي والابتكار" },
   { value: "industrial-institutions", label: "المؤسسات الصناعية" },
 ];
+
+const countryFlagCodes = {
+  "المملكة الأردنية الهاشمية": "jo",
+  "دولة الامارات العربية المتحدة": "ae",
+  "مملكة البحرين": "bh",
+  "الجمهورية التونسية": "tn",
+  "الجمهورية الجزائرية الديمقراطية الشعبية": "dz",
+  "جمهورية جيبوتي": "dj",
+  "المملكة العربية السعودية": "sa",
+  "جمهورية السودان": "sd",
+  "الجمهورية العربية السورية": "sy",
+  "جمهورية الصومال": "so",
+  "جمهورية العراق": "iq",
+  "سلطنة عمان": "om",
+  "دولة فلسطين": "ps",
+  "دولة قطر": "qa",
+  "دولة الكويت": "kw",
+  "الجمهورية اللبنانية": "lb",
+  "دولة ﻟﻴﺒﻴﺎ": "ly",
+  "جمهورية مصر العربية": "eg",
+  "المملكة المغربية": "ma",
+  "الجمهورية الإسلامية الموريتانية": "mr",
+  "الجمهورية اليمنية": "ye",
+};
+
+const getCountryFlagUrl = (countryName) => {
+  const code = countryFlagCodes[countryName];
+  return code ? `https://flagcdn.com/w40/${code}.png` : null;
+};
 
 const legacySources = {
   "research-innovation-ai": [
@@ -53,7 +83,7 @@ const legacySources = {
 };
 
 const normalizeEntry = (record, source, category) => {
-  if (source.type === "new") return { ...record, __source: source };
+  if (source.type === "new") return { ...record, display_order: Number(record.display_order ?? 1000), __source: source };
 
   const isResearcher = source.type === "researcher";
   const isCompany = source.type === "company";
@@ -68,6 +98,7 @@ const normalizeEntry = (record, source, category) => {
     country_id: isResearcher || isCompany ? "" : record.idPays,
     country: isResearcher || isCompany ? { nomPays: record.country } : record.pays,
     image_url: isResearcher || isCompany ? null : record.photo_url,
+    display_order: Number(record.display_order ?? 1000),
     is_published: true,
     __source: source,
   };
@@ -83,6 +114,7 @@ const emptyForm = {
   url: "",
   country_id: "",
   is_published: true,
+  display_order: 1000,
   image: null,
 };
 
@@ -103,7 +135,7 @@ const ManageResearchDatabase = ({ lockedCategory }) => {
   const [form, setForm] = useState(emptyForm);
   const [preview, setPreview] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 10;
+  const pageSize = 12;
 
   const loadEntries = async () => {
     setLoading(true);
@@ -124,7 +156,10 @@ const ManageResearchDatabase = ({ lockedCategory }) => {
           ? data.map((record) => normalizeEntry(record, sources[index], category))
           : [];
       });
-      setEntries(records);
+      setEntries(records.sort((first, second) =>
+        (first.display_order - second.display_order)
+        || String(first.title_ar || "").localeCompare(String(second.title_ar || ""), "ar")
+      ));
     } catch (error) {
       toast.error("تعذر تحميل سجلات قاعدة البيانات");
     } finally {
@@ -193,6 +228,7 @@ const ManageResearchDatabase = ({ lockedCategory }) => {
       url: entry.url ?? "",
       country_id: entry.country_id || countries.find((item) => item.nomPays === entry.country?.nomPays)?.idPays || "",
       is_published: Boolean(entry.is_published),
+      display_order: Number(entry.display_order ?? 1000),
       image: null,
     });
     setPreview(entry.image_url ?? null);
@@ -232,6 +268,22 @@ const ManageResearchDatabase = ({ lockedCategory }) => {
 
   const submit = async (event) => {
     event.preventDefault();
+    const normalizeName = (value) => String(value || "").trim().replace(/\s+/g, " ").toLocaleLowerCase();
+    const submittedNames = [form.title_ar, form.title_en].map(normalizeName).filter(Boolean);
+    const duplicateEntry = entries.find((entry) => {
+      const isCurrentEntry = editingId
+        && entry.id === editingId
+        && entry.__source?.type === editingSource?.type
+        && entry.__source?.resource === editingSource?.resource;
+      if (isCurrentEntry || entry.category !== form.category) return false;
+      const existingNames = [entry.title_ar, entry.title_en].map(normalizeName).filter(Boolean);
+      return submittedNames.some((name) => existingNames.includes(name));
+    });
+    if (duplicateEntry) {
+      toast.error("يوجد مركز أو سجل بنفس الاسم داخل هذه الفئة");
+      return;
+    }
+
     setSaving(true);
     const payload = new FormData();
     Object.entries(form).forEach(([key, value]) => {
@@ -248,6 +300,7 @@ const ManageResearchDatabase = ({ lockedCategory }) => {
             email: form.email || null,
             research_field: form.description_ar || form.description_en || "",
             country: selectedCountry?.nomPays || null,
+            display_order: form.display_order,
           });
         } else if (editingSource?.type === "company") {
           const selectedCountry = countries.find((item) => String(item.idPays) === String(form.country_id));
@@ -256,6 +309,7 @@ const ManageResearchDatabase = ({ lockedCategory }) => {
             industry_sector: form.description_ar || form.description_en || null,
             email: form.email || null,
             country: selectedCountry?.nomPays || null,
+            display_order: form.display_order,
           });
         } else if (editingSource?.type === "center") {
           const legacyPayload = new FormData();
@@ -265,6 +319,7 @@ const ManageResearchDatabase = ({ lockedCategory }) => {
           legacyPayload.append("description_en", form.description_en);
           legacyPayload.append("url", form.url);
           legacyPayload.append("idPays", form.country_id);
+          legacyPayload.append("display_order", form.display_order);
           if (form.image) legacyPayload.append("photo", form.image);
           await apiAdmin.post(`${editingSource.resource}/${editingId}`, legacyPayload);
         } else {
@@ -373,6 +428,19 @@ const ManageResearchDatabase = ({ lockedCategory }) => {
               </select>
             </label>
             <label className="space-y-2">
+              <span className="text-sm font-bold text-slate-700">ترتيب الظهور *</span>
+              <input
+                type="number"
+                min="1"
+                max="999999"
+                className={fieldClass}
+                value={form.display_order}
+                onChange={(e) => setForm({ ...form, display_order: e.target.value })}
+                required
+              />
+              <span className="block text-xs text-slate-500">الرقم الأصغر يظهر أولاً للمستخدم.</span>
+            </label>
+            <label className="space-y-2">
               <span className="text-sm font-bold text-slate-700">البريد الإلكتروني</span>
               <input dir="ltr" type="email" className={fieldClass} value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
             </label>
@@ -425,7 +493,7 @@ const ManageResearchDatabase = ({ lockedCategory }) => {
       ) : visibleEntries.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-14 text-center text-slate-500">لا توجد سجلات في هذه الفئة.</div>
       ) : (
-        <div className="grid gap-4 xl:grid-cols-2">
+        <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
           {paginatedEntries.map((entry) => (
             <article key={`${entry.__source?.resource || "new"}-${entry.id}`} className="flex gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
               <div className="grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-xl bg-emerald-50 text-emerald-700">
@@ -436,12 +504,16 @@ const ManageResearchDatabase = ({ lockedCategory }) => {
                   <div>
                     <h2 className="font-black text-slate-900">{entry.title_ar}</h2>
                     <p className="mt-1 text-xs font-bold text-emerald-700">{categoryLabel(entry.category)}</p>
+                    <span className="mt-2 inline-flex rounded-full bg-amber-50 px-2.5 py-1 text-[11px] font-black text-amber-700">
+                      الترتيب: {entry.display_order}
+                    </span>
                   </div>
                   <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-bold ${entry.is_published ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-500"}`}>
                     {entry.is_published ? <Eye size={12} /> : <EyeOff size={12} />}{entry.is_published ? "منشور" : "مسودة"}
                   </span>
                 </div>
-                <p className="mt-3 line-clamp-2 text-sm leading-6 text-slate-500">{entry.description_ar || entry.country?.nomPays || "لا يوجد وصف"}</p>
+                {entry.country?.nomPays && <div className="mt-3"><span className="inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1.5 text-xs font-black text-emerald-700">{getCountryFlagUrl(entry.country.nomPays) ? <img src={getCountryFlagUrl(entry.country.nomPays)} alt="" className="h-4 w-6 rounded-sm border border-slate-200 object-cover shadow-sm" /> : <MapPin size={13} />}{entry.country.nomPays}</span></div>}
+                <p className="mt-3 line-clamp-2 text-sm leading-6 text-slate-500">{entry.description_ar || "لا يوجد وصف"}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
                   <button onClick={() => openEdit(entry)} className="inline-flex items-center gap-1.5 rounded-lg bg-slate-100 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700"><Pencil size={14} /> تعديل</button>
                   <button onClick={() => remove(entry)} className="inline-flex items-center gap-1.5 rounded-lg bg-red-50 px-3 py-2 text-xs font-bold text-red-600 hover:bg-red-100"><Trash2 size={14} /> حذف</button>

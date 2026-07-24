@@ -20,7 +20,8 @@ class ResearchDatabaseEntryController extends Controller
             ->with('country')
             ->where('is_published', true)
             ->when($validated['category'] ?? null, fn ($query, $category) => $query->where('category', $category))
-            ->latest()
+            ->orderBy('display_order')
+            ->orderByDesc('created_at')
             ->paginate($validated['per_page'] ?? 24);
     }
 
@@ -36,7 +37,8 @@ class ResearchDatabaseEntryController extends Controller
         return ResearchDatabaseEntry::query()
             ->with('country')
             ->when($validated['category'] ?? null, fn ($query, $category) => $query->where('category', $category))
-            ->latest()
+            ->orderBy('display_order')
+            ->orderByDesc('created_at')
             ->paginate($validated['per_page'] ?? 50);
     }
 
@@ -60,7 +62,7 @@ class ResearchDatabaseEntryController extends Controller
     {
         $this->authorizeAdministrator($request);
 
-        $data = $this->validatedData($request);
+        $data = $this->validatedData($request, $researchDatabaseEntry);
 
         if ($request->hasFile('image')) {
             $this->deleteLocalImage($researchDatabaseEntry->image);
@@ -85,12 +87,26 @@ class ResearchDatabaseEntryController extends Controller
         return response()->json(['message' => 'تم حذف السجل بنجاح.']);
     }
 
-    private function validatedData(Request $request): array
+    private function validatedData(Request $request, ?ResearchDatabaseEntry $entry = null): array
     {
         return $request->validate([
             'category' => ['required', Rule::in(ResearchDatabaseEntry::CATEGORIES)],
-            'title_ar' => ['required', 'string', 'max:255'],
-            'title_en' => ['nullable', 'string', 'max:255'],
+            'title_ar' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('research_database_entries', 'title_ar')
+                    ->where(fn ($query) => $query->where('category', $request->input('category')))
+                    ->ignore($entry?->id),
+            ],
+            'title_en' => [
+                'nullable',
+                'string',
+                'max:255',
+                Rule::unique('research_database_entries', 'title_en')
+                    ->where(fn ($query) => $query->where('category', $request->input('category')))
+                    ->ignore($entry?->id),
+            ],
             'description_ar' => ['nullable', 'string'],
             'description_en' => ['nullable', 'string'],
             'email' => ['nullable', 'email', 'max:255'],
@@ -98,6 +114,10 @@ class ResearchDatabaseEntryController extends Controller
             'country_id' => ['nullable', 'exists:pays,idPays'],
             'image' => ['nullable', 'image', 'max:4096'],
             'is_published' => ['required', 'boolean'],
+            'display_order' => ['nullable', 'integer', 'min:1', 'max:999999'],
+        ], [
+            'title_ar.unique' => 'يوجد سجل آخر بنفس الاسم داخل هذه الفئة.',
+            'title_en.unique' => 'يوجد سجل آخر بنفس الاسم الإنجليزي داخل هذه الفئة.',
         ]);
     }
 

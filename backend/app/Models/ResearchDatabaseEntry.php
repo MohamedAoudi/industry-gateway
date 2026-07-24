@@ -32,6 +32,7 @@ class ResearchDatabaseEntry extends Model
         'country_id',
         'created_by',
         'is_published',
+        'display_order',
     ];
 
     protected $casts = [

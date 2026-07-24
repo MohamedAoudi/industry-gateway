@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
 // use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Center extends Model
@@ -11,10 +12,12 @@ class Center extends Model
     use HasFactory;
 
     protected $table = 'centers';
+
     protected $primaryKey = 'idCenter';
+
     public $incrementing = true;
+
     protected $keyType = 'int';
-    
 
     // protected $dates = ['deleted_at'];
     public $timestamps = true;
@@ -29,10 +32,10 @@ class Center extends Model
         'idUtilisateur',
         'idPays',
         'idTypeCenter',
+        'display_order',
     ];
 
     protected $appends = ['photo_url'];
-
 
     public function getPhotoUrlAttribute()
     {
@@ -40,9 +43,9 @@ class Center extends Model
         if (filter_var($this->photo, FILTER_VALIDATE_URL)) {
             return $this->photo;
         }
-        
+
         // إذا كان ملف محلي، عاد زيدي السيرفر
-        return asset('storage/' . $this->photo);
+        return asset('storage/'.$this->photo);
     }
 
     // ✅ Relations
@@ -60,5 +63,4 @@ class Center extends Model
     {
         return $this->belongsTo(TypeCenter::class, 'idTypeCenter');
     }
-
 }

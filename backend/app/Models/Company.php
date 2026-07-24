@@ -6,9 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
 {
-    protected $primaryKey = 'idCompany'; 
-    protected $keyType = 'int';   
-    protected $fillable = ['company_name', 'industry_sector', 'email', 'country', 'status'];
+    protected $primaryKey = 'idCompany';
+
+    protected $keyType = 'int';
+
+    protected $fillable = ['company_name', 'industry_sector', 'email', 'country', 'status', 'display_order'];
 
     public function offers()
     {

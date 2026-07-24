@@ -26,6 +26,7 @@ class ResearcherController extends Controller
             'email' => ['nullable', 'email', 'max:255'],
             'research_field' => ['required', 'string', 'max:255'],
             'country' => ['nullable', 'string', 'max:255'],
+            'display_order' => ['nullable', 'integer', 'min:1', 'max:999999'],
         ]);
 
         $researcher = Researcher::findOrFail($id);

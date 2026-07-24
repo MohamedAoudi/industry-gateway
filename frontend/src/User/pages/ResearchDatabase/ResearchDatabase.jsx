@@ -226,8 +226,12 @@ const ResearchDatabase = () => {
         image: record.image_url || record.photo_url,
         email: record.email || "",
         website: record.url || "",
+        displayOrder: Number(record.display_order ?? 1000),
       };
-    }),
+    }).sort((first, second) => (
+      (first.displayOrder - second.displayOrder)
+      || first.title.localeCompare(second.title, isRtl ? "ar" : "en")
+    )),
     [activeCategory.key, isRtl, records]
   );
 
