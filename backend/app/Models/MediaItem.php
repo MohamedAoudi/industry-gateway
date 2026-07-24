@@ -14,7 +14,7 @@ class MediaItem extends Model
     protected $fillable = [
         'category', 'title_ar', 'title_en', 'description_ar', 'description_en',
         'event_date', 'location_ar', 'location_en', 'image', 'external_url',
-        'content_type', 'is_published', 'created_by',
+        'pdf', 'pdf_thumbnail', 'is_published', 'created_by',
     ];
 
     protected $casts = [
@@ -22,7 +22,7 @@ class MediaItem extends Model
         'is_published' => 'boolean',
     ];
 
-    protected $appends = ['image_url'];
+    protected $appends = ['image_url', 'pdf_url', 'pdf_thumbnail_url'];
 
     public function getImageUrlAttribute(): ?string
     {
@@ -31,5 +31,25 @@ class MediaItem extends Model
         }
 
         return filter_var($this->image, FILTER_VALIDATE_URL) ? $this->image : asset('storage/'.$this->image);
+    }
+
+    public function getPdfUrlAttribute(): ?string
+    {
+        if (! $this->pdf) {
+            return null;
+        }
+
+        return filter_var($this->pdf, FILTER_VALIDATE_URL)
+            ? $this->pdf
+            : route('media-items.pdf', ['mediaItem' => $this->getKey()]);
+    }
+
+    public function getPdfThumbnailUrlAttribute(): ?string
+    {
+        if (! $this->pdf_thumbnail) {
+            return null;
+        }
+
+        return route('media-items.pdf-thumbnail', ['mediaItem' => $this->getKey()]);
     }
 }

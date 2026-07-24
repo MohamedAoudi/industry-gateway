@@ -37,6 +37,8 @@ Route::get('/faqs', [FaqQuestionController::class, 'index']);
 Route::post('/faqs', [FaqQuestionController::class, 'store']);
 Route::get('/research-database', [ResearchDatabaseEntryController::class, 'index']);
 Route::get('/media-items', [MediaItemController::class, 'index']);
+Route::get('/media-items/{mediaItem}/pdf', [MediaItemController::class, 'showPublishedPdf'])->name('media-items.pdf');
+Route::get('/media-items/{mediaItem}/pdf-thumbnail', [MediaItemController::class, 'showPublishedPdfThumbnail'])->name('media-items.pdf-thumbnail');
 Route::get('/site-search', [SiteSearchController::class, 'index']);
 
 Route::get('/scientificResearchInnovationCenters', [ScientificResearchInnovationCentersController::class, 'index']);
@@ -75,6 +77,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/admin/users/{user}', [UserManagementController::class, 'destroy']);
 
     Route::get('/media-items/admin', [MediaItemController::class, 'adminIndex']);
+    Route::get('/media-items/{mediaItem}/pdf/admin', [MediaItemController::class, 'showAdminPdf']);
+    Route::get('/media-items/{mediaItem}/pdf-thumbnail/admin', [MediaItemController::class, 'showAdminPdfThumbnail']);
     Route::post('/media-items', [MediaItemController::class, 'store']);
     Route::post('/media-items/{mediaItem}', [MediaItemController::class, 'update']);
     Route::delete('/media-items/{mediaItem}', [MediaItemController::class, 'destroy']);

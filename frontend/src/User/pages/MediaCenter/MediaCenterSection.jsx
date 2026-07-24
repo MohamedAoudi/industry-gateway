@@ -72,6 +72,33 @@ const LocationLabel = ({ item, location }) => {
   );
 };
 
+const PdfCover3D = ({ url, thumbnailUrl, title }) => {
+  if (!url || !thumbnailUrl) {
+    return (
+      <span className="grid h-44 w-32 shrink-0 place-items-center rounded-2xl bg-emerald-50 text-emerald-700">
+        <FileText size={32} />
+      </span>
+    );
+  }
+
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noreferrer"
+      aria-label={title}
+      className="group/cover relative mx-auto block h-48 w-36 shrink-0 sm:mx-2 [perspective:900px]"
+    >
+      <span className="absolute bottom-0 left-3 right-0 h-5 rounded-[50%] bg-slate-950/25 blur-md transition-all duration-500 group-hover/cover:scale-110" />
+      <span className="absolute inset-y-2 -left-1 w-4 rounded-l-md bg-gradient-to-r from-emerald-950 to-emerald-700 shadow-lg [transform:rotateY(-18deg)]" />
+      <span className="absolute inset-0 overflow-hidden rounded-r-lg border border-slate-200 bg-white shadow-[12px_16px_28px_rgba(15,23,42,0.24)] transition-all duration-500 [transform:rotateY(-12deg)_rotateX(2deg)] [transform-origin:left_center] group-hover/cover:[transform:rotateY(-4deg)_rotateX(0deg)_translateY(-4px)]">
+        <img src={thumbnailUrl} alt="" className="pointer-events-none h-full w-full object-contain object-top" />
+        <span className="pointer-events-none absolute inset-0 bg-gradient-to-r from-slate-950/10 via-transparent to-white/10" />
+      </span>
+    </a>
+  );
+};
+
 const mediaContent = {
   news: [
     {
@@ -208,7 +235,8 @@ const MediaCenterSection = () => {
           locationAr: item.location_ar,
           locationEn: item.location_en,
           image: item.image_url,
-          type: item.content_type,
+          pdf: item.pdf_url,
+          pdfThumbnail: item.pdf_thumbnail_url,
         })));
       })
       .catch(() => { if (mounted) setItems([]); })
@@ -351,15 +379,14 @@ const MediaCenterSection = () => {
 
             {!loading && items.length > 0 && activeTab === "releases" && (
               <div className="space-y-4">
-                {paginatedItems.map((item, index) => (
-                  <article key={item.id} className="group flex flex-col gap-6 rounded-[1.6rem] border border-slate-200 bg-white p-6 transition-all hover:border-emerald-300 hover:shadow-[0_18px_45px_rgba(5,150,105,0.09)] sm:flex-row sm:items-center">
-                    <span className="grid h-16 w-16 shrink-0 place-items-center rounded-2xl bg-emerald-50 text-emerald-700"><FileText size={27} /></span>
+                {paginatedItems.map((item) => (
+                  <article key={item.id} className="group flex flex-col gap-7 overflow-hidden rounded-[1.6rem] border border-slate-200 bg-white p-6 transition-all hover:border-emerald-300 hover:shadow-[0_18px_45px_rgba(5,150,105,0.09)] sm:flex-row sm:items-center sm:p-7">
+                    <PdfCover3D url={item.pdf} thumbnailUrl={item.pdfThumbnail} title={getTitle(item)} />
                     <div className="flex-1">
-                      <span className="text-[10px] font-black uppercase tracking-[0.18em] text-emerald-600">{item.type} · 0{index + 1}</span>
                       <h3 className="mt-2 text-xl font-black text-slate-900 sm:text-2xl">{getTitle(item)}</h3>
                       <p className="mt-2 text-sm leading-7 text-slate-500">{getDescription(item)}</p>
                     </div>
-                    <span className="inline-flex shrink-0 items-center gap-2 text-xs font-black text-emerald-700">{t("media_page.read_more")}<ArrowLeft size={14} className={isRtl ? "" : "rotate-180"} /></span>
+                    {item.pdf && <a href={item.pdf} target="_blank" rel="noreferrer" className="inline-flex shrink-0 items-center gap-2 text-xs font-black text-emerald-700">{isRtl ? "تحميل PDF" : "Download PDF"}<ArrowLeft size={14} className={isRtl ? "" : "rotate-180"} /></a>}
                   </article>
                 ))}
               </div>

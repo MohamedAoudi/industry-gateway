@@ -13,6 +13,7 @@
     "framer-motion": "^12.28.1",
     "i18next": "^23.10.0",
     "lucide-react": "^0.562.0",
+    "pdfjs-dist": "^5.4.624",
     "react": "^18.2.0",
     "react-countup": "^6.5.3",
     "react-dom": "^18.2.0",
