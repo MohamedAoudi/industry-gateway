@@ -15,6 +15,30 @@ import {
 } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import apiAdmin from "../../../api/apiAdmin";
+import RegistrationProfileFields from "../../../Authentification/RegistrationProfileFields";
+
+const accountTypeLabels = {
+  factory: "مصنع",
+  industrial_company: "شركة صناعية",
+  production_company: "شركة إنتاجية",
+  expert: "خبير ومختص",
+  funding_entity: "جهة تمويلية",
+  other: "آخر",
+};
+
+const profileFieldLabels = {
+  organization_name: "اسم الجهة",
+  activity_field: "مجال النشاط",
+  products: "المنتجات",
+  country: "الدولة",
+  registration_number: "رقم التسجيل",
+  production_capacity: "الطاقة الإنتاجية",
+  specialty: "التخصص",
+  years_experience: "سنوات الخبرة",
+  funding_scope: "نطاق التمويل",
+  funding_programs: "برامج التمويل",
+  other_type: "الصفة",
+};
 
 const emptyForm = {
   prenomUtilisateur: "",
@@ -22,9 +46,9 @@ const emptyForm = {
   email: "",
   password: "",
   role: "user",
-  position: "",
-  entite: "",
   telephone: "",
+  account_type: "",
+  profile_data: {},
 };
 
 const fieldClass = "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10";
@@ -91,9 +115,9 @@ const ManageUsers = () => {
       email: user.email ?? "",
       password: "",
       role: user.role ?? "user",
-      position: user.position ?? "",
-      entite: user.entite ?? "",
       telephone: user.telephone ?? "",
+      account_type: user.account_type ?? "",
+      profile_data: user.profile_data ?? {},
     });
     setShowForm(true);
   };
@@ -180,7 +204,7 @@ const ManageUsers = () => {
         <div className="grid gap-4 md:grid-cols-[1fr_220px]">
           <label className="relative">
             <Search size={18} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input value={search} onChange={(e) => setSearch(e.target.value)} className={`${fieldClass} pr-11`} placeholder="البحث بالاسم أو البريد أو المؤسسة..." />
+            <input value={search} onChange={(e) => setSearch(e.target.value)} className={`${fieldClass} pr-11`} placeholder="البحث بالاسم أو البريد أو بيانات الحساب..." />
           </label>
           <select value={role} onChange={(e) => setRole(e.target.value)} className={fieldClass}>
             <option value="">جميع الصلاحيات</option>
@@ -197,9 +221,9 @@ const ManageUsers = () => {
           <div className="p-14 text-center text-slate-500">لا يوجد مستخدمون مطابقون للبحث.</div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="w-full min-w-[850px] text-right text-sm">
+            <table className="w-full min-w-[1100px] text-right text-sm">
               <thead className="border-b border-slate-200 bg-slate-50 text-xs text-slate-500">
-                <tr><th className="p-4">المستخدم</th><th className="p-4">الصفة والمؤسسة</th><th className="p-4">الهاتف</th><th className="p-4">الصلاحية</th><th className="p-4 text-center">الإجراءات</th></tr>
+                <tr><th className="p-4">المستخدم</th><th className="p-4">بيانات الحساب</th><th className="p-4">الهاتف</th><th className="p-4">الصلاحية</th><th className="p-4 text-center">الإجراءات</th></tr>
               </thead>
               <tbody className="divide-y divide-slate-100">
                 {users.map((user) => (
@@ -210,7 +234,21 @@ const ManageUsers = () => {
                         <div><p className="font-black text-slate-900">{user.prenomUtilisateur} {user.nomUtilisateur}</p><p className="mt-1 text-xs text-slate-500" dir="ltr">{user.email}</p></div>
                       </div>
                     </td>
-                    <td className="p-4"><p className="font-bold text-slate-700">{user.position || "—"}</p><p className="mt-1 text-xs text-slate-500">{user.entite || "—"}</p></td>
+                    <td className="max-w-sm p-4 align-top">
+                      <span className="inline-flex rounded-full bg-sky-50 px-3 py-1.5 text-xs font-black text-sky-700">
+                        {accountTypeLabels[user.account_type] || "غير محدد"}
+                      </span>
+                      {Object.keys(user.profile_data || {}).length > 0 && (
+                        <dl className="mt-3 grid gap-1.5 text-xs">
+                          {Object.entries(user.profile_data).map(([key, value]) => (
+                            <div key={key} className="flex gap-2">
+                              <dt className="shrink-0 font-bold text-slate-500">{profileFieldLabels[key] || key}:</dt>
+                              <dd className="text-slate-700">{value || "—"}</dd>
+                            </div>
+                          ))}
+                        </dl>
+                      )}
+                    </td>
                     <td className="p-4 text-slate-600" dir="ltr">{user.telephone || "—"}</td>
                     <td className="p-4"><span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold ${user.role === "superviseur" ? "bg-amber-50 text-amber-700" : "bg-emerald-50 text-emerald-700"}`}>{user.role === "superviseur" ? <ShieldCheck size={13} /> : <UserRound size={13} />}{user.role === "superviseur" ? "مدير" : "مستخدم"}</span></td>
                     <td className="p-4"><div className="flex justify-center gap-2"><button type="button" onClick={() => openEdit(user)} className="rounded-lg bg-slate-100 p-2.5 text-slate-600 hover:bg-emerald-50 hover:text-emerald-700" title="تعديل"><Pencil size={16} /></button><button type="button" onClick={() => remove(user)} className="rounded-lg bg-red-50 p-2.5 text-red-600 hover:bg-red-100" title="حذف"><Trash2 size={16} /></button></div></td>
@@ -241,8 +279,14 @@ const ManageUsers = () => {
               <FormField label={editingId ? "كلمة مرور جديدة" : "كلمة المرور *"}><div className="relative"><KeyRound size={17} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400" /><input dir="ltr" type="password" minLength="8" className={`${fieldClass} pr-11`} required={!editingId} value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder={editingId ? "اتركها فارغة دون تغيير" : "8 أحرف على الأقل"} /></div></FormField>
               <FormField label="الصلاحية *"><select className={fieldClass} required value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })}><option value="user">مستخدم</option><option value="superviseur">مدير</option></select></FormField>
               <FormField label="رقم الهاتف"><input dir="ltr" className={fieldClass} value={form.telephone} onChange={(e) => setForm({ ...form, telephone: e.target.value })} /></FormField>
-              <FormField label="الصفة أو الوظيفة"><input className={fieldClass} value={form.position} onChange={(e) => setForm({ ...form, position: e.target.value })} /></FormField>
-              <FormField label="المؤسسة أو الجهة"><input className={fieldClass} value={form.entite} onChange={(e) => setForm({ ...form, entite: e.target.value })} /></FormField>
+              <div className="md:col-span-2">
+                <RegistrationProfileFields
+                  formData={form}
+                  setFormData={setForm}
+                  inputClass={fieldClass}
+                  required={form.role === "user"}
+                />
+              </div>
             </div>
             <div className="mt-7 flex justify-end gap-3 border-t border-slate-100 pt-6"><button type="button" onClick={closeForm} className="rounded-xl border border-slate-200 px-5 py-3 text-sm font-bold text-slate-600">إلغاء</button><button disabled={saving} className="inline-flex min-w-36 items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-black text-white disabled:opacity-60">{saving && <Loader2 size={17} className="animate-spin" />}{editingId ? "حفظ التعديلات" : "إضافة المستخدم"}</button></div>
           </form>

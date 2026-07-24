@@ -11,14 +11,40 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        $request->validate([
-            'nomComplet' => 'required|string|min:3', // Ajout d'une longueur min
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
+        $accountTypes = ['factory', 'industrial_company', 'production_company', 'expert', 'funding_entity', 'other'];
+        $requiredProfileFields = [
+            'factory' => ['organization_name', 'activity_field', 'products', 'country'],
+            'industrial_company' => ['organization_name', 'activity_field', 'registration_number', 'country'],
+            'production_company' => ['organization_name', 'products', 'production_capacity', 'country'],
+            'expert' => ['specialty', 'years_experience', 'organization_name', 'country'],
+            'funding_entity' => ['organization_name', 'funding_scope', 'funding_programs', 'country'],
+            'other' => ['other_type', 'organization_name', 'activity_field', 'country'],
+        ];
+
+        $rules = [
+            'nomComplet' => ['required', 'string', 'min:3', 'max:200'],
+            'email' => ['required', 'email', 'max:100', 'unique:users,email'],
+            'password' => ['required', 'string', 'min:6'],
+            'account_type' => ['required', Rule::in($accountTypes)],
+            'profile_data' => ['required', 'array'],
+        ];
+
+        foreach (array_unique(array_merge(...array_values($requiredProfileFields))) as $field) {
+            $rules["profile_data.{$field}"] = ['nullable', 'string', 'max:255'];
+        }
+        foreach ($requiredProfileFields[$request->input('account_type')] ?? [] as $field) {
+            $rules["profile_data.{$field}"] = ['required', 'string', 'max:255'];
+        }
+
+        $data = $request->validate($rules, [
+            'account_type.required' => 'يرجى اختيار نوع الحساب.',
+            'account_type.in' => 'نوع الحساب المختار غير صالح.',
+            'profile_data.required' => 'يرجى إدخال المعلومات الخاصة بنوع الحساب.',
+            'profile_data.*.required' => 'يرجى تعبئة جميع الحقول الخاصة بنوع الحساب.',
         ]);
 
         try {
-            $nomComplet = trim($request->nomComplet);
+            $nomComplet = trim($data['nomComplet']);
 
             // On cherche le dernier espace pour mieux séparer (ex: "Jean De La Fontaine")
             // Prénom: "Jean De La", Nom: "Fontaine"
@@ -35,9 +61,11 @@ class AuthController extends Controller
             $user = User::create([
                 'prenomUtilisateur' => $prenomUtilisateur,
                 'nomUtilisateur' => $nomUtilisateur,
-                'email' => $request->email,
-                'password' => bcrypt($request->password),
+                'email' => $data['email'],
+                'password' => bcrypt($data['password']),
                 'role' => 'user',
+                'account_type' => $data['account_type'],
+                'profile_data' => $data['profile_data'],
             ]);
 
             // Assure-toi que cette méthode existe dans ton modèle User
@@ -99,7 +127,12 @@ class AuthController extends Controller
             'position' => ['nullable', 'string', 'max:255'],
             'entite' => ['nullable', 'string', 'max:255'],
             'telephone' => ['nullable', 'string', 'max:45'],
+            'password' => ['nullable', 'string', 'min:6', 'confirmed'],
         ]);
+
+        if (! empty($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        }
 
         $user->update($data);
 

@@ -31,9 +31,47 @@ it('allows a supervisor to list and create users', function () {
         'email' => 'new-member@example.test',
         'password' => 'strong-password',
         'role' => 'user',
-    ])->assertCreated();
+        'account_type' => 'industrial_company',
+        'profile_data' => [
+            'organization_name' => 'Industry Member',
+            'activity_field' => 'Machinery',
+            'registration_number' => 'RC-2026',
+            'country' => 'Morocco',
+        ],
+    ])->assertCreated()
+        ->assertJsonPath('data.account_type', 'industrial_company')
+        ->assertJsonPath('data.profile_data.registration_number', 'RC-2026');
 
-    $this->assertDatabaseHas('users', ['email' => 'new-member@example.test', 'role' => 'user']);
+    $this->assertDatabaseHas('users', [
+        'email' => 'new-member@example.test',
+        'role' => 'user',
+        'account_type' => 'industrial_company',
+    ]);
+});
+
+it('allows a supervisor to update all custom user data', function () {
+    $admin = managementUser('superviseur', 'admin-update@example.test');
+    $member = managementUser('user', 'member-update@example.test');
+    Sanctum::actingAs($admin);
+
+    $this->putJson("/api/admin/users/{$member->idUtilisateur}", [
+        'prenomUtilisateur' => 'Expert',
+        'nomUtilisateur' => 'Member',
+        'email' => 'expert-member@example.test',
+        'role' => 'user',
+        'telephone' => '+212600000001',
+        'account_type' => 'expert',
+        'profile_data' => [
+            'specialty' => 'Artificial intelligence',
+            'years_experience' => '12',
+            'organization_name' => 'Research Lab',
+            'country' => 'Morocco',
+        ],
+    ])->assertOk()
+        ->assertJsonPath('data.account_type', 'expert')
+        ->assertJsonPath('data.profile_data.specialty', 'Artificial intelligence');
+
+    expect($member->fresh()->profile_data['years_experience'])->toBe('12');
 });
 
 it('forbids regular users from managing accounts', function () {

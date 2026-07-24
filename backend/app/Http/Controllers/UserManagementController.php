@@ -25,7 +25,9 @@ class UserManagementController extends Controller
                     $nested->where('prenomUtilisateur', 'like', "%{$search}%")
                         ->orWhere('nomUtilisateur', 'like', "%{$search}%")
                         ->orWhere('email', 'like', "%{$search}%")
-                        ->orWhere('entite', 'like', "%{$search}%");
+                        ->orWhere('entite', 'like', "%{$search}%")
+                        ->orWhere('account_type', 'like', "%{$search}%")
+                        ->orWhere('profile_data', 'like', "%{$search}%");
                 });
             })
             ->when($validated['role'] ?? null, fn ($query, $role) => $query->where('role', $role))
@@ -52,16 +54,7 @@ class UserManagementController extends Controller
     {
         $this->authorizeAdministrator($request);
 
-        $data = $request->validate([
-            'prenomUtilisateur' => ['required', 'string', 'max:100'],
-            'nomUtilisateur' => ['required', 'string', 'max:100'],
-            'email' => ['required', 'email', 'max:100', 'unique:users,email'],
-            'password' => ['required', 'string', 'min:8'],
-            'role' => ['required', Rule::in(['user', 'superviseur'])],
-            'position' => ['nullable', 'string', 'max:255'],
-            'entite' => ['nullable', 'string', 'max:255'],
-            'telephone' => ['nullable', 'string', 'max:45'],
-        ]);
+        $data = $this->validatedUserData($request, null, true);
 
         $data['password'] = Hash::make($data['password']);
         $user = User::create($data);
@@ -73,16 +66,7 @@ class UserManagementController extends Controller
     {
         $this->authorizeAdministrator($request);
 
-        $data = $request->validate([
-            'prenomUtilisateur' => ['required', 'string', 'max:100'],
-            'nomUtilisateur' => ['required', 'string', 'max:100'],
-            'email' => ['required', 'email', 'max:100', Rule::unique('users', 'email')->ignore($user->idUtilisateur, 'idUtilisateur')],
-            'password' => ['nullable', 'string', 'min:8'],
-            'role' => ['required', Rule::in(['user', 'superviseur'])],
-            'position' => ['nullable', 'string', 'max:255'],
-            'entite' => ['nullable', 'string', 'max:255'],
-            'telephone' => ['nullable', 'string', 'max:45'],
-        ]);
+        $data = $this->validatedUserData($request, $user);
 
         if ($user->role === 'superviseur' && $data['role'] !== 'superviseur' && User::where('role', 'superviseur')->count() <= 1) {
             return response()->json(['message' => 'لا يمكن تغيير صلاحية آخر مدير في النظام.'], 422);
@@ -120,5 +104,49 @@ class UserManagementController extends Controller
     private function authorizeAdministrator(Request $request): void
     {
         abort_unless($request->user()?->role === 'superviseur', 403);
+    }
+
+    private function validatedUserData(Request $request, ?User $user = null, bool $passwordRequired = false): array
+    {
+        $accountTypes = ['factory', 'industrial_company', 'production_company', 'expert', 'funding_entity', 'other'];
+        $requiredProfileFields = [
+            'factory' => ['organization_name', 'activity_field', 'products', 'country'],
+            'industrial_company' => ['organization_name', 'activity_field', 'registration_number', 'country'],
+            'production_company' => ['organization_name', 'products', 'production_capacity', 'country'],
+            'expert' => ['specialty', 'years_experience', 'organization_name', 'country'],
+            'funding_entity' => ['organization_name', 'funding_scope', 'funding_programs', 'country'],
+            'other' => ['other_type', 'organization_name', 'activity_field', 'country'],
+        ];
+
+        $rules = [
+            'prenomUtilisateur' => ['required', 'string', 'max:100'],
+            'nomUtilisateur' => ['required', 'string', 'max:100'],
+            'email' => [
+                'required',
+                'email',
+                'max:100',
+                Rule::unique('users', 'email')->ignore($user?->idUtilisateur, 'idUtilisateur'),
+            ],
+            'password' => [$passwordRequired ? 'required' : 'nullable', 'string', 'min:8'],
+            'role' => ['required', Rule::in(['user', 'superviseur'])],
+            'position' => ['nullable', 'string', 'max:255'],
+            'entite' => ['nullable', 'string', 'max:255'],
+            'telephone' => ['nullable', 'string', 'max:45'],
+            'account_type' => ['nullable', 'required_if:role,user', Rule::in($accountTypes)],
+            'profile_data' => ['nullable', 'required_if:role,user', 'array'],
+        ];
+
+        foreach (array_unique(array_merge(...array_values($requiredProfileFields))) as $field) {
+            $rules["profile_data.{$field}"] = ['nullable', 'string', 'max:255'];
+        }
+        foreach ($requiredProfileFields[$request->input('account_type')] ?? [] as $field) {
+            $rules["profile_data.{$field}"] = ['required', 'string', 'max:255'];
+        }
+
+        return $request->validate($rules, [
+            'account_type.required_if' => 'يرجى اختيار نوع حساب المستخدم.',
+            'profile_data.required_if' => 'يرجى إدخال بيانات نوع الحساب.',
+            'profile_data.*.required' => 'يرجى تعبئة جميع بيانات نوع الحساب.',
+        ]);
     }
 }

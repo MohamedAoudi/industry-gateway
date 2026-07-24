@@ -213,11 +213,12 @@ import React, { useState } from 'react';
 import apiAdmin from '../api/apiAdmin';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
+import RegistrationProfileFields, { emptyRegistrationForm } from './RegistrationProfileFields';
 
 const Auth = () => {
     const location = useLocation();
     const [isLogin, setIsLogin] = useState(true);
-    const [formData, setFormData] = useState({ nomComplet: '', email: '', password: '' });
+    const [formData, setFormData] = useState(emptyRegistrationForm);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     
@@ -226,7 +227,7 @@ const Auth = () => {
     const toggleMode = () => {
         setIsLogin(!isLogin);
         setError('');
-        setFormData({ nomComplet: '', email: '', password: '' });
+        setFormData(emptyRegistrationForm);
     };
 
     const handleAuth = async (e) => {
@@ -261,6 +262,7 @@ const Auth = () => {
                 const response = await apiAdmin.post('/register', formData);
                 alert(response.data.message || "تم إنشاء الحساب بنجاح");
                 setIsLogin(true);
+                setFormData(emptyRegistrationForm);
             }
         } catch (err) {
             setError(err.response?.data?.message || t("Identifiants invalides"));
@@ -270,7 +272,7 @@ const Auth = () => {
     };
 
     return (
-        <div className="relative min-h-screen w-full flex items-center justify-center p-6 overflow-hidden bg-emerald-600/50">
+        <div className="relative min-h-screen w-full flex items-start justify-center overflow-x-hidden bg-emerald-600/50 px-4 py-8 sm:px-6 sm:py-12">
             
             {/* --- ARRIÈRE-PLAN ANIMÉ (Background) --- */}
             <div className="absolute inset-0 z-0">
@@ -279,7 +281,7 @@ const Auth = () => {
             </div>
 
             {/* --- CARTE PRINCIPALE (Glassmorphism) --- */}
-            <div className="relative z-10 w-full max-w-[450px] bg-white/95 backdrop-blur-xl rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.2)] border border-white/20 transition-all duration-700 ease-in-out overflow-hidden">
+            <div className={`relative z-10 w-full ${isLogin ? "max-w-[450px]" : "max-w-[760px]"} bg-white/95 backdrop-blur-xl rounded-[2.5rem] shadow-[0_20px_50px_rgba(0,0,0,0.2)] border border-white/20 transition-all duration-700 ease-in-out`}>
                 
                 {/* Header avec Dégradé */}
                 <div className="pt-12 pb-6 px-10 text-center">
@@ -306,12 +308,16 @@ const Auth = () => {
                         <input 
                             type="text" 
                             className="w-full px-6 py-4 rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 outline-none transition-all placeholder:text-slate-400"
-                            placeholder="John Doe"
+                            placeholder="مثال: محمد أحمد"
                             value={formData.nomComplet}
                             onChange={(e) => setFormData({...formData, nomComplet: e.target.value})}
                             required={!isLogin}
                         />
                     </div>
+
+                    {!isLogin && (
+                        <RegistrationProfileFields formData={formData} setFormData={setFormData} />
+                    )}
 
                     {/* Email */}
                     <div>

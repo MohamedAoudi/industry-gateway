@@ -26,6 +26,12 @@ class User extends Authenticatable
         'position',
         'entite',
         'telephone',
+        'account_type',
+        'profile_data',
+    ];
+
+    protected $casts = [
+        'profile_data' => 'array',
     ];
 
     protected $hidden = [

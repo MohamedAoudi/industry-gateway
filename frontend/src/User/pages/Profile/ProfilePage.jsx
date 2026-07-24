@@ -2,10 +2,11 @@ import { useEffect, useMemo, useState } from "react";
 import {
   AtSign,
   BadgeCheck,
-  BriefcaseBusiness,
-  Building2,
+  Eye,
+  EyeOff,
   Loader2,
   LayoutDashboard,
+  LockKeyhole,
   Mail,
   Phone,
   Save,
@@ -33,6 +34,8 @@ const ProfilePage = () => {
   const { i18n } = useTranslation();
   const isRtl = i18n.dir() === "rtl";
   const [profile, setProfile] = useState(emptyProfile);
+  const [passwords, setPasswords] = useState({ password: "", password_confirmation: "" });
+  const [showPasswords, setShowPasswords] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -64,15 +67,19 @@ const ProfilePage = () => {
     event.preventDefault();
     setSaving(true);
     try {
-      const { data } = await apiAdmin.put("/me", {
+      const payload = {
         prenomUtilisateur: profile.prenomUtilisateur,
         nomUtilisateur: profile.nomUtilisateur,
         email: profile.email,
-        position: profile.position || null,
-        entite: profile.entite || null,
         telephone: profile.telephone || null,
-      });
+      };
+      if (passwords.password) {
+        payload.password = passwords.password;
+        payload.password_confirmation = passwords.password_confirmation;
+      }
+      const { data } = await apiAdmin.put("/me", payload);
       setProfile({ ...emptyProfile, ...data.user });
+      setPasswords({ password: "", password_confirmation: "" });
       localStorage.setItem("prenomUtilisateur", data.user.prenomUtilisateur);
       localStorage.setItem("nomUtilisateur", data.user.nomUtilisateur);
       localStorage.setItem("emailUtilisateur", data.user.email);
@@ -125,7 +132,7 @@ const ProfilePage = () => {
           <div className="mb-8">
             <p className="text-xs font-black uppercase tracking-wider text-emerald-600">{isRtl ? "إعدادات الحساب" : "Account settings"}</p>
             <h2 className="mt-2 text-2xl font-black text-slate-900">{isRtl ? "الملف الشخصي" : "My profile"}</h2>
-            <p className="mt-2 text-sm text-slate-500">{isRtl ? "حدّث معلوماتك الشخصية والمهنية." : "Update your personal and professional information."}</p>
+            <p className="mt-2 text-sm text-slate-500">{isRtl ? "حدّث اسمك وهاتفك وبريدك الإلكتروني وكلمة المرور." : "Update your name, phone, email, and password."}</p>
           </div>
 
           <div className="grid gap-5 md:grid-cols-2">
@@ -141,11 +148,32 @@ const ProfilePage = () => {
             <ProfileField icon={Phone} label={isRtl ? "رقم الهاتف" : "Phone number"}>
               <input dir="ltr" type="tel" className={fieldClass} value={profile.telephone ?? ""} onChange={(e) => updateField("telephone", e.target.value)} />
             </ProfileField>
-            <ProfileField icon={BriefcaseBusiness} label={isRtl ? "الصفة أو الوظيفة" : "Position"}>
-              <input className={fieldClass} value={profile.position ?? ""} onChange={(e) => updateField("position", e.target.value)} />
+            <ProfileField icon={LockKeyhole} label={isRtl ? "كلمة المرور الجديدة" : "New password"}>
+              <div className="relative">
+                <input
+                  dir={isRtl ? "rtl" : "ltr"}
+                  type={showPasswords ? "text" : "password"}
+                  className={`${fieldClass} ${isRtl ? "pl-12" : "pr-12"}`}
+                  value={passwords.password}
+                  onChange={(e) => setPasswords({ ...passwords, password: e.target.value })}
+                  placeholder={isRtl ? "اتركها فارغة للاحتفاظ بكلمة المرور الحالية" : "Leave blank to keep your current password"}
+                  minLength={6}
+                />
+                <button type="button" onClick={() => setShowPasswords((visible) => !visible)} className="absolute end-3 top-1/2 -translate-y-1/2 rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 hover:text-emerald-600" aria-label={isRtl ? "إظهار أو إخفاء كلمة المرور" : "Show or hide password"}>
+                  {showPasswords ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </ProfileField>
-            <ProfileField icon={Building2} label={isRtl ? "المؤسسة أو الجهة" : "Organization"}>
-              <input className={fieldClass} value={profile.entite ?? ""} onChange={(e) => updateField("entite", e.target.value)} />
+            <ProfileField icon={LockKeyhole} label={isRtl ? "تأكيد كلمة المرور الجديدة" : "Confirm new password"}>
+              <input
+                dir="ltr"
+                type={showPasswords ? "text" : "password"}
+                className={fieldClass}
+                value={passwords.password_confirmation}
+                onChange={(e) => setPasswords({ ...passwords, password_confirmation: e.target.value })}
+                required={Boolean(passwords.password)}
+                minLength={6}
+              />
             </ProfileField>
           </div>
 

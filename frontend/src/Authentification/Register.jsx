@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import apiAdmin from '../api/apiAdmin';
 import { useTranslation } from "react-i18next";
+import RegistrationProfileFields, { emptyRegistrationForm } from './RegistrationProfileFields';
 
 
 const Register = () => {
-    const [formData, setFormData] = useState({ nomComplet: '', email: '', password: '' });
+    const [formData, setFormData] = useState(emptyRegistrationForm);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate();
@@ -34,7 +35,7 @@ const Register = () => {
 
     return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
-            <div className="max-w-md w-full bg-white rounded-3xl shadow-xl p-10">
+            <div className="max-w-3xl w-full bg-white rounded-3xl shadow-xl p-10">
                 <h2 className="text-3xl font-bold text-center mb-8">{t("menu.register")}</h2>
                 
                 {error && (
@@ -51,6 +52,7 @@ const Register = () => {
                         className="w-full px-5 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none"
                         onChange={(e) => setFormData({...formData, nomComplet: e.target.value})}
                     />
+                    <RegistrationProfileFields formData={formData} setFormData={setFormData} />
                     <input 
                         type="email" 
                         placeholder="بريد إلكتروني"
