@@ -1,6 +1,6 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
 import {
   ArrowLeft,
   BadgeCheck,
@@ -10,12 +10,14 @@ import {
   Sparkles,
   UserRoundPlus,
 } from "lucide-react";
+import RegistrationModal from "../../../Authentification/RegistrationModal";
 
 const stepIcons = [UserRoundPlus, BadgeCheck, LogIn];
 
 const RegistrationGuide = () => {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.dir() === "rtl";
+  const [showRegistration, setShowRegistration] = useState(false);
 
   const steps = stepIcons.map((icon, index) => ({
     icon,
@@ -25,6 +27,7 @@ const RegistrationGuide = () => {
   }));
 
   return (
+    <>
     <section
       dir={isRtl ? "rtl" : "ltr"}
       className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-950 px-4 py-20 text-white md:py-28"
@@ -122,8 +125,9 @@ const RegistrationGuide = () => {
                 ))}
               </ul>
 
-              <Link
-                to="/login"
+              <button
+                type="button"
+                onClick={() => setShowRegistration(true)}
                 className="group mt-8 flex w-full items-center justify-center gap-3 rounded-xl bg-white px-5 py-4 text-sm font-black text-emerald-700 shadow-lg shadow-emerald-950/10 transition-all hover:-translate-y-0.5 hover:shadow-xl"
               >
                 {t("registration_guide.cta")}
@@ -131,7 +135,7 @@ const RegistrationGuide = () => {
                   size={17}
                   className={`transition-transform ${isRtl ? "group-hover:-translate-x-1" : "rotate-180 group-hover:translate-x-1"}`}
                 />
-              </Link>
+              </button>
               <p className="mt-4 text-center text-xs font-medium text-emerald-50/65">
                 {t("registration_guide.login_hint")}
               </p>
@@ -140,6 +144,8 @@ const RegistrationGuide = () => {
         </div>
       </div>
     </section>
+    <RegistrationModal open={showRegistration} onClose={() => setShowRegistration(false)} />
+    </>
   );
 };
 
