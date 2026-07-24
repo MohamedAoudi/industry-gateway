@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import {
   ArrowLeft,
+  Building2,
   CalendarDays,
   ChevronLeft,
   ChevronRight,
@@ -234,6 +235,8 @@ const MediaCenterSection = () => {
           date: item.event_date,
           locationAr: item.location_ar,
           locationEn: item.location_en,
+          organizationAr: item.organization_ar,
+          organizationEn: item.organization_en,
           image: item.image_url,
           pdf: item.pdf_url,
           pdfThumbnail: item.pdf_thumbnail_url,
@@ -252,6 +255,7 @@ const MediaCenterSection = () => {
   const getTitle = (item) => isRtl ? item.titleAr : item.titleEn;
   const getDescription = (item) => isRtl ? item.descriptionAr : item.descriptionEn;
   const getLocation = (item) => isRtl ? item.locationAr : item.locationEn;
+  const getOrganization = (item) => isRtl ? item.organizationAr : (item.organizationEn || item.organizationAr);
   const formatDate = (date) => new Intl.DateTimeFormat(locale, {
     day: "2-digit",
     month: "long",
@@ -393,23 +397,61 @@ const MediaCenterSection = () => {
             )}
 
             {!loading && items.length > 0 && activeTab === "competitions" && (
-              <div className="grid gap-6 lg:grid-cols-2">
-                {paginatedItems.map((item, index) => (
-                  <article key={item.id} className="group relative overflow-hidden rounded-[2rem] border border-amber-200 bg-gradient-to-br from-amber-50 via-white to-emerald-50 p-8 shadow-sm transition-all hover:-translate-y-1 hover:shadow-[0_22px_55px_rgba(217,119,6,0.12)]">
-                    <div className="pointer-events-none absolute -right-16 -top-20 h-52 w-52 rounded-full border-[38px] border-amber-500/[0.06]" />
-                    <div className="flex items-start justify-between">
-                      {item.image ? (
-                        <span className="grid h-14 w-14 place-items-center overflow-hidden rounded-2xl border border-amber-200 bg-white p-1.5 shadow-lg shadow-amber-500/15">
-                          <img src={item.image} alt="" className="h-full w-full object-contain" />
+              <div className="grid gap-7 lg:grid-cols-2">
+                {paginatedItems.map((item) => (
+                  <article key={item.id} className="group relative flex min-h-[390px] flex-col overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.07)] transition-all duration-500 hover:-translate-y-1.5 hover:border-amber-300 hover:shadow-[0_28px_65px_rgba(180,83,9,0.15)]">
+                    <div className="h-2 bg-gradient-to-r from-amber-400 via-yellow-300 to-emerald-500" />
+                    <div className="pointer-events-none absolute -right-20 -top-12 h-64 w-64 rounded-full border-[42px] border-amber-400/[0.07] transition-transform duration-700 group-hover:scale-110" />
+                    <Trophy size={150} strokeWidth={1} className="pointer-events-none absolute -bottom-8 -left-7 rotate-12 text-emerald-900/[0.035]" />
+
+                    <div className="relative flex flex-1 flex-col p-7 sm:p-8">
+                      <div className="flex items-start justify-between gap-5">
+                        {item.image ? (
+                          <span className="grid h-20 w-20 shrink-0 place-items-center overflow-hidden rounded-[1.35rem] border border-amber-200 bg-white p-2.5 shadow-[0_12px_28px_rgba(217,119,6,0.16)]">
+                            <img src={item.image} alt="" className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-105" />
+                          </span>
+                        ) : (
+                          <span className="grid h-20 w-20 shrink-0 place-items-center rounded-[1.35rem] bg-gradient-to-br from-amber-400 to-amber-600 text-white shadow-[0_12px_28px_rgba(217,119,6,0.25)]"><Trophy size={32} /></span>
+                        )}
+                        <span className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3.5 py-2 text-[10px] font-black uppercase tracking-[0.13em] text-amber-700">
+                          <Sparkles size={13} />
+                          {isRtl ? "مسابقة وجائزة" : "Competition & Award"}
                         </span>
-                      ) : (
-                        <span className="grid h-14 w-14 place-items-center rounded-2xl bg-amber-500 text-white shadow-lg shadow-amber-500/20"><Trophy size={25} /></span>
-                      )}
-                      <span className="text-4xl font-black text-amber-500/15">0{index + 1}</span>
+                      </div>
+
+                      <div className="mt-7 flex flex-wrap items-center gap-3">
+                        {getLocation(item) && (
+                          <span className="rounded-full border border-emerald-100 bg-emerald-50 px-3 py-2">
+                            <LocationLabel item={item} location={getLocation(item)} />
+                          </span>
+                        )}
+                        {getOrganization(item) && (
+                          <span className="inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50 px-3 py-2 text-xs font-bold text-emerald-700">
+                            <Building2 size={14} />
+                            {getOrganization(item)}
+                          </span>
+                        )}
+                        {item.date && (
+                          <span className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-3 py-2 text-xs font-bold text-slate-600">
+                            <CalendarDays size={14} className="text-amber-600" />
+                            {formatDate(item.date)}
+                          </span>
+                        )}
+                      </div>
+
+                      <h3 className="mt-5 text-2xl font-black leading-10 text-slate-950 transition-colors group-hover:text-emerald-800">{getTitle(item)}</h3>
+                      <p className="mt-3 line-clamp-3 text-sm leading-7 text-slate-500">{getDescription(item)}</p>
+
+                      <div className="mt-auto flex items-center justify-between border-t border-slate-100 pt-6">
+                        <span className="inline-flex items-center gap-2 text-xs font-black text-emerald-700">
+                          <span className="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_0_5px_rgba(16,185,129,0.1)]" />
+                          {isRtl ? "فرصة للابتكار" : "Innovation opportunity"}
+                        </span>
+                        <span className="grid h-9 w-9 place-items-center rounded-full bg-slate-950 text-white transition-all duration-300 group-hover:bg-amber-500 group-hover:shadow-lg group-hover:shadow-amber-500/20">
+                          <ArrowLeft size={15} className={isRtl ? "" : "rotate-180"} />
+                        </span>
+                      </div>
                     </div>
-                    <div className="mt-8"><LocationLabel item={item} location={getLocation(item)} /></div>
-                    <h3 className="mt-4 text-2xl font-black leading-9 text-slate-900">{getTitle(item)}</h3>
-                    <p className="mt-3 text-sm leading-7 text-slate-500">{getDescription(item)}</p>
                   </article>
                 ))}
               </div>

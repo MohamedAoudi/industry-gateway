@@ -74,3 +74,31 @@ it('requires a PDF when creating a release', function () {
         'is_published' => true,
     ])->assertUnprocessable()->assertJsonValidationErrors('pdf');
 });
+
+it('accepts an organization instead of a country for a competition', function () {
+    $admin = User::create(['prenomUtilisateur' => 'Media', 'nomUtilisateur' => 'Admin', 'email' => 'competition-admin@example.test', 'password' => bcrypt('password'), 'role' => 'superviseur']);
+    Sanctum::actingAs($admin);
+
+    $this->postJson('/api/media-items', [
+        'category' => 'competitions',
+        'title_ar' => 'جائزة الابتكار',
+        'organization_ar' => 'المنظمة العربية للابتكار',
+        'is_published' => true,
+    ])->assertCreated();
+
+    $this->assertDatabaseHas('media_items', [
+        'category' => 'competitions',
+        'organization_ar' => 'المنظمة العربية للابتكار',
+    ]);
+});
+
+it('requires either a country or an organization for a competition', function () {
+    $admin = User::create(['prenomUtilisateur' => 'Media', 'nomUtilisateur' => 'Admin', 'email' => 'competition-validation@example.test', 'password' => bcrypt('password'), 'role' => 'superviseur']);
+    Sanctum::actingAs($admin);
+
+    $this->postJson('/api/media-items', [
+        'category' => 'competitions',
+        'title_ar' => 'جائزة بدون جهة',
+        'is_published' => true,
+    ])->assertUnprocessable()->assertJsonValidationErrors(['location_ar', 'organization_ar']);
+});

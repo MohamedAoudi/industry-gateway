@@ -10,7 +10,7 @@ const categories = [
   { value: "competitions", label: "مسابقات وجوائز" },
   { value: "stories", label: "قصص نجاح" },
 ];
-const emptyForm = { category: "news", title_ar: "", title_en: "", description_ar: "", description_en: "", event_date: "", location_ar: "", location_en: "", external_url: "", is_published: true, image: null, pdf: null, pdf_thumbnail: null };
+const emptyForm = { category: "news", title_ar: "", title_en: "", description_ar: "", description_en: "", event_date: "", location_ar: "", location_en: "", organization_ar: "", organization_en: "", external_url: "", is_published: true, image: null, pdf: null, pdf_thumbnail: null };
 const fieldClass = "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10";
 const maxPdfSize = 20 * 1024 * 1024;
 
@@ -80,6 +80,7 @@ const ManageMediaCenter = ({ lockedCategory }) => {
   const [form, setForm] = useState(emptyForm);
   const [preview, setPreview] = useState(null);
   const [pdfName, setPdfName] = useState("");
+  const [countries, setCountries] = useState([]);
   const [page, setPage] = useState(1);
   const pageSize = category === "news" ? 6 : 2;
   const totalPages = Math.max(1, Math.ceil(items.length / pageSize));
@@ -94,13 +95,18 @@ const ManageMediaCenter = ({ lockedCategory }) => {
     finally { setLoading(false); }
   };
   useEffect(() => { loadItems(); }, [category]);
+  useEffect(() => {
+    apiAdmin.get("/pays")
+      .then(({ data }) => setCountries(Array.isArray(data) ? data : (data.data ?? [])))
+      .catch(() => setCountries([]));
+  }, []);
   useEffect(() => { if (lockedCategory) setCategory(lockedCategory); }, [lockedCategory]);
   useEffect(() => { setPage(1); }, [category]);
 
   const openCreate = () => { setEditingId(null); setForm({ ...emptyForm, category: lockedCategory ?? category }); setPreview(null); setPdfName(""); setShowForm(true); };
   const openEdit = (item) => {
     setEditingId(item.id);
-    setForm({ category: item.category, title_ar: item.title_ar ?? "", title_en: item.title_en ?? "", description_ar: item.description_ar ?? "", description_en: item.description_en ?? "", event_date: item.event_date ? item.event_date.slice(0, 16) : "", location_ar: item.location_ar ?? "", location_en: item.location_en ?? "", external_url: item.external_url ?? "", is_published: Boolean(item.is_published), image: null, pdf: null, pdf_thumbnail: null });
+    setForm({ category: item.category, title_ar: item.title_ar ?? "", title_en: item.title_en ?? "", description_ar: item.description_ar ?? "", description_en: item.description_en ?? "", event_date: item.event_date ? item.event_date.slice(0, 16) : "", location_ar: item.location_ar ?? "", location_en: item.location_en ?? "", organization_ar: item.organization_ar ?? "", organization_en: item.organization_en ?? "", external_url: item.external_url ?? "", is_published: Boolean(item.is_published), image: null, pdf: null, pdf_thumbnail: null });
     setPreview(item.image_url ?? null); setPdfName(item.pdf_url ? "PDF محفوظ حالياً" : ""); setShowForm(true);
   };
   const closeForm = () => { if (!saving) { setShowForm(false); setEditingId(null); setPreview(null); } };
@@ -162,11 +168,12 @@ const ManageMediaCenter = ({ lockedCategory }) => {
       )}
       {!loading && items.length > pageSize && <Pagination page={page} totalPages={totalPages} onChange={setPage} />}
       {showForm && <div onMouseDown={(e) => e.target === e.currentTarget && closeForm()} className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-slate-950/60 p-4 backdrop-blur-sm"><form onSubmit={submit} className="my-auto w-full max-w-4xl rounded-2xl bg-white p-6 shadow-2xl"><div className="mb-6 flex justify-between"><h2 className="text-xl font-black">{editingId ? "تعديل المحتوى" : "إضافة محتوى"}</h2><button type="button" onClick={closeForm}><X /></button></div><div className="grid gap-5 md:grid-cols-2">
-        {lockedCategory ? <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3"><span className="text-xs font-bold text-emerald-600">القسم</span><p className="mt-1 text-sm font-black text-emerald-900">{activeCategory?.label}</p></div> : <Field label="القسم *"><select className={fieldClass} value={form.category} onChange={(e) => { setForm({ ...form, category: e.target.value, image: null, pdf: null, pdf_thumbnail: null }); setPreview(null); setPdfName(""); }}>{categories.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</select></Field>}
+        {lockedCategory ? <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3"><span className="text-xs font-bold text-emerald-600">القسم</span><p className="mt-1 text-sm font-black text-emerald-900">{activeCategory?.label}</p></div> : <Field label="القسم *"><select className={fieldClass} value={form.category} onChange={(e) => { setForm({ ...form, category: e.target.value, organization_ar: "", organization_en: "", image: null, pdf: null, pdf_thumbnail: null }); setPreview(null); setPdfName(""); }}>{categories.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</select></Field>}
         <Field label="التاريخ"><input type="datetime-local" className={fieldClass} value={form.event_date} onChange={(e) => setForm({ ...form, event_date: e.target.value })} /></Field>
         <Field label="العنوان بالعربية *"><input className={fieldClass} required value={form.title_ar} onChange={(e) => setForm({ ...form, title_ar: e.target.value })} /></Field><Field label="العنوان بالإنجليزية"><input dir="ltr" className={fieldClass} value={form.title_en} onChange={(e) => setForm({ ...form, title_en: e.target.value })} /></Field>
         <Field label="الوصف بالعربية"><textarea rows="4" className={fieldClass} value={form.description_ar} onChange={(e) => setForm({ ...form, description_ar: e.target.value })} /></Field><Field label="الوصف بالإنجليزية"><textarea dir="ltr" rows="4" className={fieldClass} value={form.description_en} onChange={(e) => setForm({ ...form, description_en: e.target.value })} /></Field>
-        <Field label="المكان بالعربية"><input className={fieldClass} value={form.location_ar} onChange={(e) => setForm({ ...form, location_ar: e.target.value })} /></Field><Field label="المكان بالإنجليزية"><input dir="ltr" className={fieldClass} value={form.location_en} onChange={(e) => setForm({ ...form, location_en: e.target.value })} /></Field>
+        {form.category === "competitions" ? <Field label="الدولة"><select className={fieldClass} value={form.location_ar} onChange={(e) => setForm({ ...form, location_ar: e.target.value, location_en: e.target.value })}><option value="">بدون دولة</option>{form.location_ar && !countries.some((country) => country.nomPays === form.location_ar) && <option value={form.location_ar}>{form.location_ar}</option>}{countries.map((country) => <option key={country.idPays} value={country.nomPays}>{country.nomPays}</option>)}</select></Field> : <><Field label="المكان بالعربية"><input className={fieldClass} value={form.location_ar} onChange={(e) => setForm({ ...form, location_ar: e.target.value })} /></Field><Field label="المكان بالإنجليزية"><input dir="ltr" className={fieldClass} value={form.location_en} onChange={(e) => setForm({ ...form, location_en: e.target.value })} /></Field></>}
+        {form.category === "competitions" && <><Field label="المنظمة بالعربية"><input className={fieldClass} placeholder="يمكن إضافتها مع الدولة أو بدونها" value={form.organization_ar} onChange={(e) => setForm({ ...form, organization_ar: e.target.value })} /></Field><Field label="المنظمة بالإنجليزية"><input dir="ltr" className={fieldClass} placeholder="Organization name" value={form.organization_en} onChange={(e) => setForm({ ...form, organization_en: e.target.value })} /></Field></>}
         <Field label="رابط خارجي"><input dir="ltr" type="url" className={fieldClass} value={form.external_url} onChange={(e) => setForm({ ...form, external_url: e.target.value })} /></Field>
         {form.category === "releases" ? (
           <Field label={`ملف PDF ${editingId ? "" : "*"}`}>

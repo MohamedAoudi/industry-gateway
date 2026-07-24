@@ -121,8 +121,20 @@ class MediaItemController extends Controller
             'description_ar' => ['nullable', 'string'],
             'description_en' => ['nullable', 'string'],
             'event_date' => ['nullable', 'date'],
-            'location_ar' => ['nullable', 'string', 'max:255'],
+            'location_ar' => [
+                Rule::requiredIf($request->input('category') === 'competitions' && ! $request->filled('organization_ar')),
+                'nullable',
+                'string',
+                'max:255',
+            ],
             'location_en' => ['nullable', 'string', 'max:255'],
+            'organization_ar' => [
+                Rule::requiredIf($request->input('category') === 'competitions' && ! $request->filled('location_ar')),
+                'nullable',
+                'string',
+                'max:255',
+            ],
+            'organization_en' => ['nullable', 'string', 'max:255'],
             'image' => [
                 Rule::prohibitedIf($request->input('category') === 'releases'),
                 'nullable',
@@ -150,6 +162,8 @@ class MediaItemController extends Controller
             'pdf.uploaded' => 'تعذر رفع ملف PDF. تأكد أن حجمه لا يتجاوز 20 ميغابايت.',
             'pdf.mimes' => 'يجب أن يكون الملف بصيغة PDF.',
             'pdf.max' => 'حجم ملف PDF يجب ألا يتجاوز 20 ميغابايت.',
+            'location_ar.required' => 'يرجى إدخال الدولة أو اسم المنظمة.',
+            'organization_ar.required' => 'يرجى إدخال اسم المنظمة أو الدولة.',
         ]);
     }
 
