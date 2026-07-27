@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Bot, ExternalLink, LoaderCircle, MessageCircle, Send, Sparkles, X } from "lucide-react";
+import { Bot, ExternalLink, LoaderCircle, Maximize2, MessageCircle, Minimize2, Send, Sparkles, X } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import apiAdmin from "../../api/apiAdmin";
@@ -46,6 +46,7 @@ const ChatbotWidget = () => {
   const locale = isRtl ? "ar" : "en";
   const text = copy[locale];
   const [isOpen, setIsOpen] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState([
@@ -141,7 +142,11 @@ const ChatbotWidget = () => {
           role="dialog"
           aria-modal="true"
           aria-label={text.title}
-          className="fixed inset-0 z-[100] flex h-screen h-[100dvh] w-screen animate-fade flex-col overflow-hidden bg-white shadow-[0_28px_90px_rgba(15,23,42,0.28)] sm:static sm:z-auto sm:mb-4 sm:h-[min(620px,calc(100dvh-120px))] sm:w-[390px] sm:rounded-[1.75rem] sm:border sm:border-slate-200"
+          className={`fixed inset-0 z-[100] flex h-screen h-[100dvh] w-screen animate-fade flex-col overflow-hidden bg-white shadow-[0_28px_90px_rgba(15,23,42,0.28)] sm:static sm:z-auto sm:mb-4 sm:rounded-[1.75rem] sm:border sm:border-slate-200 ${
+            isExpanded
+              ? "sm:h-[min(760px,calc(100dvh-120px))] sm:w-[min(760px,calc(100vw-64px))]"
+              : "sm:h-[min(620px,calc(100dvh-120px))] sm:w-[390px]"
+          }`}
         >
           <header className="relative shrink-0 overflow-hidden bg-gradient-to-br from-emerald-700 via-emerald-600 to-teal-500 px-4 py-3.5 text-white sm:px-5 sm:py-4">
             <div className="absolute -right-8 -top-10 h-28 w-28 rounded-full bg-white/10" />
@@ -156,6 +161,19 @@ const ChatbotWidget = () => {
                   {text.status}
                 </p>
               </div>
+              <button
+                type="button"
+                onClick={() => setIsExpanded((current) => !current)}
+                aria-label={isExpanded
+                  ? (isRtl ? "تصغير نافذة الشات" : "Reduce chat")
+                  : (isRtl ? "تكبير نافذة الشات" : "Enlarge chat")}
+                title={isExpanded
+                  ? (isRtl ? "تصغير نافذة الشات" : "Reduce chat")
+                  : (isRtl ? "تكبير نافذة الشات" : "Enlarge chat")}
+                className="hidden h-9 w-9 place-items-center rounded-xl bg-white/10 transition hover:bg-white/20 sm:grid"
+              >
+                {isExpanded ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
+              </button>
               <button type="button" onClick={() => setIsOpen(false)} aria-label={text.close} className="grid h-9 w-9 place-items-center rounded-xl bg-white/10 transition hover:bg-white/20">
                 <X size={18} />
               </button>
