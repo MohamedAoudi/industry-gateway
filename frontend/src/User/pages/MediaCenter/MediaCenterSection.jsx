@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import { useSearchParams } from "react-router-dom";
 import {
   ArrowLeft,
   BookOpen,
@@ -213,10 +214,16 @@ const MediaCenterSection = () => {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.dir() === "rtl";
   const locale = isRtl ? "ar-MA" : "en-US";
-  const [activeTab, setActiveTab] = useState("news");
+  const [searchParams] = useSearchParams();
+  const requestedCategory = searchParams.get("category");
+  const requestedItemId = searchParams.get("item") || "";
+  const initialTab = tabs.some((tab) => tab.id === requestedCategory) ? requestedCategory : "news";
+  const [activeTab, setActiveTab] = useState(initialTab);
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const pendingFocusRef = useRef(null);
+  const handledFocusRef = useRef("");
   const pageSize = 2;
   const currentTab = tabs.find((tab) => tab.id === activeTab);
   const CurrentIcon = currentTab.icon;
@@ -252,6 +259,41 @@ const MediaCenterSection = () => {
 
   const totalPages = Math.max(1, Math.ceil(items.length / pageSize));
   const paginatedItems = items.slice((page - 1) * pageSize, page * pageSize);
+
+  useEffect(() => {
+    if (tabs.some((tab) => tab.id === requestedCategory)) {
+      setActiveTab(requestedCategory);
+    }
+  }, [requestedCategory]);
+
+  useEffect(() => {
+    if (loading || !requestedItemId) return;
+    const focusRequest = `${activeTab}-${requestedItemId}`;
+    if (handledFocusRef.current === focusRequest) return;
+
+    const itemIndex = items.findIndex((item) => String(item.id) === requestedItemId);
+    if (itemIndex < 0) return;
+
+    handledFocusRef.current = focusRequest;
+    pendingFocusRef.current = requestedItemId;
+    setPage(Math.floor(itemIndex / pageSize) + 1);
+  }, [activeTab, items, loading, requestedItemId]);
+
+  useEffect(() => {
+    if (!pendingFocusRef.current || loading) return;
+
+    const frame = window.requestAnimationFrame(() => {
+      document.getElementById(`media-item-${pendingFocusRef.current}`)
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+      pendingFocusRef.current = null;
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [loading, page, paginatedItems]);
+
+  const focusClass = (item) => (
+    String(item.id) === requestedItemId ? "ring-4 ring-emerald-500/20 !border-emerald-500" : ""
+  );
 
   const getTitle = (item) => isRtl ? item.titleAr : item.titleEn;
   const getDescription = (item) => isRtl ? item.descriptionAr : item.descriptionEn;
@@ -336,7 +378,7 @@ const MediaCenterSection = () => {
             {!loading && items.length > 0 && activeTab === "news" && (
               <div className="grid gap-6 lg:grid-cols-3">
                 {paginatedItems.map((item, index) => (
-                  <article key={item.id} className={`group overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-[0_15px_45px_rgba(15,23,42,0.06)] transition-all duration-500 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-[0_24px_55px_rgba(5,150,105,0.13)] ${index === 0 ? "lg:col-span-2" : ""}`}>
+                  <article id={`media-item-${item.id}`} key={item.id} className={`group scroll-mt-28 overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-[0_15px_45px_rgba(15,23,42,0.06)] transition-all duration-500 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-[0_24px_55px_rgba(5,150,105,0.13)] ${index === 0 ? "lg:col-span-2" : ""} ${focusClass(item)}`}>
                     <div className={`relative overflow-hidden bg-slate-200 ${index === 0 ? "h-72 sm:h-96" : "h-64"}`}>
                       <img src={item.image} alt={getTitle(item)} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/15 to-transparent" />
@@ -365,7 +407,7 @@ const MediaCenterSection = () => {
                 {paginatedItems.map((item) => {
                   const date = new Date(item.date);
                   return (
-                    <article key={item.id} className="group flex flex-col overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:border-emerald-300 hover:shadow-[0_20px_50px_rgba(5,150,105,0.1)] sm:flex-row">
+                    <article id={`media-item-${item.id}`} key={item.id} className={`group flex scroll-mt-28 flex-col overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:border-emerald-300 hover:shadow-[0_20px_50px_rgba(5,150,105,0.1)] sm:flex-row ${focusClass(item)}`}>
                       <div className="flex min-w-[150px] flex-col items-center justify-center bg-gradient-to-br from-emerald-700 to-teal-500 p-7 text-white">
                         <strong className="text-5xl font-black">{date.getDate()}</strong>
                         <span className="mt-1 text-xs font-black uppercase tracking-[0.16em]">{new Intl.DateTimeFormat(locale, { month: "long" }).format(date)}</span>
@@ -385,7 +427,7 @@ const MediaCenterSection = () => {
             {!loading && items.length > 0 && activeTab === "releases" && (
               <div className="grid gap-7 xl:grid-cols-2">
                 {paginatedItems.map((item) => (
-                  <article key={item.id} className="group relative flex min-h-[360px] flex-col overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-[0_18px_55px_rgba(15,23,42,0.07)] transition-all duration-500 hover:-translate-y-1.5 hover:border-emerald-300 hover:shadow-[0_30px_70px_rgba(5,150,105,0.14)] sm:flex-row">
+                  <article id={`media-item-${item.id}`} key={item.id} className={`group relative flex min-h-[360px] scroll-mt-28 flex-col overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-[0_18px_55px_rgba(15,23,42,0.07)] transition-all duration-500 hover:-translate-y-1.5 hover:border-emerald-300 hover:shadow-[0_30px_70px_rgba(5,150,105,0.14)] sm:flex-row ${focusClass(item)}`}>
                     <div className="relative flex min-h-[300px] w-full shrink-0 items-center justify-center overflow-hidden bg-gradient-to-br from-slate-950 via-emerald-950 to-emerald-800 px-8 py-10 sm:w-[46%]">
                       <div className="pointer-events-none absolute -left-14 -top-16 h-48 w-48 rounded-full border-[32px] border-white/[0.035]" />
                       <div className="pointer-events-none absolute -bottom-20 -right-16 h-56 w-56 rounded-full bg-emerald-400/10 blur-2xl" />
@@ -431,7 +473,7 @@ const MediaCenterSection = () => {
             {!loading && items.length > 0 && activeTab === "competitions" && (
               <div className="grid gap-7 lg:grid-cols-2">
                 {paginatedItems.map((item) => (
-                  <article key={item.id} className="group relative flex min-h-[390px] flex-col overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.07)] transition-all duration-500 hover:-translate-y-1.5 hover:border-amber-300 hover:shadow-[0_28px_65px_rgba(180,83,9,0.15)]">
+                  <article id={`media-item-${item.id}`} key={item.id} className={`group relative flex min-h-[390px] scroll-mt-28 flex-col overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.07)] transition-all duration-500 hover:-translate-y-1.5 hover:border-amber-300 hover:shadow-[0_28px_65px_rgba(180,83,9,0.15)] ${focusClass(item)}`}>
                     <div className="h-2 bg-gradient-to-r from-amber-400 via-yellow-300 to-emerald-500" />
                     <div className="pointer-events-none absolute -right-20 -top-12 h-64 w-64 rounded-full border-[42px] border-amber-400/[0.07] transition-transform duration-700 group-hover:scale-110" />
                     <Trophy size={150} strokeWidth={1} className="pointer-events-none absolute -bottom-8 -left-7 rotate-12 text-emerald-900/[0.035]" />
@@ -492,7 +534,7 @@ const MediaCenterSection = () => {
             {!loading && items.length > 0 && activeTab === "stories" && (
               <div className="grid gap-6 lg:grid-cols-2">
                 {paginatedItems.map((item) => (
-                  <article key={item.id} className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-emerald-800 to-teal-700 p-8 text-white shadow-[0_24px_60px_rgba(5,150,105,0.16)] sm:p-10">
+                  <article id={`media-item-${item.id}`} key={item.id} className={`relative scroll-mt-28 overflow-hidden rounded-[2rem] bg-gradient-to-br from-emerald-800 to-teal-700 p-8 text-white shadow-[0_24px_60px_rgba(5,150,105,0.16)] sm:p-10 ${focusClass(item)}`}>
                     <Quote size={48} className="text-white/15" />
                     <blockquote className="mt-6 text-xl font-semibold leading-10 text-emerald-50/90">“{getDescription(item)}”</blockquote>
                     <div className="mt-8 border-t border-white/15 pt-6 text-sm font-black text-white">{getTitle(item)}</div>

@@ -4,6 +4,7 @@ use App\Http\Controllers\AICompanieController;
 use App\Http\Controllers\AIResearcherController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CentersExcellenceArtificialIntelligenceController;
+use App\Http\Controllers\ChatbotController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\FaqQuestionController;
 use App\Http\Controllers\IndustrialPropertyPatentOfficesController;
@@ -40,6 +41,7 @@ Route::get('/media-items', [MediaItemController::class, 'index']);
 Route::get('/media-items/{mediaItem}/pdf', [MediaItemController::class, 'showPublishedPdf'])->name('media-items.pdf');
 Route::get('/media-items/{mediaItem}/pdf-thumbnail', [MediaItemController::class, 'showPublishedPdfThumbnail'])->name('media-items.pdf-thumbnail');
 Route::get('/site-search', [SiteSearchController::class, 'index']);
+Route::post('/chatbot', [ChatbotController::class, 'reply'])->middleware('throttle:30,1');
 
 Route::get('/scientificResearchInnovationCenters', [ScientificResearchInnovationCentersController::class, 'index']);
 

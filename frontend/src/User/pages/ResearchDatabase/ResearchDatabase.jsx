@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import {
@@ -154,6 +154,8 @@ const ResearchDatabase = () => {
   const requestedSearch = searchParams.get("q") || "";
   const requestedCountry = searchParams.get("country") || "";
   const requestedCountryId = searchParams.get("country_id") || "";
+  const requestedEntity = searchParams.get("entity") || "";
+  const requestedEntityId = searchParams.get("entity_id") || "";
   const activeCategory = searchableCategoryConfig.find((item) => item.key === requestedCategory) || categoryConfig[0];
   const ActiveIcon = activeCategory.icon;
 
@@ -163,6 +165,8 @@ const ResearchDatabase = () => {
   const [hasError, setHasError] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedRecord, setSelectedRecord] = useState(null);
+  const pendingFocusRef = useRef(null);
+  const handledFocusRef = useRef("");
   const pageSize = 9;
 
   useEffect(() => {
@@ -212,8 +216,19 @@ const ResearchDatabase = () => {
       const descriptionAr = record.research_field || record.industry_sector || record.description_ar || "";
       const descriptionEn = record.description_en || "";
 
+      const entityType = record.idCenter
+        ? "center"
+        : record.idResearcher
+          ? "researcher"
+          : record.idCompany
+            ? "company"
+            : "database";
+      const entityId = record.idCenter || record.idResearcher || record.idCompany || record.id || index;
+
       return {
-        id: `${record.__source}-${record.id || record.idCenter || record.idResearcher || index}`,
+        id: `${entityType}-${entityId}`,
+        entityType,
+        entityId: String(entityId),
         title: isRtl ? titleAr || titleEn : titleEn || titleAr,
         titleAr,
         titleEn,
@@ -262,6 +277,39 @@ const ResearchDatabase = () => {
   useEffect(() => {
     if (currentPage > totalPages) setCurrentPage(totalPages);
   }, [currentPage, totalPages]);
+
+  useEffect(() => {
+    if (loading || !requestedEntity || !requestedEntityId) return;
+
+    const focusRequest = `${requestedEntity}-${requestedEntityId}`;
+    if (handledFocusRef.current === focusRequest) return;
+
+    const recordIndex = filteredRecords.findIndex(
+      (record) => record.entityType === requestedEntity && record.entityId === requestedEntityId
+    );
+    if (recordIndex < 0) return;
+
+    const record = filteredRecords[recordIndex];
+    handledFocusRef.current = focusRequest;
+    pendingFocusRef.current = record.id;
+    setCurrentPage(Math.floor(recordIndex / pageSize) + 1);
+
+    if (localStorage.getItem("auth_token")) {
+      setSelectedRecord(record);
+    }
+  }, [filteredRecords, loading, requestedEntity, requestedEntityId]);
+
+  useEffect(() => {
+    if (!pendingFocusRef.current || loading) return;
+
+    const frame = window.requestAnimationFrame(() => {
+      document.getElementById(`database-record-${pendingFocusRef.current}`)
+        ?.scrollIntoView({ behavior: "smooth", block: "center" });
+      pendingFocusRef.current = null;
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [currentPage, loading, paginatedRecords]);
 
   useEffect(() => {
     if (!selectedRecord) return undefined;
@@ -351,8 +399,17 @@ const ResearchDatabase = () => {
             </div>
           ) : (
             <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-              {paginatedRecords.map((record) => (
-                <article key={record.id} className="group flex min-h-[260px] flex-col overflow-hidden rounded-[1.6rem] border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-[0_20px_50px_rgba(5,150,105,0.1)]">
+              {paginatedRecords.map((record) => {
+                const isRequestedRecord = record.entityType === requestedEntity && record.entityId === requestedEntityId;
+
+                return (
+                <article
+                  id={`database-record-${record.id}`}
+                  key={record.id}
+                  className={`group flex min-h-[260px] scroll-mt-28 flex-col overflow-hidden rounded-[1.6rem] border bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-[0_20px_50px_rgba(5,150,105,0.1)] ${
+                    isRequestedRecord ? "border-emerald-500 ring-4 ring-emerald-500/15" : "border-slate-200"
+                  }`}
+                >
                   <div className="flex items-start justify-between gap-4">
                     {record.image && !record.image.endsWith("/null") ? (
                       <img src={record.image} alt="" className="h-24 w-24 rounded-2xl border border-slate-100 bg-white object-contain p-2 shadow-sm sm:h-28 sm:w-28" />
@@ -385,7 +442,8 @@ const ResearchDatabase = () => {
                     <ArrowLeft size={14} className={isRtl ? "" : "rotate-180"} />
                   </button>
                 </article>
-              ))}
+                );
+              })}
             </div>
           )}
 

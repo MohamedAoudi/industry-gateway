@@ -35,4 +35,12 @@ return [
         ],
     ],
 
+    'openai' => [
+        'api_key' => env('OPENAI_API_KEY'),
+        'model' => env('OPENAI_MODEL', 'gpt-5.6'),
+        'reasoning_effort' => env('OPENAI_REASONING_EFFORT', 'low'),
+        'timeout' => env('OPENAI_TIMEOUT', 45),
+        'ca_bundle' => env('OPENAI_CA_BUNDLE'),
+    ],
+
 ];
