@@ -37,7 +37,7 @@ const MegaMenu = ({ label, icon: Icon, children, width = "w-[550px]" }) => {
   const { t } = useTranslation();
   return (
     <div className="relative group">
-      <button className="flex items-center gap-2 rounded-xl px-1.5 py-2.5 text-[13px] font-bold text-slate-700 transition-all duration-200 hover:bg-emerald-50 hover:text-emerald-700">
+      <button className="flex items-center gap-2 whitespace-nowrap rounded-xl px-1.5 py-2.5 text-[13px] font-bold text-slate-700 transition-all duration-200 hover:bg-emerald-50 hover:text-emerald-700">
         {Icon && (
           <span className="grid h-7 w-7 place-items-center rounded-lg bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100 transition-colors group-hover:bg-emerald-600 group-hover:text-white">
             <Icon size={14} />
@@ -138,7 +138,7 @@ const UserHeader = () => {
     <header className="fixed top-0 z-50 flex w-full flex-col items-center">
       
       {/* 1. TOP HEADER */}
-      <div className="flex h-20 w-full items-center justify-between border-b border-white/60 bg-white/90 px-4 shadow-[0_1px_0_rgba(15,23,42,0.04)] backdrop-blur-2xl xl:hidden">
+      <div className="flex h-20 w-full items-center justify-between border-b border-white/60 bg-white/90 px-4 shadow-[0_1px_0_rgba(15,23,42,0.04)] backdrop-blur-2xl min-[1700px]:hidden">
         <div className="flex-shrink-0">
           <img src={logo} alt="Logo Left" className="h-16 w-auto object-contain" />
         </div>
@@ -174,7 +174,7 @@ const UserHeader = () => {
             onClick={() => setIsMobileMenuOpen((isOpen) => !isOpen)}
             aria-label={isMobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
             aria-expanded={isMobileMenuOpen}
-            className="grid h-10 w-10 place-items-center rounded-xl bg-slate-900 text-white transition-colors hover:bg-emerald-700 xl:hidden"
+            className="grid h-10 w-10 place-items-center rounded-xl bg-slate-900 text-white transition-colors hover:bg-emerald-700 min-[1700px]:hidden"
           >
             {isMobileMenuOpen ? <X size={19} /> : <MenuIcon size={19} />}
           </button>
@@ -182,7 +182,7 @@ const UserHeader = () => {
       </div>
 
       {/* 2. MAIN HEADER */}
-      <div className="hidden w-full transition-all duration-300 xl:flex">
+      <div className="hidden w-full transition-all duration-300 min-[1700px]:flex">
         <nav className={`relative flex w-full items-center justify-between gap-3 overflow-visible border-b bg-white px-5 py-2 transition-all duration-300 ${
           isScrolled 
           ? "border-slate-200 shadow-[0_10px_30px_rgba(15,23,42,0.1)]" 
@@ -197,7 +197,7 @@ const UserHeader = () => {
               <Home size={17} />
             </Link>
             
-            <Link to="/about" className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-emerald-50 hover:text-emerald-700">
+            <Link to="/about" className="flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-emerald-50 hover:text-emerald-700">
               <Info size={15} className="text-emerald-600" />
               {t("menu.about")}
             </Link>
@@ -220,17 +220,17 @@ const UserHeader = () => {
               <Link to="/researchDatabase?category=industrial-institutions"><SubLinkCard icon={Factory} label="submenu.database.industrial_institutions" /></Link>
             </MegaMenu>
 
-            <Link to="/mediaCenter" className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-emerald-50 hover:text-emerald-700">
+            <Link to="/mediaCenter" className="flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-emerald-50 hover:text-emerald-700">
               <Newspaper size={15} className="text-emerald-600" />
               {t("menu.media_center")}
             </Link>
 
-            <Link to="/faq" className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-emerald-50 hover:text-emerald-700">
+            <Link to="/faq" className="flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-emerald-50 hover:text-emerald-700">
               <CircleHelp size={15} className="text-emerald-600" />
               {t("footer.faq")}
             </Link>
 
-            <Link to="/contact" className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-emerald-50 hover:text-emerald-700">
+            <Link to="/contact" className="flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-emerald-50 hover:text-emerald-700">
               <Mail size={15} className="text-emerald-600" />
               {t("menu.contact")}
             </Link>
@@ -349,7 +349,7 @@ const UserHeader = () => {
 
       {/* 3. MENU MOBILE */}
       <div
-        className={`w-[calc(100%-1.5rem)] overflow-hidden rounded-b-[1.5rem] border-x border-b border-white/70 bg-white/95 shadow-[0_22px_55px_rgba(15,23,42,0.2)] backdrop-blur-2xl transition-all duration-300 xl:hidden ${
+        className={`w-[calc(100%-1.5rem)] overflow-hidden rounded-b-[1.5rem] border-x border-b border-white/70 bg-white/95 shadow-[0_22px_55px_rgba(15,23,42,0.2)] backdrop-blur-2xl transition-all duration-300 min-[1700px]:hidden ${
           isMobileMenuOpen ? "max-h-[calc(100vh-5rem)] translate-y-0 opacity-100" : "pointer-events-none max-h-0 -translate-y-3 border-transparent opacity-0"
         }`}
       >

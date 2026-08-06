@@ -338,7 +338,7 @@ i18n.use(initReactI18next).init({
           website_title: "الموقع الرسمي",
           address_title: "العنوان الرسمي",
           hours_title: "أوقات العمل",
-          hours_value: "الاثنين إلى الجمعة، 08:30 - 16:30",
+          hours_value: "الاثنين إلى الجمعة، 08:30 - 15:30",
           map: {
             eyebrow: "موقعنا",
             title: "اعثر علينا على الخريطة",
@@ -363,7 +363,15 @@ i18n.use(initReactI18next).init({
               general: "استفسار عام",
               partnership: "تعاون وشراكة",
               technical: "دعم تقني",
-              media: "الإعلام والتواصل"
+              media: "الإعلام والتواصل",
+              "research-innovation-ai": "مراكز البحث العلمي والإبتكار والذكاء الصناعي",
+              universities: "الجامعات والمؤسسات الأكاديمية والعلمية",
+              "incubators-technology-labs": "الحاضنات والأقطاب التكنولوجية والمختبرات",
+              "programs-initiatives-strategies": "البرامج والمبادرات والاستراتيجيات",
+              "industrial-property-patents": "مكاتب الملكية الصناعية وبراءات الإختراع",
+              "experts-specialists": "قاعدة الخبراء والمختصين",
+              "supporting-bodies": "الجهات الداعمة للبحث العلمي والابتكار",
+              "industrial-institutions": "المؤسسات الصناعية"
             }
           }
         },
@@ -612,7 +620,7 @@ i18n.use(initReactI18next).init({
           website_title: "Official website",
           address_title: "Official address",
           hours_title: "Working hours",
-          hours_value: "Monday to Friday, 08:30 - 16:30",
+          hours_value: "Monday to Friday, 08:30 - 15:30",
           map: {
             eyebrow: "Our location",
             title: "Find us on the map",
@@ -637,7 +645,15 @@ i18n.use(initReactI18next).init({
               general: "General inquiry",
               partnership: "Collaboration and partnership",
               technical: "Technical support",
-              media: "Media and communication"
+              media: "Media and communication",
+              "research-innovation-ai": "Research, innovation and AI centers",
+              universities: "Universities and academic and scientific institutions",
+              "incubators-technology-labs": "Incubators, technology hubs and laboratories",
+              "programs-initiatives-strategies": "Programs, initiatives and strategies",
+              "industrial-property-patents": "Industrial property and patent offices",
+              "experts-specialists": "Experts and specialists database",
+              "supporting-bodies": "Scientific research and innovation supporting bodies",
+              "industrial-institutions": "Industrial institutions"
             }
           }
         },

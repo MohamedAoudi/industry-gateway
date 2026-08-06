@@ -133,9 +133,14 @@ const ContactPage = () => {
                     <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-emerald-100 text-emerald-700 transition-colors group-hover:bg-emerald-600 group-hover:text-white">
                       <Icon size={18} />
                     </span>
-                    <span className="min-w-0 flex-1">
+                    <span className={`min-w-0 flex-1 ${isRtl ? "text-right" : "text-left"}`}>
                       <span className="block text-[10px] font-black uppercase tracking-[0.14em] text-slate-400">{title}</span>
-                      <span dir={ltr ? "ltr" : undefined} className="mt-1 block truncate text-sm font-bold text-slate-800">{value}</span>
+                      <span
+                        dir={ltr ? "ltr" : undefined}
+                        className={`mt-1 block truncate text-sm font-bold text-slate-800 ${isRtl ? "text-right" : "text-left"}`}
+                      >
+                        {value}
+                      </span>
                     </span>
                     {external && <ExternalLink size={15} className="text-slate-300 group-hover:text-emerald-600" />}
                   </a>
@@ -209,6 +214,14 @@ const ContactPage = () => {
                     <option value="partnership">{t("contact_page.form.subjects.partnership")}</option>
                     <option value="technical">{t("contact_page.form.subjects.technical")}</option>
                     <option value="media">{t("contact_page.form.subjects.media")}</option>
+                    <option value="research-innovation-ai">{t("contact_page.form.subjects.research-innovation-ai")}</option>
+                    <option value="universities">{t("contact_page.form.subjects.universities")}</option>
+                    <option value="incubators-technology-labs">{t("contact_page.form.subjects.incubators-technology-labs")}</option>
+                    <option value="programs-initiatives-strategies">{t("contact_page.form.subjects.programs-initiatives-strategies")}</option>
+                    <option value="industrial-property-patents">{t("contact_page.form.subjects.industrial-property-patents")}</option>
+                    <option value="experts-specialists">{t("contact_page.form.subjects.experts-specialists")}</option>
+                    <option value="supporting-bodies">{t("contact_page.form.subjects.supporting-bodies")}</option>
+                    <option value="industrial-institutions">{t("contact_page.form.subjects.industrial-institutions")}</option>
                   </select>
                 </label>
               </div>
