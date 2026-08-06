@@ -209,11 +209,30 @@
 
 
 
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import apiAdmin, { setAuthSession } from '../api/apiAdmin';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 import RegistrationProfileFields, { emptyRegistrationForm } from './RegistrationProfileFields';
+
+let googleIdentityScriptPromise;
+
+const loadGoogleIdentityScript = () => {
+    if (window.google?.accounts?.id) return Promise.resolve();
+    if (googleIdentityScriptPromise) return googleIdentityScriptPromise;
+
+    googleIdentityScriptPromise = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'https://accounts.google.com/gsi/client';
+        script.async = true;
+        script.defer = true;
+        script.onload = resolve;
+        script.onerror = () => reject(new Error('Google Identity Services could not be loaded.'));
+        document.head.appendChild(script);
+    });
+
+    return googleIdentityScriptPromise;
+};
 
 const Auth = () => {
     const location = useLocation();
@@ -221,13 +240,74 @@ const Auth = () => {
     const [formData, setFormData] = useState(emptyRegistrationForm);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [deactivatedAccount, setDeactivatedAccount] = useState(null);
+    const [reactivationMessage, setReactivationMessage] = useState('');
+    const googleButtonRef = useRef(null);
     
     const { t } = useTranslation();
+
+    useEffect(() => {
+        if (deactivatedAccount) return undefined;
+        let cancelled = false;
+
+        const initializeGoogleButton = async () => {
+            try {
+                const [{ data }] = await Promise.all([
+                    apiAdmin.get('/auth/google/config'),
+                    loadGoogleIdentityScript(),
+                ]);
+
+                if (cancelled || !googleButtonRef.current) return;
+
+                window.google.accounts.id.initialize({
+                    client_id: data.client_id,
+                    callback: async ({ credential }) => {
+                        if (!credential) return;
+                        setLoading(true);
+                        setError('');
+
+                        try {
+                            const response = await apiAdmin.post('/auth/google/credential', { credential });
+                            setAuthSession(response.data);
+                            window.location.href = response.data.user.role === 'superviseur' ? '/admin/dashboard' : '/';
+                        } catch (requestError) {
+                            if (requestError.response?.data?.code === 'ACCOUNT_DEACTIVATED') {
+                                setDeactivatedAccount({ email: requestError.response.data.email || '' });
+                            } else {
+                                setError(requestError.response?.data?.message || 'تعذر تسجيل الدخول باستخدام Google.');
+                            }
+                            setLoading(false);
+                        }
+                    },
+                });
+
+                googleButtonRef.current.replaceChildren();
+                window.google.accounts.id.renderButton(googleButtonRef.current, {
+                    type: 'standard',
+                    theme: 'outline',
+                    size: 'large',
+                    text: isLogin ? 'signin_with' : 'signup_with',
+                    shape: 'rectangular',
+                    logo_alignment: 'left',
+                    locale: 'ar',
+                    width: Math.min(370, googleButtonRef.current.clientWidth || 370),
+                });
+            } catch (requestError) {
+                if (!cancelled) setError(requestError.response?.data?.message || 'تعذر تحميل تسجيل الدخول باستخدام Google.');
+            }
+        };
+
+        initializeGoogleButton();
+        return () => {
+            cancelled = true;
+        };
+    }, [deactivatedAccount, isLogin]);
 
     const toggleMode = () => {
         setIsLogin(!isLogin);
         setError('');
         setFormData(emptyRegistrationForm);
+        setDeactivatedAccount(null);
     };
 
     const handleAuth = async (e) => {
@@ -257,11 +337,57 @@ const Auth = () => {
                 setFormData(emptyRegistrationForm);
             }
         } catch (err) {
-            setError(err.response?.data?.message || t("Identifiants invalides"));
+            if (err.response?.data?.code === 'ACCOUNT_DEACTIVATED') {
+                setDeactivatedAccount({ email: formData.email });
+                setError('');
+            } else {
+                setError(err.response?.data?.message || t("Identifiants invalides"));
+            }
         } finally {
             setLoading(false);
         }
     };
+
+    const contactAdministrator = (event) => {
+        event.preventDefault();
+        const subject = 'طلب إعادة تفعيل الحساب';
+        const body = [
+            `البريد الإلكتروني: ${deactivatedAccount.email}`,
+            '',
+            reactivationMessage,
+        ].join('\n');
+        window.location.href = `mailto:id@aidsmo.org?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    };
+
+    if (deactivatedAccount) {
+        return (
+            <div dir="rtl" className="relative flex min-h-screen w-full items-start justify-center overflow-x-hidden bg-emerald-600/50 px-4 py-8 sm:px-6 sm:py-12">
+                <div className="absolute inset-0 z-0">
+                    <div className="absolute left-[-10%] top-[-10%] h-[40%] w-[40%] rounded-full bg-emerald-600/20 blur-[120px]" />
+                    <div className="absolute bottom-[-10%] right-[-10%] h-[40%] w-[40%] rounded-full bg-blue-600/20 blur-[120px]" />
+                </div>
+                <div className="relative z-10 w-full max-w-xl rounded-[2rem] border border-white/20 bg-white/95 p-7 shadow-[0_20px_50px_rgba(0,0,0,0.2)] backdrop-blur-xl sm:p-10">
+                    <div className="rounded-2xl border border-amber-200 bg-amber-50 p-5">
+                        <h1 className="text-2xl font-black text-amber-900">الحساب معطل</h1>
+                        <p className="mt-2 text-sm leading-7 text-amber-800/80">تم الاحتفاظ بجميع بياناتك، لكن تسجيل الدخول متوقف. أرسل طلباً إلى الإدارة لإعادة تفعيل الحساب.</p>
+                    </div>
+
+                    <form onSubmit={contactAdministrator} className="mt-6 space-y-5">
+                        <label className="block">
+                            <span className="mb-2 block text-sm font-bold text-slate-700">البريد الإلكتروني</span>
+                            <input dir="ltr" type="email" value={deactivatedAccount.email} readOnly className="w-full cursor-not-allowed rounded-xl border border-slate-200 bg-slate-100 px-4 py-3.5 text-left text-sm text-slate-500 outline-none" />
+                        </label>
+                        <label className="block">
+                            <span className="mb-2 block text-sm font-bold text-slate-700">رسالتك إلى الإدارة *</span>
+                            <textarea required rows="5" value={reactivationMessage} onChange={(event) => setReactivationMessage(event.target.value)} placeholder="اشرح طلبك لإعادة تفعيل الحساب..." className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm leading-7 text-slate-800 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10" />
+                        </label>
+                        <button className="w-full rounded-xl bg-emerald-600 px-6 py-3.5 text-sm font-black text-white hover:bg-emerald-700">التواصل مع الإدارة</button>
+                        <button type="button" onClick={() => { setDeactivatedAccount(null); setReactivationMessage(''); }} className="w-full rounded-xl border border-slate-200 px-6 py-3 text-sm font-bold text-slate-600 hover:bg-slate-50">العودة إلى تسجيل الدخول</button>
+                    </form>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="relative min-h-screen w-full flex items-start justify-center overflow-x-hidden bg-emerald-600/50 px-4 py-8 sm:px-6 sm:py-12">
@@ -293,6 +419,12 @@ const Auth = () => {
                 )}
 
                 <form onSubmit={handleAuth} className="px-10 pb-10 space-y-5">
+                    <div ref={googleButtonRef} className="flex min-h-11 w-full items-center justify-center" />
+                    <div className="flex items-center gap-3 text-xs font-bold text-slate-400">
+                        <span className="h-px flex-1 bg-slate-200" />
+                        <span>{isLogin ? "أو تسجيل الدخول بالبريد الإلكتروني" : "أو إنشاء حساب بالبريد الإلكتروني"}</span>
+                        <span className="h-px flex-1 bg-slate-200" />
+                    </div>
                     
                     {/* Champ Nom Complet (Mode Register) */}
                     <div className={`transition-all duration-500 overflow-hidden ${!isLogin ? 'max-h-24 opacity-100 scale-100' : 'max-h-0 opacity-0 scale-95'}`}>

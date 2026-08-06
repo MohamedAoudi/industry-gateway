@@ -23,6 +23,8 @@ class User extends Authenticatable
         'email',
         'password',
         'role',
+        'is_active',
+        'deactivated_at',
         'position',
         'entite',
         'telephone',
@@ -32,6 +34,8 @@ class User extends Authenticatable
 
     protected $casts = [
         'profile_data' => 'array',
+        'is_active' => 'boolean',
+        'deactivated_at' => 'datetime',
     ];
 
     protected $hidden = [

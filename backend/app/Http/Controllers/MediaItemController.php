@@ -114,8 +114,14 @@ class MediaItemController extends Controller
 
     private function validated(Request $request, bool $creating = false): array
     {
-        return $request->validate([
+        $data = $request->validate([
             'category' => ['required', Rule::in(MediaItem::CATEGORIES)],
+            'news_type' => [
+                Rule::requiredIf($request->input('category') === 'news'),
+                Rule::prohibitedIf($request->input('category') !== 'news'),
+                'nullable',
+                Rule::in(MediaItem::NEWS_TYPES),
+            ],
             'title_ar' => ['required', 'string', 'max:255'],
             'title_en' => ['nullable', 'string', 'max:255'],
             'description_ar' => ['nullable', 'string'],
@@ -165,6 +171,12 @@ class MediaItemController extends Controller
             'location_ar.required' => 'يرجى إدخال الدولة أو اسم المنظمة.',
             'organization_ar.required' => 'يرجى إدخال اسم المنظمة أو الدولة.',
         ]);
+
+        if ($data['category'] !== 'news') {
+            $data['news_type'] = null;
+        }
+
+        return $data;
     }
 
     private function authorizeAdministrator(Request $request): void

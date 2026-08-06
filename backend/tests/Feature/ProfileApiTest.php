@@ -61,3 +61,30 @@ it('keeps the current password when the password field is empty', function () {
 it('requires authentication to update a profile', function () {
     $this->putJson('/api/me', [])->assertUnauthorized();
 });
+
+it('deactivates a profile without deleting it and blocks future login', function () {
+    $user = User::create([
+        'prenomUtilisateur' => 'Inactive',
+        'nomUtilisateur' => 'Member',
+        'email' => 'inactive@example.test',
+        'password' => bcrypt('password123'),
+        'role' => 'user',
+    ]);
+
+    Sanctum::actingAs($user);
+
+    $this->deleteJson('/api/me')
+        ->assertOk();
+
+    $this->assertDatabaseHas('users', [
+        'idUtilisateur' => $user->idUtilisateur,
+        'email' => 'inactive@example.test',
+        'is_active' => false,
+    ]);
+
+    $this->postJson('/api/login', [
+        'email' => 'inactive@example.test',
+        'password' => 'password123',
+    ])->assertForbidden()
+        ->assertJsonPath('code', 'ACCOUNT_DEACTIVATED');
+});

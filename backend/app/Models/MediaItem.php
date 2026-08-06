@@ -11,8 +11,10 @@ class MediaItem extends Model
 
     public const CATEGORIES = ['news', 'events', 'releases', 'competitions', 'stories'];
 
+    public const NEWS_TYPES = ['organization', 'related'];
+
     protected $fillable = [
-        'category', 'title_ar', 'title_en', 'description_ar', 'description_en',
+        'category', 'news_type', 'title_ar', 'title_en', 'description_ar', 'description_en',
         'event_date', 'location_ar', 'location_en', 'organization_ar', 'organization_en', 'image', 'external_url',
         'pdf', 'pdf_thumbnail', 'is_published', 'created_by',
     ];

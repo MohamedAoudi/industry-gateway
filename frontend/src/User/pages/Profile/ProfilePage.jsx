@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   AtSign,
+  AlertTriangle,
   BadgeCheck,
   Eye,
   EyeOff,
@@ -11,11 +12,12 @@ import {
   Phone,
   Save,
   UserRound,
+  UserX,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
-import apiAdmin from "../../../api/apiAdmin";
+import apiAdmin, { clearAuthSession } from "../../../api/apiAdmin";
 
 const emptyProfile = {
   prenomUtilisateur: "",
@@ -38,6 +40,9 @@ const ProfilePage = () => {
   const [showPasswords, setShowPasswords] = useState(false);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [deactivating, setDeactivating] = useState(false);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+  const [deleteConfirmation, setDeleteConfirmation] = useState("");
 
   useEffect(() => {
     let mounted = true;
@@ -88,6 +93,21 @@ const ProfilePage = () => {
       toast.error(errors ? Object.values(errors).flat()[0] : isRtl ? "تعذر حفظ التغييرات" : "Unable to save changes");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const deactivateAccount = async (event) => {
+    event.preventDefault();
+    const expectedConfirmation = isRtl ? "حذف" : "DELETE";
+    if (deleteConfirmation.trim() !== expectedConfirmation) return;
+    setDeactivating(true);
+    try {
+      await apiAdmin.delete("/me");
+      clearAuthSession();
+      window.location.assign("/login?account_deactivated=1");
+    } catch (error) {
+      toast.error(error.response?.data?.message || (isRtl ? "تعذر تعطيل الحساب" : "Unable to deactivate the account"));
+      setDeactivating(false);
     }
   };
 
@@ -190,6 +210,94 @@ const ProfilePage = () => {
             </button>
           </div>
         </form>
+
+        {profile.role !== "superviseur" && (
+          <section className="mx-auto mt-6 max-w-5xl rounded-[1.5rem] border border-red-200 bg-red-50 p-6 sm:flex sm:items-center sm:justify-between sm:gap-6">
+            <div className="flex items-start gap-3">
+              <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-red-100 text-red-600">
+                <AlertTriangle size={20} />
+              </span>
+              <div>
+                <h2 className="font-black text-red-900">{isRtl ? "حذف الحساب" : "Delete account"}</h2>
+                <p className="mt-1 text-sm leading-6 text-red-700/80">
+                  {isRtl
+                    ? "سيؤدي حذف الحساب إلى إيقاف الوصول وتسجيل الدخول إلى البوابة."
+                    : "Deleting the account will stop access and sign-in to the portal."}
+                </p>
+              </div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setShowDeleteConfirmation(true)}
+              disabled={deactivating}
+              className="mt-5 inline-flex min-w-44 shrink-0 items-center justify-center gap-2 rounded-xl bg-red-600 px-5 py-3 text-sm font-black text-white transition hover:bg-red-700 disabled:opacity-60 sm:mt-0"
+            >
+              {deactivating ? <Loader2 size={17} className="animate-spin" /> : <UserX size={17} />}
+              {isRtl ? "حذف حسابي" : "Delete my account"}
+            </button>
+          </section>
+        )}
+
+        {showDeleteConfirmation && (
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="delete-account-title"
+            onMouseDown={(event) => {
+              if (event.target === event.currentTarget && !deactivating) {
+                setShowDeleteConfirmation(false);
+                setDeleteConfirmation("");
+              }
+            }}
+            className="fixed inset-0 z-[200] flex items-center justify-center bg-slate-950/70 p-4 backdrop-blur-sm"
+          >
+            <form onSubmit={deactivateAccount} className="w-full max-w-lg rounded-[1.75rem] border border-red-100 bg-white p-6 shadow-2xl sm:p-8">
+              <span className="grid h-14 w-14 place-items-center rounded-2xl bg-red-100 text-red-600">
+                <AlertTriangle size={25} />
+              </span>
+              <h2 id="delete-account-title" className="mt-5 text-2xl font-black text-slate-900">
+                {isRtl ? "تأكيد حذف الحساب" : "Confirm account deletion"}
+              </h2>
+              <p className="mt-3 text-sm leading-7 text-slate-600">
+                {isRtl
+                  ? "سيتم تسجيل خروجك وإيقاف وصولك إلى الحساب. اكتب كلمة «حذف» في الحقل أدناه للتأكيد."
+                  : "You will be signed out and lose access to the account. Type “DELETE” below to confirm."}
+              </p>
+              <label className="mt-6 block">
+                <span className="mb-2 block text-sm font-bold text-slate-700">
+                  {isRtl ? "كلمة التأكيد" : "Confirmation word"}
+                </span>
+                <input
+                  autoFocus
+                  value={deleteConfirmation}
+                  onChange={(event) => setDeleteConfirmation(event.target.value)}
+                  placeholder={isRtl ? "اكتب حذف" : "Type DELETE"}
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm font-bold text-slate-900 outline-none focus:border-red-400 focus:ring-4 focus:ring-red-500/10"
+                />
+              </label>
+              <div className="mt-7 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+                <button
+                  type="button"
+                  disabled={deactivating}
+                  onClick={() => {
+                    setShowDeleteConfirmation(false);
+                    setDeleteConfirmation("");
+                  }}
+                  className="rounded-xl border border-slate-200 px-5 py-3 text-sm font-bold text-slate-600 hover:bg-slate-50 disabled:opacity-50"
+                >
+                  {isRtl ? "إلغاء" : "Cancel"}
+                </button>
+                <button
+                  disabled={deactivating || deleteConfirmation.trim() !== (isRtl ? "حذف" : "DELETE")}
+                  className="inline-flex min-w-40 items-center justify-center gap-2 rounded-xl bg-red-600 px-5 py-3 text-sm font-black text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-40"
+                >
+                  {deactivating ? <Loader2 size={17} className="animate-spin" /> : <UserX size={17} />}
+                  {isRtl ? "تأكيد الحذف" : "Confirm deletion"}
+                </button>
+              </div>
+            </form>
+          </div>
+        )}
       </div>
     </main>
   );

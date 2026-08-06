@@ -72,13 +72,25 @@ class UserManagementController extends Controller
             return response()->json(['message' => 'لا يمكن تغيير صلاحية آخر مدير في النظام.'], 422);
         }
 
+        if ($user->role === 'superviseur' && ($data['is_active'] ?? true) === false && User::where('role', 'superviseur')->where('is_active', true)->count() <= 1) {
+            return response()->json(['message' => 'لا يمكن تعطيل حساب آخر مدير نشط في النظام.'], 422);
+        }
+
         if (! empty($data['password'])) {
             $data['password'] = Hash::make($data['password']);
         } else {
             unset($data['password']);
         }
 
+        if (array_key_exists('is_active', $data)) {
+            $data['deactivated_at'] = $data['is_active'] ? null : ($user->deactivated_at ?? now());
+        }
+
         $user->update($data);
+
+        if (! $user->is_active) {
+            $user->tokens()->delete();
+        }
 
         return response()->json(['message' => 'تم تحديث المستخدم بنجاح', 'data' => $user->fresh()]);
     }
@@ -129,6 +141,7 @@ class UserManagementController extends Controller
             ],
             'password' => [$passwordRequired ? 'required' : 'nullable', 'string', 'min:8'],
             'role' => ['required', Rule::in(['user', 'superviseur'])],
+            'is_active' => ['sometimes', 'boolean'],
             'position' => ['nullable', 'string', 'max:255'],
             'entite' => ['nullable', 'string', 'max:255'],
             'telephone' => ['nullable', 'string', 'max:45'],

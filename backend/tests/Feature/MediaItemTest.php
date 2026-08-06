@@ -31,6 +31,31 @@ it('allows a supervisor to create media content', function () {
     $this->assertDatabaseHas('media_items', ['category' => 'stories', 'title_ar' => 'قصة نجاح']);
 });
 
+it('allows a supervisor to classify organization and related news', function (string $newsType) {
+    $admin = User::create(['prenomUtilisateur' => 'Media', 'nomUtilisateur' => 'Admin', 'email' => "{$newsType}-news-admin@example.test", 'password' => bcrypt('password'), 'role' => 'superviseur']);
+    Sanctum::actingAs($admin);
+
+    $this->postJson('/api/media-items', [
+        'category' => 'news',
+        'news_type' => $newsType,
+        'title_ar' => 'خبر مصنف',
+        'is_published' => true,
+    ])->assertCreated()->assertJsonPath('data.news_type', $newsType);
+
+    $this->assertDatabaseHas('media_items', ['category' => 'news', 'news_type' => $newsType]);
+})->with(['organization', 'related']);
+
+it('requires a type when creating news', function () {
+    $admin = User::create(['prenomUtilisateur' => 'Media', 'nomUtilisateur' => 'Admin', 'email' => 'unclassified-news-admin@example.test', 'password' => bcrypt('password'), 'role' => 'superviseur']);
+    Sanctum::actingAs($admin);
+
+    $this->postJson('/api/media-items', [
+        'category' => 'news',
+        'title_ar' => 'خبر بدون نوع',
+        'is_published' => true,
+    ])->assertUnprocessable()->assertJsonValidationErrors('news_type');
+});
+
 it('allows a supervisor to upload a PDF for a release', function () {
     Storage::fake('public');
     $admin = User::create(['prenomUtilisateur' => 'Media', 'nomUtilisateur' => 'Admin', 'email' => 'release-admin@example.test', 'password' => bcrypt('password'), 'role' => 'superviseur']);

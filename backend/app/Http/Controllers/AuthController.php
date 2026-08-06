@@ -132,6 +132,14 @@ class AuthController extends Controller
             ]
         );
 
+        if ($user->is_active === false) {
+            return response()->json([
+                'code' => 'ACCOUNT_DEACTIVATED',
+                'message' => 'هذا الحساب معطل. تواصل مع الإدارة لإعادة تفعيله.',
+                'email' => $user->email,
+            ], 403);
+        }
+
         if (method_exists($user, 'attachOldNotifications')) {
             $user->attachOldNotifications();
         }
@@ -159,6 +167,13 @@ class AuthController extends Controller
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
             return response()->json(['message' => 'Identifiants invalides'], 401);
+        }
+
+        if ($user->is_active === false) {
+            return response()->json([
+                'code' => 'ACCOUNT_DEACTIVATED',
+                'message' => 'هذا الحساب معطل. تواصل مع الإدارة لإعادة تفعيله.',
+            ], 403);
         }
 
         $token = $user->createToken('user-token')->plainTextToken;
@@ -203,6 +218,27 @@ class AuthController extends Controller
         return response()->json([
             'message' => 'تم تحديث الملف الشخصي بنجاح',
             'user' => $user->fresh(),
+        ]);
+    }
+
+    public function deactivateProfile(Request $request)
+    {
+        $user = $request->user();
+
+        if ($user->role === 'superviseur') {
+            return response()->json([
+                'message' => 'لا يمكن تعطيل حساب المدير من صفحة الملف الشخصي.',
+            ], 422);
+        }
+
+        $user->update([
+            'is_active' => false,
+            'deactivated_at' => now(),
+        ]);
+        $user->tokens()->delete();
+
+        return response()->json([
+            'message' => 'تم تعطيل الحساب مع الاحتفاظ بجميع بياناته.',
         ]);
     }
 

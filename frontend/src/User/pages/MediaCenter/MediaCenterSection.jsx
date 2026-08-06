@@ -222,6 +222,7 @@ const MediaCenterSection = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
+  const [newsTypeFilter, setNewsTypeFilter] = useState("all");
   const pendingFocusRef = useRef(null);
   const handledFocusRef = useRef("");
   const pageSize = 2;
@@ -245,6 +246,7 @@ const MediaCenterSection = () => {
           locationEn: item.location_en,
           organizationAr: item.organization_ar,
           organizationEn: item.organization_en,
+          newsType: item.news_type || "organization",
           image: item.image_url,
           pdf: item.pdf_url,
           pdfThumbnail: item.pdf_thumbnail_url,
@@ -255,10 +257,13 @@ const MediaCenterSection = () => {
     return () => { mounted = false; };
   }, [activeTab]);
 
-  useEffect(() => { setPage(1); }, [activeTab]);
+  useEffect(() => { setPage(1); }, [activeTab, newsTypeFilter]);
 
-  const totalPages = Math.max(1, Math.ceil(items.length / pageSize));
-  const paginatedItems = items.slice((page - 1) * pageSize, page * pageSize);
+  const displayedItems = activeTab === "news" && newsTypeFilter !== "all"
+    ? items.filter((item) => item.newsType === newsTypeFilter)
+    : items;
+  const totalPages = Math.max(1, Math.ceil(displayedItems.length / pageSize));
+  const paginatedItems = displayedItems.slice((page - 1) * pageSize, page * pageSize);
 
   useEffect(() => {
     if (tabs.some((tab) => tab.id === requestedCategory)) {
@@ -271,13 +276,13 @@ const MediaCenterSection = () => {
     const focusRequest = `${activeTab}-${requestedItemId}`;
     if (handledFocusRef.current === focusRequest) return;
 
-    const itemIndex = items.findIndex((item) => String(item.id) === requestedItemId);
+    const itemIndex = displayedItems.findIndex((item) => String(item.id) === requestedItemId);
     if (itemIndex < 0) return;
 
     handledFocusRef.current = focusRequest;
     pendingFocusRef.current = requestedItemId;
     setPage(Math.floor(itemIndex / pageSize) + 1);
-  }, [activeTab, items, loading, requestedItemId]);
+  }, [activeTab, items, loading, newsTypeFilter, requestedItemId]);
 
   useEffect(() => {
     if (!pendingFocusRef.current || loading) return;
@@ -365,6 +370,25 @@ const MediaCenterSection = () => {
           </div>
         </div>
 
+        {activeTab === "news" && !loading && (
+          <div className="mb-8 flex flex-wrap gap-3">
+            {[
+              { value: "all", ar: "كل الأخبار", en: "All news" },
+              { value: "organization", ar: "أخبار المنظمة", en: "Organization news" },
+              { value: "related", ar: "أخبار ذات علاقة", en: "Related news" },
+            ].map((type) => (
+              <button
+                key={type.value}
+                type="button"
+                onClick={() => setNewsTypeFilter(type.value)}
+                className={`rounded-full border px-5 py-2.5 text-sm font-black transition-colors ${newsTypeFilter === type.value ? "border-emerald-600 bg-emerald-600 text-white" : "border-slate-200 bg-white text-slate-600 hover:border-emerald-300 hover:text-emerald-700"}`}
+              >
+                {isRtl ? type.ar : type.en}
+              </button>
+            ))}
+          </div>
+        )}
+
         <AnimatePresence mode="wait">
           <motion.section
             key={activeTab}
@@ -375,13 +399,15 @@ const MediaCenterSection = () => {
           >
             {loading && <div className="flex min-h-64 items-center justify-center text-emerald-700"><Loader2 size={32} className="animate-spin" /></div>}
             {!loading && items.length === 0 && <div className="rounded-[1.75rem] border border-dashed border-slate-300 bg-white p-14 text-center text-slate-500">{isRtl ? "لا يوجد محتوى منشور في هذا القسم." : "No published content in this section."}</div>}
-            {!loading && items.length > 0 && activeTab === "news" && (
+            {!loading && items.length > 0 && displayedItems.length === 0 && activeTab === "news" && <div className="rounded-[1.75rem] border border-dashed border-slate-300 bg-white p-14 text-center text-slate-500">{isRtl ? "لا توجد أخبار منشورة من هذا النوع." : "No published news of this type."}</div>}
+            {!loading && displayedItems.length > 0 && activeTab === "news" && (
               <div className="grid gap-6 lg:grid-cols-3">
                 {paginatedItems.map((item, index) => (
                   <article id={`media-item-${item.id}`} key={item.id} className={`group scroll-mt-28 overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-[0_15px_45px_rgba(15,23,42,0.06)] transition-all duration-500 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-[0_24px_55px_rgba(5,150,105,0.13)] ${index === 0 ? "lg:col-span-2" : ""} ${focusClass(item)}`}>
                     <div className={`relative overflow-hidden bg-slate-200 ${index === 0 ? "h-72 sm:h-96" : "h-64"}`}>
                       <img src={item.image} alt={getTitle(item)} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/15 to-transparent" />
+                      <span className="absolute end-5 top-5 rounded-full border border-white/20 bg-slate-950/65 px-3 py-1.5 text-xs font-black text-white backdrop-blur-sm">{item.newsType === "related" ? (isRtl ? "أخبار ذات علاقة" : "Related news") : (isRtl ? "أخبار المنظمة" : "Organization news")}</span>
                       <div className="absolute inset-x-0 bottom-0 p-6 text-white sm:p-8">
                         <span className="flex items-center gap-2 text-xs font-bold text-emerald-300">
                           <CalendarDays size={14} />
@@ -544,7 +570,7 @@ const MediaCenterSection = () => {
             )}
           </motion.section>
         </AnimatePresence>
-        {!loading && items.length > pageSize && (
+        {!loading && displayedItems.length > pageSize && (
           <nav className="mt-8 flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
             <button disabled={page === 1} onClick={() => setPage((current) => current - 1)} className="rounded-xl border border-slate-200 p-2.5 text-slate-600 disabled:opacity-40"><ChevronRight size={18} /></button>
             {Array.from({ length: totalPages }, (_, index) => index + 1).map((number) => <button key={number} onClick={() => setPage(number)} className={`h-10 min-w-10 rounded-xl px-3 text-sm font-black ${page === number ? "bg-emerald-600 text-white" : "border border-slate-200 text-slate-600"}`}>{number}</button>)}

@@ -47,6 +47,7 @@ const emptyForm = {
   email: "",
   password: "",
   role: "user",
+  is_active: true,
   telephone: "",
   account_type: "",
   profile_data: {},
@@ -116,6 +117,7 @@ const ManageUsers = () => {
       email: user.email ?? "",
       password: "",
       role: user.role ?? "user",
+      is_active: user.is_active !== false,
       telephone: user.telephone ?? "",
       account_type: user.account_type ?? "",
       profile_data: user.profile_data ?? {},
@@ -251,7 +253,12 @@ const ManageUsers = () => {
                       )}
                     </td>
                     <td className="p-4 text-slate-600" dir="ltr">{user.telephone || "—"}</td>
-                    <td className="p-4"><span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold ${user.role === "superviseur" ? "bg-amber-50 text-amber-700" : "bg-emerald-50 text-emerald-700"}`}>{user.role === "superviseur" ? <ShieldCheck size={13} /> : <UserRound size={13} />}{user.role === "superviseur" ? "مدير" : "مستخدم"}</span></td>
+                    <td className="p-4">
+                      <div className="flex flex-col items-start gap-2">
+                        <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold ${user.role === "superviseur" ? "bg-amber-50 text-amber-700" : "bg-emerald-50 text-emerald-700"}`}>{user.role === "superviseur" ? <ShieldCheck size={13} /> : <UserRound size={13} />}{user.role === "superviseur" ? "مدير" : "مستخدم"}</span>
+                        <span className={`inline-flex rounded-full px-3 py-1 text-[11px] font-black ${user.is_active !== false ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"}`}>{user.is_active !== false ? "نشط" : "معطل"}</span>
+                      </div>
+                    </td>
                     <td className="p-4"><div className="flex justify-center gap-2"><button type="button" onClick={() => openEdit(user)} className="rounded-lg bg-slate-100 p-2.5 text-slate-600 hover:bg-emerald-50 hover:text-emerald-700" title="تعديل"><Pencil size={16} /></button><button type="button" onClick={() => remove(user)} className="rounded-lg bg-red-50 p-2.5 text-red-600 hover:bg-red-100" title="حذف"><Trash2 size={16} /></button></div></td>
                   </tr>
                 ))}
@@ -279,6 +286,7 @@ const ManageUsers = () => {
               <FormField label="البريد الإلكتروني *"><input dir="ltr" type="email" className={fieldClass} required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} /></FormField>
               <FormField label={editingId ? "كلمة مرور جديدة" : "كلمة المرور *"}><div className="relative"><KeyRound size={17} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400" /><input dir="ltr" type="password" minLength="8" className={`${fieldClass} pr-11`} required={!editingId} value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder={editingId ? "اتركها فارغة دون تغيير" : "8 أحرف على الأقل"} /></div></FormField>
               <FormField label="الصلاحية *"><select className={fieldClass} required value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })}><option value="user">مستخدم</option><option value="superviseur">مدير</option></select></FormField>
+              <FormField label="حالة الحساب *"><select className={fieldClass} value={form.is_active ? "1" : "0"} onChange={(e) => setForm({ ...form, is_active: e.target.value === "1" })}><option value="1">نشط</option><option value="0">معطل</option></select></FormField>
               <FormField label="رقم الهاتف"><input dir="ltr" className={fieldClass} value={form.telephone} onChange={(e) => setForm({ ...form, telephone: e.target.value })} /></FormField>
               <div className="md:col-span-2">
                 <RegistrationProfileFields
