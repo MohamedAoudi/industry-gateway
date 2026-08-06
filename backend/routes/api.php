@@ -120,6 +120,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/supportingBodiesScientificResearch/{id}', [SupportingBodiesScientificResearchController::class, 'destroy']);
 
     Route::get('/faqs/admin', [FaqQuestionController::class, 'adminIndex']);
+    Route::post('/faqs/admin', [FaqQuestionController::class, 'adminStore']);
     Route::match(['put', 'patch', 'post'], '/faqs/{id}', [FaqQuestionController::class, 'update']);
     Route::delete('/faqs/{id}', [FaqQuestionController::class, 'destroy']);
 

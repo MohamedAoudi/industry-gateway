@@ -12,11 +12,13 @@ import {
   LoaderCircle,
   Mail,
   MessageSquareReply,
+  Plus,
   RefreshCw,
   Save,
   Search,
   Trash2,
   UserRound,
+  X,
 } from "lucide-react";
 
 import apiAdmin from "../../../api/apiAdmin";
@@ -38,6 +40,8 @@ const translations = {
     saved: "تم حفظ الإجابة بنجاح.", hiddenSuccess: "تم إخفاء السؤال.", publishedSuccess: "تم نشر السؤال.",
     deleted: "تم حذف السؤال.", saveError: "تعذر حفظ التغييرات.", deleteError: "تعذر حذف السؤال.",
     deleteConfirm: "هل أنت متأكد من حذف هذا السؤال نهائياً؟", answerRequired: "اكتب إجابة قبل النشر.",
+    add: "إضافة سؤال", addTitle: "إضافة سؤال شائع", question: "السؤال", questionPlaceholder: "اكتب السؤال هنا...",
+    create: "إضافة ونشر", creating: "جارٍ الإضافة...", created: "تمت إضافة السؤال بنجاح.", createError: "تعذر إضافة السؤال.", cancel: "إلغاء",
   },
   en: {
     title: "Manage frequently asked questions",
@@ -52,6 +56,8 @@ const translations = {
     saved: "The answer was saved successfully.", hiddenSuccess: "The question was hidden.", publishedSuccess: "The question was published.",
     deleted: "The question was deleted.", saveError: "The changes could not be saved.", deleteError: "The question could not be deleted.",
     deleteConfirm: "Permanently delete this question?", answerRequired: "Write an answer before publishing.",
+    add: "Add question", addTitle: "Add a frequently asked question", question: "Question", questionPlaceholder: "Write the question here...",
+    create: "Add question", creating: "Adding...", created: "The question was added successfully.", createError: "The question could not be added.", cancel: "Cancel",
   },
 };
 
@@ -73,6 +79,9 @@ const ManageFaq = () => {
   const [savingId, setSavingId] = useState(null);
   const [deletingId, setDeletingId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [showCreateForm, setShowCreateForm] = useState(false);
+  const [creating, setCreating] = useState(false);
+  const [newQuestion, setNewQuestion] = useState({ question: "", answer: "", isPublished: true });
 
   const loadQuestions = useCallback(async () => {
     setLoading(true);
@@ -171,6 +180,32 @@ const ManageFaq = () => {
     }
   };
 
+  const createQuestion = async (event) => {
+    event.preventDefault();
+    setCreating(true);
+    try {
+      const { data } = await apiAdmin.post("/faqs/admin", {
+        question: newQuestion.question.trim(),
+        answer: newQuestion.answer.trim(),
+        is_published: newQuestion.isPublished,
+      });
+      const created = data.data;
+      setQuestions((current) => [created, ...current]);
+      setDrafts((current) => ({ ...current, [created.id]: { answer: created.answer ?? "", isPublished: Boolean(created.is_published) } }));
+      setNewQuestion({ question: "", answer: "", isPublished: true });
+      setShowCreateForm(false);
+      setFilter("all");
+      setQuery("");
+      setCurrentPage(1);
+      toast.success(text.created);
+    } catch (error) {
+      const errors = error.response?.data?.errors;
+      toast.error(errors ? Object.values(errors).flat()[0] : text.createError);
+    } finally {
+      setCreating(false);
+    }
+  };
+
   const formatDate = (value) => value
     ? new Intl.DateTimeFormat(isRtl ? "ar-MA" : "en-GB", { dateStyle: "medium", timeStyle: "short" }).format(new Date(value))
     : "—";
@@ -191,10 +226,35 @@ const ManageFaq = () => {
           <h1 className="mt-3 text-3xl font-black text-slate-900 sm:text-4xl">{text.title}</h1>
           <p className="mt-2 max-w-2xl text-sm leading-7 text-slate-500">{text.subtitle}</p>
         </div>
-        <button onClick={loadQuestions} disabled={loading} className="flex w-fit items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-700 shadow-sm transition hover:border-emerald-200 hover:text-emerald-700 disabled:opacity-60">
-          <RefreshCw size={17} className={loading ? "animate-spin" : ""} />{text.refresh}
-        </button>
+        <div className="flex flex-wrap gap-3">
+          <button onClick={() => setShowCreateForm(true)} className="flex w-fit items-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-black text-white shadow-lg shadow-emerald-600/15 transition hover:bg-emerald-700"><Plus size={18} />{text.add}</button>
+          <button onClick={loadQuestions} disabled={loading} className="flex w-fit items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-700 shadow-sm transition hover:border-emerald-200 hover:text-emerald-700 disabled:opacity-60">
+            <RefreshCw size={17} className={loading ? "animate-spin" : ""} />{text.refresh}
+          </button>
+        </div>
       </header>
+
+      {showCreateForm && (
+        <div onMouseDown={(event) => event.target === event.currentTarget && !creating && setShowCreateForm(false)} className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-slate-950/60 p-4 backdrop-blur-sm">
+          <form onSubmit={createQuestion} className="w-full max-w-2xl rounded-3xl bg-white p-6 shadow-2xl sm:p-8">
+            <div className="mb-6 flex items-center justify-between gap-4">
+              <h2 className="text-xl font-black text-slate-900 sm:text-2xl">{text.addTitle}</h2>
+              <button type="button" onClick={() => setShowCreateForm(false)} disabled={creating} className="grid h-10 w-10 place-items-center rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 disabled:opacity-50"><X size={19} /></button>
+            </div>
+            <label className="block text-sm font-black text-slate-700">{text.question} *</label>
+            <textarea required maxLength={1000} rows={3} value={newQuestion.question} onChange={(event) => setNewQuestion((current) => ({ ...current, question: event.target.value }))} placeholder={text.questionPlaceholder} className="mt-2 w-full resize-y rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm leading-7 outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10" />
+            <label className="mt-5 block text-sm font-black text-slate-700">{text.answer} *</label>
+            <textarea required rows={5} value={newQuestion.answer} onChange={(event) => setNewQuestion((current) => ({ ...current, answer: event.target.value }))} placeholder={text.answerPlaceholder} className="mt-2 w-full resize-y rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm leading-7 outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10" />
+            <label className="mt-4 flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm font-bold text-slate-700">
+              <input type="checkbox" checked={newQuestion.isPublished} onChange={(event) => setNewQuestion((current) => ({ ...current, isPublished: event.target.checked }))} className="h-5 w-5 accent-emerald-600" />{text.publish}
+            </label>
+            <div className="mt-6 flex justify-end gap-3">
+              <button type="button" onClick={() => setShowCreateForm(false)} disabled={creating} className="rounded-xl border border-slate-200 px-5 py-3 text-sm font-bold text-slate-600 disabled:opacity-50">{text.cancel}</button>
+              <button disabled={creating} className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 text-sm font-black text-white hover:bg-emerald-700 disabled:opacity-60">{creating ? <LoaderCircle size={17} className="animate-spin" /> : <Plus size={17} />}{creating ? text.creating : text.create}</button>
+            </div>
+          </form>
+        </div>
+      )}
 
       <div className="mb-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {filters.map(({ id, label, icon: Icon }) => (

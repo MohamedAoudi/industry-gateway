@@ -59,6 +59,34 @@ class FaqQuestionController extends Controller
         return response()->json($questions);
     }
 
+    public function adminStore(Request $request)
+    {
+        abort_unless($request->user()?->role === 'superviseur', 403);
+
+        $data = $request->validate([
+            'question' => ['required', 'string', 'max:1000'],
+            'answer' => ['required', 'string'],
+            'is_published' => ['required', 'boolean'],
+        ]);
+
+        $user = $request->user();
+        $question = FaqQuestion::create([
+            'name' => trim(($user->prenomUtilisateur ?? '').' '.($user->nomUtilisateur ?? '')) ?: 'الإدارة',
+            'email' => $user->email,
+            'question' => trim($data['question']),
+            'answer' => trim($data['answer']),
+            'status' => 'answered',
+            'is_published' => (bool) $data['is_published'],
+            'answered_by' => $user->getKey(),
+            'answered_at' => now(),
+        ]);
+
+        return response()->json([
+            'message' => 'FAQ created successfully',
+            'data' => $question->load('answeredBy'),
+        ], 201);
+    }
+
     public function update(Request $request, $id)
     {
         $question = FaqQuestion::findOrFail($id);
