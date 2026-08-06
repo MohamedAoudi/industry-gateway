@@ -135,13 +135,51 @@ const countryAliases = [
   { code: "ye", names: ["اليمن", "اليمنية", "yemen"] },
 ];
 
+const normalizeCountryName = (value) =>
+  String(value || "")
+    .toLocaleLowerCase()
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f\u064B-\u065F\u0670]/g, "")
+    .replace(/[أإآ]/g, "ا")
+    .replace(/ى/g, "ي")
+    .replace(/ة/g, "ه")
+    .replace(/[^\p{L}\p{N}]+/gu, " ")
+    .trim();
+
+const resolveCountryCode = (countryName) => {
+  const normalizedName = normalizeCountryName(countryName);
+  if (!normalizedName) return "";
+
+  return countryAliases.find(({ names }) =>
+    names.some((name) => normalizedName.includes(normalizeCountryName(name)))
+  )?.code || "";
+};
+
 const getCountryFlag = (countryName) => {
-  const normalizedName = String(countryName || "").trim().toLocaleLowerCase();
-  const match = countryAliases.find(({ names }) =>
-    names.some((name) => normalizedName.includes(name.toLocaleLowerCase()))
+  const code = resolveCountryCode(countryName);
+  return code ? `https://flagcdn.com/w40/${code}.png` : null;
+};
+
+const getResponseRecords = (response) => {
+  const data = response?.data?.data ?? response?.data ?? [];
+  return Array.isArray(data) ? data : [];
+};
+
+const loadAllEndpointRecords = async (endpoint) => {
+  const firstResponse = await apiAdmin.get(endpoint);
+  const firstPage = getResponseRecords(firstResponse);
+  const lastPage = Number(firstResponse?.data?.last_page || 1);
+
+  if (lastPage <= 1) return firstPage;
+
+  const separator = endpoint.includes("?") ? "&" : "?";
+  const remainingResponses = await Promise.all(
+    Array.from({ length: lastPage - 1 }, (_, index) =>
+      apiAdmin.get(`${endpoint}${separator}page=${index + 2}`)
+    )
   );
 
-  return match ? `https://flagcdn.com/w40/${match.code}.png` : null;
+  return [firstPage, ...remainingResponses.map(getResponseRecords)].flat();
 };
 
 const ResearchDatabase = () => {
@@ -178,14 +216,11 @@ const ResearchDatabase = () => {
       setLoading(true);
       try {
         const responses = await Promise.allSettled(
-          activeCategory.endpoints.map((endpoint) => apiAdmin.get(endpoint))
+          activeCategory.endpoints.map(loadAllEndpointRecords)
         );
         const payload = responses.flatMap((result, sourceIndex) => {
           if (result.status !== "fulfilled") return [];
-          const data = result.value.data?.data ?? result.value.data ?? [];
-          return Array.isArray(data)
-            ? data.map((record) => ({ ...record, __source: sourceIndex }))
-            : [];
+          return result.value.map((record) => ({ ...record, __source: sourceIndex }));
         });
 
         if (isMounted) {
@@ -252,17 +287,23 @@ const ResearchDatabase = () => {
 
   const filteredRecords = useMemo(() => {
     const query = search.trim().toLocaleLowerCase();
-    const country = requestedCountry.trim().toLocaleLowerCase();
+    const country = normalizeCountryName(requestedCountry);
+    const countryCode = resolveCountryCode(requestedCountry);
 
     return normalizedRecords.filter((record) => {
       const matchesSearch = !query || [record.title, record.titleAr, record.titleEn, record.description, record.descriptionAr, record.descriptionEn, record.country]
         .filter(Boolean)
         .some((value) => String(value).toLocaleLowerCase().includes(query));
-      const matchesCountry = !requestedCountryId && !country
-        ? true
-        : record.countryId
-          ? String(record.countryId) === requestedCountryId
-          : String(record.country || "").toLocaleLowerCase().includes(country);
+      const recordCountry = normalizeCountryName(record.country);
+      const recordCountryCode = resolveCountryCode(record.country);
+      const matchesCountryId = !requestedCountryId
+        || !record.countryId
+        || String(record.countryId) === requestedCountryId;
+      const matchesCountryName = !country
+        || (Boolean(recordCountry) && (countryCode && recordCountryCode
+          ? countryCode === recordCountryCode
+          : recordCountry.includes(country) || country.includes(recordCountry)));
+      const matchesCountry = matchesCountryId && matchesCountryName;
       return matchesSearch && matchesCountry;
     });
   }, [normalizedRecords, requestedCountry, requestedCountryId, search]);

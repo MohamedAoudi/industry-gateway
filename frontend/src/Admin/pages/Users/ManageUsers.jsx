@@ -18,6 +18,7 @@ import apiAdmin from "../../../api/apiAdmin";
 import RegistrationProfileFields from "../../../Authentification/RegistrationProfileFields";
 
 const accountTypeLabels = {
+  regular: "حساب عادي",
   factory: "مصنع",
   industrial_company: "شركة صناعية",
   production_company: "شركة إنتاجية",

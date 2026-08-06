@@ -1113,6 +1113,9 @@ const HeroSection = () => {
   };
 
   const currentSelectedCountryObj = countries.find(c => c.code === selectedCountry);
+  const orderedCountries = [...countries].sort(
+    (countryA, countryB) => Number(countryA.id) - Number(countryB.id)
+  );
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -1249,7 +1252,7 @@ const HeroSection = () => {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 10, scale: 0.95 }}
                       transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                      className={`absolute top-[112%] z-50 grid max-h-[55vh] w-[min(760px,calc(100vw-3rem))] grid-cols-1 gap-1 overflow-y-auto rounded-2xl border border-slate-200 bg-white/95 p-2 shadow-[0_20px_55px_rgba(15,23,42,0.22)] backdrop-blur-xl sm:grid-cols-2 md:max-h-none md:grid-cols-3 md:overflow-visible ${isRtl ? "right-0" : "left-0"}`}
+                      className={`absolute top-[112%] z-50 grid max-h-[55vh] w-[min(360px,calc(100vw-3rem))] grid-cols-1 gap-1 overflow-y-auto rounded-2xl border border-slate-200 bg-white/95 p-2 shadow-[0_20px_55px_rgba(15,23,42,0.22)] backdrop-blur-xl ${isRtl ? "right-0" : "left-0"}`}
                     >
                       <li 
                         onClick={() => { setSelectedCountry(""); setActiveDropdown(null); }}
@@ -1258,7 +1261,7 @@ const HeroSection = () => {
                         <span>{t("hero.select_country_all", "كل الدول")}</span>
                         {!selectedCountry && <Check size={16} />}
                       </li>
-                      {countries.map((country) => (
+                      {orderedCountries.map((country) => (
                         <li 
                           key={country.code}
                           onClick={() => { setSelectedCountry(country.code); setActiveDropdown(null); }}

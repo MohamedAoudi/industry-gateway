@@ -49,6 +49,22 @@ it('allows a supervisor to list and create users', function () {
     ]);
 });
 
+it('accepts the bearer token returned by login on admin routes', function () {
+    managementUser('superviseur', 'admin-token@example.test');
+
+    $token = $this->postJson('/api/login', [
+        'email' => 'admin-token@example.test',
+        'password' => 'password',
+    ])->assertOk()->json('token');
+
+    expect($token)->toBeString()->not->toBeEmpty();
+
+    $this->withToken($token)
+        ->getJson('/api/admin/users?page=1&per_page=10')
+        ->assertOk()
+        ->assertJsonPath('summary.supervisors', 1);
+});
+
 it('allows a supervisor to update all custom user data', function () {
     $admin = managementUser('superviseur', 'admin-update@example.test');
     $member = managementUser('user', 'member-update@example.test');

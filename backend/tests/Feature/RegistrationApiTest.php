@@ -22,6 +22,7 @@ it('registers every supported account type with its custom profile', function (s
     expect($user->account_type)->toBe($accountType)
         ->and($user->profile_data)->toMatchArray($profile);
 })->with([
+    'regular account' => ['regular', []],
     'factory' => ['factory', [
         'organization_name' => 'Arab Factory',
         'activity_field' => 'Food industry',

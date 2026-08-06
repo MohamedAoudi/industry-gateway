@@ -1,4 +1,5 @@
 const accountTypes = [
+  { value: "regular", label: "حساب عادي" },
   { value: "factory", label: "مصنع" },
   { value: "industrial_company", label: "شركة صناعية" },
   { value: "production_company", label: "شركة إنتاجية" },

@@ -3,15 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        $accountTypes = ['factory', 'industrial_company', 'production_company', 'expert', 'funding_entity', 'other'];
+        $accountTypes = ['regular', 'factory', 'industrial_company', 'production_company', 'expert', 'funding_entity', 'other'];
         $requiredProfileFields = [
             'factory' => ['organization_name', 'activity_field', 'products', 'country'],
             'industrial_company' => ['organization_name', 'activity_field', 'registration_number', 'country'],
@@ -26,7 +29,7 @@ class AuthController extends Controller
             'email' => ['required', 'email', 'max:100', 'unique:users,email'],
             'password' => ['required', 'string', 'min:6'],
             'account_type' => ['required', Rule::in($accountTypes)],
-            'profile_data' => ['required', 'array'],
+            'profile_data' => ['present', 'array'],
         ];
 
         foreach (array_unique(array_merge(...array_values($requiredProfileFields))) as $field) {
@@ -65,7 +68,7 @@ class AuthController extends Controller
                 'password' => bcrypt($data['password']),
                 'role' => 'user',
                 'account_type' => $data['account_type'],
-                'profile_data' => $data['profile_data'],
+                'profile_data' => $data['profile_data'] ?? [],
             ]);
 
             // Assure-toi que cette méthode existe dans ton modèle User
@@ -81,6 +84,68 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => 'Erreur : '.$e->getMessage()], 500);
         }
+    }
+
+    public function googleConfig()
+    {
+        $clientId = config('services.google.client_id');
+        abort_unless($clientId, 503, 'Google authentication is not configured.');
+
+        return response()->json(['client_id' => $clientId]);
+    }
+
+    public function authenticateWithGoogle(Request $request)
+    {
+        $data = $request->validate(['credential' => ['required', 'string']]);
+        try {
+            $googleResponse = Http::withOptions([
+                'verify' => config('services.google.ca_bundle') ?: true,
+            ])->get('https://oauth2.googleapis.com/tokeninfo', [
+                'id_token' => $data['credential'],
+            ]);
+        } catch (ConnectionException) {
+            return response()->json([
+                'message' => 'تعذر الاتصال بخدمة Google. يرجى المحاولة مرة أخرى.',
+            ], 503);
+        }
+
+        abort_unless($googleResponse->successful(), 401, 'Invalid Google credential.');
+
+        $googleUser = $googleResponse->json();
+        $clientId = (string) config('services.google.client_id');
+        $emailVerified = in_array($googleUser['email_verified'] ?? false, [true, 1, '1', 'true'], true);
+        $validIssuer = in_array($googleUser['iss'] ?? '', ['accounts.google.com', 'https://accounts.google.com'], true);
+        $validAudience = $clientId !== '' && hash_equals($clientId, (string) ($googleUser['aud'] ?? ''));
+        $notExpired = (int) ($googleUser['exp'] ?? 0) > time();
+
+        abort_unless($emailVerified && $validIssuer && $validAudience && $notExpired && ! empty($googleUser['email']), 401, 'Invalid Google credential.');
+
+        $user = User::firstOrCreate(
+            ['email' => $googleUser['email']],
+            [
+                'prenomUtilisateur' => $googleUser['given_name'] ?? $googleUser['name'] ?? 'Google',
+                'nomUtilisateur' => $googleUser['family_name'] ?? '',
+                'password' => Hash::make(Str::random(64)),
+                'role' => 'user',
+                'account_type' => 'regular',
+                'profile_data' => [],
+            ]
+        );
+
+        if (method_exists($user, 'attachOldNotifications')) {
+            $user->attachOldNotifications();
+        }
+
+        return response()->json([
+            'token' => $user->createToken('google-identity-token')->plainTextToken,
+            'user' => [
+                'idUtilisateur' => $user->idUtilisateur,
+                'prenomUtilisateur' => $user->prenomUtilisateur,
+                'nomUtilisateur' => $user->nomUtilisateur,
+                'email' => $user->email,
+                'role' => $user->role,
+            ],
+        ]);
     }
 
     public function login(Request $request)

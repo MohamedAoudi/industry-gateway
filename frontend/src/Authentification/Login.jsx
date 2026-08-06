@@ -210,7 +210,7 @@
 
 
 import React, { useState } from 'react';
-import apiAdmin from '../api/apiAdmin';
+import apiAdmin, { setAuthSession } from '../api/apiAdmin';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 import RegistrationProfileFields, { emptyRegistrationForm } from './RegistrationProfileFields';
@@ -236,10 +236,6 @@ const Auth = () => {
         setError('');
 
         try {
-            // await apiAdmin.get('http://localhost:8000/sanctum/csrf-cookie');
-            await apiAdmin.get('http://127.0.0.1:8000/sanctum/csrf-cookie');
-
-
             if (isLogin) {
                 const response = await apiAdmin.post('/login', {
                     email: formData.email,
@@ -247,11 +243,7 @@ const Auth = () => {
                 });
 
                 if (response.data.token) {
-                    localStorage.setItem('auth_token', response.data.token);
-                    localStorage.setItem('role', response.data.user.role);
-                    localStorage.setItem('prenomUtilisateur', response.data.user.prenomUtilisateur);
-                    localStorage.setItem('nomUtilisateur', response.data.user.nomUtilisateur);
-                    localStorage.setItem('emailUtilisateur', response.data.user.email);
+                    setAuthSession(response.data);
 
                     const returnTo = typeof location.state?.from === 'string' && location.state.from.startsWith('/')
                         ? location.state.from

@@ -1,16 +1,36 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CheckCircle2, Loader2, UserRoundPlus, X } from "lucide-react";
 import { Link } from "react-router-dom";
-import apiAdmin from "../api/apiAdmin";
+import apiAdmin, { setAuthSession } from "../api/apiAdmin";
 import RegistrationProfileFields, { emptyRegistrationForm } from "./RegistrationProfileFields";
 
 const inputClass = "w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10";
+
+let googleIdentityScriptPromise;
+
+const loadGoogleIdentityScript = () => {
+  if (window.google?.accounts?.id) return Promise.resolve();
+  if (googleIdentityScriptPromise) return googleIdentityScriptPromise;
+
+  googleIdentityScriptPromise = new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = "https://accounts.google.com/gsi/client";
+    script.async = true;
+    script.defer = true;
+    script.onload = resolve;
+    script.onerror = () => reject(new Error("Google Identity Services could not be loaded."));
+    document.head.appendChild(script);
+  });
+
+  return googleIdentityScriptPromise;
+};
 
 const RegistrationModal = ({ open, onClose }) => {
   const [form, setForm] = useState(emptyRegistrationForm);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
   const [registered, setRegistered] = useState(false);
+  const googleButtonRef = useRef(null);
 
   useEffect(() => {
     if (!open) return undefined;
@@ -36,6 +56,62 @@ const RegistrationModal = ({ open, onClose }) => {
       setRegistered(false);
     }
   }, [open]);
+
+  useEffect(() => {
+    if (!open || registered) return undefined;
+
+    let cancelled = false;
+
+    const initializeGoogleButton = async () => {
+      try {
+        const [{ data }] = await Promise.all([
+          apiAdmin.get("/auth/google/config"),
+          loadGoogleIdentityScript(),
+        ]);
+
+        if (cancelled || !googleButtonRef.current) return;
+
+        window.google.accounts.id.initialize({
+          client_id: data.client_id,
+          callback: async ({ credential }) => {
+            if (!credential) return;
+            setSaving(true);
+            setError("");
+
+            try {
+              const response = await apiAdmin.post("/auth/google/credential", { credential });
+              setAuthSession(response.data);
+              window.location.assign("/");
+            } catch (requestError) {
+              setError(requestError.response?.data?.message || "تعذر تسجيل الدخول باستخدام Google.");
+              setSaving(false);
+            }
+          },
+        });
+
+        googleButtonRef.current.replaceChildren();
+        window.google.accounts.id.renderButton(googleButtonRef.current, {
+          type: "standard",
+          theme: "outline",
+          size: "large",
+          text: "continue_with",
+          shape: "rectangular",
+          logo_alignment: "left",
+          locale: "ar",
+          width: Math.min(400, googleButtonRef.current.clientWidth || 400),
+        });
+      } catch (requestError) {
+        if (!cancelled) {
+          setError(requestError.response?.data?.message || "تعذر تحميل تسجيل الدخول باستخدام Google.");
+        }
+      }
+    };
+
+    initializeGoogleButton();
+    return () => {
+      cancelled = true;
+    };
+  }, [open, registered]);
 
   if (!open) return null;
 
@@ -93,6 +169,14 @@ const RegistrationModal = ({ open, onClose }) => {
         ) : (
           <form onSubmit={submit} className="space-y-5 p-6 sm:p-8">
             {error && <div className="rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-bold text-red-600">{error}</div>}
+
+            <div ref={googleButtonRef} className="flex min-h-11 w-full items-center justify-center" />
+
+            <div className="flex items-center gap-3 text-xs font-bold text-slate-400">
+              <span className="h-px flex-1 bg-slate-200" />
+              <span>أو إنشاء حساب بالبريد الإلكتروني</span>
+              <span className="h-px flex-1 bg-slate-200" />
+            </div>
 
             <div className="grid gap-5 sm:grid-cols-2">
               <label className="space-y-2 sm:col-span-2">

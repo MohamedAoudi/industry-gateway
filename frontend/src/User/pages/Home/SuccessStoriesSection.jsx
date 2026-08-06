@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import {
@@ -18,6 +18,16 @@ const RegistrationGuide = () => {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.dir() === "rtl";
   const [showRegistration, setShowRegistration] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("register") !== "1") return;
+
+    setShowRegistration(true);
+    params.delete("register");
+    const query = params.toString();
+    window.history.replaceState({}, "", `${window.location.pathname}${query ? `?${query}` : ""}${window.location.hash}`);
+  }, []);
 
   const steps = stepIcons.map((icon, index) => ({
     icon,

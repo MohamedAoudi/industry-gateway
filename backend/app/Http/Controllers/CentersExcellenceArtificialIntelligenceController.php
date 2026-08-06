@@ -24,11 +24,13 @@ class CentersExcellenceArtificialIntelligenceController extends Controller
 
     public function index(Request $request)
     {
+        $perPage = min(100, max(1, $request->integer('per_page', 10)));
+
         // On pagine les résultats. Le tri par idPays permet un regroupement plus propre
         $centers = Center::with('pays')
             ->where('idTypeCenter', 2)
             ->orderBy('idPays')
-            ->paginate(10); 
+            ->paginate($perPage);
 
         return response()->json($centers);
     }

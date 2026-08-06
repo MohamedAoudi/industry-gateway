@@ -108,7 +108,7 @@ class UserManagementController extends Controller
 
     private function validatedUserData(Request $request, ?User $user = null, bool $passwordRequired = false): array
     {
-        $accountTypes = ['factory', 'industrial_company', 'production_company', 'expert', 'funding_entity', 'other'];
+        $accountTypes = ['regular', 'factory', 'industrial_company', 'production_company', 'expert', 'funding_entity', 'other'];
         $requiredProfileFields = [
             'factory' => ['organization_name', 'activity_field', 'products', 'country'],
             'industrial_company' => ['organization_name', 'activity_field', 'registration_number', 'country'],
@@ -133,7 +133,7 @@ class UserManagementController extends Controller
             'entite' => ['nullable', 'string', 'max:255'],
             'telephone' => ['nullable', 'string', 'max:45'],
             'account_type' => ['nullable', 'required_if:role,user', Rule::in($accountTypes)],
-            'profile_data' => ['nullable', 'required_if:role,user', 'array'],
+            'profile_data' => ['nullable', 'present_if:role,user', 'array'],
         ];
 
         foreach (array_unique(array_merge(...array_values($requiredProfileFields))) as $field) {

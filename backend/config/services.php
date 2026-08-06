@@ -43,4 +43,12 @@ return [
         'ca_bundle' => env('OPENAI_CA_BUNDLE'),
     ],
 
+    'google' => [
+        'client_id' => env('GOOGLE_CLIENT_ID'),
+        'client_secret' => env('GOOGLE_CLIENT_SECRET'),
+        'redirect' => env('GOOGLE_REDIRECT_URI', rtrim(env('APP_URL', 'http://localhost:8000'), '/').'/api/auth/google/callback'),
+        'frontend_url' => env('FRONTEND_URL', 'http://localhost:5173'),
+        'ca_bundle' => env('GOOGLE_CA_BUNDLE'),
+    ],
+
 ];

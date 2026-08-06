@@ -16,27 +16,27 @@ import {
 import apiAdmin from "../../../api/apiAdmin";
 
 const countries = [
-  { code: "jo", ar: "الأردن", en: "Jordan", aliases: ["الأردن", "الاردن", "jordan"] },
-  { code: "ae", ar: "الإمارات", en: "United Arab Emirates", aliases: ["الإمارات", "الامارات", "الإمارات العربية المتحدة", "uae", "united arab emirates", "emirates"] },
-  { code: "bh", ar: "البحرين", en: "Bahrain", aliases: ["البحرين", "bahrain"] },
-  { code: "tn", ar: "تونس", en: "Tunisia", aliases: ["تونس", "tunisia"] },
-  { code: "dz", ar: "الجزائر", en: "Algeria", aliases: ["الجزائر", "algeria"] },
-  { code: "dj", ar: "جيبوتي", en: "Djibouti", aliases: ["جيبوتي", "djibouti"] },
-  { code: "sa", ar: "السعودية", en: "Saudi Arabia", aliases: ["السعودية", "المملكة العربية السعودية", "saudi arabia", "saudi"] },
-  { code: "sd", ar: "السودان", en: "Sudan", aliases: ["السودان", "sudan"] },
-  { code: "sy", ar: "سوريا", en: "Syria", aliases: ["سوريا", "السورية", "syria"] },
-  { code: "so", ar: "الصومال", en: "Somalia", aliases: ["الصومال", "somalia"] },
-  { code: "iq", ar: "العراق", en: "Iraq", aliases: ["العراق", "iraq"] },
-  { code: "om", ar: "عُمان", en: "Oman", aliases: ["عمان", "عُمان", "سلطنة عمان", "oman"] },
-  { code: "ps", ar: "فلسطين", en: "Palestine", aliases: ["فلسطين", "palestine"] },
-  { code: "qa", ar: "قطر", en: "Qatar", aliases: ["قطر", "qatar"] },
-  { code: "kw", ar: "الكويت", en: "Kuwait", aliases: ["الكويت", "kuwait"] },
-  { code: "lb", ar: "لبنان", en: "Lebanon", aliases: ["لبنان", "اللبنانية", "lebanon"] },
-  { code: "ly", ar: "ليبيا", en: "Libya", aliases: ["ليبيا", "libya"] },
-  { code: "eg", ar: "مصر", en: "Egypt", aliases: ["مصر", "egypt"] },
-  { code: "ma", ar: "المغرب", en: "Morocco", aliases: ["المغرب", "المغربية", "morocco"] },
-  { code: "mr", ar: "موريتانيا", en: "Mauritania", aliases: ["موريتانيا", "الموريتانية", "mauritania"] },
-  { code: "ye", ar: "اليمن", en: "Yemen", aliases: ["اليمن", "اليمنية", "yemen"] },
+  { code: "jo", ar: "المملكة الأردنية الهاشمية", en: "Hashemite Kingdom of Jordan", aliases: ["الأردن", "الاردن", "jordan"] },
+  { code: "ae", ar: "دولة الإمارات العربية المتحدة", en: "United Arab Emirates", aliases: ["الإمارات", "الامارات", "الإمارات العربية المتحدة", "uae", "united arab emirates", "emirates"] },
+  { code: "bh", ar: "مملكة البحرين", en: "Kingdom of Bahrain", aliases: ["البحرين", "bahrain"] },
+  { code: "tn", ar: "الجمهورية التونسية", en: "Republic of Tunisia", aliases: ["تونس", "tunisia"] },
+  { code: "dz", ar: "الجمهورية الجزائرية الديمقراطية الشعبية", en: "People's Democratic Republic of Algeria", aliases: ["الجزائر", "algeria"] },
+  { code: "dj", ar: "جمهورية جيبوتي", en: "Republic of Djibouti", aliases: ["جيبوتي", "djibouti"] },
+  { code: "sa", ar: "المملكة العربية السعودية", en: "Kingdom of Saudi Arabia", aliases: ["السعودية", "المملكة العربية السعودية", "saudi arabia", "saudi"] },
+  { code: "sd", ar: "جمهورية السودان", en: "Republic of the Sudan", aliases: ["السودان", "sudan"] },
+  { code: "sy", ar: "الجمهورية العربية السورية", en: "Syrian Arab Republic", aliases: ["سوريا", "السورية", "syria"] },
+  { code: "so", ar: "جمهورية الصومال", en: "Federal Republic of Somalia", aliases: ["الصومال", "somalia"] },
+  { code: "iq", ar: "جمهورية العراق", en: "Republic of Iraq", aliases: ["العراق", "iraq"] },
+  { code: "om", ar: "سلطنة عُمان", en: "Sultanate of Oman", aliases: ["عمان", "عُمان", "سلطنة عمان", "oman"] },
+  { code: "ps", ar: "دولة فلسطين", en: "State of Palestine", aliases: ["فلسطين", "palestine"] },
+  { code: "qa", ar: "دولة قطر", en: "State of Qatar", aliases: ["قطر", "qatar"] },
+  { code: "kw", ar: "دولة الكويت", en: "State of Kuwait", aliases: ["الكويت", "kuwait"] },
+  { code: "lb", ar: "الجمهورية اللبنانية", en: "Lebanese Republic", aliases: ["لبنان", "اللبنانية", "lebanon"] },
+  { code: "ly", ar: "دولة ليبيا", en: "State of Libya", aliases: ["ليبيا", "libya"] },
+  { code: "eg", ar: "جمهورية مصر العربية", en: "Arab Republic of Egypt", aliases: ["مصر", "egypt"] },
+  { code: "ma", ar: "المملكة المغربية", en: "Kingdom of Morocco", aliases: ["المغرب", "المغربية", "morocco"] },
+  { code: "mr", ar: "الجمهورية الإسلامية الموريتانية", en: "Islamic Republic of Mauritania", aliases: ["موريتانيا", "الموريتانية", "mauritania"] },
+  { code: "ye", ar: "الجمهورية اليمنية", en: "Republic of Yemen", aliases: ["اليمن", "اليمنية", "yemen"] },
 ];
 
 const categories = {
@@ -251,7 +251,7 @@ const CountryDatabase = () => {
             <Database size={29} />
           </span>
           <h1 className="text-3xl font-black sm:text-4xl lg:text-5xl">
-            {isRtl ? "قاعدة البيانات حسب الدول العربية" : "Database by Arab country"}
+            {isRtl ? "البيانات المتوفرة حسب الدول العربية" : "Available data by Arab country"}
           </h1>
           <p className="mx-auto mt-5 max-w-3xl text-sm leading-7 text-emerald-50/70 sm:text-base">
             {isRtl
@@ -301,12 +301,6 @@ const CountryDatabase = () => {
         )}
 
         <section className="mt-8">
-          <div className="mb-5">
-            <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">
-              {isRtl ? "محتويات قاعدة البيانات" : "Database content"}
-            </h2>
-          </div>
-
           {loading ? (
             <div className="flex min-h-[220px] items-center justify-center rounded-[2rem] border border-slate-200 bg-white">
               <div className="text-center text-emerald-700">

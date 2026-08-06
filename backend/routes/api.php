@@ -32,6 +32,11 @@ Route::post('/tokens/create', function (Request $request) {
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/auth/google/config', [AuthController::class, 'googleConfig']);
+Route::post('/auth/google/credential', [AuthController::class, 'authenticateWithGoogle']);
+Route::get('/auth/google/redirect', fn () => redirect()->away(
+    rtrim(config('services.google.frontend_url'), '/').'/?register=1'
+));
 Route::get('/pays', [PaysController::class, 'index']);
 Route::get('/portal-stats', [PortalStatsController::class, 'index']);
 Route::get('/faqs', [FaqQuestionController::class, 'index']);
