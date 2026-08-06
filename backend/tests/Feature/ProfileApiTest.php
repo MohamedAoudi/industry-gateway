@@ -26,11 +26,12 @@ it('allows an authenticated user to update their profile', function () {
         'password' => 'new-password',
         'password_confirmation' => 'new-password',
     ])->assertOk()
-        ->assertJsonPath('user.email', 'updated@example.test');
+        ->assertJsonPath('user.email', 'profile@example.test');
 
     $this->assertDatabaseHas('users', [
         'idUtilisateur' => $user->idUtilisateur,
         'prenomUtilisateur' => 'New',
+        'email' => 'profile@example.test',
         'telephone' => '+212600000000',
     ]);
     expect(Hash::check('new-password', $user->fresh()->password))->toBeTrue();

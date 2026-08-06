@@ -70,7 +70,6 @@ const ProfilePage = () => {
       const payload = {
         prenomUtilisateur: profile.prenomUtilisateur,
         nomUtilisateur: profile.nomUtilisateur,
-        email: profile.email,
         telephone: profile.telephone || null,
       };
       if (passwords.password) {
@@ -132,7 +131,7 @@ const ProfilePage = () => {
           <div className="mb-8">
             <p className="text-xs font-black uppercase tracking-wider text-emerald-600">{isRtl ? "إعدادات الحساب" : "Account settings"}</p>
             <h2 className="mt-2 text-2xl font-black text-slate-900">{isRtl ? "الملف الشخصي" : "My profile"}</h2>
-            <p className="mt-2 text-sm text-slate-500">{isRtl ? "حدّث اسمك وهاتفك وبريدك الإلكتروني وكلمة المرور." : "Update your name, phone, email, and password."}</p>
+            <p className="mt-2 text-sm text-slate-500">{isRtl ? "حدّث اسمك وهاتفك وكلمة المرور." : "Update your name, phone, and password."}</p>
           </div>
 
           <div className="grid gap-5 md:grid-cols-2">
@@ -143,10 +142,17 @@ const ProfilePage = () => {
               <input className={fieldClass} value={profile.nomUtilisateur} onChange={(e) => updateField("nomUtilisateur", e.target.value)} required />
             </ProfileField>
             <ProfileField icon={AtSign} label={isRtl ? "البريد الإلكتروني" : "Email address"}>
-              <input dir="ltr" type="email" className={fieldClass} value={profile.email} onChange={(e) => updateField("email", e.target.value)} required />
+              <input
+                dir="ltr"
+                type="email"
+                className={`${fieldClass} cursor-not-allowed bg-slate-100 text-slate-500 focus:border-slate-200 focus:ring-0 ${isRtl ? "text-right" : "text-left"}`}
+                value={profile.email}
+                readOnly
+                aria-readonly="true"
+              />
             </ProfileField>
             <ProfileField icon={Phone} label={isRtl ? "رقم الهاتف" : "Phone number"}>
-              <input dir="ltr" type="tel" className={fieldClass} value={profile.telephone ?? ""} onChange={(e) => updateField("telephone", e.target.value)} />
+              <input dir="ltr" type="tel" className={`${fieldClass} ${isRtl ? "text-right" : "text-left"}`} value={profile.telephone ?? ""} onChange={(e) => updateField("telephone", e.target.value)} />
             </ProfileField>
             <ProfileField icon={LockKeyhole} label={isRtl ? "كلمة المرور الجديدة" : "New password"}>
               <div className="relative">
@@ -177,7 +183,7 @@ const ProfilePage = () => {
             </ProfileField>
           </div>
 
-          <div className="mt-8 flex justify-end border-t border-slate-100 pt-6">
+          <div className={`mt-8 flex border-t border-slate-100 pt-6 ${isRtl ? "justify-start" : "justify-end"}`}>
             <button disabled={saving} className="inline-flex min-w-44 items-center justify-center gap-2 rounded-xl bg-emerald-600 px-6 py-3.5 text-sm font-black text-white shadow-lg shadow-emerald-600/20 hover:bg-emerald-700 disabled:opacity-60">
               {saving ? <Loader2 size={18} className="animate-spin" /> : <Save size={18} />}
               {isRtl ? "حفظ التغييرات" : "Save changes"}

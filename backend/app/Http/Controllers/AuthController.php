@@ -188,7 +188,6 @@ class AuthController extends Controller
         $data = $request->validate([
             'prenomUtilisateur' => ['required', 'string', 'max:100'],
             'nomUtilisateur' => ['required', 'string', 'max:100'],
-            'email' => ['required', 'email', 'max:100', Rule::unique('users', 'email')->ignore($user->idUtilisateur, 'idUtilisateur')],
             'position' => ['nullable', 'string', 'max:255'],
             'entite' => ['nullable', 'string', 'max:255'],
             'telephone' => ['nullable', 'string', 'max:45'],
