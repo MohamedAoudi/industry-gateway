@@ -208,7 +208,7 @@ i18n.use(initReactI18next).init({
             patents: "دليل مكاتب الملكية الصناعية وبراءات الاختراع وخدمات حماية الابتكارات.",
             experts: "تواصل مع الخبراء والباحثين والمختصين في مختلف المجالات العلمية والصناعية.",
             supporting_bodies: "دليل الجهات والهيئات التي تمول وتدعم البحث العلمي والابتكار في المنطقة العربية.",
-            industrial_institutions: "تصفح المؤسسات الصناعية المشاركة وتعرف على قطاعاتها ومجالات نشاطها."
+            industrial_institutions: "تصفح المؤسسات الصناعية والإنتاجية المشاركة وتعرف على قطاعاتها ومجالات نشاطها."
           }
         },
 
@@ -371,7 +371,7 @@ i18n.use(initReactI18next).init({
               "industrial-property-patents": "مكاتب الملكية الصناعية وبراءات الإختراع",
               "experts-specialists": "قاعدة الخبراء والمختصين",
               "supporting-bodies": "الجهات الداعمة للبحث العلمي والابتكار",
-              "industrial-institutions": "المؤسسات الصناعية"
+              "industrial-institutions": "المؤسسات الصناعية والإنتاجية"
             }
           }
         },
@@ -395,7 +395,7 @@ i18n.use(initReactI18next).init({
             incubators_technology_poles_laboratories: "الحاضنات والأقطاب التكنولوجية والمختبرات",
             programs_initiatives_strategies: "البرامج والمبادرات والاستراتيجيات",
             experts_specialists_database: "قاعدة الخبراء والمختصين",
-            industrial_institutions: "المؤسسات الصناعية",
+            industrial_institutions: "المؤسسات الصناعية والإنتاجية",
           },
           media_center: {
             news: "أخبار",
@@ -761,7 +761,7 @@ i18n.use(initReactI18next).init({
             patents: "A directory of industrial property and patent offices offering innovation protection services.",
             experts: "Connect with experts, researchers and specialists across scientific and industrial fields.",
             supporting_bodies: "A directory of organizations funding and supporting scientific research and innovation across the Arab region.",
-            industrial_institutions: "Browse participating industrial institutions and discover their sectors and fields of activity."
+            industrial_institutions: "Browse participating industrial and production institutions and discover their sectors and fields of activity."
           }
         },
         media_page: {
@@ -794,7 +794,7 @@ i18n.use(initReactI18next).init({
             incubators_technology_poles_laboratories: "Incubators, Technology Poles and Laboratories",
             programs_initiatives_strategies: "Programs, Initiatives and Strategies",
             experts_specialists_database: "Experts and Specialists Database",
-            industrial_institutions: "Industrial Institutions",
+            industrial_institutions: "Industrial and Production Institutions",
 
           },
           media_center: {

@@ -69,7 +69,7 @@ const categories = {
     icon: Building2,
   },
   "industrial-institutions": {
-    label: { ar: "المؤسسات الصناعية", en: "Industrial institutions" },
+    label: { ar: "المؤسسات الصناعية والإنتاجية", en: "Industrial and production institutions" },
     icon: Factory,
   },
 };

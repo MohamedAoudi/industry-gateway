@@ -215,9 +215,9 @@ const UserHeader = () => {
               <Link to="/researchDatabase?category=incubators-technology-labs"><SubLinkCard icon={FlaskConical} label="submenu.database.incubators_technology_poles_laboratories" /></Link>
               <Link to="/researchDatabase?category=programs-initiatives-strategies"><SubLinkCard icon={Workflow} label="submenu.database.programs_initiatives_strategies" /></Link>
               <Link to="/researchDatabase?category=industrial-property-patents"><SubLinkCard icon={FileBadge} label="submenu.database.industrial_property_patent_offices" /></Link>
-              <Link to="/researchDatabase?category=experts-specialists"><SubLinkCard icon={UsersRound} label="submenu.database.experts_specialists_database" /></Link>
-              <Link to="/researchDatabase?category=supporting-bodies"><SubLinkCard icon={HandCoins} label="submenu.database.supporting_bodies_scientific_research" /></Link>
               <Link to="/researchDatabase?category=industrial-institutions"><SubLinkCard icon={Factory} label="submenu.database.industrial_institutions" /></Link>
+              <Link to="/researchDatabase?category=supporting-bodies"><SubLinkCard icon={HandCoins} label="submenu.database.supporting_bodies_scientific_research" /></Link>
+              <Link to="/researchDatabase?category=experts-specialists"><SubLinkCard icon={UsersRound} label="submenu.database.experts_specialists_database" /></Link>
             </MegaMenu>
 
             <Link to="/mediaCenter" className="flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-emerald-50 hover:text-emerald-700">
@@ -399,9 +399,9 @@ const UserHeader = () => {
               <Link onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=incubators-technology-labs"><SubLinkCard icon={FlaskConical} label="submenu.database.incubators_technology_poles_laboratories" /></Link>
               <Link onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=programs-initiatives-strategies"><SubLinkCard icon={Workflow} label="submenu.database.programs_initiatives_strategies" /></Link>
               <Link onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=industrial-property-patents"><SubLinkCard icon={FileBadge} label="submenu.database.industrial_property_patent_offices" /></Link>
-              <Link onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=experts-specialists"><SubLinkCard icon={UsersRound} label="submenu.database.experts_specialists_database" /></Link>
-              <Link onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=supporting-bodies"><SubLinkCard icon={HandCoins} label="submenu.database.supporting_bodies_scientific_research" /></Link>
               <Link onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=industrial-institutions"><SubLinkCard icon={Factory} label="submenu.database.industrial_institutions" /></Link>
+              <Link onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=supporting-bodies"><SubLinkCard icon={HandCoins} label="submenu.database.supporting_bodies_scientific_research" /></Link>
+              <Link onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=experts-specialists"><SubLinkCard icon={UsersRound} label="submenu.database.experts_specialists_database" /></Link>
             </div>
           </details>
 
