@@ -192,6 +192,8 @@ i18n.use(initReactI18next).init({
 
         database_pages: {
           search: "ابحث داخل هذه الفئة...",
+          country_filter: "تصفية حسب الدولة",
+          all_countries: "جميع الدول",
           results: "نتيجة",
           loading: "جاري تحميل البيانات...",
           empty: "لا توجد بيانات متاحة حالياً",
@@ -745,6 +747,8 @@ i18n.use(initReactI18next).init({
         },
         database_pages: {
           search: "Search within this category...",
+          country_filter: "Filter by country",
+          all_countries: "All countries",
           results: "results",
           loading: "Loading data...",
           empty: "No data is currently available",

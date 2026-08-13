@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import {
   ArrowLeft,
+  Check,
+  ChevronDown,
   ChevronLeft,
   ChevronRight,
   Database,
@@ -185,7 +187,7 @@ const loadAllEndpointRecords = async (endpoint) => {
 const ResearchDatabase = () => {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.dir() === "rtl";
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const location = useLocation();
   const requestedCategory = searchParams.get("category");
@@ -203,8 +205,10 @@ const ResearchDatabase = () => {
   const [hasError, setHasError] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedRecord, setSelectedRecord] = useState(null);
+  const [isCountryMenuOpen, setIsCountryMenuOpen] = useState(false);
   const pendingFocusRef = useRef(null);
   const handledFocusRef = useRef("");
+  const countryMenuRef = useRef(null);
   const pageSize = 9;
 
   useEffect(() => {
@@ -270,9 +274,9 @@ const ResearchDatabase = () => {
         description: isRtl ? descriptionAr || descriptionEn : descriptionEn || descriptionAr,
         descriptionAr,
         descriptionEn,
-        country: record.country?.nomPays || record.pays?.nomPays || record.country || "",
+        country: record.country?.nomPays || record.pays?.nomPays || record.nomPays || record.country || "",
         countryId: record.country?.idPays || record.pays?.idPays || record.country_id || record.idPays || "",
-        countryFlag: getCountryFlag(record.country?.nomPays || record.pays?.nomPays || record.country),
+        countryFlag: getCountryFlag(record.country?.nomPays || record.pays?.nomPays || record.nomPays || record.country),
         image: record.image_url || record.photo_url,
         email: record.email || "",
         website: record.url || "",
@@ -284,6 +288,75 @@ const ResearchDatabase = () => {
     )),
     [activeCategory.key, isRtl, records]
   );
+
+  const countryOptions = useMemo(() => {
+    const countries = new Map();
+
+    normalizedRecords.forEach((record) => {
+      if (!record.country) return;
+      const code = resolveCountryCode(record.country);
+      const key = record.countryId
+        ? `id:${record.countryId}`
+        : code
+          ? `code:${code}`
+          : `name:${normalizeCountryName(record.country)}`;
+
+      if (!countries.has(key)) {
+        countries.set(key, {
+          key,
+          id: record.countryId,
+          name: record.country,
+          code,
+          flag: getCountryFlag(record.country),
+        });
+      }
+    });
+
+    return [...countries.values()].sort((first, second) =>
+      first.name.localeCompare(second.name, isRtl ? "ar" : "en")
+    );
+  }, [isRtl, normalizedRecords]);
+
+  const selectedCountryKey = useMemo(() => {
+    if (!requestedCountry && !requestedCountryId) return "";
+    const requestedCode = resolveCountryCode(requestedCountry);
+    const requestedName = normalizeCountryName(requestedCountry);
+    return countryOptions.find((country) => (
+      (requestedCountryId && country.id && String(country.id) === requestedCountryId)
+      || (requestedCode && country.code === requestedCode)
+      || (requestedName && normalizeCountryName(country.name) === requestedName)
+    ))?.key || "";
+  }, [countryOptions, requestedCountry, requestedCountryId]);
+
+  const selectedCountryOption = countryOptions.find((country) => country.key === selectedCountryKey);
+
+  const handleCountryChange = (countryKey) => {
+    const nextParams = new URLSearchParams(searchParams);
+    const country = countryOptions.find((option) => option.key === countryKey);
+
+    if (!country) {
+      nextParams.delete("country");
+      nextParams.delete("country_id");
+    } else {
+      nextParams.set("country", country.name);
+      if (country.id) nextParams.set("country_id", String(country.id));
+      else nextParams.delete("country_id");
+    }
+
+    setSearchParams(nextParams);
+    setIsCountryMenuOpen(false);
+  };
+
+  useEffect(() => {
+    if (!isCountryMenuOpen) return undefined;
+
+    const closeCountryMenu = (event) => {
+      if (!countryMenuRef.current?.contains(event.target)) setIsCountryMenuOpen(false);
+    };
+
+    document.addEventListener("mousedown", closeCountryMenu);
+    return () => document.removeEventListener("mousedown", closeCountryMenu);
+  }, [isCountryMenuOpen]);
 
   const filteredRecords = useMemo(() => {
     const query = search.trim().toLocaleLowerCase();
@@ -404,7 +477,7 @@ const ResearchDatabase = () => {
 
       <main className="relative mx-auto -mt-16 max-w-7xl px-4 pb-24 sm:-mt-20 sm:px-6 lg:px-8">
         <section>
-          <div className="mb-8 flex flex-col gap-5 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+          <div className="mb-8 flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm lg:flex-row lg:items-center lg:justify-between">
             <label className="relative block flex-1">
               <Search size={18} className={`absolute top-1/2 -translate-y-1/2 text-slate-400 ${isRtl ? "right-4" : "left-4"}`} />
               <input
@@ -414,6 +487,55 @@ const ResearchDatabase = () => {
                 className={`w-full rounded-xl border border-slate-200 bg-slate-50 py-3.5 text-sm text-slate-800 outline-none transition-all focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 ${isRtl ? "pl-4 pr-12" : "pl-12 pr-4"}`}
               />
             </label>
+            <div ref={countryMenuRef} className="relative lg:w-72">
+              <button
+                type="button"
+                onClick={() => setIsCountryMenuOpen((open) => !open)}
+                aria-label={t("database_pages.country_filter")}
+                aria-expanded={isCountryMenuOpen}
+                className="flex w-full items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm font-bold text-slate-700 outline-none transition-all hover:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+              >
+                {selectedCountryOption?.flag ? (
+                  <img src={selectedCountryOption.flag} alt="" className="h-4 w-6 shrink-0 rounded-sm object-cover shadow-sm" />
+                ) : (
+                  <MapPin size={18} className="shrink-0 text-emerald-600" />
+                )}
+                <span className="min-w-0 flex-1 truncate text-start">
+                  {selectedCountryOption?.name || t("database_pages.all_countries")}
+                </span>
+                <ChevronDown size={16} className={`shrink-0 text-slate-400 transition-transform ${isCountryMenuOpen ? "rotate-180" : ""}`} />
+              </button>
+
+              {isCountryMenuOpen && (
+                <div className="absolute inset-x-0 top-full z-30 mt-2 max-h-72 overflow-y-auto rounded-xl border border-slate-200 bg-white p-2 shadow-xl">
+                  <button
+                    type="button"
+                    onClick={() => handleCountryChange("")}
+                    className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-bold transition-colors ${!selectedCountryKey ? "bg-emerald-50 text-emerald-700" : "text-slate-600 hover:bg-slate-50"}`}
+                  >
+                    <MapPin size={17} className="shrink-0 text-emerald-600" />
+                    <span className="flex-1 text-start">{t("database_pages.all_countries")}</span>
+                    {!selectedCountryKey && <Check size={16} />}
+                  </button>
+                  {countryOptions.map((country) => (
+                    <button
+                      type="button"
+                      key={country.key}
+                      onClick={() => handleCountryChange(country.key)}
+                      className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-bold transition-colors ${selectedCountryKey === country.key ? "bg-emerald-50 text-emerald-700" : "text-slate-600 hover:bg-slate-50"}`}
+                    >
+                      {country.flag ? (
+                        <img src={country.flag} alt="" className="h-4 w-6 shrink-0 rounded-sm object-cover shadow-sm" />
+                      ) : (
+                        <MapPin size={17} className="shrink-0 text-slate-400" />
+                      )}
+                      <span className="min-w-0 flex-1 truncate text-start">{country.name}</span>
+                      {selectedCountryKey === country.key && <Check size={16} />}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
             <span className="shrink-0 rounded-xl bg-emerald-50 px-4 py-3 text-xs font-black text-emerald-700">
               {filteredRecords.length} {t("database_pages.results")}
             </span>
