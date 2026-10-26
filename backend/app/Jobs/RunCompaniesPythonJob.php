@@ -24,7 +24,7 @@ class RunCompaniesPythonJob implements ShouldQueue
         $python = $this->resolvePythonBinary();
 
         $process = new Process([$python, $scriptPath]);
-        $process->setEnv(array_merge($process->getEnv() ?? [], ['PYTHONIOENCODING' => 'utf-8']));
+        $process->setEnv(array_filter(config('python.env'), static fn ($value) => $value !== null));
         $process->setTimeout(null);
         $process->setIdleTimeout(null);
         $process->run();

@@ -13,9 +13,13 @@ class RunResearchersAI extends Command
     {
         $this->info("🚀 Starting Python AI scraper...");
 
-        $command = "python3 " . base_path("scripts/chercheur.py");
-
-        $output = shell_exec($command);
+        $process = new \Symfony\Component\Process\Process([
+            env('PYTHON_BINARY', 'python3'), base_path('scripts/chercheur.py'),
+        ]);
+        $process->setEnv(array_filter(config('python.env'), static fn ($value) => $value !== null));
+        $process->setTimeout(null);
+        $process->mustRun();
+        $output = $process->getOutput();
 
         $this->info($output);
 
