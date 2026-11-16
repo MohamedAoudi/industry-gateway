@@ -10,7 +10,7 @@ import {
   UsersRound,
 } from "lucide-react";
 
-const serviceConfig = [
+const legacyServiceConfig = [
   {
     id: "linking",
     titleKey: "submenu.services.linking_researchers_industrial_companies",
@@ -44,6 +44,15 @@ const serviceConfig = [
     icon: Megaphone,
     layout: "lg:col-span-6",
   },
+];
+
+const serviceConfig = [
+  { id: 'linking', to: '/linkingresearcherscompanies', icon: UsersRound, layout: 'lg:col-span-7 lg:min-h-[330px]', featured: true },
+  { id: 'database', to: '/researchDatabase', icon: Database, layout: 'lg:col-span-5 lg:min-h-[330px]' },
+  { id: 'cooperation', to: '/linkingresearchersindustrial', icon: UsersRound, layout: 'lg:col-span-6' },
+  { id: 'programs', to: '/countryDatabase', icon: Presentation, layout: 'lg:col-span-6' },
+  { id: 'digital', to: '/centersExcellenceAI', icon: Sparkles, layout: 'lg:col-span-6' },
+  { id: 'outputs', to: '/researchDatabase', icon: Megaphone, layout: 'lg:col-span-6' },
 ];
 
 const ServicesSection = () => {
@@ -100,7 +109,7 @@ const ServicesSection = () => {
         </motion.header>
 
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-12">
-          {serviceConfig.map((service, index) => {
+          {(isRtl ? serviceConfig : legacyServiceConfig).map((service, index) => {
             const Icon = service.icon;
 
             return (
@@ -137,10 +146,10 @@ const ServicesSection = () => {
 
                   <div className="relative mt-auto pt-9">
                     <h3 className={`font-black leading-8 ${service.featured ? "max-w-xl text-2xl sm:text-3xl" : "text-xl"}`}>
-                      {t(service.titleKey)}
+                      {t(isRtl ? `services_section.items.${index}.title` : service.titleKey)}
                     </h3>
                     <p className={`mt-3 max-w-xl text-sm leading-6 ${service.featured ? "text-emerald-50/75" : "text-slate-500"}`}>
-                      {t(service.descriptionKey)}
+                      {t(isRtl ? `services_section.items.${index}.description` : service.descriptionKey)}
                     </p>
 
                     <span className={`mt-6 inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.13em] ${

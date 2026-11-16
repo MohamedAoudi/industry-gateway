@@ -33,6 +33,24 @@ const SubLinkCard = ({ label, href, icon: Icon = Zap }) => {
   );
 };
 
+const portalServices = [
+  { icon: Handshake, to: '/linkingresearcherscompanies', title: 'Connecting researchers, industry, support and funding' },
+  { icon: Library, to: '/researchDatabase', title: 'Industry, research and innovation stakeholders database' },
+  { icon: UsersRound, to: '/linkingresearchersindustrial', title: 'Cooperation, partnership and integration' },
+  { icon: Presentation, to: '/researchDatabase?category=programs-initiatives-strategies', title: 'Joint programs and initiatives' },
+  { icon: Zap, to: '/centersExcellenceAI', title: 'Digital transformation, innovation and technological development' },
+  { icon: Microscope, to: '/researchDatabase', title: 'Scientific research outputs relevant to industry' },
+];
+
+const PortalServiceLinks = ({ onNavigate }) => {
+  const { t } = useTranslation();
+  return portalServices.map((service, index) => (
+    <Link key={service.to + index} to={service.to} onClick={onNavigate}>
+      <SubLinkCard icon={service.icon} label={t(`services_section.items.${index}.title`, { defaultValue: service.title })} />
+    </Link>
+  ));
+};
+
 const MegaMenu = ({ label, icon: Icon, children, width = "w-[550px]" }) => {
   const { t } = useTranslation();
   return (
@@ -203,10 +221,7 @@ const UserHeader = () => {
             </Link>
 
             <MegaMenu label="services" icon={Layers}>
-              <Link to="/linkingresearcherscompanies"><SubLinkCard icon={Handshake} label="submenu.services.linking_researchers_industrial_companies" /></Link>
-              <Link to="/researchDatabase"><SubLinkCard icon={Library} label="submenu.services.database_research_technologies_available_industrial_application" /></Link>
-              <Link to="/workshopsseminars"><SubLinkCard icon={Presentation} label="submenu.services.joint_workshops_seminars" /></Link>
-              <SubLinkCard icon={Megaphone} label="submenu.services.supporting_marketing_investment_scientific_research_outputs" href="/services/marketing" />
+              <PortalServiceLinks />
             </MegaMenu>
 
             <MegaMenu label="database" icon={Database}>
@@ -382,9 +397,7 @@ const UserHeader = () => {
               <ChevronDown size={15} className="text-slate-400 transition-transform group-open/mobile:rotate-180" />
             </summary>
             <div className="space-y-1 px-2 pb-2">
-              <Link onClick={() => setIsMobileMenuOpen(false)} to="/linkingresearcherscompanies"><SubLinkCard icon={Handshake} label="submenu.services.linking_researchers_industrial_companies" /></Link>
-              <Link onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase"><SubLinkCard icon={Library} label="submenu.services.database_research_technologies_available_industrial_application" /></Link>
-              <Link onClick={() => setIsMobileMenuOpen(false)} to="/workshopsseminars"><SubLinkCard icon={Presentation} label="submenu.services.joint_workshops_seminars" /></Link>
+              <PortalServiceLinks onNavigate={() => setIsMobileMenuOpen(false)} />
             </div>
           </details>
 
