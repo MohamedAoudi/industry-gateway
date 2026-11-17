@@ -1,12 +1,16 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import {
   ArrowLeft,
   Database,
+  Network,
+  Cpu,
+  Handshake,
+  ClipboardList,
+  FlaskConical,
   Megaphone,
   Presentation,
-  Sparkles,
   UsersRound,
 } from "lucide-react";
 
@@ -47,125 +51,95 @@ const legacyServiceConfig = [
 ];
 
 const serviceConfig = [
-  { id: 'linking', to: '/linkingresearcherscompanies', icon: UsersRound, layout: 'lg:col-span-7 lg:min-h-[330px]', featured: true },
+  { id: 'linking', to: '/linkingresearcherscompanies', icon: Network, layout: 'lg:col-span-7 lg:min-h-[330px]', featured: true },
   { id: 'database', to: '/researchDatabase', icon: Database, layout: 'lg:col-span-5 lg:min-h-[330px]' },
-  { id: 'cooperation', to: '/linkingresearchersindustrial', icon: UsersRound, layout: 'lg:col-span-6' },
-  { id: 'programs', to: '/countryDatabase', icon: Presentation, layout: 'lg:col-span-6' },
-  { id: 'digital', to: '/centersExcellenceAI', icon: Sparkles, layout: 'lg:col-span-6' },
-  { id: 'outputs', to: '/researchDatabase', icon: Megaphone, layout: 'lg:col-span-6' },
+  { id: 'cooperation', to: '/linkingresearchersindustrial', icon: Handshake, layout: 'lg:col-span-6' },
+  { id: 'programs', to: '/countryDatabase', icon: ClipboardList, layout: 'lg:col-span-6' },
+  { id: 'digital', to: '/centersExcellenceAI', icon: Cpu, layout: 'lg:col-span-6' },
+  { id: 'outputs', to: '/researchDatabase', icon: FlaskConical, layout: 'lg:col-span-6' },
 ];
 
 const ServicesSection = () => {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.dir() === "rtl";
+  const reduceMotion = useReducedMotion();
+  const services = isRtl ? serviceConfig : legacyServiceConfig;
 
   return (
     <section
       dir={isRtl ? "rtl" : "ltr"}
-      className="relative overflow-hidden bg-[#f5faf7] py-20 md:py-28"
+      aria-labelledby="home-services-title"
+      className="relative overflow-hidden bg-[#f7f9f8] py-20 md:py-28"
     >
-      <div className="pointer-events-none absolute -right-40 top-10 h-96 w-96 rounded-full bg-emerald-200/50 blur-[110px]" />
-      <div className="pointer-events-none absolute -bottom-44 -left-28 h-96 w-96 rounded-full bg-teal-100/70 blur-[100px]" />
-      <div className="pointer-events-none absolute inset-0 opacity-[0.025] [background-image:radial-gradient(circle_at_center,#064e3b_1px,transparent_1px)] [background-size:30px_30px]" />
-
-      <div className="container relative z-10 mx-auto px-6">
-        <motion.header
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.65 }}
-          className="relative mb-14 overflow-hidden rounded-[2.5rem] bg-gradient-to-br from-slate-950 via-emerald-950 to-emerald-800 px-7 py-12 text-white shadow-[0_28px_70px_rgba(6,78,59,0.22)] sm:px-10 sm:py-14 md:mb-16 lg:px-14 lg:py-16"
-        >
-          <div className="pointer-events-none absolute -right-24 -top-32 h-80 w-80 rounded-full border-[55px] border-white/[0.04]" />
-          <div className="pointer-events-none absolute -bottom-28 left-1/3 h-72 w-72 rounded-full bg-emerald-400/10 blur-[80px]" />
-          <div className="pointer-events-none absolute inset-0 opacity-[0.04] [background-image:linear-gradient(white_1px,transparent_1px),linear-gradient(90deg,white_1px,transparent_1px)] [background-size:42px_42px]" />
-
-          <div className="relative grid gap-10 lg:grid-cols-[1fr_0.42fr] lg:items-end">
-            <div>
-              <span className="mb-6 inline-flex items-center gap-2 text-sm font-black uppercase tracking-[0.22em] text-emerald-300">
-                <Sparkles size={18} />
-                {isRtl ? "حلول متكاملة" : "Integrated solutions"}
-              </span>
-              <h2 className="max-w-5xl text-2xl font-black leading-tight tracking-[-0.03em] sm:text-4xl lg:text-5xl xl:text-6xl">
-                {t("menu.services")}
-              </h2>
-              <div className="mt-8 flex items-center gap-4">
-                <span className="h-1.5 w-24 rounded-full bg-emerald-400 sm:w-36" />
-                <span className="text-2xl font-black text-emerald-300 sm:text-4xl">
-                  {t("services_section.title")}
-                </span>
-              </div>
+      <div aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-200 to-transparent" />
+      <div className="container relative mx-auto px-6">
+        <div className="flex flex-col gap-10 md:gap-12">
+          <motion.header
+            initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="mx-auto w-full max-w-3xl text-center"
+          >
+            <span className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-emerald-200 bg-white px-4 py-2 text-xs font-bold text-emerald-800">
+              <span aria-hidden="true" className="h-2 w-2 rounded-full bg-emerald-500" />
+              {t("services_section.title")}
+            </span>
+            <h2 id="home-services-title" className="text-4xl font-black leading-[1.4] tracking-tight text-slate-900 sm:text-5xl lg:text-[3.25rem]">
+              {t("menu.services")}
+            </h2>
+            <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-slate-600">
+              {t("services_section.subtitle")}
+            </p>
+            <div aria-hidden="true" className="mt-7 flex items-center justify-center gap-3">
+              <span className="h-1 w-12 rounded-full bg-emerald-600" />
+              <span className="h-1 w-3 rounded-full bg-emerald-300" />
+              <span className="h-1 w-3 rounded-full bg-emerald-200" />
             </div>
+          </motion.header>
 
-            <div className="border-emerald-300/20 lg:border-s lg:ps-8">
-              <p className="text-base font-medium leading-8 text-emerald-50/75 sm:text-lg">
-                {t("services_section.subtitle")}
-              </p>
-              <span className="mt-7 inline-flex h-12 w-12 items-center justify-center rounded-full border border-emerald-300/30 bg-white/10 text-emerald-300 backdrop-blur-sm">
-                <ArrowLeft size={21} className={isRtl ? "-rotate-90" : "rotate-90"} />
-              </span>
-            </div>
-          </div>
-        </motion.header>
-
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-12">
-          {(isRtl ? serviceConfig : legacyServiceConfig).map((service, index) => {
-            const Icon = service.icon;
-
-            return (
-              <motion.article
-                key={service.id}
-                initial={{ opacity: 0, y: 28 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.55, delay: index * 0.07 }}
-                className={`group relative min-h-[280px] overflow-hidden rounded-[1.75rem] border transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_24px_55px_rgba(5,150,105,0.13)] ${service.layout} ${
-                  service.featured
-                    ? "border-emerald-600 bg-gradient-to-br from-emerald-700 to-teal-600 text-white shadow-[0_22px_50px_rgba(5,150,105,0.18)]"
-                    : "border-emerald-100 bg-white text-slate-900 hover:border-emerald-300"
-                }`}
-              >
-                <Link to={service.to} className="flex h-full min-h-[inherit] flex-col p-7 sm:p-8">
-                  <div className="pointer-events-none absolute -right-16 -top-20 h-52 w-52 rounded-full border-[38px] border-emerald-500/[0.06] transition-transform duration-700 group-hover:scale-125" />
-                  {service.featured && (
-                    <div className="pointer-events-none absolute -bottom-28 -left-20 h-72 w-72 rounded-full bg-white/10 blur-[45px]" />
-                  )}
-
-                  <div className="relative flex items-start justify-between gap-5">
-                    <span className={`grid h-14 w-14 place-items-center rounded-2xl border transition-all duration-300 group-hover:rotate-3 group-hover:scale-105 ${
-                      service.featured
-                        ? "border-white/20 bg-white/15 text-white"
-                        : "border-emerald-100 bg-emerald-50 text-emerald-700 group-hover:bg-emerald-600 group-hover:text-white"
-                    }`}>
-                      <Icon size={24} strokeWidth={1.8} />
-                    </span>
-                    <span className={`text-sm font-black tracking-[0.16em] ${service.featured ? "text-white/35" : "text-emerald-700/25"}`}>
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                  </div>
-
-                  <div className="relative mt-auto pt-9">
-                    <h3 className={`font-black leading-8 ${service.featured ? "max-w-xl text-2xl sm:text-3xl" : "text-xl"}`}>
+          <div className="grid w-full gap-4 md:grid-cols-2 xl:gap-5">
+            {services.map((service, index) => {
+              const Icon = service.icon;
+              return (
+                <motion.article
+                  key={service.id}
+                  initial={reduceMotion ? false : { opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.1 }}
+                  transition={{ duration: 0.4, delay: reduceMotion ? 0 : index * 0.04 }}
+                  className="h-full"
+                >
+                  <Link
+                    to={service.to}
+                    className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-slate-200/80 bg-white p-6 transition-[border-color,box-shadow,transform] duration-300 hover:border-emerald-300 hover:shadow-[0_16px_40px_-16px_rgba(6,78,59,0.22)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-4 motion-safe:hover:-translate-y-1 sm:p-7"
+                  >
+                    <span aria-hidden="true" className="absolute inset-x-7 top-0 h-0.5 origin-center scale-x-0 bg-emerald-500 transition-transform duration-300 group-hover:scale-x-100 group-focus-visible:scale-x-100" />
+                    <div className="mb-6 flex items-center justify-between gap-4">
+                      <span className={`grid h-14 w-14 shrink-0 place-items-center rounded-2xl ${index % 3 === 0 ? "bg-emerald-900 text-emerald-100" : index % 3 === 1 ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"}`}>
+                        <Icon aria-hidden="true" size={25} strokeWidth={1.6} />
+                      </span>
+                      <span aria-hidden="true" className="font-sans text-sm font-semibold tabular-nums tracking-widest text-slate-400">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                    </div>
+                    <h3 className="text-lg font-bold leading-8 text-slate-900 transition-colors group-hover:text-emerald-800">
                       {t(isRtl ? `services_section.items.${index}.title` : service.titleKey)}
                     </h3>
-                    <p className={`mt-3 max-w-xl text-sm leading-6 ${service.featured ? "text-emerald-50/75" : "text-slate-500"}`}>
+                    <p className="mb-7 mt-3 text-sm leading-7 text-slate-500">
                       {t(isRtl ? `services_section.items.${index}.description` : service.descriptionKey)}
                     </p>
-
-                    <span className={`mt-6 inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.13em] ${
-                      service.featured ? "text-white" : "text-emerald-700"
-                    }`}>
-                      {t("services_section.discover")}
-                      <ArrowLeft
-                        size={15}
-                        className={`transition-transform group-hover:-translate-x-1 ${isRtl ? "" : "rotate-180 group-hover:translate-x-1"}`}
-                      />
-                    </span>
-                  </div>
-                </Link>
-              </motion.article>
-            );
-          })}
+                    <div className="mt-auto flex items-center justify-between gap-3 border-t border-slate-100 pt-5 text-sm font-bold text-emerald-800">
+                      <span>{t("services_section.discover")}</span>
+                      <span className="grid h-9 w-9 place-items-center rounded-full bg-emerald-50 transition-colors group-hover:bg-emerald-800 group-hover:text-white group-focus-visible:bg-emerald-800 group-focus-visible:text-white">
+                        <ArrowLeft aria-hidden="true" size={17} className={isRtl ? "" : "rotate-180"} />
+                      </span>
+                    </div>
+                  </Link>
+                </motion.article>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>

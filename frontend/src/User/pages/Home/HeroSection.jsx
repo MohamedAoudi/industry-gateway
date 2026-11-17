@@ -1181,8 +1181,10 @@ const HeroSection = () => {
               <span className="relative z-10 bg-gradient-to-l from-emerald-300 via-teal-200 to-cyan-200 bg-clip-text text-transparent">
                 {t("hero.title1")}
               </span>
-              <span className="absolute inset-x-0 bottom-0 h-[3px] rounded-full bg-gradient-to-l from-emerald-400 via-teal-300 to-transparent opacity-80" />
             </span>
+            <strong dir="ltr" className="mt-4 block bg-gradient-to-l from-emerald-300 via-teal-200 to-cyan-200 bg-clip-text font-black text-transparent">
+              AIRIP
+            </strong>
           </motion.h1>
 
           <motion.p 
