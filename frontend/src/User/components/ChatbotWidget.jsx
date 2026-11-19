@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { Bot, ExternalLink, LoaderCircle, Maximize2, MessageCircle, Minimize2, Send, Sparkles, X } from "lucide-react";
+import { Bot, ExternalLink, LoaderCircle, Maximize2, Minimize2, Send, Sparkles, X } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import apiAdmin from "../../api/apiAdmin";
@@ -41,6 +42,7 @@ const copy = {
 };
 
 const ChatbotWidget = () => {
+  const reduceMotion = useReducedMotion();
   const { i18n } = useTranslation();
   const isRtl = i18n.dir() === "rtl";
   const locale = isRtl ? "ar" : "en";
@@ -272,10 +274,29 @@ const ChatbotWidget = () => {
         onClick={() => setIsOpen((current) => !current)}
         aria-expanded={isOpen}
         aria-label={isOpen ? text.close : text.open}
-        className={`group h-14 w-14 place-items-center rounded-2xl text-white shadow-[0_16px_40px_rgba(5,150,105,0.38)] transition-all hover:-translate-y-1 hover:shadow-[0_20px_45px_rgba(5,150,105,0.45)] ${isRtl ? "ml-auto" : "mr-auto"} ${isOpen ? "hidden rotate-3 bg-slate-800 sm:grid" : "grid bg-gradient-to-br from-emerald-600 to-teal-500"}`}
+        className={`group relative isolate h-14 w-14 place-items-center rounded-[1.25rem] border border-white/30 text-white shadow-[0_8px_30px_rgba(5,150,105,0.4),inset_0_1px_0_rgba(255,255,255,0.3)] transition-all hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(5,150,105,0.55)] motion-reduce:transform-none ${isRtl ? "ml-auto" : "mr-auto"} ${isOpen ? "hidden bg-slate-800 sm:grid" : "grid bg-gradient-to-br from-emerald-400 via-emerald-600 to-teal-800"}`}
       >
-        {isOpen ? <X size={23} /> : <MessageCircle size={25} />}
-        {!isOpen && <span className="absolute right-0 top-0 h-3.5 w-3.5 rounded-full border-2 border-white bg-lime-400" />}
+        {isOpen ? <X size={23} /> : (
+          <>
+            <span aria-hidden="true" className="pointer-events-none absolute inset-1 rounded-2xl border border-white/15 bg-gradient-to-b from-white/15 to-transparent" />
+            <motion.span
+              aria-hidden="true"
+              animate={reduceMotion ? {} : { y: [0, -3, 0], rotate: [0, -5, 0, 5, 0] }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+              className="relative grid h-10 w-10 place-items-center drop-shadow-md"
+            >
+              <Bot size={29} strokeWidth={1.8} />
+            </motion.span>
+            <motion.span
+              aria-hidden="true"
+              animate={reduceMotion ? {} : { opacity: [0.55, 1, 0.55], scale: [0.85, 1.15, 0.85] }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
+              className="absolute -right-1 -top-1 grid h-5 w-5 place-items-center rounded-full border border-white/80 bg-teal-950 text-emerald-200 shadow-sm"
+            >
+              <Sparkles size={12} />
+            </motion.span>
+          </>
+        )}
       </button>
     </div>
   );
