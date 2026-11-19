@@ -9,14 +9,26 @@ import {
   GraduationCap, FlaskConical, Workflow, FileBadge, UsersRound, HandCoins, Factory,
   Newspaper, Mail, CircleHelp, LayoutDashboard
 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useSearchPopup } from "./SearchPopup";
 
 import aidsmoLogo from '../assets/images/logos/aidsmo_logo.png';
 import logo from '../assets/images/logos/logo.png';
 
+const activeMenuStyle = "!bg-emerald-50 !text-emerald-700 ring-1 ring-emerald-200 [&_span]:!text-emerald-700";
+
+const HeaderLink = ({ to, className = "", children, ...props }) => {
+  const { pathname, search } = useLocation();
+  const [targetPath, targetSearch = ""] = to.split("?");
+  const category = new URLSearchParams(targetSearch).get("category");
+  const isActive = pathname.toLowerCase() === targetPath.toLowerCase()
+    && (!category || new URLSearchParams(search).get("category") === category);
+  return <Link {...props} to={to} aria-current={isActive ? "page" : undefined} className={`${className || "block rounded-xl"} ${isActive ? activeMenuStyle : ""}`}>{children}</Link>;
+};
+
 const SubLinkCard = ({ label, href, icon: Icon = Zap }) => {
   const { t } = useTranslation();
-  const Wrapper = href ? Link : "div";
+  const Wrapper = href ? HeaderLink : "div";
 
   return (
     <Wrapper
@@ -45,17 +57,21 @@ const portalServices = [
 const PortalServiceLinks = ({ onNavigate }) => {
   const { t } = useTranslation();
   return portalServices.map((service, index) => (
-    <Link key={service.to + index} to={service.to} onClick={onNavigate}>
+    <HeaderLink key={service.to + index} to={service.to} onClick={onNavigate}>
       <SubLinkCard icon={service.icon} label={t(`services_section.items.${index}.title`, { defaultValue: service.title })} />
-    </Link>
+    </HeaderLink>
   ));
 };
 
 const MegaMenu = ({ label, icon: Icon, children, width = "w-[550px]" }) => {
   const { t } = useTranslation();
+  const { pathname } = useLocation();
+  const isActive = label === "database"
+    ? ["/researchdatabase", "/countrydatabase"].includes(pathname.toLowerCase())
+    : portalServices.some(({ to }) => to.split("?")[0].toLowerCase() === pathname.toLowerCase() && !pathname.toLowerCase().includes("researchdatabase"));
   return (
     <div className="relative group">
-      <button className="flex items-center gap-2 whitespace-nowrap rounded-xl px-1.5 py-2.5 text-[13px] font-bold text-slate-700 transition-all duration-200 hover:bg-emerald-50 hover:text-emerald-700">
+      <button className={`flex items-center gap-2 whitespace-nowrap rounded-xl px-1.5 py-2.5 text-[13px] font-bold text-slate-700 transition-all duration-200 hover:bg-emerald-50 hover:text-emerald-700 ${isActive ? activeMenuStyle : ""}`}>
         {Icon && (
           <span className="grid h-7 w-7 place-items-center rounded-lg bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100 transition-colors group-hover:bg-emerald-600 group-hover:text-white">
             <Icon size={14} />
@@ -104,12 +120,12 @@ const MenuItem = ({ label }) => {
 
 const UserHeader = () => {
   const { t, i18n } = useTranslation();
-  const navigate = useNavigate();
+  const { openSearch } = useSearchPopup();
+  const { pathname } = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
+  const showHeaderSearch = pathname !== "/" || isScrolled;
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [headerSearch, setHeaderSearch] = useState("");
   const [userData, setUserData] = useState({ prenom: "", nom: "" });
   const [userRole, setUserRole] = useState("");
 
@@ -124,8 +140,9 @@ const UserHeader = () => {
     };
 
     checkAuth();
-    const handleScroll = () => setIsScrolled(window.scrollY > 10);
-    window.addEventListener("scroll", handleScroll);
+    const handleScroll = () => setIsScrolled(window.scrollY > 40);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -141,24 +158,18 @@ const UserHeader = () => {
     document.documentElement.dir = lng === "ar" ? "rtl" : "ltr";
   };
 
-  const handleHeaderSearch = (event) => {
-    event.preventDefault();
-    const query = headerSearch.trim();
-    if (!query) return;
-
-    setIsSearchOpen(false);
+  const handleOpenSearch = () => {
     setIsMobileMenuOpen(false);
-    setHeaderSearch("");
-    navigate(`/search?q=${encodeURIComponent(query)}`);
+    openSearch();
   };
 
   return (
-    <header className="fixed top-0 z-50 flex w-full flex-col items-center">
+    <header className={`fixed top-0 z-50 flex w-full flex-col items-center transition-[padding,transform] duration-300 motion-reduce:transition-none ${isScrolled ? "translate-y-3 px-3 sm:px-6 lg:px-10" : "translate-y-0 px-0"}`}>
       
       {/* 1. TOP HEADER */}
-      <div className="flex h-20 w-full items-center justify-between border-b border-white/60 bg-white/90 px-4 shadow-[0_1px_0_rgba(15,23,42,0.04)] backdrop-blur-2xl min-[1700px]:hidden">
+      <div className={`flex w-full items-center justify-between border-b border-white/60 bg-white/90 px-4 backdrop-blur-2xl transition-all duration-300 motion-reduce:transition-none min-[1700px]:hidden ${isScrolled ? "h-16 rounded-2xl shadow-md" : "h-20 rounded-none shadow-[0_1px_0_rgba(15,23,42,0.04)]"}`}>
         <div className="flex-shrink-0">
-          <img src={logo} alt="Logo Left" className="h-16 w-auto object-contain" />
+          <img src={logo} alt="Logo Left" className={`w-auto object-contain transition-all duration-300 motion-reduce:transition-none ${isScrolled ? "h-12" : "h-16"}`} />
         </div>
         
         <div className="flex items-center gap-4">
@@ -186,7 +197,7 @@ const UserHeader = () => {
               </button>
             ))}
           </div>
-          <img src={aidsmoLogo} alt="Logo Right" className="hidden h-14 w-auto object-contain sm:block" />
+          <img src={aidsmoLogo} alt="Logo Right" className={`hidden w-auto object-contain transition-all duration-300 motion-reduce:transition-none sm:block ${isScrolled ? "h-10" : "h-14"}`} />
           <button
             type="button"
             onClick={() => setIsMobileMenuOpen((isOpen) => !isOpen)}
@@ -201,88 +212,61 @@ const UserHeader = () => {
 
       {/* 2. MAIN HEADER */}
       <div className="hidden w-full transition-all duration-300 min-[1700px]:flex">
-        <nav className={`relative flex w-full items-center justify-between gap-3 overflow-visible border-b bg-white px-5 py-2 transition-all duration-300 ${
+        <nav className={`relative flex w-full items-center justify-between gap-3 overflow-visible border-b bg-white px-5 transition-all duration-300 motion-reduce:transition-none ${
           isScrolled 
-          ? "border-slate-200 shadow-[0_10px_30px_rgba(15,23,42,0.1)]" 
-          : "border-slate-100 shadow-[0_8px_24px_rgba(15,23,42,0.07)]"
+          ? "h-16 rounded-2xl border-slate-200 py-1 shadow-[0_10px_30px_rgba(15,23,42,0.1)]"
+          : "h-20 rounded-none border-slate-100 py-2 shadow-[0_8px_24px_rgba(15,23,42,0.07)]"
         }`}>
           <div className="flex shrink-0 items-center">
-            <img src={logo} alt="Logo" className="h-16 w-auto object-contain" />
+            <img src={logo} alt="Logo" className={`w-auto object-contain transition-all duration-300 motion-reduce:transition-none ${isScrolled ? "h-12" : "h-16"}`} />
           </div>
           
-          <div className="absolute left-1/2 flex -translate-x-1/2 items-center gap-1">
-            <Link to="/" className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-emerald-600 to-teal-500 text-white shadow-[0_8px_20px_rgba(5,150,105,0.25)] transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_25px_rgba(5,150,105,0.35)]">
+          <div className="flex min-w-0 flex-1 items-center justify-center gap-1">
+            <HeaderLink to="/" className="flex h-10 items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-emerald-50 px-3 text-[13px] font-bold text-emerald-600 transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_25px_rgba(5,150,105,0.35)]">
               <Home size={17} />
-            </Link>
+              <span>{t("menu.home")}</span>
+            </HeaderLink>
             
-            <Link to="/about" className="flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-emerald-50 hover:text-emerald-700">
+            <HeaderLink to="/about" className="flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-emerald-50 hover:text-emerald-700">
               <Info size={15} className="text-emerald-600" />
               {t("menu.about")}
-            </Link>
+            </HeaderLink>
 
             <MegaMenu label="services" icon={Layers}>
               <PortalServiceLinks />
             </MegaMenu>
 
             <MegaMenu label="database" icon={Database}>
-              <Link to="/researchDatabase?category=research-innovation-ai"><SubLinkCard icon={Microscope} label="submenu.database.research_innovation_ai_centers" /></Link>
-              <Link to="/researchDatabase?category=universities"><SubLinkCard icon={GraduationCap} label="submenu.database.universities_academic_scientific_institutions" /></Link>
-              <Link to="/researchDatabase?category=incubators-technology-labs"><SubLinkCard icon={FlaskConical} label="submenu.database.incubators_technology_poles_laboratories" /></Link>
-              <Link to="/researchDatabase?category=programs-initiatives-strategies"><SubLinkCard icon={Workflow} label="submenu.database.programs_initiatives_strategies" /></Link>
-              <Link to="/researchDatabase?category=industrial-property-patents"><SubLinkCard icon={FileBadge} label="submenu.database.industrial_property_patent_offices" /></Link>
-              <Link to="/researchDatabase?category=industrial-institutions"><SubLinkCard icon={Factory} label="submenu.database.industrial_institutions" /></Link>
-              <Link to="/researchDatabase?category=supporting-bodies"><SubLinkCard icon={HandCoins} label="submenu.database.supporting_bodies_scientific_research" /></Link>
-              <Link to="/researchDatabase?category=experts-specialists"><SubLinkCard icon={UsersRound} label="submenu.database.experts_specialists_database" /></Link>
+              <HeaderLink to="/researchDatabase?category=research-innovation-ai"><SubLinkCard icon={Microscope} label="submenu.database.research_innovation_ai_centers" /></HeaderLink>
+              <HeaderLink to="/researchDatabase?category=universities"><SubLinkCard icon={GraduationCap} label="submenu.database.universities_academic_scientific_institutions" /></HeaderLink>
+              <HeaderLink to="/researchDatabase?category=incubators-technology-labs"><SubLinkCard icon={FlaskConical} label="submenu.database.incubators_technology_poles_laboratories" /></HeaderLink>
+              <HeaderLink to="/researchDatabase?category=programs-initiatives-strategies"><SubLinkCard icon={Workflow} label="submenu.database.programs_initiatives_strategies" /></HeaderLink>
+              <HeaderLink to="/researchDatabase?category=industrial-property-patents"><SubLinkCard icon={FileBadge} label="submenu.database.industrial_property_patent_offices" /></HeaderLink>
+              <HeaderLink to="/researchDatabase?category=industrial-institutions"><SubLinkCard icon={Factory} label="submenu.database.industrial_institutions" /></HeaderLink>
+              <HeaderLink to="/researchDatabase?category=supporting-bodies"><SubLinkCard icon={HandCoins} label="submenu.database.supporting_bodies_scientific_research" /></HeaderLink>
+              <HeaderLink to="/researchDatabase?category=experts-specialists"><SubLinkCard icon={UsersRound} label="submenu.database.experts_specialists_database" /></HeaderLink>
             </MegaMenu>
 
-            <Link to="/mediaCenter" className="flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-emerald-50 hover:text-emerald-700">
+            <HeaderLink to="/mediaCenter" className="flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-emerald-50 hover:text-emerald-700">
               <Newspaper size={15} className="text-emerald-600" />
               {t("menu.media_center")}
-            </Link>
+            </HeaderLink>
 
-            <Link to="/faq" className="flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-emerald-50 hover:text-emerald-700">
+            <HeaderLink to="/faq" className="flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-emerald-50 hover:text-emerald-700">
               <CircleHelp size={15} className="text-emerald-600" />
               {t("footer.faq")}
-            </Link>
+            </HeaderLink>
 
-            <Link to="/contact" className="flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-emerald-50 hover:text-emerald-700">
+            <HeaderLink to="/contact" className="flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-emerald-50 hover:text-emerald-700">
               <Mail size={15} className="text-emerald-600" />
               {t("menu.contact")}
-            </Link>
+            </HeaderLink>
           </div>
 
           <div className="flex shrink-0 items-center gap-3">
-            <form onSubmit={handleHeaderSearch} className={`group flex h-9 shrink-0 items-center overflow-hidden rounded-lg border transition-all duration-300 focus-within:border-emerald-400 focus-within:bg-white focus-within:shadow-[0_0_0_3px_rgba(52,211,153,0.08)] ${
-              isSearchOpen ? "w-[240px] border-slate-200 bg-slate-50/80" : "w-9 border-emerald-100 bg-emerald-50"
-            }`}>
-            {isSearchOpen && (
-              <input
-                autoFocus
-                type="text"
-                value={headerSearch}
-                onChange={(event) => setHeaderSearch(event.target.value)}
-                placeholder={t('search')}
-                className="min-w-0 flex-1 border-none bg-transparent px-2.5 text-[11px] text-slate-700 outline-none placeholder:text-slate-400"
-              />
-            )}
-            {isSearchOpen && headerSearch.trim() && (
-              <button type="submit" className="grid h-9 w-9 shrink-0 place-items-center text-slate-500 transition hover:text-emerald-600" aria-label={t("search")}>
-                <Search size={14} />
-              </button>
-            )}
-            <button
-              type="button"
-              onClick={() => {
-                setIsSearchOpen((isOpen) => !isOpen);
-                if (isSearchOpen) setHeaderSearch("");
-              }}
-              aria-label={isSearchOpen ? "Fermer la recherche" : "Ouvrir la recherche"}
-              aria-expanded={isSearchOpen}
-              className="grid h-9 w-9 shrink-0 place-items-center text-emerald-600 transition-colors hover:bg-emerald-100"
-            >
-              {isSearchOpen ? <X size={15} /> : <Search size={15} />}
-            </button>
-            </form>
+            {showHeaderSearch && <button type="button" onClick={handleOpenSearch} aria-label={t("hero.search_btn")} aria-haspopup="dialog" className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600 transition-colors hover:bg-emerald-100">
+              <Search size={15} />
+            </button>}
 
             <div className="flex shrink-0 rounded-xl border border-slate-200/60 bg-slate-100/80 p-1">
               {['ar', 'en'].map(lng => (
@@ -298,7 +282,7 @@ const UserHeader = () => {
               ))}
             </div>
 
-            <img src={aidsmoLogo} alt="AIDSMO" className="h-14 w-auto shrink-0 object-contain" />
+            <img src={aidsmoLogo} alt="AIDSMO" className={`w-auto shrink-0 object-contain transition-all duration-300 motion-reduce:transition-none ${isScrolled ? "h-10" : "h-14"}`} />
 
             {/* SÉPARATEUR DE COMPTE */}
             <div className="flex items-center gap-2 border-slate-200 ltr:ml-1 ltr:border-l ltr:pl-3 rtl:mr-1 rtl:border-r rtl:pr-3">
@@ -308,7 +292,7 @@ const UserHeader = () => {
                   <div className="w-7 h-7 rounded-lg bg-emerald-600 flex items-center justify-center text-white font-bold text-[11px] shrink-0 shadow-sm">
                     {userData.prenom.charAt(0).toUpperCase()}{userData.nom.charAt(0).toUpperCase()}
                   </div>
-                  <p className="hidden sm:block text-[12px] font-bold text-emerald-900 capitalize">
+                  <p className="hidden max-w-40 truncate text-[12px] font-bold text-emerald-900 capitalize sm:block" title={userData.prenom}>
                     {userData.prenom}
                   </p>
                   <ChevronDown size={11} className="text-emerald-700/50 group-hover:rotate-180 transition-transform duration-300" />
@@ -316,22 +300,22 @@ const UserHeader = () => {
 
                 {/* MENU USER DROPDOWN */}
                 <div className="absolute ltr:right-0 rtl:left-0 mt-2 w-48 bg-white border border-slate-100 rounded-2xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-2 group-hover:translate-y-0 transition-all duration-200 z-50 p-1.5">
-                  <Link
+                  <HeaderLink
                     to="/profile"
                     className="flex items-center gap-2.5 px-3 py-2 text-[13px] font-medium text-slate-700 rounded-xl hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
                   >
                     <User size={15} />
                     {t("menu.profile") || "Mon Profil"}
-                  </Link>
+                  </HeaderLink>
 
                   {userRole === "superviseur" && (
-                    <Link
+                    <HeaderLink
                       to="/admin/dashboard"
                       className="flex items-center gap-2.5 px-3 py-2 text-[13px] font-medium text-slate-700 rounded-xl hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
                     >
                       <LayoutDashboard size={15} />
                       {i18n.language === "ar" ? "لوحة الإدارة" : "Admin dashboard"}
-                    </Link>
+                    </HeaderLink>
                   )}
 
                   <div className="h-px bg-slate-100 my-1 mx-1.5"></div>
@@ -346,7 +330,7 @@ const UserHeader = () => {
                 </div>
               </div>
             ) : (
-              <Link 
+              <HeaderLink
                 to="/login" 
                 aria-label={t("menu.login")}
                 className="group/login flex h-10 w-10 items-center justify-center gap-0 overflow-hidden rounded-xl bg-gradient-to-l from-emerald-600 to-teal-500 px-0 text-[13px] font-bold text-white shadow-[0_8px_20px_rgba(5,150,105,0.25)] transition-all duration-300 hover:w-36 hover:gap-2 hover:px-4 hover:from-emerald-500 hover:to-teal-400 hover:shadow-[0_10px_26px_rgba(5,150,105,0.4)]"
@@ -355,7 +339,7 @@ const UserHeader = () => {
                 <span className="max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300 group-hover/login:max-w-24 group-hover/login:opacity-100">
                   {t("menu.login")}
                 </span>
-              </Link>
+              </HeaderLink>
             )}
             </div>
           </div>
@@ -369,27 +353,18 @@ const UserHeader = () => {
         }`}
       >
         <div className="max-h-[calc(100vh-6rem)] space-y-1 overflow-y-auto p-3" dir={i18n.language === "ar" ? "rtl" : "ltr"}>
-          <form onSubmit={handleHeaderSearch} className="mb-3 flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 p-2">
-            <Search size={17} className="shrink-0 text-emerald-600" />
-            <input
-              type="search"
-              value={headerSearch}
-              onChange={(event) => setHeaderSearch(event.target.value)}
-              placeholder={t("search")}
-              className="min-w-0 flex-1 border-none bg-transparent px-1 py-1.5 text-sm font-medium text-slate-700 outline-none"
-            />
-            <button type="submit" disabled={!headerSearch.trim()} className="rounded-lg bg-emerald-600 px-3 py-2 text-xs font-bold text-white disabled:opacity-40">
-              {i18n.language === "ar" ? "بحث" : "Search"}
-            </button>
-          </form>
-          <Link onClick={() => setIsMobileMenuOpen(false)} to="/" className="flex items-center gap-3 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-bold text-emerald-800">
+          {showHeaderSearch && <button type="button" onClick={handleOpenSearch} aria-haspopup="dialog" className="mb-3 flex w-full items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-bold text-slate-600">
+            <Search size={17} className="text-emerald-600" />
+            {t("hero.search_btn")}
+          </button>}
+          <HeaderLink onClick={() => setIsMobileMenuOpen(false)} to="/" className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-emerald-50">
             <Home size={17} />
             {t("menu.home")}
-          </Link>
-          <Link onClick={() => setIsMobileMenuOpen(false)} to="/about" className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50">
+          </HeaderLink>
+          <HeaderLink onClick={() => setIsMobileMenuOpen(false)} to="/about" className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50">
             <Info size={17} className="text-emerald-600" />
             {t("menu.about")}
-          </Link>
+          </HeaderLink>
 
           <details className="group/mobile rounded-xl open:bg-slate-50">
             <summary className="flex cursor-pointer list-none items-center justify-between rounded-xl px-4 py-3 text-sm font-bold text-slate-700">
@@ -407,40 +382,40 @@ const UserHeader = () => {
               <ChevronDown size={15} className="text-slate-400 transition-transform group-open/mobile:rotate-180" />
             </summary>
             <div className="space-y-1 px-2 pb-2">
-              <Link onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=research-innovation-ai"><SubLinkCard icon={Microscope} label="submenu.database.research_innovation_ai_centers" /></Link>
-              <Link onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=universities"><SubLinkCard icon={GraduationCap} label="submenu.database.universities_academic_scientific_institutions" /></Link>
-              <Link onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=incubators-technology-labs"><SubLinkCard icon={FlaskConical} label="submenu.database.incubators_technology_poles_laboratories" /></Link>
-              <Link onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=programs-initiatives-strategies"><SubLinkCard icon={Workflow} label="submenu.database.programs_initiatives_strategies" /></Link>
-              <Link onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=industrial-property-patents"><SubLinkCard icon={FileBadge} label="submenu.database.industrial_property_patent_offices" /></Link>
-              <Link onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=industrial-institutions"><SubLinkCard icon={Factory} label="submenu.database.industrial_institutions" /></Link>
-              <Link onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=supporting-bodies"><SubLinkCard icon={HandCoins} label="submenu.database.supporting_bodies_scientific_research" /></Link>
-              <Link onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=experts-specialists"><SubLinkCard icon={UsersRound} label="submenu.database.experts_specialists_database" /></Link>
+              <HeaderLink onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=research-innovation-ai"><SubLinkCard icon={Microscope} label="submenu.database.research_innovation_ai_centers" /></HeaderLink>
+              <HeaderLink onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=universities"><SubLinkCard icon={GraduationCap} label="submenu.database.universities_academic_scientific_institutions" /></HeaderLink>
+              <HeaderLink onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=incubators-technology-labs"><SubLinkCard icon={FlaskConical} label="submenu.database.incubators_technology_poles_laboratories" /></HeaderLink>
+              <HeaderLink onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=programs-initiatives-strategies"><SubLinkCard icon={Workflow} label="submenu.database.programs_initiatives_strategies" /></HeaderLink>
+              <HeaderLink onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=industrial-property-patents"><SubLinkCard icon={FileBadge} label="submenu.database.industrial_property_patent_offices" /></HeaderLink>
+              <HeaderLink onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=industrial-institutions"><SubLinkCard icon={Factory} label="submenu.database.industrial_institutions" /></HeaderLink>
+              <HeaderLink onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=supporting-bodies"><SubLinkCard icon={HandCoins} label="submenu.database.supporting_bodies_scientific_research" /></HeaderLink>
+              <HeaderLink onClick={() => setIsMobileMenuOpen(false)} to="/researchDatabase?category=experts-specialists"><SubLinkCard icon={UsersRound} label="submenu.database.experts_specialists_database" /></HeaderLink>
             </div>
           </details>
 
-          <Link onClick={() => setIsMobileMenuOpen(false)} to="/mediaCenter" className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50">
+          <HeaderLink onClick={() => setIsMobileMenuOpen(false)} to="/mediaCenter" className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50">
             <Newspaper size={17} className="text-emerald-600" />
             {t("menu.media_center")}
-          </Link>
-          <Link onClick={() => setIsMobileMenuOpen(false)} to="/faq" className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50">
+          </HeaderLink>
+          <HeaderLink onClick={() => setIsMobileMenuOpen(false)} to="/faq" className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50">
             <CircleHelp size={17} className="text-emerald-600" />
             {t("footer.faq")}
-          </Link>
-          <Link onClick={() => setIsMobileMenuOpen(false)} to="/contact" className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50">
+          </HeaderLink>
+          <HeaderLink onClick={() => setIsMobileMenuOpen(false)} to="/contact" className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50">
             <Mail size={17} className="text-emerald-600" />
             {t("menu.contact")}
-          </Link>
+          </HeaderLink>
           {isLoggedIn && (
             <>
-              <Link onClick={() => setIsMobileMenuOpen(false)} to="/profile" className="mt-2 flex items-center gap-3 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-bold text-emerald-800">
+              <HeaderLink onClick={() => setIsMobileMenuOpen(false)} to="/profile" className="mt-2 flex items-center gap-3 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-bold text-emerald-800">
                 <User size={17} />
                 {t("menu.profile")}
-              </Link>
+              </HeaderLink>
               {userRole === "superviseur" && (
-                <Link onClick={() => setIsMobileMenuOpen(false)} to="/admin/dashboard" className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700">
+                <HeaderLink onClick={() => setIsMobileMenuOpen(false)} to="/admin/dashboard" className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700">
                   <LayoutDashboard size={17} />
                   {i18n.language === "ar" ? "لوحة الإدارة" : "Admin dashboard"}
-                </Link>
+                </HeaderLink>
               )}
               <button onClick={handleLogout} className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-red-600 hover:bg-red-50">
                 <LogOut size={17} />
@@ -449,10 +424,10 @@ const UserHeader = () => {
             </>
           )}
           {!isLoggedIn && (
-            <Link onClick={() => setIsMobileMenuOpen(false)} to="/login" className="mt-2 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-l from-emerald-600 to-teal-500 px-4 py-3 text-sm font-bold text-white shadow-[0_8px_20px_rgba(5,150,105,0.25)] transition-all hover:from-emerald-500 hover:to-teal-400">
+            <HeaderLink onClick={() => setIsMobileMenuOpen(false)} to="/login" className="mt-2 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-l from-emerald-600 to-teal-500 px-4 py-3 text-sm font-bold text-white shadow-[0_8px_20px_rgba(5,150,105,0.25)] transition-all hover:from-emerald-500 hover:to-teal-400">
               <User size={16} />
               {t("menu.login")}
-            </Link>
+            </HeaderLink>
           )}
         </div>
       </div>

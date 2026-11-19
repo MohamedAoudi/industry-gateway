@@ -3,7 +3,6 @@ import { motion, useInView } from "framer-motion";
 import {
   ArrowLeft,
   FlaskConical,
-  Globe2,
   GraduationCap,
   Landmark,
   Microscope,
@@ -137,12 +136,6 @@ const StatsSection = () => {
         label: t("submenu.database.experts_specialists_database"),
         icon: UsersRound,
         href: "/researchDatabase?category=experts-specialists",
-      },
-      {
-        key: "arab_countries",
-        label: t("stats.countries"),
-        icon: Globe2,
-        href: "/countryDatabase",
       },
     ],
     [t]

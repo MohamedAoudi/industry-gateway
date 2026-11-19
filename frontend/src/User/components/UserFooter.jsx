@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import {
@@ -15,6 +16,18 @@ import {
   Phone,
   CircleHelp,
   Youtube,
+  X,
+  Microscope,
+  Library,
+  UsersRound,
+  Presentation,
+  Zap,
+  GraduationCap,
+  FlaskConical,
+  Workflow,
+  FileBadge,
+  Factory,
+  HandCoins,
 } from "lucide-react";
 
 import aidsmoLogo from "../assets/images/logos/aidsmo_logo.png";
@@ -29,19 +42,56 @@ const XIcon = ({ size = 18 }) => (
   </svg>
 );
 
+const portalServices = [
+  { icon: Handshake, to: '/linkingresearcherscompanies', title: 'Connecting researchers, industry, support and funding' },
+  { icon: Library, to: '/researchDatabase', title: 'Industry, research and innovation stakeholders database' },
+  { icon: UsersRound, to: '/linkingresearchersindustrial', title: 'Cooperation, partnership and integration' },
+  { icon: Presentation, to: '/researchDatabase?category=programs-initiatives-strategies', title: 'Joint programs and initiatives' },
+  { icon: Zap, to: '/centersExcellenceAI', title: 'Digital transformation, innovation and technological development' },
+  { icon: Microscope, to: '/researchDatabase', title: 'Scientific research outputs relevant to industry' },
+];
+
 const UserFooter = () => {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.dir() === "rtl";
   const currentYear = new Date().getFullYear();
+  const [activeGroup, setActiveGroup] = useState(null);
+  const linksDialogRef = useRef(null);
+
+  useEffect(() => {
+    if (!activeGroup) return;
+    const dialog = linksDialogRef.current;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    dialog.showModal();
+    return () => {
+      dialog.close();
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [activeGroup]);
 
   const navigationLinks = [
     { label: "menu.home", to: "/", icon: Home },
     { label: "menu.about", to: "/about", icon: Info },
-    { label: "menu.services", to: "/linkingresearcherscompanies", icon: Handshake },
-    { label: "menu.database", to: "/researchDatabase", icon: Database },
     { label: "menu.media_center", to: "/mediaCenter", icon: Newspaper },
     { label: "footer.faq", to: "/faq", icon: CircleHelp },
     { label: "menu.contact", to: "/contact", icon: Mail },
+  ];
+
+  const serviceLinks = portalServices.map((service, index) => ({
+    ...service,
+    label: `services_section.items.${index}.title`,
+  }));
+
+  const databaseLinks = [
+    { label: "submenu.database.research_innovation_ai_centers", to: "/researchDatabase?category=research-innovation-ai", icon: Microscope },
+    { label: "submenu.database.universities_academic_scientific_institutions", to: "/researchDatabase?category=universities", icon: GraduationCap },
+    { label: "submenu.database.incubators_technology_poles_laboratories", to: "/researchDatabase?category=incubators-technology-labs", icon: FlaskConical },
+    { label: "submenu.database.programs_initiatives_strategies", to: "/researchDatabase?category=programs-initiatives-strategies", icon: Workflow },
+    { label: "submenu.database.industrial_property_patent_offices", to: "/researchDatabase?category=industrial-property-patents", icon: FileBadge },
+    { label: "submenu.database.industrial_institutions", to: "/researchDatabase?category=industrial-institutions", icon: Factory },
+    { label: "submenu.database.supporting_bodies_scientific_research", to: "/researchDatabase?category=supporting-bodies", icon: HandCoins },
+    { label: "submenu.database.experts_specialists_database", to: "/researchDatabase?category=experts-specialists", icon: UsersRound },
   ];
 
   const socialLinks = [
@@ -74,16 +124,17 @@ const UserFooter = () => {
     );
   };
 
-  const SimpleLink = ({ item }) => {
+  const SimpleLink = ({ item, inPopup = false }) => {
     const Icon = item.icon;
 
     return (
       <li>
         <Link
           to={item.to}
-          className="group flex items-start gap-3 py-2 text-sm font-medium leading-6 text-emerald-50/70 transition-colors hover:text-white"
+          onClick={inPopup ? () => setActiveGroup(null) : undefined}
+          className={`group flex items-start gap-3 py-2 text-sm font-medium leading-6 transition-colors ${inPopup ? "rounded-xl px-3 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800" : "text-emerald-50/70 hover:text-white"}`}
         >
-          <Icon size={15} className="mt-1 shrink-0 text-emerald-300" />
+          <Icon size={15} className={`mt-1 shrink-0 ${inPopup ? "text-emerald-600" : "text-emerald-300"}`} />
           <span>{t(item.label)}</span>
           <ArrowRight
             size={13}
@@ -116,7 +167,7 @@ const UserFooter = () => {
               <span dir="ltr">+212 537 274 500</span>
             </ContactItem>
             <ContactItem icon={MapPin} label={t("footer.location")}>
-              Rabat, Morocco
+              {t("footer.location_value")}
             </ContactItem>
           </div>
         </div>
@@ -163,20 +214,54 @@ const UserFooter = () => {
               <ul className="grid gap-x-10 sm:grid-cols-2">
                 {navigationLinks.map((item) => <SimpleLink key={item.to} item={item} />)}
               </ul>
+              <div className="mt-8 grid gap-8 sm:grid-cols-2">
+                {[
+                  { title: "menu.services", icon: Handshake, links: serviceLinks },
+                  { title: "menu.database", icon: Database, links: databaseLinks },
+                ].map(({ title, icon: Icon }) => (
+                  <button
+                    key={title}
+                    type="button"
+                    onClick={() => setActiveGroup(title)}
+                    aria-haspopup="dialog"
+                    className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-start text-sm font-bold text-white transition-colors hover:border-emerald-400/50 hover:bg-white/10"
+                  >
+                    <Icon size={16} className="shrink-0 text-emerald-300" />
+                    {t(title)}
+                    <ArrowRight size={15} className={`ms-auto shrink-0 text-emerald-300 ${isRtl ? "rotate-180" : ""}`} />
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
 
         <div className="flex flex-col items-center justify-between gap-4 border-t border-white/10 py-6 text-center md:flex-row md:text-start">
           <p className="text-xs font-medium text-emerald-50/50">
-            © {currentYear} AIDSMO — {t("footer.rights_reserved")}
+            {currentYear} AIDSMO — {t("footer.rights_reserved")}
           </p>
-          <div className="flex gap-6 text-xs font-semibold text-emerald-50/50">
-            <span>{t("footer.privacy")}</span>
-            <span>{t("footer.terms")}</span>
-          </div>
         </div>
       </div>
+      <dialog
+        ref={linksDialogRef}
+        aria-labelledby="footer-links-title"
+        onCancel={() => setActiveGroup(null)}
+        onClose={() => setActiveGroup(null)}
+        onClick={(event) => { if (event.target === event.currentTarget) setActiveGroup(null); }}
+        className="m-auto max-h-[85dvh] w-[calc(100%-2rem)] max-w-2xl overflow-y-auto rounded-3xl bg-white p-0 text-slate-800 shadow-2xl backdrop:bg-slate-950/60 backdrop:backdrop-blur-sm"
+      >
+        <div className="p-5 sm:p-7">
+          <div className="mb-5 flex items-center justify-between gap-4">
+            <h2 id="footer-links-title" className="text-lg font-bold">{activeGroup ? t(activeGroup) : ""}</h2>
+            <button type="button" onClick={() => setActiveGroup(null)} aria-label={isRtl ? "?????" : "Close"} className="grid h-10 w-10 place-items-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200"><X size={20} /></button>
+          </div>
+          <ul className="space-y-2">
+            {(activeGroup === "menu.services" ? serviceLinks : activeGroup === "menu.database" ? databaseLinks : []).map((item, index) => (
+              <SimpleLink key={`${item.to}-${index}`} item={item} inPopup />
+            ))}
+          </ul>
+        </div>
+      </dialog>
     </footer>
   );
 };

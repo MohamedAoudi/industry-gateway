@@ -1007,115 +1007,18 @@
 
 
 
-import React, { useState, useRef, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React from "react";
+import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { Search, ChevronDown, MapPin, ArrowLeft, Check, Sparkles } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import apiAdmin from "../../../api/apiAdmin";
+import { Search, Sparkles } from "lucide-react";
+import { useSearchPopup } from "../../components/SearchPopup";
 
 import backgroundVideo from '../../assets/videos/bg home.mp4';
-
-const fallbackCountries = [
-  { id: 1, name: "المملكة الأردنية الهاشمية", code: "jo", flag: "https://flagcdn.com/w40/jo.png" },
-  { id: 2, name: "دولة الإمارات العربية المتحدة", code: "ae", flag: "https://flagcdn.com/w40/ae.png" },
-  { id: 3, name: "مملكة البحرين", code: "bh", flag: "https://flagcdn.com/w40/bh.png" },
-  { id: 4, name: "الجمهورية التونسية", code: "tn", flag: "https://flagcdn.com/w40/tn.png" },
-  { id: 5, name: "الجمهورية الجزائرية الديمقراطية الشعبية", code: "dz", flag: "https://flagcdn.com/w40/dz.png" },
-  { id: 6, name: "جمهورية جيبوتي", code: "dj", flag: "https://flagcdn.com/w40/dj.png" },
-  { id: 7, name: "المملكة العربية السعودية", code: "sa", flag: "https://flagcdn.com/w40/sa.png" },
-  { id: 8, name: "جمهورية السودان", code: "sd", flag: "https://flagcdn.com/w40/sd.png" },
-  { id: 9, name: "الجمهورية العربية السورية", code: "sy", flag: "https://flagcdn.com/w40/sy.png" },
-  { id: 10, name: "جمهورية الصومال", code: "so", flag: "https://flagcdn.com/w40/so.png" },
-  { id: 11, name: "جمهورية العراق", code: "iq", flag: "https://flagcdn.com/w40/iq.png" },
-  { id: 12, name: "سلطنة عمان", code: "om", flag: "https://flagcdn.com/w40/om.png" },
-  { id: 13, name: "دولة فلسطين", code: "ps", flag: "https://flagcdn.com/w40/ps.png" },
-  { id: 14, name: "دولة قطر", code: "qa", flag: "https://flagcdn.com/w40/qa.png" },
-  { id: 15, name: "دولة الكويت", code: "kw", flag: "https://flagcdn.com/w40/kw.png" },
-  { id: 16, name: "الجمهورية اللبنانية", code: "lb", flag: "https://flagcdn.com/w40/lb.png" },
-  { id: 17, name: "دولة ليبيا", code: "ly", flag: "https://flagcdn.com/w40/ly.png" },
-  { id: 18, name: "جمهورية مصر العربية", code: "eg", flag: "https://flagcdn.com/w40/eg.png" },
-  { id: 19, name: "المملكة المغربية", code: "ma", flag: "https://flagcdn.com/w40/ma.png" },
-  { id: 20, name: "الجمهورية الإسلامية الموريتانية", code: "mr", flag: "https://flagcdn.com/w40/mr.png" },
-  { id: 21, name: "الجمهورية اليمنية", code: "ye", flag: "https://flagcdn.com/w40/ye.png" },
-];
 
 const HeroSection = () => {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.language === "ar";
-  const navigate = useNavigate();
-
-  const [selectedCountry, setSelectedCountry] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
-  const [countries, setCountries] = useState(fallbackCountries);
-
-  const [activeDropdown, setActiveDropdown] = useState(null);
-  const searchBarRef = useRef(null);
-
-  useEffect(() => {
-    let isMounted = true;
-
-    apiAdmin.get("/pays")
-      .then(({ data }) => {
-        const records = Array.isArray(data?.data) ? data.data : data;
-        if (!isMounted || !Array.isArray(records)) return;
-
-        const allCountries = records.map((country) => {
-          const fallback = fallbackCountries.find(
-            (item) => String(item.id) === String(country.idPays)
-          );
-
-          return {
-            id: country.idPays,
-            name: country.nomPays,
-            code: fallback?.code || String(country.idPays),
-            flag: fallback?.flag || null,
-          };
-        });
-
-        setCountries(allCountries);
-      })
-      .catch(() => {
-        // La liste locale reste disponible si l'API est momentanément inaccessible.
-      });
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (searchBarRef.current && !searchBarRef.current.contains(event.target)) {
-        setActiveDropdown(null);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const handleSearch = (e) => {
-    e.preventDefault();
-    const params = new URLSearchParams({ category: "all" });
-    const query = searchQuery.trim();
-    if (query) params.set("q", query);
-    if (currentSelectedCountryObj) {
-      params.set("country", currentSelectedCountryObj.name);
-      params.set("country_id", String(currentSelectedCountryObj.id));
-    }
-
-    setActiveDropdown(null);
-    navigate(`/researchDatabase?${params.toString()}`);
-  };
-
-  const toggleDropdown = (type) => {
-    setActiveDropdown(activeDropdown === type ? null : type);
-  };
-
-  const currentSelectedCountryObj = countries.find(c => c.code === selectedCountry);
-  const orderedCountries = [...countries].sort(
-    (countryA, countryB) => Number(countryA.id) - Number(countryB.id)
-  );
+  const { openSearch } = useSearchPopup();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -1131,7 +1034,10 @@ const HeroSection = () => {
     <section className="relative h-[80vh] w-full flex items-center justify-center select-none font-sans">
       
       {/* ======================= VIDÉO EN PLEIN ÉCRAN ======================= */}
-      <div className="absolute inset-0 z-0">
+      <div
+        className="absolute inset-0 z-0 overflow-hidden shadow-[0_18px_40px_-20px_rgba(15,23,42,0.35)]"
+        style={{ borderRadius: "0 0 50% 50% / 0 0 10% 10%" }}
+      >
         <video
           src={backgroundVideo}
           autoPlay
@@ -1174,7 +1080,7 @@ const HeroSection = () => {
           {/* Titre éditorial */}
           <motion.h1 
             variants={itemVariants}
-            className="max-w-4xl mb-6 text-[clamp(2.1rem,4.8vw,4.5rem)] font-black leading-[1.08] tracking-[-0.03em] [text-shadow:0_8px_35px_rgba(0,0,0,0.55)]"
+            className="max-w-4xl mb-6 text-[clamp(1.8rem,4.1vw,3.8rem)] font-black leading-[1.08] tracking-[-0.03em] [text-shadow:0_8px_35px_rgba(0,0,0,0.55)]"
           >
             <span className="block text-white/95">{t("hero.title")}</span>
             <span className="relative mt-2 inline-block pb-3">
@@ -1195,113 +1101,23 @@ const HeroSection = () => {
             {t("hero.description1")}
           </motion.p>
 
-          {/* BARRE DE RECHERCHE : CARTE CLAIRE FLOTTANTE */}
-          <motion.div
-            ref={searchBarRef}
+        </motion.div>
+
+          <motion.button
+            type="button"
             variants={itemVariants}
-            className="w-full rounded-[1.75rem] border border-white/70 bg-white/90 p-2.5 shadow-[0_24px_70px_rgba(2,12,27,0.28)] backdrop-blur-2xl"
+            initial="hidden"
+            animate="visible"
+            onClick={openSearch}
+            aria-haspopup="dialog"
+            className="mx-auto flex w-full max-w-lg items-center gap-3 rounded-full border border-white/70 bg-white/95 px-6 py-4 text-start text-sm font-semibold text-slate-500 shadow-xl transition-colors hover:bg-white hover:text-emerald-700 lg:col-span-12"
             dir={isRtl ? "rtl" : "ltr"}
           >
-            <form onSubmit={handleSearch} className="relative flex w-full flex-col items-stretch gap-2 md:flex-row md:items-center">
-              
-              {/* Champ 1 : Input texte */}
-              <div className="group/field flex min-h-[64px] flex-grow items-center gap-3 rounded-2xl border border-transparent bg-slate-50/90 px-4 py-2.5 transition-all hover:border-slate-200 hover:bg-white focus-within:border-emerald-400/50 focus-within:bg-white focus-within:shadow-[0_0_0_4px_rgba(52,211,153,0.1)]">
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-emerald-50 text-emerald-600 transition-colors group-focus-within/field:bg-emerald-500 group-focus-within/field:text-white">
-                  <Search size={18} />
-                </span>
-                <div className="flex flex-col text-start w-full min-w-[120px]">
-                  <span className="mb-0.5 text-[9px] font-extrabold uppercase tracking-[0.12em] text-slate-400">{t("hero.search_label", "ابحث عن")}</span>
-                  <input 
-                    type="text" 
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder={t("hero.search_placeholder", "اسم المؤسسة...")}
-                    className="w-full border-none bg-transparent p-0 text-sm font-bold text-slate-800 outline-none placeholder:text-slate-400 focus:ring-0"
-                  />
-                </div>
-              </div>
+            <Search size={20} className="shrink-0 text-emerald-600" />
+            <span>{t("hero.search_btn")}</span>
+          </motion.button>
 
-              {/* Champ 2 : Pays */}
-              <div className="relative md:min-w-[160px]">
-                <div 
-                  onClick={() => toggleDropdown('country')}
-                  className={`group/country flex min-h-[64px] h-full cursor-pointer select-none items-center gap-3 rounded-2xl border px-4 py-2.5 transition-all ${activeDropdown === 'country' ? 'border-emerald-400/50 bg-emerald-50/70 shadow-[0_0_0_4px_rgba(52,211,153,0.08)]' : 'border-transparent bg-slate-50/90 hover:border-slate-200 hover:bg-white'}`}
-                >
-                  <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl transition-colors ${activeDropdown === 'country' ? 'bg-emerald-500 text-white' : 'bg-emerald-50 text-emerald-600'}`}>
-                    <MapPin size={18} />
-                  </span>
-                  <div className="flex flex-col text-start w-full">
-                    <span className="mb-0.5 text-[9px] font-extrabold uppercase tracking-[0.12em] text-slate-400">{t("hero.country_label", "الدولة")}</span>
-                    
-                    <div className="flex items-center gap-2 max-w-full">
-                      {selectedCountry && currentSelectedCountryObj?.flag && (
-                        <img src={currentSelectedCountryObj.flag} alt="" className="w-4 h-3 object-cover rounded-[2px] shadow-sm shrink-0" />
-                      )}
-                      <span className="truncate text-sm font-bold text-slate-800">
-                        {selectedCountry && currentSelectedCountryObj ? currentSelectedCountryObj.name : t("hero.select_country", "اختر الدولة")}
-                      </span>
-                    </div>
-                  </div>
-                  <motion.div animate={{ rotate: activeDropdown === 'country' ? 180 : 0 }} transition={{ duration: 0.2 }} className="shrink-0">
-                    <ChevronDown size={16} className="text-slate-400" />
-                  </motion.div>
-                </div>
 
-                <AnimatePresence>
-                  {activeDropdown === 'country' && (
-                    <motion.ul
-                      initial={{ opacity: 0, y: 10, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                      className={`absolute top-[112%] z-50 grid max-h-[55vh] w-[min(360px,calc(100vw-3rem))] grid-cols-1 gap-1 overflow-y-auto rounded-2xl border border-slate-200 bg-white/95 p-2 shadow-[0_20px_55px_rgba(15,23,42,0.22)] backdrop-blur-xl ${isRtl ? "right-0" : "left-0"}`}
-                    >
-                      <li 
-                        onClick={() => { setSelectedCountry(""); setActiveDropdown(null); }}
-                        className={`flex cursor-pointer items-center justify-between rounded-xl px-3 py-2.5 text-sm font-bold transition-colors ${!selectedCountry ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
-                      >
-                        <span>{t("hero.select_country_all", "كل الدول")}</span>
-                        {!selectedCountry && <Check size={16} />}
-                      </li>
-                      {orderedCountries.map((country) => (
-                        <li 
-                          key={country.code}
-                          onClick={() => { setSelectedCountry(country.code); setActiveDropdown(null); }}
-                          className={`flex cursor-pointer items-center justify-between rounded-xl px-3 py-2.5 text-sm font-bold transition-colors ${selectedCountry === country.code ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
-                        >
-                          <div className="flex items-center gap-2">
-                            {country.flag ? (
-                              <img src={country.flag} alt="" className="w-4 h-3 object-cover rounded-[2px] shadow-sm shrink-0" />
-                            ) : (
-                              <MapPin size={14} className="shrink-0 text-slate-400" />
-                            )}
-                            <span className="truncate">{country.name}</span>
-                          </div>
-                          {selectedCountry === country.code && <Check size={16} />}
-                        </li>
-                      ))}
-                    </motion.ul>
-                  )}
-                </AnimatePresence>
-              </div>
-
-              {/* Bouton de soumission */}
-              <motion.button 
-                type="submit" 
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="flex min-h-[64px] shrink-0 items-center justify-center gap-3 rounded-2xl bg-gradient-to-l from-emerald-600 to-teal-500 px-7 py-3.5 text-sm font-extrabold text-white shadow-[0_12px_28px_rgba(5,150,105,0.3)] transition-all hover:from-emerald-500 hover:to-teal-400 hover:shadow-[0_15px_35px_rgba(5,150,105,0.4)]"
-              >
-                <span>{t("hero.search_btn", "بحث")}</span>
-                <span className="grid h-8 w-8 place-items-center rounded-xl bg-white/15">
-                  {isRtl ? <ArrowLeft size={17} /> : <ArrowLeft size={17} className="rotate-180" />}
-                </span>
-              </motion.button>
-
-            </form>
-          </motion.div>
-
-        </motion.div>
 
       </div>
     </section>

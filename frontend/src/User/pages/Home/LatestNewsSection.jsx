@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { ArrowLeft, CalendarDays, Newspaper } from "lucide-react";
+import { ArrowLeft, Newspaper } from "lucide-react";
 
 const newsItems = [
   {
@@ -24,7 +24,6 @@ const newsItems = [
 const LatestNewsSection = () => {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.dir() === "rtl";
-  const locale = isRtl ? "ar-MA" : "en-US";
 
   return (
     <section dir={isRtl ? "rtl" : "ltr"} className="relative overflow-hidden bg-slate-50 py-20 md:py-28">
@@ -86,11 +85,7 @@ const LatestNewsSection = () => {
                 </div>
 
                 <div className="flex flex-1 flex-col p-6">
-                  <span className="flex items-center gap-2 text-xs font-bold text-slate-400">
-                    <CalendarDays size={14} className="text-emerald-600" />
-                    {new Intl.DateTimeFormat(locale, { day: "2-digit", month: "long", year: "numeric" }).format(new Date(item.date))}
-                  </span>
-                  <h3 className="mt-4 text-xl font-black leading-8 text-slate-900 transition-colors group-hover:text-emerald-700">
+                  <h3 className="text-xl font-black leading-8 text-slate-900 transition-colors group-hover:text-emerald-700">
                     {t(`latest_news.items.n${item.id}.title`)}
                   </h3>
                   <p className="mt-3 line-clamp-3 text-sm leading-7 text-slate-500">

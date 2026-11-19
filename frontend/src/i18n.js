@@ -56,6 +56,12 @@ i18n.use(initReactI18next).init({
 
         hero: {
           title: "بوابة ربط الصناعة",
+          search_placeholder: "اسم المؤسسة...",
+          search_label: "ابحث عن",
+          search_btn: "بحث",
+          country_label: "الدولة",
+          select_country: "اختر الدولة",
+          select_country_all: "كل الدول",
           title1: "بمؤسسات البحث العلمي والابتكار",
           description:"منصة عربية متكاملة لتعزيز التعاون بين الصناعة ومؤسسات البحث العلمي والإبتكار،",
           description1:"لدعم التنمية الصناعية المستدامة والإقتصاد القائم على المعرفة.",
@@ -332,6 +338,7 @@ i18n.use(initReactI18next).init({
           email_us: "راسلنا عبر البريد",
           call_us: "اتصل بنا هاتفياً",
           location: "الموقع الجغرافي",
+          location_value: "الرباط، المملكة المغربية",
           site:"الموقع الرسمي",
           need_help: "هل تحتاج إلى مساعدة؟",
           open_ticket: "فتح تذكرة دعم",
@@ -476,6 +483,12 @@ i18n.use(initReactI18next).init({
 
         hero: {
           title: "A gateway connecting industry",
+          search_placeholder: "Institution name...",
+          search_label: "Search for",
+          search_btn: "Search",
+          country_label: "Country",
+          select_country: "Select a country",
+          select_country_all: "All countries",
           title1: " with research and innovation institutions.",
           description:"An integrated Arab platform to enhance cooperation between industry and scientific research and innovation institutions,",
           description1:"to support sustainable industrial development and a knowledge-based economy.",
@@ -614,6 +627,7 @@ i18n.use(initReactI18next).init({
           email_us: "Email Us",
           call_us: "Call Us",
           location: "Location",
+          location_value: "Rabat, Kingdom of Morocco",
           site:"Official Site",
           need_help: "Need Help?",
           open_ticket: "Open Support Ticket",
