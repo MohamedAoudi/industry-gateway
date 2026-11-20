@@ -112,26 +112,26 @@ const ServicesSection = () => {
                 >
                   <Link
                     to={service.to}
-                    className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-slate-200/80 bg-white p-6 transition-[border-color,box-shadow,transform] duration-300 hover:border-emerald-300 hover:shadow-[0_16px_40px_-16px_rgba(6,78,59,0.22)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-4 motion-safe:hover:-translate-y-1 sm:p-7"
+                    className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-emerald-400/25 bg-gradient-to-br from-emerald-500 via-emerald-700 to-teal-950 p-6 transition-[border-color,box-shadow,transform] duration-300 hover:border-emerald-300 hover:shadow-[0_16px_40px_-16px_rgba(6,78,59,0.22)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-4 motion-safe:hover:-translate-y-1 sm:p-7"
                   >
-                    <span aria-hidden="true" className="absolute inset-x-7 top-0 h-0.5 origin-center scale-x-0 bg-emerald-500 transition-transform duration-300 group-hover:scale-x-100 group-focus-visible:scale-x-100" />
+                    <span aria-hidden="true" className="absolute inset-x-7 top-0 h-0.5 origin-center scale-x-0 bg-white/60 transition-transform duration-300 group-hover:scale-x-100 group-focus-visible:scale-x-100" />
                     <div className="mb-6 flex items-center justify-between gap-4">
-                      <span className={`grid h-14 w-14 shrink-0 place-items-center rounded-2xl ${index % 3 === 0 ? "bg-emerald-900 text-emerald-100" : index % 3 === 1 ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"}`}>
+                      <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border border-white/20 bg-white/15 text-white">
                         <Icon aria-hidden="true" size={25} strokeWidth={1.6} />
                       </span>
-                      <span aria-hidden="true" className="font-sans text-sm font-semibold tabular-nums tracking-widest text-slate-400">
+                      <span aria-hidden="true" className="font-sans text-sm font-semibold tabular-nums tracking-widest text-white/60">
                         {String(index + 1).padStart(2, "0")}
                       </span>
                     </div>
-                    <h3 className="text-lg font-bold leading-8 text-slate-900 transition-colors group-hover:text-emerald-800">
+                    <h3 className="text-lg font-bold leading-8 text-white">
                       {t(isRtl ? `services_section.items.${index}.title` : service.titleKey)}
                     </h3>
-                    <p className="mb-7 mt-3 text-sm leading-7 text-slate-500">
+                    <p className="mb-7 mt-3 text-sm leading-7 text-emerald-50/90">
                       {t(isRtl ? `services_section.items.${index}.description` : service.descriptionKey)}
                     </p>
-                    <div className="mt-auto flex items-center justify-between gap-3 border-t border-slate-100 pt-5 text-sm font-bold text-emerald-800">
+                    <div className="mt-auto flex items-center justify-between gap-3 border-t border-white/20 pt-5 text-sm font-bold text-white">
                       <span>{t("services_section.discover")}</span>
-                      <span className="grid h-9 w-9 place-items-center rounded-full bg-emerald-50 transition-colors group-hover:bg-emerald-800 group-hover:text-white group-focus-visible:bg-emerald-800 group-focus-visible:text-white">
+                      <span className="grid h-9 w-9 place-items-center rounded-full bg-white/15 transition-colors group-hover:bg-emerald-800 group-hover:text-white group-focus-visible:bg-emerald-800 group-focus-visible:text-white">
                         <ArrowLeft aria-hidden="true" size={17} className={isRtl ? "" : "rotate-180"} />
                       </span>
                     </div>

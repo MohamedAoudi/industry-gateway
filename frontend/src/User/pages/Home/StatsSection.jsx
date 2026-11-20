@@ -1,15 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import {
-  ArrowLeft,
-  FlaskConical,
-  GraduationCap,
-  Landmark,
-  Microscope,
-  Network,
-  UsersRound,
-} from "lucide-react";
-import CountUp from "react-countup";
+import { ArrowLeft } from "lucide-react";
+import CountUpImport from "react-countup";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -17,6 +9,15 @@ import { Autoplay, Pagination } from "swiper/modules";
 import apiAdmin from "../../../api/apiAdmin";
 import "swiper/css";
 import "swiper/css/pagination";
+
+import researchImage from "../../assets/images/stats/research.png";
+import universitiesImage from "../../assets/images/stats/universities.png";
+import labsImage from "../../assets/images/stats/labs.png";
+import programsImage from "../../assets/images/stats/programs.png";
+import patentsImage from "../../assets/images/stats/patents.png";
+import expertsImage from "../../assets/images/stats/experts.png";
+
+const CountUp = CountUpImport.default ?? CountUpImport;
 
 const initialCounts = {
   research_innovation_ai: 0,
@@ -103,38 +104,38 @@ const StatsSection = () => {
       {
         key: "research_innovation_ai",
         label: t("submenu.database.research_innovation_ai_centers"),
-        icon: Microscope,
+        image: researchImage,
         href: "/researchDatabase?category=research-innovation-ai",
         featured: true,
       },
       {
         key: "universities_academic_institutions",
         label: t("submenu.database.universities_academic_scientific_institutions"),
-        icon: GraduationCap,
+        image: universitiesImage,
         href: "/researchDatabase?category=universities",
       },
       {
         key: "incubators_technology_labs",
         label: t("submenu.database.incubators_technology_poles_laboratories"),
-        icon: FlaskConical,
+        image: labsImage,
         href: "/researchDatabase?category=incubators-technology-labs",
       },
       {
         key: "programs_initiatives_strategies",
         label: t("submenu.database.programs_initiatives_strategies"),
-        icon: Network,
+        image: programsImage,
         href: "/researchDatabase?category=programs-initiatives-strategies",
       },
       {
         key: "industrial_property_patents",
         label: t("submenu.database.industrial_property_patent_offices"),
-        icon: Landmark,
+        image: patentsImage,
         href: "/researchDatabase?category=industrial-property-patents",
       },
       {
         key: "experts_specialists",
         label: t("submenu.database.experts_specialists_database"),
-        icon: UsersRound,
+        image: expertsImage,
         href: "/researchDatabase?category=experts-specialists",
       },
     ],
@@ -144,7 +145,7 @@ const StatsSection = () => {
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden bg-white py-20 md:py-28"
+      className="relative overflow-hidden bg-gradient-to-br from-emerald-50 via-white to-cyan-100/70 py-20 md:py-28"
       dir={isRtl ? "rtl" : "ltr"}
     >
       <div className="pointer-events-none absolute -right-36 -top-36 h-[430px] w-[430px] rounded-full bg-emerald-100/80 blur-[110px]" />
@@ -189,7 +190,6 @@ const StatsSection = () => {
           className="stats-swiper !overflow-visible !pb-14"
         >
           {stats.map((stat, index) => {
-            const Icon = stat.icon;
             const value = counts[stat.key] ?? 0;
 
             return (
@@ -202,44 +202,32 @@ const StatsSection = () => {
                 >
                   <Link
                     to={stat.href}
-                    className={`group relative flex h-full min-h-[220px] overflow-hidden rounded-[1.6rem] border p-6 shadow-[0_15px_45px_rgba(15,23,42,0.08)] transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_22px_55px_rgba(5,150,105,0.14)] ${
-                      stat.featured
-                        ? "border-emerald-200 bg-gradient-to-br from-emerald-50 via-white to-cyan-50 hover:border-emerald-400"
-                        : "border-slate-200 bg-white hover:border-emerald-300"
-                    }`}
+                    className="group relative flex h-full flex-col items-center rounded-3xl border border-emerald-400/25 bg-gradient-to-br from-emerald-600 to-teal-700 px-4 py-5 text-center shadow-[0_22px_60px_rgba(5,150,105,0.16)] transition-transform duration-300 hover:-translate-y-2 focus-visible:outline-emerald-600"
                   >
-                  <div className="flex w-full flex-col justify-between">
-                    <div className="flex items-start justify-between gap-4">
-                      <span className={`grid h-12 w-12 place-items-center rounded-2xl border ${
-                        stat.featured
-                          ? "border-emerald-200 bg-emerald-600 text-white"
-                          : "border-emerald-100 bg-emerald-50 text-emerald-600"
-                      }`}>
-                        <Icon size={22} />
-                      </span>
-                      <span className="grid h-9 w-9 place-items-center rounded-full border border-slate-200 text-slate-400 transition-all group-hover:border-emerald-600 group-hover:bg-emerald-600 group-hover:text-white">
-                        <ArrowLeft size={16} className={isRtl ? "" : "rotate-180"} />
-                      </span>
-                    </div>
-
+                    <img
+                      src={stat.image}
+                      alt=""
+                      loading="lazy"
+                      className="h-28 w-28 object-contain transition-transform duration-500 group-hover:scale-105 md:h-32 md:w-32"
+                    />
+                    <div className="flex w-full flex-1 flex-col items-center">
                     <div className="mt-7">
                       {isLoading ? (
-                        <div className="mb-3 h-10 w-24 animate-pulse rounded-lg bg-slate-100" />
+                        <div className="mb-3 h-10 w-24 animate-pulse rounded-lg bg-white/20" />
                       ) : (
-                        <div className="mb-2 flex items-end gap-2">
-                          <strong className="text-4xl font-black leading-none text-slate-900 md:text-5xl">
+                        <div className="mb-2 flex items-end justify-center gap-2">
+                          <strong className="text-4xl font-black leading-none text-white md:text-5xl">
                             {hasError ? "—" : isInView && <CountUp end={value} duration={2} separator="," />}
                           </strong>
-                          {!hasError && <span className="pb-1 text-[10px] font-bold text-emerald-600/70">{t("stats.entries")}</span>}
+                          {!hasError && <span className="pb-1 text-[10px] font-bold text-emerald-50/80">{t("stats.entries")}</span>}
                         </div>
                       )}
-                      <p className={`max-w-sm font-bold leading-6 ${stat.featured ? "text-base text-slate-900" : "text-sm text-slate-600"}`}>
+                      <p className="max-w-sm text-base font-bold leading-6 text-white">
                         {stat.label}
                       </p>
                     </div>
                   </div>
 
-                    <div className="pointer-events-none absolute -bottom-20 -left-20 h-40 w-40 rounded-full bg-emerald-400/0 blur-3xl transition-colors duration-500 group-hover:bg-emerald-400/15" />
                   </Link>
                 </motion.div>
               </SwiperSlide>
@@ -266,8 +254,8 @@ const StatsSection = () => {
           </div>
 
           <div className="relative overflow-hidden px-3 py-6 sm:px-5">
-            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-white/90 to-transparent" />
-            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-white/90 to-transparent" />
+            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-emerald-50/80 to-transparent" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-cyan-50/80 to-transparent" />
             <Swiper
               key={`flags-${i18n.language}`}
               modules={[Autoplay]}
