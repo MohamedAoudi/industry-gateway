@@ -285,9 +285,9 @@ const StatsSection = () => {
                 <SwiperSlide key={`${i18n.language}-${country.code}`} className="!w-auto">
                   <Link
                     to={`/countryDatabase?country=${country.code}`}
-                    className="group flex h-32 min-w-[330px] items-center gap-6 px-6 transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.03]"
+                    className="group flex min-h-56 w-64 flex-col items-center gap-4 px-4 py-3 text-center transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.03]"
                   >
-                    <span className="relative h-20 w-28 shrink-0 overflow-hidden rounded-2xl shadow-[0_6px_20px_rgba(15,23,42,0.18)] transition-all duration-300 group-hover:shadow-[0_16px_35px_rgba(5,150,105,0.28)]">
+                    <span className="relative h-32 w-48 shrink-0 overflow-hidden rounded-2xl shadow-[0_6px_20px_rgba(15,23,42,0.18)] transition-all duration-300 group-hover:shadow-[0_16px_35px_rgba(5,150,105,0.28)]">
                       <img
                         src={`https://flagcdn.com/w320/${country.code}.png`}
                         alt={country.name}
