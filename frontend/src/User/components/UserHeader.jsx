@@ -212,7 +212,7 @@ const UserHeader = () => {
 
       {/* 2. MAIN HEADER */}
       <div className="hidden w-full transition-all duration-300 min-[1700px]:flex">
-        <nav className={`relative flex w-full items-center justify-between gap-3 overflow-visible border-b bg-white px-5 transition-all duration-300 motion-reduce:transition-none ${
+        <nav className={`site-menu relative flex w-full items-center justify-between gap-3 overflow-visible border-b bg-white px-5 transition-all duration-300 motion-reduce:transition-none ${
           isScrolled 
           ? "h-16 rounded-2xl border-slate-200 py-1 shadow-[0_10px_30px_rgba(15,23,42,0.1)]"
           : "h-20 rounded-none border-slate-100 py-2 shadow-[0_8px_24px_rgba(15,23,42,0.07)]"
@@ -348,7 +348,7 @@ const UserHeader = () => {
 
       {/* 3. MENU MOBILE */}
       <div
-        className={`w-[calc(100%-1.5rem)] overflow-hidden rounded-b-[1.5rem] border-x border-b border-white/70 bg-white/95 shadow-[0_22px_55px_rgba(15,23,42,0.2)] backdrop-blur-2xl transition-all duration-300 min-[1700px]:hidden ${
+        className={`site-menu w-[calc(100%-1.5rem)] overflow-hidden rounded-b-[1.5rem] border-x border-b border-white/70 bg-white/95 shadow-[0_22px_55px_rgba(15,23,42,0.2)] backdrop-blur-2xl transition-all duration-300 min-[1700px]:hidden ${
           isMobileMenuOpen ? "max-h-[calc(100vh-5rem)] translate-y-0 opacity-100" : "pointer-events-none max-h-0 -translate-y-3 border-transparent opacity-0"
         }`}
       >
