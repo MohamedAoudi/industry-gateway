@@ -48,7 +48,7 @@ const CompaniesList = () => {
       <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
         <h2 className="text-5xl font-black text-slate-900 tracking-tighter">
-            دليل <span className="text-emerald-600">الشركات الصناعية</span>
+            دليل <span className="text-[#00C9F2]">الشركات الصناعية</span>
         </h2>
           <p className="text-slate-900 text-md">إدارة المؤسسات الشريكة في نظام الابتكار</p>
         </div>
@@ -59,7 +59,7 @@ const CompaniesList = () => {
           <input 
             type="text"
             placeholder="ابحث عن شركة..."
-            className="w-full pr-10 pl-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:ring-2 ring-emerald-500 outline-none transition-all"
+            className="w-full pr-10 pl-4 py-2.5 bg-white border border-slate-200 rounded-xl focus:ring-2 ring-[#00C9F2] outline-none transition-all"
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
@@ -99,7 +99,7 @@ const CompaniesList = () => {
                 </td>
                 <td className="px-6 py-4 text-center">
                   <div className="flex justify-center gap-2">
-                    <button className="p-2 text-emerald-600 hover:bg-emerald-50 rounded-lg" title="عرض العروض">
+                    <button className="p-2 text-[#00C9F2] hover:bg-[#ECFCFF] rounded-lg" title="عرض العروض">
                       <ExternalLink size={18} />
                     </button>
                     <button className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg">
@@ -116,7 +116,7 @@ const CompaniesList = () => {
         </table>
         
         {filteredCompanies.length === 0 && !loading && (
-          <div className="p-20 text-center text-emerald-600">
+          <div className="p-20 text-center text-[#00C9F2]">
             لا توجد شركات تطابق بحثك
           </div>
         )}

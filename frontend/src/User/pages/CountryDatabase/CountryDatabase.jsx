@@ -133,7 +133,7 @@ const loadAllSourceRecords = async (source) => {
 };
 
 const CountryDatabase = () => {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const isRtl = i18n.dir() === "rtl";
   const language = isRtl ? "ar" : "en";
   const [searchParams, setSearchParams] = useSearchParams();
@@ -243,27 +243,27 @@ const CountryDatabase = () => {
 
   return (
     <div dir={isRtl ? "rtl" : "ltr"} className="min-h-screen bg-slate-50">
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-950 px-6 pb-24 pt-20 text-white sm:pb-28 sm:pt-24">
+      <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-[#00313D] to-slate-950 px-6 pb-24 pt-20 text-white sm:pb-28 sm:pt-24">
         <div className="pointer-events-none absolute inset-0 opacity-[0.04] [background-image:linear-gradient(white_1px,transparent_1px),linear-gradient(90deg,white_1px,transparent_1px)] [background-size:48px_48px]" />
-        <div className="pointer-events-none absolute -left-24 top-0 h-80 w-80 rounded-full bg-emerald-400/20 blur-[100px]" />
+        <div className="pointer-events-none absolute -left-24 top-0 h-80 w-80 rounded-full bg-[#2AD5F5]/20 blur-[100px]" />
         <div className="relative mx-auto max-w-7xl text-center">
-          <span className="mx-auto mb-6 grid h-16 w-16 place-items-center rounded-2xl border border-white/15 bg-white/10 text-emerald-300">
+          <span className="mx-auto mb-6 grid h-16 w-16 place-items-center rounded-2xl border border-white/15 bg-white/10 text-[#63E1FA]">
             <Database size={29} />
           </span>
           <h1 className="text-3xl font-black sm:text-4xl lg:text-5xl">
-            {isRtl ? "البيانات المتوفرة حسب الدول العربية" : "Available data by Arab country"}
+            {t("interface.available_data_by_arab_country", { defaultValue: isRtl ? "البيانات المتوفرة حسب الدول العربية" : "Available data by Arab country" })}
           </h1>
-          <p className="mx-auto mt-5 max-w-3xl text-sm leading-7 text-emerald-50/70 sm:text-base">
-            {isRtl
+          <p className="mx-auto mt-5 max-w-3xl text-sm leading-7 text-[#ECFCFF]/70 sm:text-base">
+            {t("interface.explore_database_figures_and_content_across_21_arab_countries_then_choose_a_country_to_view_only_its_records", { defaultValue: isRtl
               ? "استكشف أرقام ومحتويات قاعدة البيانات في 21 دولة عربية، واختر دولة لعرض سجلاتها فقط."
-              : "Explore database figures and content across 21 Arab countries, then choose a country to view only its records."}
+              : "Explore database figures and content across 21 Arab countries, then choose a country to view only its records." })}
           </p>
         </div>
       </section>
 
       <main className="relative mx-auto -mt-12 max-w-7xl px-4 pb-24 sm:px-6 lg:px-8">
         {selectedCountry ? (
-          <section className="flex items-center gap-4 rounded-[2rem] border border-emerald-200 bg-white p-5 shadow-[0_20px_60px_rgba(15,23,42,0.1)] sm:p-7">
+          <section className="flex items-center gap-4 rounded-[2rem] border border-[#A1EDFF] bg-white p-5 shadow-[0_20px_60px_rgba(15,23,42,0.1)] sm:p-7">
             <img
               src={`https://flagcdn.com/w160/${selectedCountry.code}.png`}
               alt=""
@@ -271,7 +271,7 @@ const CountryDatabase = () => {
             />
             <div>
               <h2 className="text-2xl font-black text-slate-900 sm:text-3xl">
-                {selectedCountry[language]}
+                {t(`countries.${selectedCountry.code}`, { defaultValue: selectedCountry[language] })}
               </h2>
             </div>
           </section>
@@ -283,15 +283,15 @@ const CountryDatabase = () => {
                   type="button"
                   key={country.code}
                   onClick={() => selectCountry(country.code)}
-                  className="group flex min-h-[116px] flex-col items-center justify-center rounded-2xl border border-slate-200 bg-slate-50/70 p-3 text-center text-slate-700 transition-all hover:-translate-y-0.5 hover:border-emerald-300 hover:bg-white"
+                  className="group flex min-h-[116px] flex-col items-center justify-center rounded-2xl border border-slate-200 bg-slate-50/70 p-3 text-center text-slate-700 transition-all hover:-translate-y-0.5 hover:border-[#63E1FA] hover:bg-white"
                 >
                   <img
                     src={`https://flagcdn.com/w80/${country.code}.png`}
                     alt=""
                     className="h-8 w-11 rounded-md object-cover shadow-sm"
                   />
-                  <span className="mt-2 text-xs font-extrabold sm:text-sm">{country[language]}</span>
-                  <strong className="mt-1 text-lg font-black text-emerald-700">
+                  <span className="mt-2 text-xs font-extrabold sm:text-sm">{t(`countries.${country.code}`, { defaultValue: country[language] })}</span>
+                  <strong className="mt-1 text-lg font-black text-[#007A94]">
                     {loading ? "—" : countryCounts[country.code] || 0}
                   </strong>
                 </button>
@@ -303,14 +303,14 @@ const CountryDatabase = () => {
         <section className="mt-8">
           {loading ? (
             <div className="flex min-h-[220px] items-center justify-center rounded-[2rem] border border-slate-200 bg-white">
-              <div className="text-center text-emerald-700">
+              <div className="text-center text-[#007A94]">
                 <Loader2 size={34} className="mx-auto animate-spin" />
-                <p className="mt-4 text-sm font-bold">{isRtl ? "جاري تحميل البيانات..." : "Loading data..."}</p>
+                <p className="mt-4 text-sm font-bold">{t("interface.loading_data", { defaultValue: isRtl ? "جاري تحميل البيانات..." : "Loading data..." })}</p>
               </div>
             </div>
           ) : hasError ? (
             <div className="rounded-[2rem] border border-red-200 bg-red-50 p-10 text-center font-bold text-red-700">
-              {isRtl ? "تعذر تحميل بيانات الدول حالياً." : "Country data could not be loaded."}
+              {t("interface.country_data_could_not_be_loaded", { defaultValue: isRtl ? "تعذر تحميل بيانات الدول حالياً." : "Country data could not be loaded." })}
             </div>
           ) : (
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -320,14 +320,14 @@ const CountryDatabase = () => {
                   <Link
                     key={key}
                     to={`/researchDatabase?category=${key}${selectedCountryName ? `&country=${encodeURIComponent(selectedCountryName)}` : ""}`}
-                    className="group flex min-h-[112px] items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5 transition-all hover:-translate-y-0.5 hover:border-emerald-400 hover:shadow-[0_12px_30px_rgba(5,150,105,0.1)]"
+                    className="group flex min-h-[112px] items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5 transition-all hover:-translate-y-0.5 hover:border-[#2AD5F5] hover:shadow-[0_12px_30px_rgba(0,201,242,0.1)]"
                   >
-                    <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-emerald-50 text-emerald-700 transition-colors group-hover:bg-emerald-600 group-hover:text-white">
+                    <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-[#ECFCFF] text-[#007A94] transition-colors group-hover:bg-[#00C9F2] group-hover:text-white">
                       <Icon size={22} />
                     </span>
                     <div className="min-w-0">
-                      <strong className="block text-2xl font-black text-slate-900 group-hover:text-emerald-700">{categoryCounts[key] || 0}</strong>
-                      <span className="block text-xs font-bold leading-5 text-slate-500 group-hover:text-slate-700">{category.label[language]}</span>
+                      <strong className="block text-2xl font-black text-slate-900 group-hover:text-[#007A94]">{categoryCounts[key] || 0}</strong>
+                      <span className="block text-xs font-bold leading-5 text-slate-500 group-hover:text-slate-700">{t(`contact_page.form.subjects.${key}`, { defaultValue: category.label[language] })}</span>
                     </div>
                   </Link>
                 );

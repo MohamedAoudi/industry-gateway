@@ -71,9 +71,9 @@ const StatsSection = () => {
   const countries = useMemo(() => {
     return arabCountryCodes.map((code) => ({
       code,
-      name: officialCountryNames[code][isRtl ? "ar" : "en"],
+      name: t(`countries.${code}`, { defaultValue: officialCountryNames[code][isRtl ? "ar" : "en"] }),
     }));
-  }, [isRtl]);
+  }, [isRtl, t]);
 
   useEffect(() => {
     let isMounted = true;
@@ -145,10 +145,10 @@ const StatsSection = () => {
   return (
     <section
       ref={ref}
-      className="relative overflow-hidden bg-gradient-to-br from-emerald-50 via-white to-cyan-100/70 py-20 md:py-28"
+      className="relative overflow-hidden bg-gradient-to-br from-[#ECFCFF] via-white to-cyan-100/70 py-20 md:py-28"
       dir={isRtl ? "rtl" : "ltr"}
     >
-      <div className="pointer-events-none absolute -right-36 -top-36 h-[430px] w-[430px] rounded-full bg-emerald-100/80 blur-[110px]" />
+      <div className="pointer-events-none absolute -right-36 -top-36 h-[430px] w-[430px] rounded-full bg-[#D0F6FF]/80 blur-[110px]" />
       <div className="pointer-events-none absolute -bottom-48 left-1/4 h-[420px] w-[420px] rounded-full bg-cyan-100/60 blur-[120px]" />
       <div className="pointer-events-none absolute inset-0 opacity-[0.025] [background-image:linear-gradient(rgba(15,23,42,.7)_1px,transparent_1px),linear-gradient(90deg,rgba(15,23,42,.7)_1px,transparent_1px)] [background-size:48px_48px]" />
 
@@ -202,7 +202,7 @@ const StatsSection = () => {
                 >
                   <Link
                     to={stat.href}
-                    className="group relative flex h-full flex-col items-center rounded-3xl border border-emerald-400/25 bg-gradient-to-br from-emerald-600 to-teal-700 px-4 py-5 text-center shadow-[0_22px_60px_rgba(5,150,105,0.16)] transition-transform duration-300 hover:-translate-y-2 focus-visible:outline-emerald-600"
+                    className="group relative flex h-full flex-col items-center rounded-3xl border border-[#2AD5F5]/25 bg-gradient-to-br from-[#00C9F2] to-[#007A94] px-4 py-5 text-center shadow-[0_22px_60px_rgba(0,201,242,0.16)] transition-transform duration-300 hover:-translate-y-2 focus-visible:outline-[#00C9F2]"
                   >
                     <img
                       src={stat.image}
@@ -219,7 +219,7 @@ const StatsSection = () => {
                           <strong className="text-4xl font-black leading-none text-white md:text-5xl">
                             {hasError ? "—" : isInView && <CountUp end={value} duration={2} separator="," />}
                           </strong>
-                          {!hasError && <span className="pb-1 text-[10px] font-bold text-emerald-50/80">{t("stats.entries")}</span>}
+                          {!hasError && <span className="pb-1 text-[10px] font-bold text-[#ECFCFF]/80">{t("stats.entries")}</span>}
                         </div>
                       )}
                       <p className="max-w-sm text-base font-bold leading-6 text-white">
@@ -244,17 +244,17 @@ const StatsSection = () => {
           <div className="mb-7">
             <Link
               to="/countryDatabase"
-              className="group inline-flex items-center gap-3 text-3xl font-black tracking-tight text-slate-900 transition-colors hover:text-emerald-700 md:text-5xl"
+              className="group inline-flex items-center gap-3 text-3xl font-black tracking-tight text-slate-900 transition-colors hover:text-[#007A94] md:text-5xl"
             >
               {t("stats.coverage_title")}
-              <span className="grid h-10 w-10 place-items-center rounded-full border border-emerald-200 bg-emerald-50 text-emerald-700 transition group-hover:border-emerald-600 group-hover:bg-emerald-600 group-hover:text-white md:h-12 md:w-12">
+              <span className="grid h-10 w-10 place-items-center rounded-full border border-[#A1EDFF] bg-[#ECFCFF] text-[#007A94] transition group-hover:border-[#00C9F2] group-hover:bg-[#00C9F2] group-hover:text-white md:h-12 md:w-12">
                 <ArrowLeft size={19} className={isRtl ? "" : "rotate-180"} />
               </span>
             </Link>
           </div>
 
           <div className="relative overflow-hidden px-3 py-6 sm:px-5">
-            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-emerald-50/80 to-transparent" />
+            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-[#ECFCFF]/80 to-transparent" />
             <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-cyan-50/80 to-transparent" />
             <Swiper
               key={`flags-${i18n.language}`}
@@ -275,7 +275,7 @@ const StatsSection = () => {
                     to={`/countryDatabase?country=${country.code}`}
                     className="group flex min-h-56 w-64 flex-col items-center gap-4 px-4 py-3 text-center transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.03]"
                   >
-                    <span className="relative h-32 w-48 shrink-0 overflow-hidden rounded-2xl shadow-[0_6px_20px_rgba(15,23,42,0.18)] transition-all duration-300 group-hover:shadow-[0_16px_35px_rgba(5,150,105,0.28)]">
+                    <span className="relative h-32 w-48 shrink-0 overflow-hidden rounded-2xl shadow-[0_6px_20px_rgba(15,23,42,0.18)] transition-all duration-300 group-hover:shadow-[0_16px_35px_rgba(0,201,242,0.28)]">
                       <img
                         src={`https://flagcdn.com/w320/${country.code}.png`}
                         alt={country.name}
@@ -283,7 +283,7 @@ const StatsSection = () => {
                         className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
                       />
                     </span>
-                    <span className="max-w-[190px] text-base font-black leading-7 text-slate-700 group-hover:text-emerald-700 sm:text-lg">
+                    <span className="max-w-[190px] text-base font-black leading-7 text-slate-700 group-hover:text-[#007A94] sm:text-lg">
                       {country.name}
                     </span>
                   </Link>

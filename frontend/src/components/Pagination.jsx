@@ -20,15 +20,15 @@ const Pagination = ({ page, totalPages, onPageChange, className = "" }) => {
 
   return (
     <nav aria-label={isRtl ? "التنقل بين الصفحات" : "Pagination"} className={`flex flex-wrap items-center justify-center gap-2 ${className}`}>
-      <button type="button" onClick={() => goTo(page - 1)} disabled={page === 1} aria-label={isRtl ? "الصفحة السابقة" : "Previous page"} className="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-white text-slate-600 transition hover:border-emerald-300 hover:text-emerald-700 disabled:cursor-not-allowed disabled:opacity-40">
+      <button type="button" onClick={() => goTo(page - 1)} disabled={page === 1} aria-label={isRtl ? "الصفحة السابقة" : "Previous page"} className="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-white text-slate-600 transition hover:border-[#63E1FA] hover:text-[#007A94] disabled:cursor-not-allowed disabled:opacity-40">
         {isRtl ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
       </button>
       {getVisiblePages(page, totalPages).map((pageNumber) => (
-        <button key={pageNumber} type="button" onClick={() => goTo(pageNumber)} aria-current={pageNumber === page ? "page" : undefined} className={`h-10 min-w-10 rounded-xl px-3 text-sm font-black transition ${pageNumber === page ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/20" : "border border-slate-200 bg-white text-slate-600 hover:border-emerald-300 hover:text-emerald-700"}`}>
+        <button key={pageNumber} type="button" onClick={() => goTo(pageNumber)} aria-current={pageNumber === page ? "page" : undefined} className={`h-10 min-w-10 rounded-xl px-3 text-sm font-black transition ${pageNumber === page ? "bg-[#00C9F2] text-white shadow-md shadow-[#00C9F2]/20" : "border border-slate-200 bg-white text-slate-600 hover:border-[#63E1FA] hover:text-[#007A94]"}`}>
           {pageNumber}
         </button>
       ))}
-      <button type="button" onClick={() => goTo(page + 1)} disabled={page === totalPages} aria-label={isRtl ? "الصفحة التالية" : "Next page"} className="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-white text-slate-600 transition hover:border-emerald-300 hover:text-emerald-700 disabled:cursor-not-allowed disabled:opacity-40">
+      <button type="button" onClick={() => goTo(page + 1)} disabled={page === totalPages} aria-label={isRtl ? "الصفحة التالية" : "Next page"} className="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-white text-slate-600 transition hover:border-[#63E1FA] hover:text-[#007A94] disabled:cursor-not-allowed disabled:opacity-40">
         {isRtl ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
       </button>
     </nav>

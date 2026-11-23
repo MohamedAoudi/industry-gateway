@@ -15,41 +15,41 @@ const JointWorkshops = () => {
   const workshopData = [
     {
       id: 1,
-      title: isRtl ? "ورشة عمل: تطبيقات الذكاء الاصطناعي في صيانة المصانع" : "Workshop: AI Applications in Factory Maintenance",
-      type: isRtl ? "ورشة عمل تفاعلية" : "Interactive Workshop",
+      title: t("interface.workshop_ai_applications_in_factory_maintenance", { defaultValue: isRtl ? "ورشة عمل: تطبيقات الذكاء الاصطناعي في صيانة المصانع" : "Workshop: AI Applications in Factory Maintenance" }),
+      type: t("interface.interactive_workshop", { defaultValue: isRtl ? "ورشة عمل تفاعلية" : "Interactive Workshop" }),
       instructor: "د. إبراهيم الفاسي",
       date: "15 MAR 2026",
       time: "10:00 AM",
-      mode: isRtl ? "عبر الإنترنت" : "Online",
+      mode: t("interface.online", { defaultValue: isRtl ? "عبر الإنترنت" : "Online" }),
       attendees: "120",
       image: "https://images.unsplash.com/photo-1591453089816-0fbb971b454c?auto=format&fit=crop&q=80&w=800",
-      status: isRtl ? "متاح للتسجيل" : "Open for Registration",
+      status: t("interface.open_for_registration", { defaultValue: isRtl ? "متاح للتسجيل" : "Open for Registration" }),
       tags: ["AI", "Industry 4.0"]
     },
     {
       id: 2,
-      title: isRtl ? "ندوة مشتركة: مستقبل الهيدروجين الأخضر في الشرق الأوسط" : "Joint Seminar: Future of Green Hydrogen in the ME",
-      type: isRtl ? "ندوة علمية" : "Scientific Seminar",
+      title: t("interface.joint_seminar_future_of_green_hydrogen_in_the_me", { defaultValue: isRtl ? "ندوة مشتركة: مستقبل الهيدروجين الأخضر في الشرق الأوسط" : "Joint Seminar: Future of Green Hydrogen in the ME" }),
+      type: t("interface.scientific_seminar", { defaultValue: isRtl ? "ندوة علمية" : "Scientific Seminar" }),
       instructor: "م. ليلى بنعلي",
       date: "22 MAR 2026",
       time: "02:00 PM",
-      mode: isRtl ? "حضوري - دبي" : "In-person - Dubai",
+      mode: t("interface.in_person_dubai", { defaultValue: isRtl ? "حضوري - دبي" : "In-person - Dubai" }),
       attendees: "350",
       image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=800",
-      status: isRtl ? "مقاعد محدودة" : "Limited Seats",
+      status: t("interface.limited_seats", { defaultValue: isRtl ? "مقاعد محدودة" : "Limited Seats" }),
       tags: ["Energy", "Sustainability"]
     },
     {
       id: 3,
-      title: isRtl ? "دورة تدريبية: كفاءة الطاقة في الصناعات النانوية" : "Training: Energy Efficiency in Nano-Industries",
-      type: isRtl ? "دورة تدريبية" : "Training Course",
+      title: t("interface.training_energy_efficiency_in_nano_industries", { defaultValue: isRtl ? "دورة تدريبية: كفاءة الطاقة في الصناعات النانوية" : "Training: Energy Efficiency in Nano-Industries" }),
+      type: t("interface.training_course", { defaultValue: isRtl ? "دورة تدريبية" : "Training Course" }),
       instructor: "د. يوسف القحطاني",
       date: "05 APR 2026",
       time: "09:00 AM",
-      mode: isRtl ? "هجين" : "Hybrid",
+      mode: t("interface.hybrid", { defaultValue: isRtl ? "هجين" : "Hybrid" }),
       attendees: "45",
       image: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=800",
-      status: isRtl ? "مكتمل" : "Sold Out",
+      status: t("interface.sold_out", { defaultValue: isRtl ? "مكتمل" : "Sold Out" }),
       tags: ["Nano", "Production"]
     }
   ];
@@ -62,15 +62,15 @@ const JointWorkshops = () => {
         <div className=" max-w-7xl mx-auto relative z-10">
           <div className="flex flex-col items-center text-center">
             <h1 className="text-5xl md:text-7xl font-black tracking-tight mb-8 text-amber-500 leading-[1.1] max-w-4xl">
-              {isRtl ? "ورش عمل وندوات" : "Joint Workshops"}<br/>
+              {t("interface.joint_workshops", { defaultValue: isRtl ? "ورش عمل وندوات" : "Joint Workshops" })}<br/>
               <span className="text-amber-500 bg-clip-text bg-gradient-to-r from-amber-600 to-orange-500">
-                 {isRtl ? "تجمع بين العلم والصناعة" : "& Scientific Seminars"}
+                 {t("interface.scientific_seminars", { defaultValue: isRtl ? "تجمع بين العلم والصناعة" : "& Scientific Seminars" })}
               </span>
             </h1>
             
             <p className="max-w-2xl text-slate-500 text-xl font-medium leading-relaxed mb-12">
-              {isRtl ? "جسور معرفية تجمع بين كبار الباحثين ورواد الصناعة لتبادل الخبرات وحل التحديات التقنية المعاصرة." 
-                     : "Knowledge bridges connecting top researchers and industry leaders to exchange expertise and solve contemporary technical challenges."}
+              {t("interface.knowledge_bridges_connecting_top_researchers_and_industry_leaders_to_exchange_expertise_and_solve_contemporary_technical_challenges", { defaultValue: isRtl ? "جسور معرفية تجمع بين كبار الباحثين ورواد الصناعة لتبادل الخبرات وحل التحديات التقنية المعاصرة." 
+                     : "Knowledge bridges connecting top researchers and industry leaders to exchange expertise and solve contemporary technical challenges." })}
             </p>
           </div>
         </div>
@@ -84,21 +84,21 @@ const JointWorkshops = () => {
               <Users size={24} />
             </div>
             <span className="text-3xl font-black text-slate-900">4,500+</span>
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-2">{isRtl ? "مستفيد" : "Beneficiaries"}</span>
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-2">{t("interface.beneficiaries", { defaultValue: isRtl ? "مستفيد" : "Beneficiaries" })}</span>
           </div>
           <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/40 flex flex-col items-center text-center">
             <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-4">
               <Laptop size={24} />
             </div>
             <span className="text-3xl font-black text-slate-900">120+</span>
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-2">{isRtl ? "ورشة عمل سنوياً" : "Annual Workshops"}</span>
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-2">{t("interface.annual_workshops", { defaultValue: isRtl ? "ورشة عمل سنوياً" : "Annual Workshops" })}</span>
           </div>
           <div className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/40 flex flex-col items-center text-center">
-            <div className="w-12 h-12 bg-green-50 text-green-600 rounded-xl flex items-center justify-center mb-4">
+            <div className="w-12 h-12 bg-[#ECFCFF] text-[#00C9F2] rounded-xl flex items-center justify-center mb-4">
               <Globe size={24} />
             </div>
             <span className="text-3xl font-black text-slate-900">15</span>
-            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-2">{isRtl ? "دولة مشاركة" : "Participating Countries"}</span>
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-widest mt-2">{t("interface.participating_countries", { defaultValue: isRtl ? "دولة مشاركة" : "Participating Countries" })}</span>
           </div>
         </div>
       </section>
@@ -120,7 +120,7 @@ const JointWorkshops = () => {
           <div className="flex gap-4 w-full md:w-auto">
              <div className="relative flex-1 md:w-64">
                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
-               <input type="text" className="w-full bg-slate-50 border-none rounded-2xl py-3 pl-12 pr-4 outline-none focus:ring-2 focus:ring-amber-500/20 font-bold" placeholder={isRtl ? "بحث..." : "Search..."} />
+               <input type="text" className="w-full bg-slate-50 border-none rounded-2xl py-3 pl-12 pr-4 outline-none focus:ring-2 focus:ring-amber-500/20 font-bold" placeholder={t("interface.search", { defaultValue: isRtl ? "بحث..." : "Search..." })} />
              </div>
              <button className="p-3 bg-white border border-slate-200 rounded-2xl text-slate-600 hover:bg-slate-50 transition-all"><Filter size={20}/></button>
           </div>
@@ -176,12 +176,12 @@ const JointWorkshops = () => {
                       <User size={16} />
                     </div>
                     <div>
-                      <p className="text-[9px] text-slate-400 font-bold uppercase">{isRtl ? "المحاضر" : "Speaker"}</p>
+                      <p className="text-[9px] text-slate-400 font-bold uppercase">{t("interface.speaker", { defaultValue: isRtl ? "المحاضر" : "Speaker" })}</p>
                       <p className="text-xs font-black text-slate-800">{item.instructor}</p>
                     </div>
                   </div>
                   <button className="flex items-center gap-2 text-slate-900 font-black text-xs uppercase tracking-widest group/btn">
-                    {isRtl ? "سجل الآن" : "Register"}
+                    {t("interface.register", { defaultValue: isRtl ? "سجل الآن" : "Register" })}
                     <ArrowUpRight size={18} className="group-hover/btn:translate-x-1 group-hover/btn:-translate-y-1 transition-transform" />
                   </button>
                 </div>
@@ -201,14 +201,14 @@ const JointWorkshops = () => {
           
           <div className="relative z-10 md:w-2/3">
             <h2 className="text-4xl md:text-6xl font-black text-white mb-6 leading-[1.1]">
-              {isRtl ? "هل ترغب في تقديم ندوة مشتركة؟" : "Want to Host a Joint Seminar?"}
+              {t("interface.want_to_host_a_joint_seminar", { defaultValue: isRtl ? "هل ترغب في تقديم ندوة مشتركة؟" : "Want to Host a Joint Seminar?" })}
             </h2>
             <p className="text-slate-400 text-xl font-medium mb-10 max-w-xl">
-              {isRtl ? "نحن نبحث دائماً عن خبراء لمشاركة رؤاهم الصناعية. انضم إلى شبكة المحاضرين لدينا اليوم." 
-                     : "We're always looking for experts to share industrial insights. Join our network of speakers today."}
+              {t("interface.we_re_always_looking_for_experts_to_share_industrial_insights_join_our_network_of_speakers_today", { defaultValue: isRtl ? "نحن نبحث دائماً عن خبراء لمشاركة رؤاهم الصناعية. انضم إلى شبكة المحاضرين لدينا اليوم." 
+                     : "We're always looking for experts to share industrial insights. Join our network of speakers today." })}
             </p>
             <button className="bg-amber-500 text-slate-900 px-12 py-5 rounded-2xl font-black uppercase tracking-widest hover:bg-white transition-all shadow-xl shadow-amber-500/20">
-              {isRtl ? "قدم الآن كمحاضر" : "Apply as a Speaker"}
+              {t("interface.apply_as_a_speaker", { defaultValue: isRtl ? "قدم الآن كمحاضر" : "Apply as a Speaker" })}
             </button>
           </div>
           

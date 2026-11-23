@@ -9,6 +9,29 @@ use Laravel\Sanctum\Sanctum;
 
 uses(RefreshDatabase::class);
 
+it('supports an optional country for news and allows clearing it', function (?string $country) {
+    $admin = User::create(['prenomUtilisateur' => 'News', 'nomUtilisateur' => 'Admin', 'email' => 'news-country@example.test', 'password' => bcrypt('password'), 'role' => 'superviseur']);
+    Sanctum::actingAs($admin);
+
+    $payload = [
+        'category' => 'news', 'news_type' => 'organization',
+        'title_ar' => 'News with an optional country', 'is_published' => true,
+    ];
+    if ($country !== null) {
+        $payload['location_ar'] = $country;
+        $payload['location_en'] = $country;
+    }
+
+    $response = $this->postJson('/api/media-items', $payload)->assertCreated();
+    $id = $response->json('data.id');
+    $this->assertDatabaseHas('media_items', ['id' => $id, 'location_ar' => $country]);
+    $this->getJson('/api/media-items?category=news')->assertOk()
+        ->assertJsonFragment(['id' => $id, 'location_ar' => $country]);
+
+    $this->postJson('/api/media-items/'.$id, [...$payload, 'location_ar' => '', 'location_en' => ''])->assertOk();
+    $this->assertDatabaseHas('media_items', ['id' => $id, 'location_ar' => null, 'location_en' => null]);
+})->with([null, 'Morocco']);
+
 it('returns only published media items in the selected category', function () {
     MediaItem::query()->delete();
 

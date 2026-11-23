@@ -36,7 +36,7 @@
 //             animate={{ opacity: 1, x: 0 }}
 //             transition={{ duration: 0.6, delay: 0.2 }}
 //           >
-//             <span className="inline-block py-1.5 px-4 rounded-full border border-emerald-600/30 bg-emerald-600/10 text-emerald-600 text-[10px] md:text-xs font-bold uppercase tracking-[3px] mb-6">
+//             <span className="inline-block py-1.5 px-4 rounded-full border border-[#00C9F2]/30 bg-[#00C9F2]/10 text-[#00C9F2] text-[10px] md:text-xs font-bold uppercase tracking-[3px] mb-6">
 //               {t("hero.badge")}
 //             </span>
 //           </motion.div>
@@ -48,7 +48,7 @@
 //             transition={{ duration: 0.6, delay: 0.4 }}
 //             className="text-4xl md:text-7xl font-black text-white mb-6 leading-[1.1]"
 //           >
-//             {t("hero.slides.one.title")} <span className="text-emerald-600">.</span>
+//             {t("hero.slides.one.title")} <span className="text-[#00C9F2]">.</span>
 //           </motion.h1>
 
 //           {/* Subtitle */}
@@ -56,7 +56,7 @@
 //             initial={{ opacity: 0, y: 20 }}
 //             animate={{ opacity: 1, y: 0 }}
 //             transition={{ duration: 0.6, delay: 0.5 }}
-//             className="text-emerald-600 text-base md:text-xl mb-10 leading-relaxed max-w-xl"
+//             className="text-[#00C9F2] text-base md:text-xl mb-10 leading-relaxed max-w-xl"
 //           >
 //             {t("hero.slides.one.subtitle")}
 //           </motion.p>
@@ -68,13 +68,13 @@
 //             transition={{ duration: 0.6, delay: 0.6 }}
 //             className="flex flex-wrap gap-4"
 //           >
-//             <button className="px-8 py-4 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold flex items-center gap-3 transition-all hover:scale-105 active:scale-95 shadow-xl shadow-emerald-900/20">
+//             <button className="px-8 py-4 bg-[#00C9F2] hover:bg-[#007A94] text-white rounded-xl font-bold flex items-center gap-3 transition-all hover:scale-105 active:scale-95 shadow-xl shadow-[#004C5D]/20">
 //               <Search size={20} />
 //               {t("hero.slides.one.action")}
 //             </button>
             
 //             <button className="px-8 py-4 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-xl font-bold flex items-center gap-3 transition-all backdrop-blur-md group">
-//               <div className="w-8 h-8 rounded-full bg-emerald-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+//               <div className="w-8 h-8 rounded-full bg-[#00C9F2] flex items-center justify-center group-hover:scale-110 transition-transform">
 //                 <Play size={14} fill="white" className={isRtl ? "rotate-180" : ""} />
 //               </div>
 //               {t("hero.watch_video")}
@@ -146,7 +146,7 @@
         
 //         {/* Bordure Turquoise Arrière Externe */}
 //         <div 
-//           className="absolute inset-0 bg-gradient-to-br from-teal-600 to-emerald-500 opacity-15"
+//           className="absolute inset-0 bg-gradient-to-br from-[#00C9F2] to-[#00C9F2] opacity-15"
 //           style={{
 //             clipPath: 'polygon(25% 0%, 100% 0%, 100% 100%, 0% 100%, 15% 50%)',
 //             borderRadius: '0 0 0 120px'
@@ -155,7 +155,7 @@
 
 //         {/* Forme Principale Contenant l'Image + Bordure Épaisse Intégrée */}
 //         <div 
-//           className="absolute inset-0 bg-[#0fa968] p-[8px] pl-0 shadow-2xl"
+//           className="absolute inset-0 bg-[#00C9F2] p-[8px] pl-0 shadow-2xl"
 //           style={{
 //             clipPath: 'ellipse(90% 100% at 95% 50%)',
 //           }}
@@ -183,7 +183,7 @@
 //       </div>
 
 //       {/* Mini vagues d'accent en bas à gauche de l'écran pour équilibrer le design */}
-//       <div className="absolute -bottom-10 -left-10 w-44 h-44 bg-teal-600/10 rounded-full blur-2xl pointer-events-none" />
+//       <div className="absolute -bottom-10 -left-10 w-44 h-44 bg-[#00C9F2]/10 rounded-full blur-2xl pointer-events-none" />
 
 //       {/* ========================================================================= */}
 //       {/* PARTIE GAUCHE : TEXTE TEXTURÉ ET BARRE DE RECHERCHE ULTRA-ACCESSIBLE */}
@@ -200,7 +200,7 @@
 //             className="text-4xl md:text-5xl lg:text-6xl font-black text-[#0c2340] mb-6 leading-[1.25]"
 //           >
 //             {t("hero.title")} <br />
-//             <span className="text-[#0fa968]">
+//             <span className="text-[#00C9F2]">
 //               {t("hero.title1")}
 //             </span>
 //           </motion.h1>
@@ -227,8 +227,8 @@
 //             <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center w-full">
               
 //               {/* Champ 1 : Input texte */}
-//               <div className="md:col-span-4 flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-xl border border-transparent focus-within:border-emerald-500/30 transition-all">
-//                 <Search size={18} className="text-[#0fa968] shrink-0" />
+//               <div className="md:col-span-4 flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-xl border border-transparent focus-within:border-[#00C9F2]/30 transition-all">
+//                 <Search size={18} className="text-[#00C9F2] shrink-0" />
 //                 <div className="flex flex-col text-start w-full">
 //                   <span className="text-[9px] text-gray-400 font-bold uppercase">{t("hero.search_label", "ابحث عن")}</span>
 //                   <input 
@@ -243,7 +243,7 @@
 
 //               {/* Champ 2 : Secteurs d'activité */}
 //               <div className="md:col-span-3 flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-xl relative group cursor-pointer">
-//                 <Building2 size={18} className="text-[#0fa968] shrink-0" />
+//                 <Building2 size={18} className="text-[#00C9F2] shrink-0" />
 //                 <div className="flex flex-col text-start w-full">
 //                   <span className="text-[9px] text-gray-400 font-bold uppercase">{t("hero.type_label", "نوع المؤسسة")}</span>
 //                   <select
@@ -263,7 +263,7 @@
 
 //               {/* Champ 3 : Pays */}
 //               <div className="md:col-span-3 flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-xl relative group cursor-pointer">
-//                 <MapPin size={18} className="text-[#0fa968] shrink-0" />
+//                 <MapPin size={18} className="text-[#00C9F2] shrink-0" />
 //                 <div className="flex flex-col text-start w-full">
 //                   <span className="text-[9px] text-gray-400 font-bold uppercase">{t("hero.country_label", "الدولة")}</span>
 //                   <select
@@ -284,7 +284,7 @@
 //               <div className="md:col-span-2 w-full">
 //                 <button 
 //                   type="submit" 
-//                   className="w-full py-3.5 bg-[#0fa968] hover:bg-[#0d925b] text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition-all shadow-md shadow-emerald-500/10 active:scale-95"
+//                   className="w-full py-3.5 bg-[#00C9F2] hover:bg-[#009AB9] text-white font-bold text-xs rounded-xl flex items-center justify-center gap-2 transition-all shadow-md shadow-[#00C9F2]/10 active:scale-95"
 //                 >
 //                   <span>{t("hero.search_btn", "بحث")}</span>
 //                   {isRtl ? <ArrowLeft size={14} /> : <ArrowRight size={14} />}
@@ -403,8 +403,8 @@
 //       <div className="absolute inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_110%)] pointer-events-none"></div>
       
 //       {/* Halos lumineux en arrière-plan */}
-//       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none"></div>
-//       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-teal-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+//       <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#00C9F2]/10 rounded-full blur-[120px] pointer-events-none"></div>
+//       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#00C9F2]/10 rounded-full blur-[120px] pointer-events-none"></div>
 
 //       <div className="container mx-auto px-6 md:px-12 relative z-20 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center w-full">
         
@@ -417,9 +417,9 @@
 //           initial="hidden"
 //           animate="visible"
 //         >
-//           <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-1.5 bg-emerald-50 border border-emerald-100 rounded-full mb-6">
-//             <Sparkles size={14} className="text-emerald-600" />
-//             <span className="text-xs font-bold text-emerald-700">منصة عربية موحدة للابتكار</span>
+//           <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-1.5 bg-[#ECFCFF] border border-[#D0F6FF] rounded-full mb-6">
+//             <Sparkles size={14} className="text-[#00C9F2]" />
+//             <span className="text-xs font-bold text-[#007A94]">منصة عربية موحدة للابتكار</span>
 //           </motion.div>
 
 //           <motion.h1 
@@ -427,7 +427,7 @@
 //             className="text-4xl md:text-5xl lg:text-6xl font-black text-slate-900 mb-6 leading-[1.15] tracking-tight"
 //           >
 //             {t("hero.title")} <br />
-//             <span className="bg-gradient-to-l from-emerald-600 to-teal-500 bg-clip-text text-transparent">
+//             <span className="bg-gradient-to-l from-[#00C9F2] to-[#00C9F2] bg-clip-text text-transparent">
 //               {t("hero.title1")}
 //             </span>
 //           </motion.h1>
@@ -444,14 +444,14 @@
 //           <motion.div
 //             ref={searchBarRef}
 //             variants={itemVariants}
-//             className="w-full bg-white rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.06)] border border-slate-100 p-3 transition-all duration-300 hover:shadow-[0_15px_50px_rgba(16,185,129,0.1)]"
+//             className="w-full bg-white rounded-2xl shadow-[0_10px_40px_rgba(0,0,0,0.06)] border border-slate-100 p-3 transition-all duration-300 hover:shadow-[0_15px_50px_rgba(0,201,242,0.1)]"
 //             dir={isRtl ? "rtl" : "ltr"}
 //           >
 //             <form onSubmit={handleSearch} className="flex flex-col md:flex-row items-stretch md:items-center justify-between w-full relative gap-2">
               
 //               {/* Champ 1 : Input texte */}
 //               <div className="flex-grow flex items-center gap-3 px-4 py-2 rounded-xl hover:bg-slate-50 transition-colors group/field">
-//                 <Search size={20} className="text-slate-300 group-focus-within/field:text-emerald-500 transition-colors shrink-0" />
+//                 <Search size={20} className="text-slate-300 group-focus-within/field:text-[#00C9F2] transition-colors shrink-0" />
 //                 <div className="flex flex-col text-start w-full min-w-[120px]">
 //                   <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">{t("hero.search_label", "ابحث عن")}</span>
 //                   <input 
@@ -472,7 +472,7 @@
 //                   onClick={() => toggleDropdown('database')}
 //                   className="flex items-center gap-3 px-4 py-2 cursor-pointer group/select select-none rounded-xl hover:bg-slate-50 transition-colors h-full"
 //                 >
-//                   <Building2 size={18} className={`transition-colors duration-300 shrink-0 ${activeDropdown === 'database' ? 'text-emerald-500' : 'text-slate-300 group-hover/select:text-emerald-500'}`} />
+//                   <Building2 size={18} className={`transition-colors duration-300 shrink-0 ${activeDropdown === 'database' ? 'text-[#00C9F2]' : 'text-slate-300 group-hover/select:text-[#00C9F2]'}`} />
 //                   <div className="flex flex-col text-start w-full">
 //                     <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">{t("hero.type_label", "نوع المؤسسة")}</span>
 //                     <span className="text-sm text-slate-800 font-bold truncate">
@@ -495,7 +495,7 @@
 //                     >
 //                       <li 
 //                         onClick={() => { setSelectedDatabase(""); setActiveDropdown(null); }}
-//                         className={`flex items-center justify-between px-3 py-2.5 text-sm font-bold rounded-lg cursor-pointer transition-colors ${!selectedDatabase ? 'bg-emerald-50 text-emerald-600' : 'text-slate-600 hover:bg-slate-50'}`}
+//                         className={`flex items-center justify-between px-3 py-2.5 text-sm font-bold rounded-lg cursor-pointer transition-colors ${!selectedDatabase ? 'bg-[#ECFCFF] text-[#00C9F2]' : 'text-slate-600 hover:bg-slate-50'}`}
 //                       >
 //                         <span>{t("hero.all", "كل الأنواع")}</span>
 //                         {!selectedDatabase && <Check size={16} />}
@@ -504,7 +504,7 @@
 //                         <li 
 //                           key={db.id}
 //                           onClick={() => { setSelectedDatabase(db.id); setActiveDropdown(null); }}
-//                           className={`flex items-center justify-between px-3 py-2.5 text-sm font-bold rounded-lg cursor-pointer transition-colors ${selectedDatabase === db.id ? 'bg-emerald-50 text-emerald-600' : 'text-slate-600 hover:bg-slate-50'}`}
+//                           className={`flex items-center justify-between px-3 py-2.5 text-sm font-bold rounded-lg cursor-pointer transition-colors ${selectedDatabase === db.id ? 'bg-[#ECFCFF] text-[#00C9F2]' : 'text-slate-600 hover:bg-slate-50'}`}
 //                         >
 //                           <span>{db.name}</span>
 //                           {selectedDatabase === db.id && <Check size={16} />}
@@ -523,7 +523,7 @@
 //                   onClick={() => toggleDropdown('country')}
 //                   className="flex items-center gap-3 px-4 py-2 cursor-pointer group/country select-none rounded-xl hover:bg-slate-50 transition-colors h-full"
 //                 >
-//                   <MapPin size={18} className={`transition-colors duration-300 shrink-0 ${activeDropdown === 'country' ? 'text-emerald-500' : 'text-slate-300 group-hover/country:text-emerald-500'}`} />
+//                   <MapPin size={18} className={`transition-colors duration-300 shrink-0 ${activeDropdown === 'country' ? 'text-[#00C9F2]' : 'text-slate-300 group-hover/country:text-[#00C9F2]'}`} />
 //                   <div className="flex flex-col text-start w-full">
 //                     <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">{t("hero.country_label", "الدولة")}</span>
                     
@@ -552,7 +552,7 @@
 //                     >
 //                       <li 
 //                         onClick={() => { setSelectedCountry(""); setActiveDropdown(null); }}
-//                         className={`flex items-center justify-between px-3 py-2.5 text-sm font-bold rounded-lg cursor-pointer transition-colors ${!selectedCountry ? 'bg-emerald-50 text-emerald-600' : 'text-slate-600 hover:bg-slate-50'}`}
+//                         className={`flex items-center justify-between px-3 py-2.5 text-sm font-bold rounded-lg cursor-pointer transition-colors ${!selectedCountry ? 'bg-[#ECFCFF] text-[#00C9F2]' : 'text-slate-600 hover:bg-slate-50'}`}
 //                       >
 //                         <span>{t("hero.select_country_all", "كل الدول")}</span>
 //                         {!selectedCountry && <Check size={16} />}
@@ -561,7 +561,7 @@
 //                         <li 
 //                           key={country.code}
 //                           onClick={() => { setSelectedCountry(country.code); setActiveDropdown(null); }}
-//                           className={`flex items-center justify-between px-3 py-2.5 text-sm font-bold rounded-lg cursor-pointer transition-colors ${selectedCountry === country.code ? 'bg-emerald-50 text-emerald-600' : 'text-slate-600 hover:bg-slate-50'}`}
+//                           className={`flex items-center justify-between px-3 py-2.5 text-sm font-bold rounded-lg cursor-pointer transition-colors ${selectedCountry === country.code ? 'bg-[#ECFCFF] text-[#00C9F2]' : 'text-slate-600 hover:bg-slate-50'}`}
 //                         >
 //                           <div className="flex items-center gap-2">
 //                             <img src={country.flag} alt="" className="w-4 h-3 object-cover rounded-[2px] shadow-sm shrink-0" />
@@ -580,7 +580,7 @@
 //                 type="submit" 
 //                 whileHover={{ scale: 1.02 }}
 //                 whileTap={{ scale: 0.98 }}
-//                 className="px-8 py-3.5 bg-gradient-to-l from-emerald-600 to-teal-500 hover:from-emerald-700 hover:to-teal-600 text-white font-bold text-sm rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-emerald-500/30 shrink-0"
+//                 className="px-8 py-3.5 bg-gradient-to-l from-[#00C9F2] to-[#00C9F2] hover:from-[#007A94] hover:to-[#00C9F2] text-white font-bold text-sm rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-[#00C9F2]/30 shrink-0"
 //               >
 //                 <span>{t("hero.search_btn", "بحث")}</span>
 //                 {isRtl ? <ArrowLeft size={18} /> : <ArrowLeft size={18} className="rotate-180" />}
@@ -592,7 +592,7 @@
 //           {/* Petit texte de confiance sous la barre de recherche */}
 //           <motion.div variants={itemVariants} className="flex items-center gap-4 mt-6 text-slate-400 text-xs font-medium">
 //             <div className="flex items-center gap-1.5">
-//               <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+//               <div className="w-2 h-2 bg-[#00C9F2] rounded-full animate-pulse"></div>
 //               <span>تحديث فوري للبيانات</span>
 //             </div>
 //             <div className="w-px h-3 bg-slate-200"></div>
@@ -721,8 +721,8 @@
 //       <div className="absolute inset-0 bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:28px_28px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_40%,#000_70%,transparent_100%)] pointer-events-none"></div>
       
 //       {/* Halos lumineux (Aurora Effect) */}
-//       <div className="absolute top-[-10%] right-[-5%] w-[700px] h-[700px] bg-emerald-400/15 rounded-full blur-[130px] pointer-events-none animate-pulse-slow"></div>
-//       <div className="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-teal-400/10 rounded-full blur-[130px] pointer-events-none"></div>
+//       <div className="absolute top-[-10%] right-[-5%] w-[700px] h-[700px] bg-[#2AD5F5]/15 rounded-full blur-[130px] pointer-events-none animate-pulse-slow"></div>
+//       <div className="absolute bottom-[-10%] left-[-5%] w-[600px] h-[600px] bg-[#2AD5F5]/10 rounded-full blur-[130px] pointer-events-none"></div>
 //       <div className="absolute top-[40%] left-[30%] w-[400px] h-[400px] bg-cyan-300/10 rounded-full blur-[100px] pointer-events-none"></div>
 
 //       <div className="container mx-auto px-6 md:px-12 relative z-20 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full">
@@ -737,8 +737,8 @@
 //           {/* Badge Premium */}
 //           <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-slate-200 shadow-sm rounded-full mb-8 backdrop-blur-sm">
 //             <span className="flex h-2 w-2">
-//               <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-emerald-400 opacity-75"></span>
-//               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+//               <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-[#2AD5F5] opacity-75"></span>
+//               <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00C9F2]"></span>
 //             </span>
 //             <span className="text-xs font-bold text-slate-700 tracking-wide">المنصة العربية الأولى للابتكار والبحث العلمي</span>
 //           </motion.div>
@@ -750,12 +750,12 @@
 //           >
 //             {t("hero.title")} <br />
 //             <span className="relative inline-block">
-//               <span className="bg-gradient-to-l from-emerald-600 via-teal-500 to-cyan-500 bg-clip-text text-transparent">
+//               <span className="bg-gradient-to-l from-[#00C9F2] via-[#00C9F2] to-cyan-500 bg-clip-text text-transparent">
 //                 {t("hero.title1")}
 //               </span>
 //               {/* Soulignement dessiné */}
 //               <svg className="absolute -bottom-2 right-0 w-full" height="12" viewBox="0 0 200 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-//                 <path d="M2 10C50 4 150 2 198 8" stroke="#10b981" strokeWidth="3" strokeLinecap="round"/>
+//                 <path d="M2 10C50 4 150 2 198 8" stroke="#00C9F2" strokeWidth="3" strokeLinecap="round"/>
 //               </svg>
 //             </span>
 //           </motion.h1>
@@ -772,14 +772,14 @@
 //           <motion.div
 //             ref={searchBarRef}
 //             variants={itemVariants}
-//             className="w-full bg-white/70 backdrop-blur-xl rounded-[1.5rem] shadow-[0_10px_50px_rgba(16,185,129,0.08)] border border-white/80 p-3 transition-all duration-500 hover:shadow-[0_20px_60px_rgba(16,185,129,0.12)]"
+//             className="w-full bg-white/70 backdrop-blur-xl rounded-[1.5rem] shadow-[0_10px_50px_rgba(0,201,242,0.08)] border border-white/80 p-3 transition-all duration-500 hover:shadow-[0_20px_60px_rgba(0,201,242,0.12)]"
 //             dir={isRtl ? "rtl" : "ltr"}
 //           >
 //             <form onSubmit={handleSearch} className="flex flex-col md:flex-row items-stretch md:items-center justify-between w-full relative gap-2">
               
 //               {/* Champ 1 : Input texte */}
 //               <div className="flex-grow flex items-center gap-3 px-4 py-2.5 rounded-xl hover:bg-white transition-colors group/field">
-//                 <Search size={20} className="text-slate-300 group-focus-within/field:text-emerald-500 transition-colors shrink-0" />
+//                 <Search size={20} className="text-slate-300 group-focus-within/field:text-[#00C9F2] transition-colors shrink-0" />
 //                 <div className="flex flex-col text-start w-full min-w-[120px]">
 //                   <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">{t("hero.search_label", "ابحث عن")}</span>
 //                   <input 
@@ -800,7 +800,7 @@
 //                   onClick={() => toggleDropdown('database')}
 //                   className="flex items-center gap-3 px-4 py-2.5 cursor-pointer group/select select-none rounded-xl hover:bg-white transition-colors h-full"
 //                 >
-//                   <Building2 size={18} className={`transition-colors duration-300 shrink-0 ${activeDropdown === 'database' ? 'text-emerald-500' : 'text-slate-300 group-hover/select:text-emerald-500'}`} />
+//                   <Building2 size={18} className={`transition-colors duration-300 shrink-0 ${activeDropdown === 'database' ? 'text-[#00C9F2]' : 'text-slate-300 group-hover/select:text-[#00C9F2]'}`} />
 //                   <div className="flex flex-col text-start w-full">
 //                     <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">{t("hero.type_label", "نوع المؤسسة")}</span>
 //                     <span className="text-sm text-slate-800 font-bold truncate">
@@ -823,7 +823,7 @@
 //                     >
 //                       <li 
 //                         onClick={() => { setSelectedDatabase(""); setActiveDropdown(null); }}
-//                         className={`flex items-center justify-between px-3 py-2.5 text-sm font-bold rounded-xl cursor-pointer transition-colors ${!selectedDatabase ? 'bg-emerald-50 text-emerald-600' : 'text-slate-600 hover:bg-slate-50'}`}
+//                         className={`flex items-center justify-between px-3 py-2.5 text-sm font-bold rounded-xl cursor-pointer transition-colors ${!selectedDatabase ? 'bg-[#ECFCFF] text-[#00C9F2]' : 'text-slate-600 hover:bg-slate-50'}`}
 //                       >
 //                         <span>{t("hero.all", "كل الأنواع")}</span>
 //                         {!selectedDatabase && <Check size={16} />}
@@ -832,7 +832,7 @@
 //                         <li 
 //                           key={db.id}
 //                           onClick={() => { setSelectedDatabase(db.id); setActiveDropdown(null); }}
-//                           className={`flex items-center justify-between px-3 py-2.5 text-sm font-bold rounded-xl cursor-pointer transition-colors ${selectedDatabase === db.id ? 'bg-emerald-50 text-emerald-600' : 'text-slate-600 hover:bg-slate-50'}`}
+//                           className={`flex items-center justify-between px-3 py-2.5 text-sm font-bold rounded-xl cursor-pointer transition-colors ${selectedDatabase === db.id ? 'bg-[#ECFCFF] text-[#00C9F2]' : 'text-slate-600 hover:bg-slate-50'}`}
 //                         >
 //                           <span>{db.name}</span>
 //                           {selectedDatabase === db.id && <Check size={16} />}
@@ -851,7 +851,7 @@
 //                   onClick={() => toggleDropdown('country')}
 //                   className="flex items-center gap-3 px-4 py-2.5 cursor-pointer group/country select-none rounded-xl hover:bg-white transition-colors h-full"
 //                 >
-//                   <MapPin size={18} className={`transition-colors duration-300 shrink-0 ${activeDropdown === 'country' ? 'text-emerald-500' : 'text-slate-300 group-hover/country:text-emerald-500'}`} />
+//                   <MapPin size={18} className={`transition-colors duration-300 shrink-0 ${activeDropdown === 'country' ? 'text-[#00C9F2]' : 'text-slate-300 group-hover/country:text-[#00C9F2]'}`} />
 //                   <div className="flex flex-col text-start w-full">
 //                     <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">{t("hero.country_label", "الدولة")}</span>
                     
@@ -880,7 +880,7 @@
 //                     >
 //                       <li 
 //                         onClick={() => { setSelectedCountry(""); setActiveDropdown(null); }}
-//                         className={`flex items-center justify-between px-3 py-2.5 text-sm font-bold rounded-xl cursor-pointer transition-colors ${!selectedCountry ? 'bg-emerald-50 text-emerald-600' : 'text-slate-600 hover:bg-slate-50'}`}
+//                         className={`flex items-center justify-between px-3 py-2.5 text-sm font-bold rounded-xl cursor-pointer transition-colors ${!selectedCountry ? 'bg-[#ECFCFF] text-[#00C9F2]' : 'text-slate-600 hover:bg-slate-50'}`}
 //                       >
 //                         <span>{t("hero.select_country_all", "كل الدول")}</span>
 //                         {!selectedCountry && <Check size={16} />}
@@ -889,7 +889,7 @@
 //                         <li 
 //                           key={country.code}
 //                           onClick={() => { setSelectedCountry(country.code); setActiveDropdown(null); }}
-//                           className={`flex items-center justify-between px-3 py-2.5 text-sm font-bold rounded-xl cursor-pointer transition-colors ${selectedCountry === country.code ? 'bg-emerald-50 text-emerald-600' : 'text-slate-600 hover:bg-slate-50'}`}
+//                           className={`flex items-center justify-between px-3 py-2.5 text-sm font-bold rounded-xl cursor-pointer transition-colors ${selectedCountry === country.code ? 'bg-[#ECFCFF] text-[#00C9F2]' : 'text-slate-600 hover:bg-slate-50'}`}
 //                         >
 //                           <div className="flex items-center gap-2">
 //                             <img src={country.flag} alt="" className="w-4 h-3 object-cover rounded-[2px] shadow-sm shrink-0" />
@@ -908,7 +908,7 @@
 //                 type="submit" 
 //                 whileHover={{ scale: 1.02 }}
 //                 whileTap={{ scale: 0.98 }}
-//                 className="px-8 py-3.5 mt-2 md:mt-0 bg-gradient-to-l from-emerald-600 to-teal-500 text-white font-bold text-sm rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-emerald-500/30 hover:shadow-emerald-500/50 shrink-0"
+//                 className="px-8 py-3.5 mt-2 md:mt-0 bg-gradient-to-l from-[#00C9F2] to-[#00C9F2] text-white font-bold text-sm rounded-xl flex items-center justify-center gap-2 transition-all shadow-lg shadow-[#00C9F2]/30 hover:shadow-[#00C9F2]/50 shrink-0"
 //               >
 //                 <span>{t("hero.search_btn", "بحث")}</span>
 //                 {isRtl ? <ArrowLeft size={18} /> : <ArrowLeft size={18} className="rotate-180" />}
@@ -927,8 +927,8 @@
 //           transition={{ duration: 0.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
 //         >
 //           {/* Cercles lumineux décoratifs en fond de l'image */}
-//           <div className="absolute w-[500px] h-[500px] border border-emerald-500/10 rounded-full"></div>
-//           <div className="absolute w-[650px] h-[650px] border border-emerald-500/5 rounded-full"></div>
+//           <div className="absolute w-[500px] h-[500px] border border-[#00C9F2]/10 rounded-full"></div>
+//           <div className="absolute w-[650px] h-[650px] border border-[#00C9F2]/5 rounded-full"></div>
           
 //           {/* Conteneur 3D Principal */}
 //           <div className="relative w-full max-w-[550px]" style={{ perspective: '1000px' }}>
@@ -956,7 +956,7 @@
 //               className="absolute -top-8 -left-8 bg-white/80 backdrop-blur-xl p-4 rounded-2xl shadow-xl border border-white/80 flex items-center gap-3"
 //               style={{ transform: 'translateZ(60px)' }}
 //             >
-//               <div className="p-2.5 bg-emerald-50 rounded-xl text-emerald-600">
+//               <div className="p-2.5 bg-[#ECFCFF] rounded-xl text-[#00C9F2]">
 //                 <Cpu size={24} />
 //               </div>
 //               <div>
@@ -974,7 +974,7 @@
 //               style={{ transform: 'translateZ(80px)' }}
 //             >
 //               <div className="flex items-center gap-2 mb-3">
-//                 <Globe2 size={18} className="text-emerald-600" />
+//                 <Globe2 size={18} className="text-[#00C9F2]" />
 //                 <p className="text-sm font-bold text-slate-800">تغطية عربية شاملة</p>
 //               </div>
 //               <div className="flex -space-x-2.5 rtl:space-x-reverse">
@@ -991,7 +991,7 @@
 //               initial={{ pathLength: 0, opacity: 0 }}
 //               animate={{ pathLength: 1, opacity: 1 }}
 //               transition={{ duration: 1.5, delay: 0.5 }}
-//               className="absolute top-1/2 -right-20 w-20 h-1 bg-gradient-to-l from-emerald-500 to-transparent hidden xl:block"
+//               className="absolute top-1/2 -right-20 w-20 h-1 bg-gradient-to-l from-[#00C9F2] to-transparent hidden xl:block"
 //             ></motion.div>
 
 //           </div>
@@ -1007,7 +1007,7 @@
 
 
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import { Search, Sparkles } from "lucide-react";
@@ -1019,6 +1019,27 @@ const HeroSection = () => {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.language === "ar";
   const { openSearch } = useSearchPopup();
+  const titleRef = useRef(null);
+
+  useEffect(() => {
+    const title = titleRef.current;
+    if (!title) return;
+    const fitTitle = () => {
+      title.style.fontSize = "";
+      const availableWidth = title.clientWidth;
+      const contentWidth = Math.max(...Array.from(title.children, (line) => line.scrollWidth));
+      if (availableWidth > 0 && contentWidth > availableWidth) {
+        const fontSize = parseFloat(getComputedStyle(title).fontSize);
+        title.style.fontSize = `${fontSize * availableWidth / contentWidth * 0.98}px`;
+      }
+    };
+    const observer = new ResizeObserver(fitTitle);
+    observer.observe(title.parentElement);
+    fitTitle();
+    let active = true;
+    document.fonts.ready.then(() => { if (active) fitTitle(); });
+    return () => { active = false; observer.disconnect(); };
+  }, [i18n.language]);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -1058,7 +1079,7 @@ const HeroSection = () => {
         
         {/* ======================= COLONNE GAUCHE : TEXTE & RECHERCHE ======================= */}
         <motion.div 
-          className={`lg:col-span-8 flex flex-col justify-center items-start w-full mx-auto ${isRtl ? "text-right" : "text-left"}`}
+          className="lg:col-span-12 min-w-0 flex flex-col justify-center items-center w-full mx-auto text-center"
           dir={isRtl ? "rtl" : "ltr"}
           variants={containerVariants}
           initial="hidden"
@@ -1067,35 +1088,37 @@ const HeroSection = () => {
           {/* Badge */}
           <motion.div
             variants={itemVariants}
-            className="inline-flex items-center gap-3 px-4 py-2.5 mb-7 rounded-full border border-emerald-300/25 bg-slate-950/35 shadow-[0_10px_35px_rgba(0,0,0,0.18)] backdrop-blur-xl"
+            className="inline-flex items-center gap-3 px-4 py-2.5 mb-7 rounded-full border border-[#63E1FA]/25 bg-slate-950/35 shadow-[0_10px_35px_rgba(0,0,0,0.18)] backdrop-blur-xl"
           >
-            <span className="grid h-7 w-7 place-items-center rounded-full bg-emerald-400/15 ring-1 ring-emerald-300/25">
-              <Sparkles size={14} className="text-emerald-300" />
+            <span className="grid h-7 w-7 place-items-center rounded-full bg-[#2AD5F5]/15 ring-1 ring-[#63E1FA]/25">
+              <Sparkles size={14} className="text-[#63E1FA]" />
             </span>
             <span className={`text-[10px] md:text-[11px] font-bold text-white/90 ${isRtl ? "tracking-normal" : "uppercase tracking-[0.16em]"}`}>
-              المنصة العربية الأولى للابتكار والبحث العلمي
+              {t("hero.badge", { defaultValue: t("interface.the_arab_platform_for_innovation_and_scientific_research", { defaultValue: isRtl ? "المنصة العربية الأولى للابتكار والبحث العلمي" : "The Arab platform for innovation and scientific research" }) })}
             </span>
           </motion.div>
 
           {/* Titre éditorial */}
           <motion.h1 
+            ref={titleRef}
             variants={itemVariants}
-            className="max-w-4xl mb-6 text-[clamp(1.8rem,4.1vw,3.8rem)] font-black leading-[1.08] tracking-[-0.03em] [text-shadow:0_8px_35px_rgba(0,0,0,0.55)]"
+            className="min-w-0 max-w-full w-full mb-6 text-[clamp(0.85rem,3.2vw,3.2rem)] font-black leading-[1.3] tracking-[-0.03em]"
           >
-            <span className="block text-white/95">{t("hero.title")}</span>
-            <span className="relative mt-2 inline-block pb-3">
-              <span className="relative z-10 bg-gradient-to-l from-emerald-300 via-teal-200 to-cyan-200 bg-clip-text text-transparent">
+            <span className="hero-title-line block whitespace-nowrap text-white/95">{t("hero.title")}</span>
+            <span className="hero-title-line hero-title-line-delayed relative mt-2 block whitespace-nowrap pb-3">
+              <span className="hero-title-accent relative z-10">
                 {t("hero.title1")}
               </span>
-            </span>
-            <strong dir="ltr" className="mt-4 block bg-gradient-to-l from-emerald-300 via-teal-200 to-cyan-200 bg-clip-text font-black text-transparent">
+              {" "}
+            <strong dir="ltr" className="hero-title-accent inline-block font-black">
               AIRIP
             </strong>
+            </span>
           </motion.h1>
 
           <motion.p 
             variants={itemVariants}
-            className="max-w-2xl mb-9 text-sm md:text-base font-normal leading-[1.8] text-slate-100/80 [text-shadow:0_2px_15px_rgba(0,0,0,0.45)]"
+            className="hero-description max-w-2xl mb-9 text-sm md:text-base font-normal leading-[1.8] text-slate-100/80 [text-shadow:0_2px_15px_rgba(0,0,0,0.45)]"
           >
             {t("hero.description")}
             {t("hero.description1")}
@@ -1110,10 +1133,10 @@ const HeroSection = () => {
             animate="visible"
             onClick={openSearch}
             aria-haspopup="dialog"
-            className="mx-auto flex w-full max-w-lg items-center gap-3 rounded-full border border-white/70 bg-white/95 px-6 py-4 text-start text-sm font-semibold text-slate-500 shadow-xl transition-colors hover:bg-white hover:text-emerald-700 lg:col-span-12"
+            className="mx-auto flex w-full max-w-lg items-center gap-3 rounded-full border border-white/70 bg-white/95 px-6 py-4 text-start text-sm font-semibold text-slate-500 shadow-xl transition-colors hover:bg-white hover:text-[#007A94] lg:col-span-12"
             dir={isRtl ? "rtl" : "ltr"}
           >
-            <Search size={20} className="shrink-0 text-emerald-600" />
+            <Search size={20} className="shrink-0 text-[#00C9F2]" />
             <span>{t("hero.search_btn")}</span>
           </motion.button>
 

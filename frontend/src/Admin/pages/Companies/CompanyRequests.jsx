@@ -75,7 +75,7 @@ const CompanyRequests = () => {
       <div className="mb-8 flex justify-between items-center">
         <div>
           <h2 className="text-5xl font-black text-slate-900 tracking-tighter">
-              طلبات <span className="text-emerald-600">الانضمام</span>
+              طلبات <span className="text-[#00C9F2]">الانضمام</span>
           </h2>
 
           <p className="text-slate-900 mt-2 font-medium">الشركات الصناعية بانتظار المراجعة والتحقق</p>
@@ -108,7 +108,7 @@ const CompanyRequests = () => {
               {/* التصميم ... */}
               <div className="relative z-10">
                 <h3 className="text-xl font-black text-slate-800 mb-1">{req.company_name}</h3>
-                <p className="text-emerald-600 font-bold text-sm mb-4">{req.industry_sector}</p>
+                <p className="text-[#00C9F2] font-bold text-sm mb-4">{req.industry_sector}</p>
 
                 <div className="space-y-2 mb-8 text-slate-500 text-sm italic">
                   {req.email}
@@ -117,7 +117,7 @@ const CompanyRequests = () => {
                 <div className="flex gap-3">
                   <button 
                     onClick={() => handleAction(req.idCompany, 'approved')} // ✅ تمرير idCompany
-                    className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg"
+                    className="flex-1 bg-[#00C9F2] hover:bg-[#007A94] text-white py-3 rounded-2xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg"
                   >
                     <Check size={18} /> قبول
                   </button>
@@ -138,7 +138,7 @@ const CompanyRequests = () => {
 
       {requests.length === 0 && (
         <div className="text-center py-40">
-           <p className="text-emerald-600 font-bold">لا توجد طلبات معلقة حالياً</p>
+           <p className="text-[#00C9F2] font-bold">لا توجد طلبات معلقة حالياً</p>
         </div>
       )}
     </div>

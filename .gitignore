@@ -1,3 +1,8 @@
+!backend/storage/app/public/
+!backend/storage/app/public/**
+!backend/public/storage/
+!backend/public/storage/**
+
 **/.env
 **/.env.*
 !**/.env.example

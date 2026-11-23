@@ -63,7 +63,7 @@ const translations = {
 
 const statusStyle = {
   pending: "border-amber-200 bg-amber-50 text-amber-700",
-  answered: "border-emerald-200 bg-emerald-50 text-emerald-700",
+  answered: "border-[#A1EDFF] bg-[#ECFCFF] text-[#007A94]",
   hidden: "border-slate-200 bg-slate-100 text-slate-600",
 };
 
@@ -222,13 +222,13 @@ const ManageFaq = () => {
       <Toaster position={isRtl ? "top-left" : "top-right"} />
       <header className="mb-8 flex flex-col justify-between gap-5 xl:flex-row xl:items-end">
         <div>
-          <span className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.16em] text-emerald-600"><MessageSquareReply size={15} />FAQ</span>
+          <span className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.16em] text-[#00C9F2]"><MessageSquareReply size={15} />FAQ</span>
           <h1 className="mt-3 text-3xl font-black text-slate-900 sm:text-4xl">{text.title}</h1>
           <p className="mt-2 max-w-2xl text-sm leading-7 text-slate-500">{text.subtitle}</p>
         </div>
         <div className="flex flex-wrap gap-3">
-          <button onClick={() => setShowCreateForm(true)} className="flex w-fit items-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-black text-white shadow-lg shadow-emerald-600/15 transition hover:bg-emerald-700"><Plus size={18} />{text.add}</button>
-          <button onClick={loadQuestions} disabled={loading} className="flex w-fit items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-700 shadow-sm transition hover:border-emerald-200 hover:text-emerald-700 disabled:opacity-60">
+          <button onClick={() => setShowCreateForm(true)} className="flex w-fit items-center gap-2 rounded-xl bg-[#00C9F2] px-5 py-3 text-sm font-black text-white shadow-lg shadow-[#00C9F2]/15 transition hover:bg-[#007A94]"><Plus size={18} />{text.add}</button>
+          <button onClick={loadQuestions} disabled={loading} className="flex w-fit items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold text-slate-700 shadow-sm transition hover:border-[#A1EDFF] hover:text-[#007A94] disabled:opacity-60">
             <RefreshCw size={17} className={loading ? "animate-spin" : ""} />{text.refresh}
           </button>
         </div>
@@ -242,15 +242,15 @@ const ManageFaq = () => {
               <button type="button" onClick={() => setShowCreateForm(false)} disabled={creating} className="grid h-10 w-10 place-items-center rounded-xl bg-slate-100 text-slate-600 hover:bg-slate-200 disabled:opacity-50"><X size={19} /></button>
             </div>
             <label className="block text-sm font-black text-slate-700">{text.question} *</label>
-            <textarea required maxLength={1000} rows={3} value={newQuestion.question} onChange={(event) => setNewQuestion((current) => ({ ...current, question: event.target.value }))} placeholder={text.questionPlaceholder} className="mt-2 w-full resize-y rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm leading-7 outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10" />
+            <textarea required maxLength={1000} rows={3} value={newQuestion.question} onChange={(event) => setNewQuestion((current) => ({ ...current, question: event.target.value }))} placeholder={text.questionPlaceholder} className="mt-2 w-full resize-y rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm leading-7 outline-none transition focus:border-[#00C9F2] focus:ring-4 focus:ring-[#00C9F2]/10" />
             <label className="mt-5 block text-sm font-black text-slate-700">{text.answer} *</label>
-            <textarea required rows={5} value={newQuestion.answer} onChange={(event) => setNewQuestion((current) => ({ ...current, answer: event.target.value }))} placeholder={text.answerPlaceholder} className="mt-2 w-full resize-y rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm leading-7 outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10" />
+            <textarea required rows={5} value={newQuestion.answer} onChange={(event) => setNewQuestion((current) => ({ ...current, answer: event.target.value }))} placeholder={text.answerPlaceholder} className="mt-2 w-full resize-y rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm leading-7 outline-none transition focus:border-[#00C9F2] focus:ring-4 focus:ring-[#00C9F2]/10" />
             <label className="mt-4 flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4 text-sm font-bold text-slate-700">
-              <input type="checkbox" checked={newQuestion.isPublished} onChange={(event) => setNewQuestion((current) => ({ ...current, isPublished: event.target.checked }))} className="h-5 w-5 accent-emerald-600" />{text.publish}
+              <input type="checkbox" checked={newQuestion.isPublished} onChange={(event) => setNewQuestion((current) => ({ ...current, isPublished: event.target.checked }))} className="h-5 w-5 accent-[#00C9F2]" />{text.publish}
             </label>
             <div className="mt-6 flex justify-end gap-3">
               <button type="button" onClick={() => setShowCreateForm(false)} disabled={creating} className="rounded-xl border border-slate-200 px-5 py-3 text-sm font-bold text-slate-600 disabled:opacity-50">{text.cancel}</button>
-              <button disabled={creating} className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 text-sm font-black text-white hover:bg-emerald-700 disabled:opacity-60">{creating ? <LoaderCircle size={17} className="animate-spin" /> : <Plus size={17} />}{creating ? text.creating : text.create}</button>
+              <button disabled={creating} className="inline-flex items-center gap-2 rounded-xl bg-[#00C9F2] px-6 py-3 text-sm font-black text-white hover:bg-[#007A94] disabled:opacity-60">{creating ? <LoaderCircle size={17} className="animate-spin" /> : <Plus size={17} />}{creating ? text.creating : text.create}</button>
             </div>
           </form>
         </div>
@@ -258,22 +258,22 @@ const ManageFaq = () => {
 
       <div className="mb-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {filters.map(({ id, label, icon: Icon }) => (
-          <button key={id} onClick={() => setFilter(id)} className={`flex items-center justify-between rounded-2xl border p-4 text-start transition-all ${filter === id ? "border-emerald-300 bg-emerald-600 text-white shadow-lg shadow-emerald-600/15" : "border-slate-200 bg-white text-slate-700 hover:border-emerald-200"}`}>
-            <span className="flex items-center gap-3"><span className={`grid h-10 w-10 place-items-center rounded-xl ${filter === id ? "bg-white/15" : "bg-emerald-50 text-emerald-700"}`}><Icon size={18} /></span><span className="text-sm font-black">{label}</span></span>
+          <button key={id} onClick={() => setFilter(id)} className={`flex items-center justify-between rounded-2xl border p-4 text-start transition-all ${filter === id ? "border-[#63E1FA] bg-[#00C9F2] text-white shadow-lg shadow-[#00C9F2]/15" : "border-slate-200 bg-white text-slate-700 hover:border-[#A1EDFF]"}`}>
+            <span className="flex items-center gap-3"><span className={`grid h-10 w-10 place-items-center rounded-xl ${filter === id ? "bg-white/15" : "bg-[#ECFCFF] text-[#007A94]"}`}><Icon size={18} /></span><span className="text-sm font-black">{label}</span></span>
             <span className={`rounded-lg px-2.5 py-1 text-sm font-black ${filter === id ? "bg-white/15" : "bg-slate-100"}`}>{counts[id]}</span>
           </button>
         ))}
       </div>
 
-      <label className="mb-6 flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 shadow-sm transition focus-within:border-emerald-400 focus-within:ring-4 focus-within:ring-emerald-500/10">
+      <label className="mb-6 flex items-center gap-3 rounded-2xl border border-slate-200 bg-white px-4 shadow-sm transition focus-within:border-[#2AD5F5] focus-within:ring-4 focus-within:ring-[#00C9F2]/10">
         <Search size={19} className="text-slate-400" />
         <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={text.search} className="w-full border-0 bg-transparent py-4 text-sm outline-none placeholder:text-slate-400" />
       </label>
 
       {loading ? (
-        <div className="flex items-center justify-center gap-3 rounded-3xl border border-dashed border-slate-200 bg-white py-28 text-sm font-bold text-slate-500"><LoaderCircle size={23} className="animate-spin text-emerald-600" />{text.loading}</div>
+        <div className="flex items-center justify-center gap-3 rounded-3xl border border-dashed border-slate-200 bg-white py-28 text-sm font-bold text-slate-500"><LoaderCircle size={23} className="animate-spin text-[#00C9F2]" />{text.loading}</div>
       ) : visibleQuestions.length === 0 ? (
-        <div className="rounded-3xl border border-dashed border-slate-200 bg-white py-28 text-center text-sm font-bold text-slate-500"><HelpCircle size={32} className="mx-auto mb-3 text-emerald-500" />{text.empty}</div>
+        <div className="rounded-3xl border border-dashed border-slate-200 bg-white py-28 text-center text-sm font-bold text-slate-500"><HelpCircle size={32} className="mx-auto mb-3 text-[#00C9F2]" />{text.empty}</div>
       ) : (
         <div className="space-y-5">
           <AnimatePresence mode="popLayout">
@@ -291,8 +291,8 @@ const ManageFaq = () => {
                       </div>
                       <h2 className="mt-5 text-lg font-black leading-8 text-slate-900 sm:text-xl">{item.question}</h2>
                       <div className="mt-6 grid gap-3 text-xs text-slate-500 sm:grid-cols-2">
-                        <div className="flex items-center gap-2 rounded-xl bg-slate-50 p-3"><UserRound size={15} className="text-emerald-600" /><span className="font-bold text-slate-700">{item.name || text.anonymous}</span></div>
-                        <div className="flex items-center gap-2 rounded-xl bg-slate-50 p-3"><Mail size={15} className="text-emerald-600" /><span className="truncate" dir="ltr">{item.email || text.noEmail}</span></div>
+                        <div className="flex items-center gap-2 rounded-xl bg-slate-50 p-3"><UserRound size={15} className="text-[#00C9F2]" /><span className="font-bold text-slate-700">{item.name || text.anonymous}</span></div>
+                        <div className="flex items-center gap-2 rounded-xl bg-slate-50 p-3"><Mail size={15} className="text-[#00C9F2]" /><span className="truncate" dir="ltr">{item.email || text.noEmail}</span></div>
                         <div className="flex items-center gap-2 px-1"><Clock3 size={14} /><span>{text.received}: {formatDate(item.created_at)}</span></div>
                         {item.answered_at && <div className="flex items-center gap-2 px-1"><CheckCircle2 size={14} /><span>{text.answeredAt}: {formatDate(item.answered_at)}</span></div>}
                       </div>
@@ -300,12 +300,12 @@ const ManageFaq = () => {
 
                     <div className="border-t border-slate-100 bg-slate-50/70 p-5 sm:p-7 xl:border-s xl:border-t-0">
                       <label className="mb-2 block text-xs font-black text-slate-700">{text.answer}</label>
-                      <textarea rows={5} value={draft.answer} onChange={(event) => updateDraft(item.id, { answer: event.target.value })} placeholder={text.answerPlaceholder} className="w-full resize-y rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm leading-7 text-slate-800 outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10" />
+                      <textarea rows={5} value={draft.answer} onChange={(event) => updateDraft(item.id, { answer: event.target.value })} placeholder={text.answerPlaceholder} className="w-full resize-y rounded-2xl border border-slate-200 bg-white px-4 py-3 text-sm leading-7 text-slate-800 outline-none transition focus:border-[#00C9F2] focus:ring-4 focus:ring-[#00C9F2]/10" />
                       <label className="mt-3 flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 text-xs font-bold text-slate-700">
-                        <input type="checkbox" checked={draft.isPublished} onChange={(event) => updateDraft(item.id, { isPublished: event.target.checked })} className="h-4 w-4 accent-emerald-600" />{text.publish}
+                        <input type="checkbox" checked={draft.isPublished} onChange={(event) => updateDraft(item.id, { isPublished: event.target.checked })} className="h-4 w-4 accent-[#00C9F2]" />{text.publish}
                       </label>
                       <div className="mt-4 flex flex-wrap gap-2">
-                        <button onClick={() => applyUpdate(item)} disabled={isSaving || isDeleting} className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-3 text-xs font-black text-white transition hover:bg-emerald-700 disabled:opacity-60">{isSaving ? <LoaderCircle size={16} className="animate-spin" /> : <Save size={16} />}{isSaving ? text.saving : text.save}</button>
+                        <button onClick={() => applyUpdate(item)} disabled={isSaving || isDeleting} className="flex flex-1 items-center justify-center gap-2 rounded-xl bg-[#00C9F2] px-4 py-3 text-xs font-black text-white transition hover:bg-[#007A94] disabled:opacity-60">{isSaving ? <LoaderCircle size={16} className="animate-spin" /> : <Save size={16} />}{isSaving ? text.saving : text.save}</button>
                         {item.status === "hidden" ? (
                           <button onClick={() => applyUpdate(item, { status: "answered", isPublished: true })} disabled={isSaving || isDeleting} className="flex items-center gap-2 rounded-xl border border-sky-200 bg-sky-50 px-4 py-3 text-xs font-black text-sky-700 hover:bg-sky-100 disabled:opacity-60"><Eye size={16} />{text.show}</button>
                         ) : (

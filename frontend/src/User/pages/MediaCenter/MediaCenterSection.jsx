@@ -7,8 +7,6 @@ import {
   BookOpen,
   Building2,
   CalendarDays,
-  ChevronLeft,
-  ChevronRight,
   FileText,
   MapPin,
   Newspaper,
@@ -16,8 +14,11 @@ import {
   Sparkles,
   Trophy,
   Loader2,
+  X,
+  ExternalLink,
 } from "lucide-react";
 import apiAdmin from "../../../api/apiAdmin";
+import Pagination from "../../../components/Pagination";
 
 const tabs = [
   { id: "news", labelKey: "submenu.media_center.news", icon: Newspaper },
@@ -57,11 +58,11 @@ const getCountryFlagUrl = (item) => {
   return country ? `https://flagcdn.com/w40/${country.code}.png` : null;
 };
 
-const LocationLabel = ({ item, location }) => {
+const LocationLabel = ({ item, location, className = "text-[#007A94]" }) => {
   const flagUrl = getCountryFlagUrl(item);
 
   return (
-    <span className="inline-flex items-center gap-2 text-xs font-bold text-emerald-700">
+    <span className={`inline-flex items-center gap-2 text-xs font-bold ${className}`}>
       <MapPin size={14} />
       {flagUrl && (
         <img
@@ -78,7 +79,7 @@ const LocationLabel = ({ item, location }) => {
 const PdfCover3D = ({ url, thumbnailUrl, title }) => {
   if (!url || !thumbnailUrl) {
     return (
-      <span className="grid h-56 w-40 shrink-0 place-items-center rounded-xl border border-white/15 bg-white/10 text-emerald-100 shadow-2xl">
+      <span className="grid h-56 w-40 shrink-0 place-items-center rounded-xl border border-white/15 bg-white/10 text-[#D0F6FF] shadow-2xl">
         <FileText size={38} />
       </span>
     );
@@ -93,7 +94,7 @@ const PdfCover3D = ({ url, thumbnailUrl, title }) => {
       className="group/cover relative mx-auto block h-56 w-40 shrink-0 [perspective:1000px]"
     >
       <span className="absolute bottom-0 left-3 right-0 h-5 rounded-[50%] bg-slate-950/25 blur-md transition-all duration-500 group-hover/cover:scale-110" />
-      <span className="absolute inset-y-2 -left-1 w-4 rounded-l-md bg-gradient-to-r from-slate-950 to-emerald-800 shadow-lg [transform:rotateY(-18deg)]" />
+      <span className="absolute inset-y-2 -left-1 w-4 rounded-l-md bg-gradient-to-r from-slate-950 to-[#006176] shadow-lg [transform:rotateY(-18deg)]" />
       <span className="absolute inset-0 overflow-hidden rounded-r-lg border border-slate-200 bg-white shadow-[12px_16px_28px_rgba(15,23,42,0.24)] transition-all duration-500 [transform:rotateY(-12deg)_rotateX(2deg)] [transform-origin:left_center] group-hover/cover:[transform:rotateY(-4deg)_rotateX(0deg)_translateY(-4px)]">
         <img src={thumbnailUrl} alt="" className="pointer-events-none h-full w-full object-contain object-top" />
         <span className="pointer-events-none absolute inset-0 bg-gradient-to-r from-slate-950/10 via-transparent to-white/10" />
@@ -213,7 +214,7 @@ const mediaContent = {
 const MediaCenterSection = () => {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.dir() === "rtl";
-  const locale = isRtl ? "ar-MA" : "en-US";
+  const locale = isRtl ? "ar-MA" : i18n.language === "fr" ? "fr-FR" : "en-US";
   const [searchParams] = useSearchParams();
   const requestedCategory = searchParams.get("category");
   const requestedItemId = searchParams.get("item") || "";
@@ -223,19 +224,40 @@ const MediaCenterSection = () => {
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [newsTypeFilter, setNewsTypeFilter] = useState("all");
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const eventDialogRef = useRef(null);
   const pendingFocusRef = useRef(null);
   const handledFocusRef = useRef("");
-  const pageSize = 2;
+  const resultsRef = useRef(null);
+  const pageSize = ["news", "events"].includes(activeTab) ? 6 : 2;
   const currentTab = tabs.find((tab) => tab.id === activeTab);
   const CurrentIcon = currentTab.icon;
+
+  useEffect(() => {
+    if (!selectedEvent) return;
+    const dialog = eventDialogRef.current;
+    const previousOverflow = document.body.style.overflow;
+    dialog.showModal();
+    document.body.style.overflow = "hidden";
+    return () => {
+      dialog.close();
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [selectedEvent]);
 
   useEffect(() => {
     let mounted = true;
     setLoading(true);
     apiAdmin.get("/media-items", { params: { category: activeTab } })
-      .then(({ data }) => {
+      .then(async ({ data }) => {
+        const remainingPages = await Promise.all(
+          Array.from({ length: Math.max(0, Number(data.last_page || 1) - 1) }, (_, index) =>
+            apiAdmin.get("/media-items", { params: { category: activeTab, page: index + 2 } })
+          )
+        );
         if (!mounted) return;
-        setItems((data.data ?? []).map((item) => ({
+        const allItems = [...(data.data ?? []), ...remainingPages.flatMap((response) => response.data.data ?? [])];
+        setItems(allItems.map((item) => ({
           ...item,
           titleAr: item.title_ar,
           titleEn: item.title_en,
@@ -263,7 +285,13 @@ const MediaCenterSection = () => {
     ? items.filter((item) => item.newsType === newsTypeFilter)
     : items;
   const totalPages = Math.max(1, Math.ceil(displayedItems.length / pageSize));
-  const paginatedItems = displayedItems.slice((page - 1) * pageSize, page * pageSize);
+  const currentPage = Math.min(page, totalPages);
+  const paginatedItems = displayedItems.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+
+  const changePage = (nextPage) => {
+    setPage(Math.max(1, Math.min(nextPage, totalPages)));
+    resultsRef.current?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+  };
 
   useEffect(() => {
     if (tabs.some((tab) => tab.id === requestedCategory)) {
@@ -282,7 +310,7 @@ const MediaCenterSection = () => {
     handledFocusRef.current = focusRequest;
     pendingFocusRef.current = requestedItemId;
     setPage(Math.floor(itemIndex / pageSize) + 1);
-  }, [activeTab, items, loading, newsTypeFilter, requestedItemId]);
+  }, [activeTab, items, loading, newsTypeFilter, requestedItemId, pageSize]);
 
   useEffect(() => {
     if (!pendingFocusRef.current || loading) return;
@@ -297,7 +325,7 @@ const MediaCenterSection = () => {
   }, [loading, page, paginatedItems]);
 
   const focusClass = (item) => (
-    String(item.id) === requestedItemId ? "ring-4 ring-emerald-500/20 !border-emerald-500" : ""
+    String(item.id) === requestedItemId ? "ring-4 ring-[#00C9F2]/20 !border-[#00C9F2]" : ""
   );
 
   const getTitle = (item) => isRtl ? item.titleAr : item.titleEn;
@@ -311,13 +339,13 @@ const MediaCenterSection = () => {
   }).format(new Date(date));
 
   return (
-    <div dir={isRtl ? "rtl" : "ltr"} className="min-h-screen bg-[#f7faf8]">
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-950 pb-32 pt-20 text-white sm:pb-40 sm:pt-24">
+    <div dir={isRtl ? "rtl" : "ltr"} className="min-h-screen bg-[#F2FCFF]">
+      <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-[#00313D] to-slate-950 pb-32 pt-20 text-white sm:pb-40 sm:pt-24">
         <div className="pointer-events-none absolute inset-0 opacity-[0.035] [background-image:linear-gradient(white_1px,transparent_1px),linear-gradient(90deg,white_1px,transparent_1px)] [background-size:48px_48px]" />
-        <div className="pointer-events-none absolute -left-32 top-10 h-80 w-80 rounded-full bg-emerald-400/20 blur-[100px]" />
-        <div className="pointer-events-none absolute -right-40 bottom-0 h-96 w-96 rounded-full bg-teal-400/15 blur-[110px]" />
+        <div className="pointer-events-none absolute -left-32 top-10 h-80 w-80 rounded-full bg-[#2AD5F5]/20 blur-[100px]" />
+        <div className="pointer-events-none absolute -right-40 bottom-0 h-96 w-96 rounded-full bg-[#2AD5F5]/15 blur-[110px]" />
         <div className="pointer-events-none absolute left-1/2 top-1/2 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 rounded-full border-[80px] border-white/[0.015]" />
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400/70 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#2AD5F5]/70 to-transparent" />
 
         <motion.div
           initial={{ opacity: 0, y: 24 }}
@@ -325,14 +353,14 @@ const MediaCenterSection = () => {
           transition={{ duration: 0.7 }}
           className="relative mx-auto max-w-7xl px-6"
         >
-          <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-400/10 px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-emerald-300 backdrop-blur-sm">
+          <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#63E1FA]/20 bg-[#2AD5F5]/10 px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-[#63E1FA] backdrop-blur-sm">
             <Newspaper size={14} />
             {t("media_page.eyebrow")}
           </span>
           <h1 className="max-w-4xl text-5xl font-black leading-tight tracking-tight sm:text-6xl lg:text-7xl">
             {t("menu.media_center")}
           </h1>
-          <p className="mt-6 max-w-3xl text-lg leading-9 text-emerald-50/70">
+          <p className="mt-6 max-w-3xl text-lg leading-9 text-[#ECFCFF]/70">
             {t("media_page.subtitle")}
           </p>
         </motion.div>
@@ -349,8 +377,8 @@ const MediaCenterSection = () => {
                 onClick={() => setActiveTab(id)}
                 className={`flex items-center justify-center gap-2.5 rounded-2xl px-4 py-3.5 text-sm font-black transition-all ${
                   isActive
-                    ? "bg-gradient-to-r from-emerald-600 to-teal-500 text-white shadow-md shadow-emerald-600/20"
-                    : "text-slate-500 hover:bg-emerald-50 hover:text-emerald-800"
+                    ? "bg-gradient-to-r from-[#00C9F2] to-[#00C9F2] text-white shadow-md shadow-[#00C9F2]/20"
+                    : "text-slate-500 hover:bg-[#ECFCFF] hover:text-[#006176]"
                 }`}
               >
                 <Icon size={17} />
@@ -361,11 +389,11 @@ const MediaCenterSection = () => {
         </nav>
 
         <div className="mb-9 mt-14 flex items-center gap-4">
-          <span className="grid h-12 w-12 place-items-center rounded-2xl bg-emerald-600 text-white shadow-lg shadow-emerald-600/20">
+          <span className="grid h-12 w-12 place-items-center rounded-2xl bg-[#00C9F2] text-white shadow-lg shadow-[#00C9F2]/20">
             <CurrentIcon size={21} />
           </span>
           <div>
-            <span className="text-[10px] font-black uppercase tracking-[0.18em] text-emerald-600">{t("media_page.browse")}</span>
+            <span className="text-[10px] font-black uppercase tracking-[0.18em] text-[#00C9F2]">{t("media_page.browse")}</span>
             <h2 className="mt-1 text-3xl font-black text-slate-950">{t(currentTab.labelKey)}</h2>
           </div>
         </div>
@@ -381,9 +409,9 @@ const MediaCenterSection = () => {
                 key={type.value}
                 type="button"
                 onClick={() => setNewsTypeFilter(type.value)}
-                className={`rounded-full border px-5 py-2.5 text-sm font-black transition-colors ${newsTypeFilter === type.value ? "border-emerald-600 bg-emerald-600 text-white" : "border-slate-200 bg-white text-slate-600 hover:border-emerald-300 hover:text-emerald-700"}`}
+                className={`rounded-full border px-5 py-2.5 text-sm font-black transition-colors ${newsTypeFilter === type.value ? "border-[#00C9F2] bg-[#00C9F2] text-white" : "border-slate-200 bg-white text-slate-600 hover:border-[#63E1FA] hover:text-[#007A94]"}`}
               >
-                {isRtl ? type.ar : type.en}
+                {t(`media_page.${type.value === "all" ? "all_news" : type.value + "_news"}`, { defaultValue: isRtl ? type.ar : type.en })}
               </button>
             ))}
           </div>
@@ -391,34 +419,41 @@ const MediaCenterSection = () => {
 
         <AnimatePresence mode="wait">
           <motion.section
+            ref={resultsRef}
+            className="scroll-mt-32"
             key={activeTab}
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.35 }}
           >
-            {loading && <div className="flex min-h-64 items-center justify-center text-emerald-700"><Loader2 size={32} className="animate-spin" /></div>}
-            {!loading && items.length === 0 && <div className="rounded-[1.75rem] border border-dashed border-slate-300 bg-white p-14 text-center text-slate-500">{isRtl ? "لا يوجد محتوى منشور في هذا القسم." : "No published content in this section."}</div>}
-            {!loading && items.length > 0 && displayedItems.length === 0 && activeTab === "news" && <div className="rounded-[1.75rem] border border-dashed border-slate-300 bg-white p-14 text-center text-slate-500">{isRtl ? "لا توجد أخبار منشورة من هذا النوع." : "No published news of this type."}</div>}
+            {loading && <div className="flex min-h-64 items-center justify-center text-[#007A94]"><Loader2 size={32} className="animate-spin" /></div>}
+            {!loading && items.length === 0 && <div className="rounded-[1.75rem] border border-dashed border-slate-300 bg-white p-14 text-center text-slate-500">{t("interface.no_published_content_in_this_section", { defaultValue: isRtl ? "لا يوجد محتوى منشور في هذا القسم." : "No published content in this section." })}</div>}
+            {!loading && items.length > 0 && displayedItems.length === 0 && activeTab === "news" && <div className="rounded-[1.75rem] border border-dashed border-slate-300 bg-white p-14 text-center text-slate-500">{t("interface.no_published_news_of_this_type", { defaultValue: isRtl ? "لا توجد أخبار منشورة من هذا النوع." : "No published news of this type." })}</div>}
             {!loading && displayedItems.length > 0 && activeTab === "news" && (
-              <div className="grid gap-6 lg:grid-cols-3">
-                {paginatedItems.map((item, index) => (
-                  <article id={`media-item-${item.id}`} key={item.id} className={`group scroll-mt-28 overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-[0_15px_45px_rgba(15,23,42,0.06)] transition-all duration-500 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-[0_24px_55px_rgba(5,150,105,0.13)] ${index === 0 ? "lg:col-span-2" : ""} ${focusClass(item)}`}>
-                    <div className={`relative overflow-hidden bg-slate-200 ${index === 0 ? "h-72 sm:h-96" : "h-64"}`}>
+              <div className="grid items-stretch gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {paginatedItems.map((item) => (
+                  <article id={`media-item-${item.id}`} key={item.id} className={`group flex h-full min-w-0 scroll-mt-28 flex-col overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-[0_15px_45px_rgba(15,23,42,0.06)] transition-all duration-500 hover:-translate-y-1 hover:border-[#63E1FA] hover:shadow-[0_24px_55px_rgba(0,201,242,0.13)] ${focusClass(item)}`}>
+                    <div className="relative h-72 shrink-0 overflow-hidden bg-slate-200">
                       <img src={item.image} alt={getTitle(item)} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
                       <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/15 to-transparent" />
-                      <span className="absolute end-5 top-5 rounded-full border border-white/20 bg-slate-950/65 px-3 py-1.5 text-xs font-black text-white backdrop-blur-sm">{item.newsType === "related" ? (isRtl ? "أخبار ذات علاقة" : "Related news") : (isRtl ? "أخبار المنظمة" : "Organization news")}</span>
+                      <span className="absolute end-5 top-5 rounded-full border border-white/20 bg-slate-950/65 px-3 py-1.5 text-xs font-black text-white backdrop-blur-sm">{item.newsType === "related" ? (t("interface.related_news", { defaultValue: isRtl ? "أخبار ذات علاقة" : "Related news" })) : (t("interface.organization_news", { defaultValue: isRtl ? "أخبار المنظمة" : "Organization news" }))}</span>
                       <div className="absolute inset-x-0 bottom-0 p-6 text-white sm:p-8">
-                        <span className="flex items-center gap-2 text-xs font-bold text-emerald-300">
+                        <span className="flex items-center gap-2 text-xs font-bold text-[#63E1FA]">
                           <CalendarDays size={14} />
                           {item.date && formatDate(item.date)}
                         </span>
-                        <h3 className={`mt-3 font-black leading-tight ${index === 0 ? "text-2xl sm:text-3xl" : "text-xl"}`}>{getTitle(item)}</h3>
+                        <h3 className="mt-3 line-clamp-3 text-xl font-black leading-8">{getTitle(item)}</h3>
                       </div>
                     </div>
-                    <div className="p-6">
-                      <p className="text-sm leading-7 text-slate-500">{getDescription(item)}</p>
-                      <span className="mt-5 inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.13em] text-emerald-700">
+                    <div className="flex flex-1 flex-col p-6">
+                      {getLocation(item) && (
+                        <div className="mb-3">
+                          <LocationLabel item={item} location={getLocation(item)} />
+                        </div>
+                      )}
+                      <p className="line-clamp-3 min-h-[5.25rem] text-sm leading-7 text-slate-500">{getDescription(item)}</p>
+                      <span className="mt-auto inline-flex items-center gap-2 pt-5 text-xs font-black uppercase tracking-[0.13em] text-[#007A94]">
                         {t("media_page.read_more")}
                         <ArrowLeft size={14} className={isRtl ? "" : "rotate-180"} />
                       </span>
@@ -433,16 +468,20 @@ const MediaCenterSection = () => {
                 {paginatedItems.map((item) => {
                   const date = new Date(item.date);
                   return (
-                    <article id={`media-item-${item.id}`} key={item.id} className={`group flex scroll-mt-28 flex-col overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:border-emerald-300 hover:shadow-[0_20px_50px_rgba(5,150,105,0.1)] sm:flex-row ${focusClass(item)}`}>
-                      <div className="flex min-w-[150px] flex-col items-center justify-center bg-gradient-to-br from-emerald-700 to-teal-500 p-7 text-white">
+                    <article id={`media-item-${item.id}`} key={item.id} className={`group flex scroll-mt-28 flex-col overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-sm transition-all hover:-translate-y-1 hover:border-[#63E1FA] hover:shadow-[0_20px_50px_rgba(0,201,242,0.1)] sm:flex-row ${focusClass(item)}`}>
+                      <div className="flex min-w-[150px] flex-col items-center justify-center bg-gradient-to-br from-[#007A94] to-[#00C9F2] p-7 text-white">
                         <strong className="text-5xl font-black">{date.getDate()}</strong>
                         <span className="mt-1 text-xs font-black uppercase tracking-[0.16em]">{new Intl.DateTimeFormat(locale, { month: "long" }).format(date)}</span>
                         <span className="mt-1 text-sm text-white/70">{date.getFullYear()}</span>
                       </div>
-                      <div className="p-7">
+                      <div className="flex min-w-0 flex-1 flex-col p-7">
                         <LocationLabel item={item} location={getLocation(item)} />
                         <h3 className="mt-4 text-2xl font-black leading-9 text-slate-900">{getTitle(item)}</h3>
-                        <p className="mt-3 text-sm leading-7 text-slate-500">{getDescription(item)}</p>
+                        <p className="mt-3 line-clamp-3 text-sm leading-7 text-slate-500">{getDescription(item)}</p>
+                        <button type="button" onClick={() => setSelectedEvent(item)} aria-haspopup="dialog" className="mt-auto inline-flex items-center gap-2 self-start pt-5 text-sm font-bold text-[#007A94] hover:text-[#006176]">
+                          {t("media_page.read_more")}
+                          <ArrowLeft size={15} className={isRtl ? "" : "rotate-180"} />
+                        </button>
                       </div>
                     </article>
                   );
@@ -453,14 +492,14 @@ const MediaCenterSection = () => {
             {!loading && items.length > 0 && activeTab === "releases" && (
               <div className="grid gap-7 xl:grid-cols-2">
                 {paginatedItems.map((item) => (
-                  <article id={`media-item-${item.id}`} key={item.id} className={`group relative flex min-h-[360px] scroll-mt-28 flex-col overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-[0_18px_55px_rgba(15,23,42,0.07)] transition-all duration-500 hover:-translate-y-1.5 hover:border-emerald-300 hover:shadow-[0_30px_70px_rgba(5,150,105,0.14)] sm:flex-row ${focusClass(item)}`}>
-                    <div className="relative flex min-h-[300px] w-full shrink-0 items-center justify-center overflow-hidden bg-gradient-to-br from-slate-950 via-emerald-950 to-emerald-800 px-8 py-10 sm:w-[46%]">
+                  <article id={`media-item-${item.id}`} key={item.id} className={`group relative flex min-h-[360px] scroll-mt-28 flex-col overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-[0_18px_55px_rgba(15,23,42,0.07)] transition-all duration-500 hover:-translate-y-1.5 hover:border-[#63E1FA] hover:shadow-[0_30px_70px_rgba(0,201,242,0.14)] sm:flex-row ${focusClass(item)}`}>
+                    <div className="relative flex min-h-[300px] w-full shrink-0 items-center justify-center overflow-hidden bg-gradient-to-br from-slate-950 via-[#00313D] to-[#006176] px-8 py-10 sm:w-[46%]">
                       <div className="pointer-events-none absolute -left-14 -top-16 h-48 w-48 rounded-full border-[32px] border-white/[0.035]" />
-                      <div className="pointer-events-none absolute -bottom-20 -right-16 h-56 w-56 rounded-full bg-emerald-400/10 blur-2xl" />
+                      <div className="pointer-events-none absolute -bottom-20 -right-16 h-56 w-56 rounded-full bg-[#2AD5F5]/10 blur-2xl" />
                       <div className="pointer-events-none absolute inset-0 opacity-[0.035] [background-image:linear-gradient(white_1px,transparent_1px),linear-gradient(90deg,white_1px,transparent_1px)] [background-size:28px_28px]" />
                       <div className="relative">
                         <PdfCover3D url={item.pdf} thumbnailUrl={item.pdfThumbnail} title={getTitle(item)} />
-                        <span className="absolute -bottom-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 rounded-full border border-white/15 bg-slate-950/75 px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.16em] text-emerald-200 backdrop-blur-md">
+                        <span className="absolute -bottom-3 left-1/2 inline-flex -translate-x-1/2 items-center gap-1.5 rounded-full border border-white/15 bg-slate-950/75 px-3 py-1.5 text-[9px] font-black uppercase tracking-[0.16em] text-[#A1EDFF] backdrop-blur-md">
                           <FileText size={11} />
                           PDF
                         </span>
@@ -469,25 +508,25 @@ const MediaCenterSection = () => {
 
                     <div className="relative flex flex-1 flex-col p-7 sm:p-8">
                       <div className="flex flex-wrap items-center gap-3">
-                        <span className="inline-flex items-center gap-2 rounded-full bg-emerald-50 px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] text-emerald-700">
+                        <span className="inline-flex items-center gap-2 rounded-full bg-[#ECFCFF] px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] text-[#007A94]">
                           <BookOpen size={13} />
-                          {isRtl ? "من إصدارات البوابة" : "Portal publication"}
+                          {t("interface.portal_publication", { defaultValue: isRtl ? "من إصدارات البوابة" : "Portal publication" })}
                         </span>
                         {item.date && <span className="text-xs font-bold text-slate-400">{formatDate(item.date)}</span>}
                       </div>
 
-                      <h3 className="mt-6 text-2xl font-black leading-10 text-slate-950 transition-colors group-hover:text-emerald-800">{getTitle(item)}</h3>
+                      <h3 className="mt-6 text-2xl font-black leading-10 text-slate-950 transition-colors group-hover:text-[#006176]">{getTitle(item)}</h3>
                       <p className="mt-4 line-clamp-4 text-sm leading-8 text-slate-500">{getDescription(item)}</p>
 
                       <div className="mt-auto border-t border-slate-100 pt-6">
                         {item.pdf ? (
-                          <a href={item.pdf} target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 rounded-xl bg-slate-950 px-5 py-3 text-xs font-black text-white shadow-lg transition-all hover:bg-emerald-600 hover:shadow-emerald-600/20">
+                          <a href={item.pdf} target="_blank" rel="noreferrer" className="inline-flex items-center gap-3 rounded-xl bg-slate-950 px-5 py-3 text-xs font-black text-white shadow-lg transition-all hover:bg-[#00C9F2] hover:shadow-[#00C9F2]/20">
                             <BookOpen size={16} />
-                            {isRtl ? "فتح الإصدار" : "Open publication"}
+                            {t("interface.open_publication", { defaultValue: isRtl ? "فتح الإصدار" : "Open publication" })}
                             <ArrowLeft size={14} className={isRtl ? "" : "rotate-180"} />
                           </a>
                         ) : (
-                          <span className="text-xs font-bold text-slate-400">{isRtl ? "الملف غير متوفر" : "File unavailable"}</span>
+                          <span className="text-xs font-bold text-slate-400">{t("interface.file_unavailable", { defaultValue: isRtl ? "الملف غير متوفر" : "File unavailable" })}</span>
                         )}
                       </div>
                     </div>
@@ -500,9 +539,9 @@ const MediaCenterSection = () => {
               <div className="grid gap-7 lg:grid-cols-2">
                 {paginatedItems.map((item) => (
                   <article id={`media-item-${item.id}`} key={item.id} className={`group relative flex min-h-[390px] scroll-mt-28 flex-col overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-[0_18px_50px_rgba(15,23,42,0.07)] transition-all duration-500 hover:-translate-y-1.5 hover:border-amber-300 hover:shadow-[0_28px_65px_rgba(180,83,9,0.15)] ${focusClass(item)}`}>
-                    <div className="h-2 bg-gradient-to-r from-amber-400 via-yellow-300 to-emerald-500" />
+                    <div className="h-2 bg-gradient-to-r from-amber-400 via-yellow-300 to-[#00C9F2]" />
                     <div className="pointer-events-none absolute -right-20 -top-12 h-64 w-64 rounded-full border-[42px] border-amber-400/[0.07] transition-transform duration-700 group-hover:scale-110" />
-                    <Trophy size={150} strokeWidth={1} className="pointer-events-none absolute -bottom-8 -left-7 rotate-12 text-emerald-900/[0.035]" />
+                    <Trophy size={150} strokeWidth={1} className="pointer-events-none absolute -bottom-8 -left-7 rotate-12 text-[#004C5D]/[0.035]" />
 
                     <div className="relative flex flex-1 flex-col p-7 sm:p-8">
                       <div className="flex items-start justify-between gap-5">
@@ -515,18 +554,18 @@ const MediaCenterSection = () => {
                         )}
                         <span className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3.5 py-2 text-[10px] font-black uppercase tracking-[0.13em] text-amber-700">
                           <Sparkles size={13} />
-                          {isRtl ? "مسابقة وجائزة" : "Competition & Award"}
+                          {t("interface.competition_award", { defaultValue: isRtl ? "مسابقة وجائزة" : "Competition & Award" })}
                         </span>
                       </div>
 
                       <div className="mt-7 flex flex-wrap items-center gap-3">
                         {getLocation(item) && (
-                          <span className="rounded-full border border-emerald-100 bg-emerald-50 px-3 py-2">
+                          <span className="rounded-full border border-[#D0F6FF] bg-[#ECFCFF] px-3 py-2">
                             <LocationLabel item={item} location={getLocation(item)} />
                           </span>
                         )}
                         {getOrganization(item) && (
-                          <span className="inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50 px-3 py-2 text-xs font-bold text-emerald-700">
+                          <span className="inline-flex items-center gap-2 rounded-full border border-[#D0F6FF] bg-[#ECFCFF] px-3 py-2 text-xs font-bold text-[#007A94]">
                             <Building2 size={14} />
                             {getOrganization(item)}
                           </span>
@@ -539,13 +578,13 @@ const MediaCenterSection = () => {
                         )}
                       </div>
 
-                      <h3 className="mt-5 text-2xl font-black leading-10 text-slate-950 transition-colors group-hover:text-emerald-800">{getTitle(item)}</h3>
+                      <h3 className="mt-5 text-2xl font-black leading-10 text-slate-950 transition-colors group-hover:text-[#006176]">{getTitle(item)}</h3>
                       <p className="mt-3 line-clamp-3 text-sm leading-7 text-slate-500">{getDescription(item)}</p>
 
                       <div className="mt-auto flex items-center justify-between border-t border-slate-100 pt-6">
-                        <span className="inline-flex items-center gap-2 text-xs font-black text-emerald-700">
-                          <span className="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_0_5px_rgba(16,185,129,0.1)]" />
-                          {isRtl ? "فرصة للابتكار" : "Innovation opportunity"}
+                        <span className="inline-flex items-center gap-2 text-xs font-black text-[#007A94]">
+                          <span className="h-2 w-2 rounded-full bg-[#00C9F2] shadow-[0_0_0_5px_rgba(0,201,242,0.1)]" />
+                          {t("interface.innovation_opportunity", { defaultValue: isRtl ? "فرصة للابتكار" : "Innovation opportunity" })}
                         </span>
                         <span className="grid h-9 w-9 place-items-center rounded-full bg-slate-950 text-white transition-all duration-300 group-hover:bg-amber-500 group-hover:shadow-lg group-hover:shadow-amber-500/20">
                           <ArrowLeft size={15} className={isRtl ? "" : "rotate-180"} />
@@ -560,9 +599,9 @@ const MediaCenterSection = () => {
             {!loading && items.length > 0 && activeTab === "stories" && (
               <div className="grid gap-6 lg:grid-cols-2">
                 {paginatedItems.map((item) => (
-                  <article id={`media-item-${item.id}`} key={item.id} className={`relative scroll-mt-28 overflow-hidden rounded-[2rem] bg-gradient-to-br from-emerald-800 to-teal-700 p-8 text-white shadow-[0_24px_60px_rgba(5,150,105,0.16)] sm:p-10 ${focusClass(item)}`}>
+                  <article id={`media-item-${item.id}`} key={item.id} className={`relative scroll-mt-28 overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#006176] to-[#007A94] p-8 text-white shadow-[0_24px_60px_rgba(0,201,242,0.16)] sm:p-10 ${focusClass(item)}`}>
                     <Quote size={48} className="text-white/15" />
-                    <blockquote className="mt-6 text-xl font-semibold leading-10 text-emerald-50/90">“{getDescription(item)}”</blockquote>
+                    <blockquote className="mt-6 text-xl font-semibold leading-10 text-[#ECFCFF]/90">“{getDescription(item)}”</blockquote>
                     <div className="mt-8 border-t border-white/15 pt-6 text-sm font-black text-white">{getTitle(item)}</div>
                   </article>
                 ))}
@@ -571,13 +610,36 @@ const MediaCenterSection = () => {
           </motion.section>
         </AnimatePresence>
         {!loading && displayedItems.length > pageSize && (
-          <nav className="mt-8 flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-            <button disabled={page === 1} onClick={() => setPage((current) => current - 1)} className="rounded-xl border border-slate-200 p-2.5 text-slate-600 disabled:opacity-40"><ChevronRight size={18} /></button>
-            {Array.from({ length: totalPages }, (_, index) => index + 1).map((number) => <button key={number} onClick={() => setPage(number)} className={`h-10 min-w-10 rounded-xl px-3 text-sm font-black ${page === number ? "bg-emerald-600 text-white" : "border border-slate-200 text-slate-600"}`}>{number}</button>)}
-            <button disabled={page === totalPages} onClick={() => setPage((current) => current + 1)} className="rounded-xl border border-slate-200 p-2.5 text-slate-600 disabled:opacity-40"><ChevronLeft size={18} /></button>
-          </nav>
+          <Pagination page={currentPage} totalPages={totalPages} onPageChange={changePage} className="mt-8 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm" />
         )}
       </main>
+      {selectedEvent && (
+        <dialog
+          ref={eventDialogRef}
+          aria-labelledby="event-details-title"
+          onCancel={() => setSelectedEvent(null)}
+          onClose={() => setSelectedEvent(null)}
+          onClick={(event) => { if (event.target === event.currentTarget) setSelectedEvent(null); }}
+          dir={isRtl ? "rtl" : "ltr"}
+          className="m-auto max-h-[85dvh] w-[calc(100%-2rem)] max-w-2xl overflow-y-auto rounded-3xl border border-[#D0F6FF] bg-white p-0 text-slate-800 shadow-2xl backdrop:bg-slate-950/60 backdrop:backdrop-blur-sm"
+        >
+          <div className="flex items-start justify-between gap-5 border-b border-slate-100 p-6">
+            <h2 id="event-details-title" className="text-xl font-black leading-8">{getTitle(selectedEvent)}</h2>
+            <button type="button" onClick={() => setSelectedEvent(null)} aria-label={t("interface.close", { defaultValue: isRtl ? "إغلاق" : "Close" })} className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-slate-100 text-slate-600 hover:bg-slate-200"><X size={20} /></button>
+          </div>
+          <div className="space-y-6 p-6">
+            {selectedEvent.image && <img src={selectedEvent.image} alt="" className="max-h-72 w-full rounded-2xl object-cover" />}
+            {selectedEvent.date && <div className="flex items-center gap-2 text-sm font-bold text-[#007A94]"><CalendarDays size={17} />{formatDate(selectedEvent.date)}</div>}
+            {getLocation(selectedEvent) && <LocationLabel item={selectedEvent} location={getLocation(selectedEvent)} />}
+            <p className="whitespace-pre-line break-words text-sm leading-8 text-slate-600">{getDescription(selectedEvent)}</p>
+            {/^https?:\/\//i.test(selectedEvent.external_url || "") && (
+              <a href={selectedEvent.external_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 rounded-xl bg-[#007A94] px-5 py-3 text-sm font-bold text-white hover:bg-[#006176]">
+                {t("media_page.event_link", { defaultValue: isRtl ? "رابط الفعالية" : "Visit event website" })}<ExternalLink size={16} />
+              </a>
+            )}
+          </div>
+        </dialog>
+      )}
     </div>
   );
 };

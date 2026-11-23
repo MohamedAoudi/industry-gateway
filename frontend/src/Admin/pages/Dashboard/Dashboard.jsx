@@ -18,7 +18,7 @@
 //       <div className={`p-4 rounded-2xl ${colorClass} bg-opacity-10 text-xl`}>
 //         {React.cloneElement(icon, { className: `w-6 h-6 ${iconColor}`, strokeWidth: 2.5 })}
 //       </div>
-//       <span className="flex items-center text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full text-xs font-black">
+//       <span className="flex items-center text-[#00C9F2] bg-[#ECFCFF] px-3 py-1 rounded-full text-xs font-black">
 //         <ArrowUpRight size={14} className="ml-1" />
 //         {trend}
 //       </span>
@@ -56,7 +56,7 @@
 //       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 //         <StatCard title="إجمالي المؤسسات" value="1,240" icon={<Users />} trend="+12٪" colorClass="bg-indigo-500" iconColor="text-indigo-600" />
 //         <StatCard title="رأس المال المستثمر" value="M$ 85.4" icon={<HandCoins />} trend="+8٪" colorClass="bg-amber-500" iconColor="text-amber-600" />
-//         <StatCard title="المشاريع المنفذة" value="912" icon={<Zap />} trend="+24٪" colorClass="bg-emerald-500" iconColor="text-emerald-600" />
+//         <StatCard title="المشاريع المنفذة" value="912" icon={<Zap />} trend="+24٪" colorClass="bg-[#00C9F2]" iconColor="text-[#00C9F2]" />
 //         <StatCard title="التغطية الجغرافية" value="24" icon={<Globe />} trend="مستقر" colorClass="bg-rose-500" iconColor="text-rose-600" />
 //       </div>
 
@@ -110,7 +110,7 @@
 //             <h3 className="text-2xl font-black mb-8 border-b border-white/10 pb-4">مؤشرات الإنجاز</h3>
 //             <div className="space-y-8">
 //               <ProgressItem label="التوسع في الخليج" percent={82} color="bg-amber-400" />
-//               <ProgressItem label="التحول الرقمي" percent={56} color="bg-emerald-400" />
+//               <ProgressItem label="التحول الرقمي" percent={56} color="bg-[#2AD5F5]" />
 //               <ProgressItem label="استقطاب الشركاء" percent={94} color="bg-indigo-400" />
 //             </div>
 //           </div>
@@ -119,7 +119,7 @@
 //             <p className="text-indigo-200 text-sm font-medium">إجمالي التطور السنوي</p>
 //             <div className="flex items-end gap-2">
 //               <h4 className="text-4xl font-black text-amber-400">92.8٪</h4>
-//               <TrendingUp className="text-emerald-400 mb-2" size={20} />
+//               <TrendingUp className="text-[#2AD5F5] mb-2" size={20} />
 //             </div>
 //           </div>
 
@@ -198,7 +198,7 @@ const InnovationCard = ({ title, value, subtext, icon: Icon, trend, colorClass }
         <Icon className={`w-7 h-7 ${colorClass.replace('bg-', 'text-')}`} strokeWidth={2} />
       </div>
       {trend && (
-        <span className="flex items-center text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full text-[10px] font-black tracking-tighter">
+        <span className="flex items-center text-[#00C9F2] bg-[#ECFCFF] px-3 py-1 rounded-full text-[10px] font-black tracking-tighter">
           <ArrowUpRight size={12} className="ml-1" />
           {trend}
         </span>
@@ -222,18 +222,18 @@ const ScientificDashboard = () => {
       <div className="flex flex-col lg:flex-row justify-between items-end gap-6 border-b border-slate-100 pb-10">
         <div className="max-w-2xl">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-50 rounded-full mb-4">
-            <Zap size={14} className="text-emerald-600 fill-emerald-600" />
-            <span className="text-emerald-600 font-black text-[10px] uppercase tracking-widest">منصة الربط الصناعي</span>
+            <Zap size={14} className="text-[#00C9F2] fill-[#00C9F2]" />
+            <span className="text-[#00C9F2] font-black text-[10px] uppercase tracking-widest">منصة الربط الصناعي</span>
           </div>
           <h1 className="text-4xl font-black text-slate-900 leading-tight mb-4">
-            مؤشرات التحول نحو <span className="text-emerald-600 underline decoration-emerald-200 underline-offset-8">اقتصاد المعرفة</span>
+            مؤشرات التحول نحو <span className="text-[#00C9F2] underline decoration-[#A1EDFF] underline-offset-8">اقتصاد المعرفة</span>
           </h1>
           <p className="text-slate-500 leading-relaxed font-medium text-sm">
             نتابع هنا رحلة تحويل الاكتشافات البحثية إلى منتجات صناعية قابلة للاستثمار لتعزيز التنمية الصناعية العربية المستدامة.
           </p>
         </div>
         <div className="flex gap-4">
-          <button className="bg-emerald-600 text-white px-8 py-4 rounded-2xl font-black text-sm hover:bg-indigo-600 shadow-2xl shadow-indigo-200 transition-all flex items-center gap-3 group">
+          <button className="bg-[#00C9F2] text-white px-8 py-4 rounded-2xl font-black text-sm hover:bg-indigo-600 shadow-2xl shadow-indigo-200 transition-all flex items-center gap-3 group">
             <Database size={18} className="group-hover:rotate-12 transition-transform" />
             <span>قاعدة بيانات الابتكارات</span>
           </button>
@@ -264,7 +264,7 @@ const ScientificDashboard = () => {
           subtext="اتفاقيات تعاون (R&D)"
           icon={ArrowLeftRight} 
           trend="+12%" 
-          colorClass="bg-emerald-500" 
+          colorClass="bg-[#00C9F2]" 
         />
         <InnovationCard 
           title="الاستثمار المعرفي" 
@@ -330,7 +330,7 @@ const ScientificDashboard = () => {
 
         {/* بطاقة "الترابط" الذكية */}
         <div className="flex flex-col gap-6">
-          <div className="bg-emerald-600 rounded-[2.5rem] p-8 text-white relative overflow-hidden group">
+          <div className="bg-[#00C9F2] rounded-[2.5rem] p-8 text-white relative overflow-hidden group">
             <div className="relative z-10">
               <Network size={40} className="mb-6 opacity-80 group-hover:scale-110 transition-transform duration-500" />
               <h3 className="text-2xl font-black mb-2">تعزيز الترابط</h3>

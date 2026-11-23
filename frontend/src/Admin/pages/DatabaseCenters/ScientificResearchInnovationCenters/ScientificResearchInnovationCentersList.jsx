@@ -71,7 +71,7 @@
 // //         setIsEditModalOpen(true);
 // //     };
 
-// //     if (loading) return <div className="p-10 text-center font-bold text-[#606c38]">جاري تحميل البيانات...</div>;
+// //     if (loading) return <div className="p-10 text-center font-bold text-[#007A94]">جاري تحميل البيانات...</div>;
 
 // //     return (
 // //         <div className="p-6 bg-slate-50 min-h-screen" dir="rtl">
@@ -79,9 +79,9 @@
             
 // //             <div className="flex justify-between items-center mb-8">
 // //                 <div>
-// //                     <h1 className="text-3xl font-black text-[#283618]">إدارة مراكز البحث العلمي و الإبتكار</h1>
+// //                     <h1 className="text-3xl font-black text-[#004C5D]">إدارة مراكز البحث العلمي و الإبتكار</h1>
 // //                 </div>
-// //                 <Link to="/admin/scientificResearchInnovationCentersForm" className="bg-emerald-600 hover:bg-emerald-800 text-white px-6 py-3 rounded-2xl flex items-center gap-2 transition-all shadow-lg shadow-[#283618]/10 font-bold">
+// //                 <Link to="/admin/scientificResearchInnovationCentersForm" className="bg-[#00C9F2] hover:bg-[#006176] text-white px-6 py-3 rounded-2xl flex items-center gap-2 transition-all shadow-lg shadow-[#004C5D]/10 font-bold">
 // //                     <Plus size={20}/>
 // //                     <span>إضافة مركز بحث علمي جديد</span>
 // //                 </Link>
@@ -90,7 +90,7 @@
 // //             <div className="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden">
 // //                 <div className="overflow-x-auto">
 // //                     <table className="w-full text-right whitespace-nowrap">
-// //                         <thead className="bg-emerald-600 text-white">
+// //                         <thead className="bg-[#00C9F2] text-white">
 // //                             <tr>
 // //                                 <th className="p-5 text-sm font-bold">الصورة</th>
 // //                                 <th className="p-5 text-sm font-bold">المركز (AR/EN)</th>
@@ -111,21 +111,21 @@
 // //                                                         src={`${import.meta.env.VITE_API_BASE_URL}/storage/${inst.photo}`}
 // //                                                         alt="" className="w-full h-full object-cover"
 // //                                                     />
-// //                                                 ) : <ImageIcon className="text-[#606c38]/40" size={20} />}
+// //                                                 ) : <ImageIcon className="text-[#007A94]/40" size={20} />}
 // //                                             </div>
 // //                                         </td>
 // //                                         <td className="p-5">
-// //                                             <div className="font-bold text-[#283618]">{inst.titre_ar}</div>
-// //                                             <div className="text-[10px] text-[#606c38]/70 italic" dir="ltr">{inst.titre_en}</div>
+// //                                             <div className="font-bold text-[#004C5D]">{inst.titre_ar}</div>
+// //                                             <div className="text-[10px] text-[#007A94]/70 italic" dir="ltr">{inst.titre_en}</div>
 // //                                         </td>
 // //                                         <td className="p-5 font-bold text-slate-700">{inst.pays?.nomPays || 'N/A'}</td>
 // //                                         <td className="p-5">
-// //                                             <div className="font-bold text-[#283618]">{inst.description_ar}</div>
-// //                                             <div className="text-[10px] text-[#606c38]/70 italic" dir="ltr">{inst.description_en}</div>
+// //                                             <div className="font-bold text-[#004C5D]">{inst.description_ar}</div>
+// //                                             <div className="text-[10px] text-[#007A94]/70 italic" dir="ltr">{inst.description_en}</div>
 // //                                         </td>
 // //                                         <td className="p-5 text-center">
 // //                                             <div className="flex justify-center gap-2">
-// //                                                 <button onClick={() => handleEditClick(inst)} className="p-2 bg-[#606c38]/10 text-[#606c38] rounded-lg hover:bg-[#606c38] hover:text-white transition-all">
+// //                                                 <button onClick={() => handleEditClick(inst)} className="p-2 bg-[#007A94]/10 text-[#007A94] rounded-lg hover:bg-[#007A94] hover:text-white transition-all">
 // //                                                     <Pencil size={18} />
 // //                                                 </button>
 // //                                                 <button onClick={() => handleDelete(currentId)} className="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-600 hover:text-white transition-all">
@@ -147,7 +147,7 @@
 // //                     <button
 // //                         disabled={currentPage === 1}
 // //                         onClick={() => setCurrentPage(currentPage - 1)}
-// //                         className="w-10 h-10 rounded-xl border flex items-center justify-center bg-white disabled:opacity-50 hover:bg-[#283618] hover:text-white transition-all"
+// //                         className="w-10 h-10 rounded-xl border flex items-center justify-center bg-white disabled:opacity-50 hover:bg-[#004C5D] hover:text-white transition-all"
 // //                     >
 // //                         <ChevronRight size={18} />
 // //                     </button>
@@ -160,7 +160,7 @@
 // //                             onClick={() => setCurrentPage(page)}
 // //                             className={`w-10 h-10 rounded-xl font-bold transition-all ${
 // //                               currentPage === page
-// //                                 ? 'bg-emerald-600 text-white shadow-md'
+// //                                 ? 'bg-[#00C9F2] text-white shadow-md'
 // //                                 : 'bg-white border text-slate-700 hover:bg-[#fefae0]'
 // //                             }`}
 // //                           >
@@ -172,7 +172,7 @@
 // //                     <button
 // //                         disabled={currentPage === lastPage}
 // //                         onClick={() => setCurrentPage(currentPage + 1)}
-// //                         className="w-10 h-10 rounded-xl border flex items-center justify-center bg-white disabled:opacity-50 hover:bg-[#283618] hover:text-white transition-all"
+// //                         className="w-10 h-10 rounded-xl border flex items-center justify-center bg-white disabled:opacity-50 hover:bg-[#004C5D] hover:text-white transition-all"
 // //                     >
 // //                         <ChevronLeft size={18} />
 // //                     </button>
@@ -246,37 +246,37 @@
 // //                 className="bg-white w-full max-w-2xl rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
 // //             >
 // //                 <div className="p-6 border-b flex justify-between items-center bg-slate-50">
-// //                     <h3 className="text-xl font-black text-[#283618]">تعديل بيانات الحاضنة</h3>
+// //                     <h3 className="text-xl font-black text-[#004C5D]">تعديل بيانات الحاضنة</h3>
 // //                     <button onClick={onClose} className="p-2 hover:bg-slate-200 rounded-full transition-colors"><X/></button>
 // //                 </div>
 
 // //                 <form onSubmit={handleSubmit} className="p-8 space-y-5 overflow-y-auto">
 // //                     <div className="grid grid-cols-2 gap-4">
 // //                         <div>
-// //                             <label className="block text-xs font-bold mb-1 text-[#606c38]">الاسم (AR)</label>
-// //                             <input value={formData.titre_ar || ''} onChange={e => setFormData({...formData, titre_ar: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#606c38]" dir="rtl"/>
+// //                             <label className="block text-xs font-bold mb-1 text-[#007A94]">الاسم (AR)</label>
+// //                             <input value={formData.titre_ar || ''} onChange={e => setFormData({...formData, titre_ar: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#007A94]" dir="rtl"/>
 // //                         </div>
 // //                         <div>
-// //                             <label className="block text-xs font-bold mb-1 text-[#606c38]">Name (EN)</label>
-// //                             <input value={formData.titre_en || ''} onChange={e => setFormData({...formData, titre_en: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#606c38]" dir="ltr"/>
+// //                             <label className="block text-xs font-bold mb-1 text-[#007A94]">Name (EN)</label>
+// //                             <input value={formData.titre_en || ''} onChange={e => setFormData({...formData, titre_en: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#007A94]" dir="ltr"/>
 // //                         </div>
 // //                     </div>
 
 // //                     <div>
-// //                         <label className="block text-xs font-bold mb-1 text-[#606c38]">رابط الموقع</label>
-// //                         <input value={formData.url || ''} onChange={e => setFormData({...formData, url: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#606c38]" placeholder="https://..." dir="ltr"/>
+// //                         <label className="block text-xs font-bold mb-1 text-[#007A94]">رابط الموقع</label>
+// //                         <input value={formData.url || ''} onChange={e => setFormData({...formData, url: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#007A94]" placeholder="https://..." dir="ltr"/>
 // //                     </div>
 
 // //                     <div className="grid grid-cols-2 gap-4">
-// //                         <textarea value={formData.description_ar || ''} onChange={e => setFormData({...formData, description_ar: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl h-24 text-sm focus:outline-none focus:border-[#606c38]" placeholder="الوصف بالعربية" dir="rtl"/>
-// //                         <textarea value={formData.description_en || ''} onChange={e => setFormData({...formData, description_en: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl h-24 text-sm focus:outline-none focus:border-[#606c38]" placeholder="Description in English" dir="ltr"/>
+// //                         <textarea value={formData.description_ar || ''} onChange={e => setFormData({...formData, description_ar: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl h-24 text-sm focus:outline-none focus:border-[#007A94]" placeholder="الوصف بالعربية" dir="rtl"/>
+// //                         <textarea value={formData.description_en || ''} onChange={e => setFormData({...formData, description_en: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl h-24 text-sm focus:outline-none focus:border-[#007A94]" placeholder="Description in English" dir="ltr"/>
 // //                     </div>
 
 // //                     <div className="flex items-center gap-4 p-4 border rounded-2xl bg-slate-50">
 // //                         <div className="w-20 h-20 rounded-xl overflow-hidden border bg-white">
 // //                             {preview && <img src={preview} alt="preview" className="w-full h-full object-cover" />}
 // //                         </div>
-// //                         <label className="cursor-pointer bg-[#fefae0] text-[#283618] px-4 py-2 rounded-lg text-sm font-bold border border-[#606c38]/20 hover:bg-[#606c38]/10 transition-all">
+// //                         <label className="cursor-pointer bg-[#fefae0] text-[#004C5D] px-4 py-2 rounded-lg text-sm font-bold border border-[#007A94]/20 hover:bg-[#007A94]/10 transition-all">
 // //                             تغيير الصورة
 // //                             <input type="file" className="hidden" onChange={e => {
 // //                                 const file = e.target.files[0];
@@ -288,7 +288,7 @@
 // //                         </label>
 // //                     </div>
 
-// //                     <button disabled={loading} type="submit" className="w-full py-4 bg-[#283618] text-[#fefae0] rounded-2xl font-bold hover:bg-[#606c38] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#283618]/10">
+// //                     <button disabled={loading} type="submit" className="w-full py-4 bg-[#004C5D] text-[#fefae0] rounded-2xl font-bold hover:bg-[#007A94] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#004C5D]/10">
 // //                         {loading ? <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> : <><Send size={18}/> حفظ التغييرات</>}
 // //                     </button>
 // //                 </form>
@@ -359,21 +359,21 @@
 //                             src={`${import.meta.env.VITE_API_BASE_URL}/storage/${inst.photo}`}
 //                             alt="" className="w-full h-full object-cover"
 //                         />
-//                     ) : <ImageIcon className="text-[#606c38]/40" size={20} />}
+//                     ) : <ImageIcon className="text-[#007A94]/40" size={20} />}
 //                 </div>
 //             </td>
 //             <td className="p-5">
-//                 <div className="font-bold text-[#283618]">{inst.titre_ar}</div>
-//                 <div className="text-[10px] text-[#606c38]/70 italic" dir="ltr">{inst.titre_en}</div>
+//                 <div className="font-bold text-[#004C5D]">{inst.titre_ar}</div>
+//                 <div className="text-[10px] text-[#007A94]/70 italic" dir="ltr">{inst.titre_en}</div>
 //             </td>
 //             <td className="p-5 font-bold text-slate-700">{inst.pays?.nomPays || 'N/A'}</td>
             
 //             {/* Colonne de description optimisée anti-overflow */}
 //             <td className="p-5 min-w-[320px] max-w-[500px] whitespace-normal">
-//                 <div className="font-bold text-[#283618] break-words">
+//                 <div className="font-bold text-[#004C5D] break-words">
 //                     {renderDescription(inst.description_ar, true)}
 //                 </div>
-//                 <div className="text-[10px] text-[#606c38]/70 italic break-words mt-1" dir="ltr">
+//                 <div className="text-[10px] text-[#007A94]/70 italic break-words mt-1" dir="ltr">
 //                     {renderDescription(inst.description_en, false)}
 //                 </div>
                 
@@ -381,7 +381,7 @@
 //                     <button 
 //                         type="button"
 //                         onClick={() => setIsExpanded(!isExpanded)} 
-//                         className="mt-2 text-xs font-bold text-emerald-600 hover:text-emerald-800 transition-colors block focus:outline-none"
+//                         className="mt-2 text-xs font-bold text-[#00C9F2] hover:text-[#006176] transition-colors block focus:outline-none"
 //                     >
 //                         {isExpanded ? 'عرض أقل' : 'عرض المزيد...'}
 //                     </button>
@@ -390,7 +390,7 @@
             
 //             <td className="p-5 text-center">
 //                 <div className="flex justify-center gap-2">
-//                     <button onClick={() => handleEditClick(inst)} className="p-2 bg-[#606c38]/10 text-[#606c38] rounded-lg hover:bg-[#606c38] hover:text-white transition-all">
+//                     <button onClick={() => handleEditClick(inst)} className="p-2 bg-[#007A94]/10 text-[#007A94] rounded-lg hover:bg-[#007A94] hover:text-white transition-all">
 //                         <Pencil size={18} />
 //                     </button>
 //                     <button onClick={() => handleDelete(currentId)} className="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-600 hover:text-white transition-all">
@@ -456,7 +456,7 @@
 //         setIsEditModalOpen(true);
 //     };
 
-//     if (loading) return <div className="p-10 text-center font-bold text-[#606c38]">جاري تحميل البيانات...</div>;
+//     if (loading) return <div className="p-10 text-center font-bold text-[#007A94]">جاري تحميل البيانات...</div>;
 
 //     return (
 //         <div className="p-6 bg-slate-50 min-h-screen" dir="rtl">
@@ -464,9 +464,9 @@
             
 //             <div className="flex justify-between items-center mb-8">
 //                 <div>
-//                     <h1 className="text-3xl font-black text-[#283618]">إدارة مراكز البحث العلمي و الإبتكار</h1>
+//                     <h1 className="text-3xl font-black text-[#004C5D]">إدارة مراكز البحث العلمي و الإبتكار</h1>
 //                 </div>
-//                 <Link to="/admin/scientificResearchInnovationCentersForm" className="bg-emerald-600 hover:bg-emerald-800 text-white px-6 py-3 rounded-2xl flex items-center gap-2 transition-all shadow-lg shadow-[#283618]/10 font-bold">
+//                 <Link to="/admin/scientificResearchInnovationCentersForm" className="bg-[#00C9F2] hover:bg-[#006176] text-white px-6 py-3 rounded-2xl flex items-center gap-2 transition-all shadow-lg shadow-[#004C5D]/10 font-bold">
 //                     <Plus size={20}/>
 //                     <span>إضافة مركز بحث علمي جديد</span>
 //                 </Link>
@@ -475,7 +475,7 @@
 //             <div className="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden">
 //                 <div className="overflow-x-auto">
 //                     <table className="w-full text-right table-fixed min-w-[800px]">
-//                         <thead className="bg-emerald-600 text-white">
+//                         <thead className="bg-[#00C9F2] text-white">
 //                             <tr>
 //                                 <th className="p-5 text-sm font-bold w-[10%]">الصورة</th>
 //                                 <th className="p-5 text-sm font-bold w-[25%]">المركز (AR/EN)</th>
@@ -508,7 +508,7 @@
 //                     <button
 //                         disabled={currentPage === 1}
 //                         onClick={() => setCurrentPage(currentPage - 1)}
-//                         className="w-10 h-10 rounded-xl border flex items-center justify-center bg-white disabled:opacity-50 hover:bg-[#283618] hover:text-white transition-all"
+//                         className="w-10 h-10 rounded-xl border flex items-center justify-center bg-white disabled:opacity-50 hover:bg-[#004C5D] hover:text-white transition-all"
 //                     >
 //                         <ChevronRight size={18} />
 //                     </button>
@@ -521,7 +521,7 @@
 //                             onClick={() => setCurrentPage(page)}
 //                             className={`w-10 h-10 rounded-xl font-bold transition-all ${
 //                               currentPage === page
-//                                 ? 'bg-emerald-600 text-white shadow-md'
+//                                 ? 'bg-[#00C9F2] text-white shadow-md'
 //                                 : 'bg-white border text-slate-700 hover:bg-[#fefae0]'
 //                             }`}
 //                           >
@@ -533,7 +533,7 @@
 //                     <button
 //                         disabled={currentPage === lastPage}
 //                         onClick={() => setCurrentPage(currentPage + 1)}
-//                         className="w-10 h-10 rounded-xl border flex items-center justify-center bg-white disabled:opacity-50 hover:bg-[#283618] hover:text-white transition-all"
+//                         className="w-10 h-10 rounded-xl border flex items-center justify-center bg-white disabled:opacity-50 hover:bg-[#004C5D] hover:text-white transition-all"
 //                     >
 //                         <ChevronLeft size={18} />
 //                     </button>
@@ -607,37 +607,37 @@
 //                 className="bg-white w-full max-w-2xl rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
 //             >
 //                 <div className="p-6 border-b flex justify-between items-center bg-slate-50">
-//                     <h3 className="text-xl font-black text-[#283618]">تعديل بيانات الحاضنة</h3>
+//                     <h3 className="text-xl font-black text-[#004C5D]">تعديل بيانات الحاضنة</h3>
 //                     <button onClick={onClose} className="p-2 hover:bg-slate-200 rounded-full transition-colors"><X/></button>
 //                 </div>
 
 //                 <form onSubmit={handleSubmit} className="p-8 space-y-5 overflow-y-auto">
 //                     <div className="grid grid-cols-2 gap-4">
 //                         <div>
-//                             <label className="block text-xs font-bold mb-1 text-[#606c38]">الاسم (AR)</label>
-//                             <input value={formData.titre_ar || ''} onChange={e => setFormData({...formData, titre_ar: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#606c38]" dir="rtl"/>
+//                             <label className="block text-xs font-bold mb-1 text-[#007A94]">الاسم (AR)</label>
+//                             <input value={formData.titre_ar || ''} onChange={e => setFormData({...formData, titre_ar: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#007A94]" dir="rtl"/>
 //                         </div>
 //                         <div>
-//                             <label className="block text-xs font-bold mb-1 text-[#606c38]">Name (EN)</label>
-//                             <input value={formData.titre_en || ''} onChange={e => setFormData({...formData, titre_en: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#606c38]" dir="ltr"/>
+//                             <label className="block text-xs font-bold mb-1 text-[#007A94]">Name (EN)</label>
+//                             <input value={formData.titre_en || ''} onChange={e => setFormData({...formData, titre_en: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#007A94]" dir="ltr"/>
 //                         </div>
 //                     </div>
 
 //                     <div>
-//                         <label className="block text-xs font-bold mb-1 text-[#606c38]">رابط الموقع</label>
-//                         <input value={formData.url || ''} onChange={e => setFormData({...formData, url: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#606c38]" placeholder="https://..." dir="ltr"/>
+//                         <label className="block text-xs font-bold mb-1 text-[#007A94]">رابط الموقع</label>
+//                         <input value={formData.url || ''} onChange={e => setFormData({...formData, url: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#007A94]" placeholder="https://..." dir="ltr"/>
 //                     </div>
 
 //                     <div className="grid grid-cols-2 gap-4">
-//                         <textarea value={formData.description_ar || ''} onChange={e => setFormData({...formData, description_ar: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl h-24 text-sm focus:outline-none focus:border-[#606c38]" placeholder="الوصف بالعربية" dir="rtl"/>
-//                         <textarea value={formData.description_en || ''} onChange={e => setFormData({...formData, description_en: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl h-24 text-sm focus:outline-none focus:border-[#606c38]" placeholder="Description in English" dir="ltr"/>
+//                         <textarea value={formData.description_ar || ''} onChange={e => setFormData({...formData, description_ar: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl h-24 text-sm focus:outline-none focus:border-[#007A94]" placeholder="الوصف بالعربية" dir="rtl"/>
+//                         <textarea value={formData.description_en || ''} onChange={e => setFormData({...formData, description_en: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl h-24 text-sm focus:outline-none focus:border-[#007A94]" placeholder="Description in English" dir="ltr"/>
 //                     </div>
 
 //                     <div className="flex items-center gap-4 p-4 border rounded-2xl bg-slate-50">
 //                         <div className="w-20 h-20 rounded-xl overflow-hidden border bg-white">
 //                             {preview && <img src={preview} alt="preview" className="w-full h-full object-cover" />}
 //                         </div>
-//                         <label className="cursor-pointer bg-[#fefae0] text-[#283618] px-4 py-2 rounded-lg text-sm font-bold border border-[#606c38]/20 hover:bg-[#606c38]/10 transition-all">
+//                         <label className="cursor-pointer bg-[#fefae0] text-[#004C5D] px-4 py-2 rounded-lg text-sm font-bold border border-[#007A94]/20 hover:bg-[#007A94]/10 transition-all">
 //                             تغيير الصورة
 //                             <input type="file" className="hidden" onChange={e => {
 //                                 const file = e.target.files[0];
@@ -649,7 +649,7 @@
 //                         </label>
 //                     </div>
 
-//                     <button disabled={loading} type="submit" className="w-full py-4 bg-[#283618] text-[#fefae0] rounded-2xl font-bold hover:bg-[#606c38] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#283618]/10">
+//                     <button disabled={loading} type="submit" className="w-full py-4 bg-[#004C5D] text-[#fefae0] rounded-2xl font-bold hover:bg-[#007A94] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#004C5D]/10">
 //                         {loading ? <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> : <><Send size={18}/> حفظ التغييرات</>}
 //                     </button>
 //                 </form>
@@ -754,7 +754,7 @@
 //         setIsEditModalOpen(true);
 //     };
 
-//     if (loading) return <div className="p-10 text-center font-bold text-[#606c38]">جاري تحميل البيانات...</div>;
+//     if (loading) return <div className="p-10 text-center font-bold text-[#007A94]">جاري تحميل البيانات...</div>;
 
 //     return (
 //         <div className="p-6 bg-slate-50 min-h-screen" dir="rtl">
@@ -762,9 +762,9 @@
             
 //             <div className="flex justify-between items-center mb-8">
 //                 <div>
-//                     <h1 className="text-3xl font-black text-[#283618]">إدارة مراكز البحث العلمي و الإبتكار</h1>
+//                     <h1 className="text-3xl font-black text-[#004C5D]">إدارة مراكز البحث العلمي و الإبتكار</h1>
 //                 </div>
-//                 <Link to="/admin/scientificResearchInnovationCentersForm" className="bg-emerald-600 hover:bg-emerald-800 text-white px-6 py-3 rounded-2xl flex items-center gap-2 transition-all shadow-lg shadow-[#283618]/10 font-bold">
+//                 <Link to="/admin/scientificResearchInnovationCentersForm" className="bg-[#00C9F2] hover:bg-[#006176] text-white px-6 py-3 rounded-2xl flex items-center gap-2 transition-all shadow-lg shadow-[#004C5D]/10 font-bold">
 //                     <Plus size={20}/>
 //                     <span>إضافة مركز بحث علمي جديد</span>
 //                 </Link>
@@ -773,7 +773,7 @@
 //             <div className="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden">
 //                 <div className="overflow-x-auto">
 //                     <table className="w-full text-right whitespace-nowrap">
-//                         <thead className="bg-emerald-600 text-white">
+//                         <thead className="bg-[#00C9F2] text-white">
 //                             <tr>
 //                                 <th className="p-5 text-sm font-bold">الصورة</th>
 //                                 <th className="p-5 text-sm font-bold">المركز (AR/EN)</th>
@@ -794,21 +794,21 @@
 //                                                         src={`${import.meta.env.VITE_API_BASE_URL}/storage/${inst.photo}`}
 //                                                         alt="" className="w-full h-full object-cover"
 //                                                     />
-//                                                 ) : <ImageIcon className="text-[#606c38]/40" size={20} />}
+//                                                 ) : <ImageIcon className="text-[#007A94]/40" size={20} />}
 //                                             </div>
 //                                         </td>
 //                                         <td className="p-5">
-//                                             <div className="font-bold text-[#283618]">{inst.titre_ar}</div>
-//                                             <div className="text-[10px] text-[#606c38]/70 italic" dir="ltr">{inst.titre_en}</div>
+//                                             <div className="font-bold text-[#004C5D]">{inst.titre_ar}</div>
+//                                             <div className="text-[10px] text-[#007A94]/70 italic" dir="ltr">{inst.titre_en}</div>
 //                                         </td>
 //                                         <td className="p-5 font-bold text-slate-700">{inst.pays?.nomPays || 'N/A'}</td>
 //                                         <td className="p-5">
-//                                             <div className="font-bold text-[#283618]">{inst.description_ar}</div>
-//                                             <div className="text-[10px] text-[#606c38]/70 italic" dir="ltr">{inst.description_en}</div>
+//                                             <div className="font-bold text-[#004C5D]">{inst.description_ar}</div>
+//                                             <div className="text-[10px] text-[#007A94]/70 italic" dir="ltr">{inst.description_en}</div>
 //                                         </td>
 //                                         <td className="p-5 text-center">
 //                                             <div className="flex justify-center gap-2">
-//                                                 <button onClick={() => handleEditClick(inst)} className="p-2 bg-[#606c38]/10 text-[#606c38] rounded-lg hover:bg-[#606c38] hover:text-white transition-all">
+//                                                 <button onClick={() => handleEditClick(inst)} className="p-2 bg-[#007A94]/10 text-[#007A94] rounded-lg hover:bg-[#007A94] hover:text-white transition-all">
 //                                                     <Pencil size={18} />
 //                                                 </button>
 //                                                 <button onClick={() => handleDelete(currentId)} className="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-600 hover:text-white transition-all">
@@ -830,7 +830,7 @@
 //                     <button
 //                         disabled={currentPage === 1}
 //                         onClick={() => setCurrentPage(currentPage - 1)}
-//                         className="w-10 h-10 rounded-xl border flex items-center justify-center bg-white disabled:opacity-50 hover:bg-[#283618] hover:text-white transition-all"
+//                         className="w-10 h-10 rounded-xl border flex items-center justify-center bg-white disabled:opacity-50 hover:bg-[#004C5D] hover:text-white transition-all"
 //                     >
 //                         <ChevronRight size={18} />
 //                     </button>
@@ -843,7 +843,7 @@
 //                             onClick={() => setCurrentPage(page)}
 //                             className={`w-10 h-10 rounded-xl font-bold transition-all ${
 //                               currentPage === page
-//                                 ? 'bg-emerald-600 text-white shadow-md'
+//                                 ? 'bg-[#00C9F2] text-white shadow-md'
 //                                 : 'bg-white border text-slate-700 hover:bg-[#fefae0]'
 //                             }`}
 //                           >
@@ -855,7 +855,7 @@
 //                     <button
 //                         disabled={currentPage === lastPage}
 //                         onClick={() => setCurrentPage(currentPage + 1)}
-//                         className="w-10 h-10 rounded-xl border flex items-center justify-center bg-white disabled:opacity-50 hover:bg-[#283618] hover:text-white transition-all"
+//                         className="w-10 h-10 rounded-xl border flex items-center justify-center bg-white disabled:opacity-50 hover:bg-[#004C5D] hover:text-white transition-all"
 //                     >
 //                         <ChevronLeft size={18} />
 //                     </button>
@@ -929,37 +929,37 @@
 //                 className="bg-white w-full max-w-2xl rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
 //             >
 //                 <div className="p-6 border-b flex justify-between items-center bg-slate-50">
-//                     <h3 className="text-xl font-black text-[#283618]">تعديل بيانات الحاضنة</h3>
+//                     <h3 className="text-xl font-black text-[#004C5D]">تعديل بيانات الحاضنة</h3>
 //                     <button onClick={onClose} className="p-2 hover:bg-slate-200 rounded-full transition-colors"><X/></button>
 //                 </div>
 
 //                 <form onSubmit={handleSubmit} className="p-8 space-y-5 overflow-y-auto">
 //                     <div className="grid grid-cols-2 gap-4">
 //                         <div>
-//                             <label className="block text-xs font-bold mb-1 text-[#606c38]">الاسم (AR)</label>
-//                             <input value={formData.titre_ar || ''} onChange={e => setFormData({...formData, titre_ar: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#606c38]" dir="rtl"/>
+//                             <label className="block text-xs font-bold mb-1 text-[#007A94]">الاسم (AR)</label>
+//                             <input value={formData.titre_ar || ''} onChange={e => setFormData({...formData, titre_ar: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#007A94]" dir="rtl"/>
 //                         </div>
 //                         <div>
-//                             <label className="block text-xs font-bold mb-1 text-[#606c38]">Name (EN)</label>
-//                             <input value={formData.titre_en || ''} onChange={e => setFormData({...formData, titre_en: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#606c38]" dir="ltr"/>
+//                             <label className="block text-xs font-bold mb-1 text-[#007A94]">Name (EN)</label>
+//                             <input value={formData.titre_en || ''} onChange={e => setFormData({...formData, titre_en: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#007A94]" dir="ltr"/>
 //                         </div>
 //                     </div>
 
 //                     <div>
-//                         <label className="block text-xs font-bold mb-1 text-[#606c38]">رابط الموقع</label>
-//                         <input value={formData.url || ''} onChange={e => setFormData({...formData, url: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#606c38]" placeholder="https://..." dir="ltr"/>
+//                         <label className="block text-xs font-bold mb-1 text-[#007A94]">رابط الموقع</label>
+//                         <input value={formData.url || ''} onChange={e => setFormData({...formData, url: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#007A94]" placeholder="https://..." dir="ltr"/>
 //                     </div>
 
 //                     <div className="grid grid-cols-2 gap-4">
-//                         <textarea value={formData.description_ar || ''} onChange={e => setFormData({...formData, description_ar: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl h-24 text-sm focus:outline-none focus:border-[#606c38]" placeholder="الوصف بالعربية" dir="rtl"/>
-//                         <textarea value={formData.description_en || ''} onChange={e => setFormData({...formData, description_en: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl h-24 text-sm focus:outline-none focus:border-[#606c38]" placeholder="Description in English" dir="ltr"/>
+//                         <textarea value={formData.description_ar || ''} onChange={e => setFormData({...formData, description_ar: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl h-24 text-sm focus:outline-none focus:border-[#007A94]" placeholder="الوصف بالعربية" dir="rtl"/>
+//                         <textarea value={formData.description_en || ''} onChange={e => setFormData({...formData, description_en: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl h-24 text-sm focus:outline-none focus:border-[#007A94]" placeholder="Description in English" dir="ltr"/>
 //                     </div>
 
 //                     <div className="flex items-center gap-4 p-4 border rounded-2xl bg-slate-50">
 //                         <div className="w-20 h-20 rounded-xl overflow-hidden border bg-white">
 //                             {preview && <img src={preview} alt="preview" className="w-full h-full object-cover" />}
 //                         </div>
-//                         <label className="cursor-pointer bg-[#fefae0] text-[#283618] px-4 py-2 rounded-lg text-sm font-bold border border-[#606c38]/20 hover:bg-[#606c38]/10 transition-all">
+//                         <label className="cursor-pointer bg-[#fefae0] text-[#004C5D] px-4 py-2 rounded-lg text-sm font-bold border border-[#007A94]/20 hover:bg-[#007A94]/10 transition-all">
 //                             تغيير الصورة
 //                             <input type="file" className="hidden" onChange={e => {
 //                                 const file = e.target.files[0];
@@ -971,7 +971,7 @@
 //                         </label>
 //                     </div>
 
-//                     <button disabled={loading} type="submit" className="w-full py-4 bg-[#283618] text-[#fefae0] rounded-2xl font-bold hover:bg-[#606c38] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#283618]/10">
+//                     <button disabled={loading} type="submit" className="w-full py-4 bg-[#004C5D] text-[#fefae0] rounded-2xl font-bold hover:bg-[#007A94] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#004C5D]/10">
 //                         {loading ? <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> : <><Send size={18}/> حفظ التغييرات</>}
 //                     </button>
 //                 </form>
@@ -1047,21 +1047,21 @@
 //                             src={`${import.meta.env.VITE_API_BASE_URL}/storage/${inst.photo}`}
 //                             alt="" className="w-full h-full object-cover"
 //                         />
-//                     ) : <ImageIcon className="text-[#606c38]/40" size={20} />}
+//                     ) : <ImageIcon className="text-[#007A94]/40" size={20} />}
 //                 </div>
 //             </td>
 //             <td className="p-5">
-//                 <div className="font-bold text-[#283618]">{inst.titre_ar}</div>
-//                 <div className="text-[10px] text-[#606c38]/70 italic" dir="ltr">{inst.titre_en}</div>
+//                 <div className="font-bold text-[#004C5D]">{inst.titre_ar}</div>
+//                 <div className="text-[10px] text-[#007A94]/70 italic" dir="ltr">{inst.titre_en}</div>
 //             </td>
 //             <td className="p-5 font-bold text-slate-700">{inst.pays?.nomPays || 'N/A'}</td>
             
 //             {/* Colonne de description optimisée anti-overflow */}
 //             <td className="p-5 min-w-[320px] max-w-[500px] whitespace-normal">
-//                 <div className="font-bold text-[#283618] break-words">
+//                 <div className="font-bold text-[#004C5D] break-words">
 //                     {renderDescription(inst.description_ar, true)}
 //                 </div>
-//                 <div className="text-[10px] text-[#606c38]/70 italic break-words mt-1" dir="ltr">
+//                 <div className="text-[10px] text-[#007A94]/70 italic break-words mt-1" dir="ltr">
 //                     {renderDescription(inst.description_en, false)}
 //                 </div>
                 
@@ -1069,7 +1069,7 @@
 //                     <button 
 //                         type="button"
 //                         onClick={() => setIsExpanded(!isExpanded)} 
-//                         className="mt-2 text-xs font-bold text-emerald-600 hover:text-emerald-800 transition-colors block focus:outline-none"
+//                         className="mt-2 text-xs font-bold text-[#00C9F2] hover:text-[#006176] transition-colors block focus:outline-none"
 //                     >
 //                         {isExpanded ? 'عرض أقل' : 'عرض المزيد...'}
 //                     </button>
@@ -1078,7 +1078,7 @@
             
 //             <td className="p-5 text-center">
 //                 <div className="flex justify-center gap-2">
-//                     <button onClick={() => handleEditClick(inst)} className="p-2 bg-[#606c38]/10 text-[#606c38] rounded-lg hover:bg-[#606c38] hover:text-white transition-all">
+//                     <button onClick={() => handleEditClick(inst)} className="p-2 bg-[#007A94]/10 text-[#007A94] rounded-lg hover:bg-[#007A94] hover:text-white transition-all">
 //                         <Pencil size={18} />
 //                     </button>
 //                     <button onClick={() => handleDelete(currentId)} className="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-600 hover:text-white transition-all">
@@ -1144,7 +1144,7 @@
 //         setIsEditModalOpen(true);
 //     };
 
-//     if (loading) return <div className="p-10 text-center font-bold text-[#606c38]">جاري تحميل البيانات...</div>;
+//     if (loading) return <div className="p-10 text-center font-bold text-[#007A94]">جاري تحميل البيانات...</div>;
 
 //     return (
 //         <div className="p-6 bg-slate-50 min-h-screen" dir="rtl">
@@ -1152,9 +1152,9 @@
             
 //             <div className="flex justify-between items-center mb-8">
 //                 <div>
-//                     <h1 className="text-3xl font-black text-[#283618]">إدارة مراكز البحث العلمي و الإبتكار</h1>
+//                     <h1 className="text-3xl font-black text-[#004C5D]">إدارة مراكز البحث العلمي و الإبتكار</h1>
 //                 </div>
-//                 <Link to="/admin/scientificResearchInnovationCentersForm" className="bg-emerald-600 hover:bg-emerald-800 text-white px-6 py-3 rounded-2xl flex items-center gap-2 transition-all shadow-lg shadow-[#283618]/10 font-bold">
+//                 <Link to="/admin/scientificResearchInnovationCentersForm" className="bg-[#00C9F2] hover:bg-[#006176] text-white px-6 py-3 rounded-2xl flex items-center gap-2 transition-all shadow-lg shadow-[#004C5D]/10 font-bold">
 //                     <Plus size={20}/>
 //                     <span>إضافة مركز بحث علمي جديد</span>
 //                 </Link>
@@ -1163,7 +1163,7 @@
 //             <div className="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden">
 //                 <div className="overflow-x-auto">
 //                     <table className="w-full text-right table-fixed min-w-[800px]">
-//                         <thead className="bg-emerald-600 text-white">
+//                         <thead className="bg-[#00C9F2] text-white">
 //                             <tr>
 //                                 <th className="p-5 text-sm font-bold w-[10%]">الصورة</th>
 //                                 <th className="p-5 text-sm font-bold w-[25%]">المركز (AR/EN)</th>
@@ -1196,7 +1196,7 @@
 //                     <button
 //                         disabled={currentPage === 1}
 //                         onClick={() => setCurrentPage(currentPage - 1)}
-//                         className="w-10 h-10 rounded-xl border flex items-center justify-center bg-white disabled:opacity-50 hover:bg-[#283618] hover:text-white transition-all"
+//                         className="w-10 h-10 rounded-xl border flex items-center justify-center bg-white disabled:opacity-50 hover:bg-[#004C5D] hover:text-white transition-all"
 //                     >
 //                         <ChevronRight size={18} />
 //                     </button>
@@ -1209,7 +1209,7 @@
 //                             onClick={() => setCurrentPage(page)}
 //                             className={`w-10 h-10 rounded-xl font-bold transition-all ${
 //                               currentPage === page
-//                                 ? 'bg-emerald-600 text-white shadow-md'
+//                                 ? 'bg-[#00C9F2] text-white shadow-md'
 //                                 : 'bg-white border text-slate-700 hover:bg-[#fefae0]'
 //                             }`}
 //                           >
@@ -1221,7 +1221,7 @@
 //                     <button
 //                         disabled={currentPage === lastPage}
 //                         onClick={() => setCurrentPage(currentPage + 1)}
-//                         className="w-10 h-10 rounded-xl border flex items-center justify-center bg-white disabled:opacity-50 hover:bg-[#283618] hover:text-white transition-all"
+//                         className="w-10 h-10 rounded-xl border flex items-center justify-center bg-white disabled:opacity-50 hover:bg-[#004C5D] hover:text-white transition-all"
 //                     >
 //                         <ChevronLeft size={18} />
 //                     </button>
@@ -1295,37 +1295,37 @@
 //                 className="bg-white w-full max-w-2xl rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
 //             >
 //                 <div className="p-6 border-b flex justify-between items-center bg-slate-50">
-//                     <h3 className="text-xl font-black text-[#283618]">تعديل بيانات الحاضنة</h3>
+//                     <h3 className="text-xl font-black text-[#004C5D]">تعديل بيانات الحاضنة</h3>
 //                     <button onClick={onClose} className="p-2 hover:bg-slate-200 rounded-full transition-colors"><X/></button>
 //                 </div>
 
 //                 <form onSubmit={handleSubmit} className="p-8 space-y-5 overflow-y-auto">
 //                     <div className="grid grid-cols-2 gap-4">
 //                         <div>
-//                             <label className="block text-xs font-bold mb-1 text-[#606c38]">الاسم (AR)</label>
-//                             <input value={formData.titre_ar || ''} onChange={e => setFormData({...formData, titre_ar: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#606c38]" dir="rtl"/>
+//                             <label className="block text-xs font-bold mb-1 text-[#007A94]">الاسم (AR)</label>
+//                             <input value={formData.titre_ar || ''} onChange={e => setFormData({...formData, titre_ar: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#007A94]" dir="rtl"/>
 //                         </div>
 //                         <div>
-//                             <label className="block text-xs font-bold mb-1 text-[#606c38]">Name (EN)</label>
-//                             <input value={formData.titre_en || ''} onChange={e => setFormData({...formData, titre_en: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#606c38]" dir="ltr"/>
+//                             <label className="block text-xs font-bold mb-1 text-[#007A94]">Name (EN)</label>
+//                             <input value={formData.titre_en || ''} onChange={e => setFormData({...formData, titre_en: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#007A94]" dir="ltr"/>
 //                         </div>
 //                     </div>
 
 //                     <div>
-//                         <label className="block text-xs font-bold mb-1 text-[#606c38]">رابط الموقع</label>
-//                         <input value={formData.url || ''} onChange={e => setFormData({...formData, url: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#606c38]" placeholder="https://..." dir="ltr"/>
+//                         <label className="block text-xs font-bold mb-1 text-[#007A94]">رابط الموقع</label>
+//                         <input value={formData.url || ''} onChange={e => setFormData({...formData, url: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#007A94]" placeholder="https://..." dir="ltr"/>
 //                     </div>
 
 //                     <div className="grid grid-cols-2 gap-4">
-//                         <textarea value={formData.description_ar || ''} onChange={e => setFormData({...formData, description_ar: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl h-24 text-sm focus:outline-none focus:border-[#606c38]" placeholder="الوصف بالعربية" dir="rtl"/>
-//                         <textarea value={formData.description_en || ''} onChange={e => setFormData({...formData, description_en: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl h-24 text-sm focus:outline-none focus:border-[#606c38]" placeholder="Description in English" dir="ltr"/>
+//                         <textarea value={formData.description_ar || ''} onChange={e => setFormData({...formData, description_ar: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl h-24 text-sm focus:outline-none focus:border-[#007A94]" placeholder="الوصف بالعربية" dir="rtl"/>
+//                         <textarea value={formData.description_en || ''} onChange={e => setFormData({...formData, description_en: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl h-24 text-sm focus:outline-none focus:border-[#007A94]" placeholder="Description in English" dir="ltr"/>
 //                     </div>
 
 //                     <div className="flex items-center gap-4 p-4 border rounded-2xl bg-slate-50">
 //                         <div className="w-20 h-20 rounded-xl overflow-hidden border bg-white">
 //                             {preview && <img src={preview} alt="preview" className="w-full h-full object-cover" />}
 //                         </div>
-//                         <label className="cursor-pointer bg-[#fefae0] text-[#283618] px-4 py-2 rounded-lg text-sm font-bold border border-[#606c38]/20 hover:bg-[#606c38]/10 transition-all">
+//                         <label className="cursor-pointer bg-[#fefae0] text-[#004C5D] px-4 py-2 rounded-lg text-sm font-bold border border-[#007A94]/20 hover:bg-[#007A94]/10 transition-all">
 //                             تغيير الصورة
 //                             <input type="file" className="hidden" onChange={e => {
 //                                 const file = e.target.files[0];
@@ -1337,7 +1337,7 @@
 //                         </label>
 //                     </div>
 
-//                     <button disabled={loading} type="submit" className="w-full py-4 bg-[#283618] text-[#fefae0] rounded-2xl font-bold hover:bg-[#606c38] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#283618]/10">
+//                     <button disabled={loading} type="submit" className="w-full py-4 bg-[#004C5D] text-[#fefae0] rounded-2xl font-bold hover:bg-[#007A94] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#004C5D]/10">
 //                         {loading ? <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> : <><Send size={18}/> حفظ التغييرات</>}
 //                     </button>
 //                 </form>
@@ -1410,21 +1410,21 @@ const InstituteRow = ({ inst, handleEditClick, handleDelete }) => {
                             src={`${import.meta.env.VITE_API_BASE_URL}/storage/${inst.photo}`}
                             alt="" className="w-full h-full object-cover"
                         />
-                    ) : <ImageIcon className="text-[#606c38]/40" size={20} />}
+                    ) : <ImageIcon className="text-[#007A94]/40" size={20} />}
                 </div>
             </td>
             <td className="p-5">
-                <div className="font-bold text-[#283618]">{inst.titre_ar}</div>
-                <div className="text-[10px] text-[#606c38]/70 italic" dir="ltr">{inst.titre_en}</div>
+                <div className="font-bold text-[#004C5D]">{inst.titre_ar}</div>
+                <div className="text-[10px] text-[#007A94]/70 italic" dir="ltr">{inst.titre_en}</div>
             </td>
             <td className="p-5 font-bold text-slate-700">{inst.pays?.nomPays || 'N/A'}</td>
             
             {/* Colonne de description optimisée anti-overflow */}
             <td className="p-5 min-w-[320px] max-w-[500px] whitespace-normal">
-                <div className="font-bold text-[#283618] break-words">
+                <div className="font-bold text-[#004C5D] break-words">
                     {renderDescription(inst.description_ar, true)}
                 </div>
-                <div className="text-[10px] text-[#606c38]/70 italic break-words mt-1" dir="ltr">
+                <div className="text-[10px] text-[#007A94]/70 italic break-words mt-1" dir="ltr">
                     {renderDescription(inst.description_en, false)}
                 </div>
                 
@@ -1432,7 +1432,7 @@ const InstituteRow = ({ inst, handleEditClick, handleDelete }) => {
                     <button 
                         type="button"
                         onClick={() => setIsExpanded(!isExpanded)} 
-                        className="mt-2 text-xs font-bold text-emerald-600 hover:text-emerald-800 transition-colors block focus:outline-none"
+                        className="mt-2 text-xs font-bold text-[#00C9F2] hover:text-[#006176] transition-colors block focus:outline-none"
                     >
                         {isExpanded ? 'عرض أقل' : 'عرض المزيد...'}
                     </button>
@@ -1441,7 +1441,7 @@ const InstituteRow = ({ inst, handleEditClick, handleDelete }) => {
             
             <td className="p-5 text-center">
                 <div className="flex justify-center gap-2">
-                    <button onClick={() => handleEditClick(inst)} className="p-2 bg-[#606c38]/10 text-[#606c38] rounded-lg hover:bg-[#606c38] hover:text-white transition-all">
+                    <button onClick={() => handleEditClick(inst)} className="p-2 bg-[#007A94]/10 text-[#007A94] rounded-lg hover:bg-[#007A94] hover:text-white transition-all">
                         <Pencil size={18} />
                     </button>
                     <button onClick={() => handleDelete(currentId)} className="p-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-600 hover:text-white transition-all">
@@ -1507,7 +1507,7 @@ const ScientificResearchInnovationCentersList = () => {
         setIsEditModalOpen(true);
     };
 
-    if (loading) return <div className="p-10 text-center font-bold text-[#606c38]">جاري تحميل البيانات...</div>;
+    if (loading) return <div className="p-10 text-center font-bold text-[#007A94]">جاري تحميل البيانات...</div>;
 
     return (
         <div className="p-6 bg-slate-50 min-h-screen" dir="rtl">
@@ -1515,9 +1515,9 @@ const ScientificResearchInnovationCentersList = () => {
             
             <div className="flex justify-between items-center mb-8">
                 <div>
-                    <h1 className="text-3xl font-black text-[#283618]">إدارة مراكز البحث العلمي و الإبتكار</h1>
+                    <h1 className="text-3xl font-black text-[#004C5D]">إدارة مراكز البحث العلمي و الإبتكار</h1>
                 </div>
-                <Link to="/admin/scientificResearchInnovationCentersForm" className="bg-emerald-600 hover:bg-emerald-800 text-white px-6 py-3 rounded-2xl flex items-center gap-2 transition-all shadow-lg shadow-[#283618]/10 font-bold">
+                <Link to="/admin/scientificResearchInnovationCentersForm" className="bg-[#00C9F2] hover:bg-[#006176] text-white px-6 py-3 rounded-2xl flex items-center gap-2 transition-all shadow-lg shadow-[#004C5D]/10 font-bold">
                     <Plus size={20}/>
                     <span>إضافة مركز بحث علمي جديد</span>
                 </Link>
@@ -1526,7 +1526,7 @@ const ScientificResearchInnovationCentersList = () => {
             <div className="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden">
                 <div className="overflow-x-auto">
                     <table className="w-full text-right table-fixed min-w-[800px]">
-                        <thead className="bg-emerald-600 text-white">
+                        <thead className="bg-[#00C9F2] text-white">
                             <tr>
                                 <th className="p-5 text-sm font-bold w-[10%]">الصورة</th>
                                 <th className="p-5 text-sm font-bold w-[25%]">المركز (AR/EN)</th>
@@ -1559,7 +1559,7 @@ const ScientificResearchInnovationCentersList = () => {
                     <button
                         disabled={currentPage === 1}
                         onClick={() => setCurrentPage(currentPage - 1)}
-                        className="w-10 h-10 rounded-xl border flex items-center justify-center bg-white disabled:opacity-50 hover:bg-[#283618] hover:text-white transition-all"
+                        className="w-10 h-10 rounded-xl border flex items-center justify-center bg-white disabled:opacity-50 hover:bg-[#004C5D] hover:text-white transition-all"
                     >
                         <ChevronRight size={18} />
                     </button>
@@ -1572,7 +1572,7 @@ const ScientificResearchInnovationCentersList = () => {
                             onClick={() => setCurrentPage(page)}
                             className={`w-10 h-10 rounded-xl font-bold transition-all ${
                               currentPage === page
-                                ? 'bg-emerald-600 text-white shadow-md'
+                                ? 'bg-[#00C9F2] text-white shadow-md'
                                 : 'bg-white border text-slate-700 hover:bg-[#fefae0]'
                             }`}
                           >
@@ -1584,7 +1584,7 @@ const ScientificResearchInnovationCentersList = () => {
                     <button
                         disabled={currentPage === lastPage}
                         onClick={() => setCurrentPage(currentPage + 1)}
-                        className="w-10 h-10 rounded-xl border flex items-center justify-center bg-white disabled:opacity-50 hover:bg-[#283618] hover:text-white transition-all"
+                        className="w-10 h-10 rounded-xl border flex items-center justify-center bg-white disabled:opacity-50 hover:bg-[#004C5D] hover:text-white transition-all"
                     >
                         <ChevronLeft size={18} />
                     </button>
@@ -1672,7 +1672,7 @@ const EditModal = ({ inst, onClose, onRefresh }) => {
                 className="bg-white w-full max-w-2xl rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
             >
                 <div className="p-6 border-b flex justify-between items-center bg-slate-50">
-                    <h3 className="text-xl font-black text-[#283618]">تعديل بيانات المركز</h3>
+                    <h3 className="text-xl font-black text-[#004C5D]">تعديل بيانات المركز</h3>
                     <button onClick={onClose} className="p-2 hover:bg-slate-200 rounded-full transition-colors"><X/></button>
                 </div>
 
@@ -1680,24 +1680,24 @@ const EditModal = ({ inst, onClose, onRefresh }) => {
                     {/* Rangée: Noms */}
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <label className="block text-xs font-bold mb-1 text-[#606c38]">الاسم (AR)</label>
-                            <input value={formData.titre_ar || ''} onChange={e => setFormData({...formData, titre_ar: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#606c38]" dir="rtl" required/>
+                            <label className="block text-xs font-bold mb-1 text-[#007A94]">الاسم (AR)</label>
+                            <input value={formData.titre_ar || ''} onChange={e => setFormData({...formData, titre_ar: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#007A94]" dir="rtl" required/>
                         </div>
                         <div>
-                            <label className="block text-xs font-bold mb-1 text-[#606c38]">Name (EN)</label>
-                            <input value={formData.titre_en || ''} onChange={e => setFormData({...formData, titre_en: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#606c38]" dir="ltr"/>
+                            <label className="block text-xs font-bold mb-1 text-[#007A94]">Name (EN)</label>
+                            <input value={formData.titre_en || ''} onChange={e => setFormData({...formData, titre_en: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#007A94]" dir="ltr"/>
                         </div>
                     </div>
 
                     {/* Champ Sélection du Pays Ajouté */}
                     <div>
-                        <label className="block text-xs font-bold mb-1 text-[#606c38] flex items-center gap-1">
+                        <label className="block text-xs font-bold mb-1 text-[#007A94] flex items-center gap-1">
                             <MapPin size={12}/> الدولة
                         </label>
                         <select 
                             value={formData.idPays || ''} 
                             onChange={e => setFormData({...formData, idPays: e.target.value})} 
-                            className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#606c38]" 
+                            className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#007A94]" 
                             required
                         >
                             <option value="">اختر دولة</option>
@@ -1711,14 +1711,14 @@ const EditModal = ({ inst, onClose, onRefresh }) => {
 
                     {/* Rangée: URL du site */}
                     <div>
-                        <label className="block text-xs font-bold mb-1 text-[#606c38]">رابط الموقع</label>
-                        <input value={formData.url || ''} onChange={e => setFormData({...formData, url: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#606c38]" placeholder="https://..." dir="ltr"/>
+                        <label className="block text-xs font-bold mb-1 text-[#007A94]">رابط الموقع</label>
+                        <input value={formData.url || ''} onChange={e => setFormData({...formData, url: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-[#007A94]" placeholder="https://..." dir="ltr"/>
                     </div>
 
                     {/* Rangée: Descriptions */}
                     <div className="grid grid-cols-2 gap-4">
-                        <textarea value={formData.description_ar || ''} onChange={e => setFormData({...formData, description_ar: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl h-24 text-sm focus:outline-none focus:border-[#606c38]" placeholder="الوصف بالعربية" dir="rtl"/>
-                        <textarea value={formData.description_en || ''} onChange={e => setFormData({...formData, description_en: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl h-24 text-sm focus:outline-none focus:border-[#606c38]" placeholder="Description in English" dir="ltr"/>
+                        <textarea value={formData.description_ar || ''} onChange={e => setFormData({...formData, description_ar: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl h-24 text-sm focus:outline-none focus:border-[#007A94]" placeholder="الوصف بالعربية" dir="rtl"/>
+                        <textarea value={formData.description_en || ''} onChange={e => setFormData({...formData, description_en: e.target.value})} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl h-24 text-sm focus:outline-none focus:border-[#007A94]" placeholder="Description in English" dir="ltr"/>
                     </div>
 
                     {/* Gestion Image */}
@@ -1726,7 +1726,7 @@ const EditModal = ({ inst, onClose, onRefresh }) => {
                         <div className="w-20 h-20 rounded-xl overflow-hidden border bg-white">
                             {preview && <img src={preview} alt="preview" className="w-full h-full object-cover" />}
                         </div>
-                        <label className="cursor-pointer bg-[#fefae0] text-[#283618] px-4 py-2 rounded-lg text-sm font-bold border border-[#606c38]/20 hover:bg-[#606c38]/10 transition-all">
+                        <label className="cursor-pointer bg-[#fefae0] text-[#004C5D] px-4 py-2 rounded-lg text-sm font-bold border border-[#007A94]/20 hover:bg-[#007A94]/10 transition-all">
                             تغيير الصورة
                             <input type="file" className="hidden" onChange={e => {
                                 const file = e.target.files[0];
@@ -1739,7 +1739,7 @@ const EditModal = ({ inst, onClose, onRefresh }) => {
                     </div>
 
                     {/* Submit Button */}
-                    <button disabled={loading} type="submit" className="w-full py-4 bg-[#283618] text-[#fefae0] rounded-2xl font-bold hover:bg-[#606c38] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#283618]/10">
+                    <button disabled={loading} type="submit" className="w-full py-4 bg-[#004C5D] text-[#fefae0] rounded-2xl font-bold hover:bg-[#007A94] transition-all flex items-center justify-center gap-2 shadow-lg shadow-[#004C5D]/10">
                         {loading ? <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> : <><Send size={18}/> حفظ التغييرات</>}
                     </button>
                 </form>

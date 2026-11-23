@@ -69,9 +69,9 @@ const ServicesSection = () => {
     <section
       dir={isRtl ? "rtl" : "ltr"}
       aria-labelledby="home-services-title"
-      className="relative overflow-hidden bg-[#f7f9f8] py-20 md:py-28"
+      className="relative overflow-hidden bg-[#F2FCFF] py-20 md:py-28"
     >
-      <div aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-200 to-transparent" />
+      <div aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#A1EDFF] to-transparent" />
       <div className="container relative mx-auto px-6">
         <div className="flex flex-col gap-10 md:gap-12">
           <motion.header
@@ -81,8 +81,8 @@ const ServicesSection = () => {
             transition={{ duration: 0.5 }}
             className="mx-auto w-full max-w-3xl text-center"
           >
-            <span className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-emerald-200 bg-white px-4 py-2 text-xs font-bold text-emerald-800">
-              <span aria-hidden="true" className="h-2 w-2 rounded-full bg-emerald-500" />
+            <span className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-[#A1EDFF] bg-white px-4 py-2 text-xs font-bold text-[#006176]">
+              <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[#00C9F2]" />
               {t("services_section.title")}
             </span>
             <h2 id="home-services-title" className="text-4xl font-black leading-[1.4] tracking-tight text-slate-900 sm:text-5xl lg:text-[3.25rem]">
@@ -92,9 +92,9 @@ const ServicesSection = () => {
               {t("services_section.subtitle")}
             </p>
             <div aria-hidden="true" className="mt-7 flex items-center justify-center gap-3">
-              <span className="h-1 w-12 rounded-full bg-emerald-600" />
-              <span className="h-1 w-3 rounded-full bg-emerald-300" />
-              <span className="h-1 w-3 rounded-full bg-emerald-200" />
+              <span className="h-1 w-12 rounded-full bg-[#00C9F2]" />
+              <span className="h-1 w-3 rounded-full bg-[#63E1FA]" />
+              <span className="h-1 w-3 rounded-full bg-[#A1EDFF]" />
             </div>
           </motion.header>
 
@@ -112,7 +112,7 @@ const ServicesSection = () => {
                 >
                   <Link
                     to={service.to}
-                    className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-emerald-400/25 bg-gradient-to-br from-emerald-500 via-emerald-700 to-teal-950 p-6 transition-[border-color,box-shadow,transform] duration-300 hover:border-emerald-300 hover:shadow-[0_16px_40px_-16px_rgba(6,78,59,0.22)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-600 focus-visible:ring-offset-4 motion-safe:hover:-translate-y-1 sm:p-7"
+                    className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-[#2AD5F5]/25 bg-gradient-to-br from-[#00C9F2] via-[#007A94] to-[#00313D] p-6 transition-[border-color,box-shadow,transform] duration-300 hover:border-[#63E1FA] hover:shadow-[0_16px_40px_-16px_rgba(0,76,93,0.22)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00C9F2] focus-visible:ring-offset-4 motion-safe:hover:-translate-y-1 sm:p-7"
                   >
                     <span aria-hidden="true" className="absolute inset-x-7 top-0 h-0.5 origin-center scale-x-0 bg-white/60 transition-transform duration-300 group-hover:scale-x-100 group-focus-visible:scale-x-100" />
                     <div className="mb-6 flex items-center justify-between gap-4">
@@ -126,12 +126,12 @@ const ServicesSection = () => {
                     <h3 className="text-lg font-bold leading-8 text-white">
                       {t(isRtl ? `services_section.items.${index}.title` : service.titleKey)}
                     </h3>
-                    <p className="mb-7 mt-3 text-sm leading-7 text-emerald-50/90">
+                    <p className="mb-7 mt-3 text-sm leading-7 text-[#ECFCFF]/90">
                       {t(isRtl ? `services_section.items.${index}.description` : service.descriptionKey)}
                     </p>
                     <div className="mt-auto flex items-center justify-between gap-3 border-t border-white/20 pt-5 text-sm font-bold text-white">
                       <span>{t("services_section.discover")}</span>
-                      <span className="grid h-9 w-9 place-items-center rounded-full bg-white/15 transition-colors group-hover:bg-emerald-800 group-hover:text-white group-focus-visible:bg-emerald-800 group-focus-visible:text-white">
+                      <span className="grid h-9 w-9 place-items-center rounded-full bg-white/15 transition-colors group-hover:bg-[#006176] group-hover:text-white group-focus-visible:bg-[#006176] group-focus-visible:text-white">
                         <ArrowLeft aria-hidden="true" size={17} className={isRtl ? "" : "rotate-180"} />
                       </span>
                     </div>

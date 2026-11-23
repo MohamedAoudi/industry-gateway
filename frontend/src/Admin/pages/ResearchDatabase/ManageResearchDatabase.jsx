@@ -119,7 +119,7 @@ const emptyForm = {
 };
 
 const fieldClass =
-  "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10";
+  "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-[#00C9F2] focus:ring-4 focus:ring-[#00C9F2]/10";
 
 const ManageResearchDatabase = ({ lockedCategory }) => {
   const activeCategory = categories.find((item) => item.value === lockedCategory);
@@ -363,13 +363,13 @@ const ManageResearchDatabase = ({ lockedCategory }) => {
 
       <header className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <div className="mb-2 flex items-center gap-2 text-sm font-bold text-emerald-700">
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold text-[#007A94]">
             <Database size={18} /> قاعدة بيانات البحث العلمي
           </div>
           <h1 className="text-2xl font-black text-slate-900">{activeCategory ? activeCategory.label : "إدارة قاعدة البيانات"}</h1>
           <p className="mt-2 text-sm text-slate-500">إضافة وتعديل ونشر سجلات هذه الفئة بشكل مستقل.</p>
         </div>
-        <button onClick={openCreate} className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-black text-white shadow-lg shadow-emerald-600/20 hover:bg-emerald-700">
+        <button onClick={openCreate} className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#00C9F2] px-5 py-3 text-sm font-black text-white shadow-lg shadow-[#00C9F2]/20 hover:bg-[#007A94]">
           <Plus size={18} /> إضافة سجل جديد
         </button>
       </header>
@@ -384,7 +384,7 @@ const ManageResearchDatabase = ({ lockedCategory }) => {
           aria-modal="true"
           aria-label={editingId ? "تعديل السجل" : "إضافة سجل جديد"}
         >
-        <form onSubmit={submit} className="my-auto w-full max-w-4xl rounded-2xl border border-emerald-200 bg-white p-6 shadow-2xl">
+        <form onSubmit={submit} className="my-auto w-full max-w-4xl rounded-2xl border border-[#A1EDFF] bg-white p-6 shadow-2xl">
           <div className="mb-6 flex items-center justify-between">
             <h2 className="text-xl font-black text-slate-900">{editingId ? "تعديل السجل" : "إضافة سجل جديد"}</h2>
             <button type="button" onClick={closeForm} className="rounded-lg p-2 text-slate-500 hover:bg-slate-100"><X size={20} /></button>
@@ -392,9 +392,9 @@ const ManageResearchDatabase = ({ lockedCategory }) => {
 
           <div className="grid gap-5 md:grid-cols-2">
             {lockedCategory ? (
-              <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 md:col-span-2">
-                <span className="text-xs font-bold text-emerald-600">الفئة</span>
-                <p className="mt-1 text-sm font-black text-emerald-900">{activeCategory?.label}</p>
+              <div className="rounded-xl border border-[#A1EDFF] bg-[#ECFCFF] px-4 py-3 md:col-span-2">
+                <span className="text-xs font-bold text-[#00C9F2]">الفئة</span>
+                <p className="mt-1 text-sm font-black text-[#004C5D]">{activeCategory?.label}</p>
               </div>
             ) : (
               <label className="space-y-2 md:col-span-2">
@@ -450,14 +450,14 @@ const ManageResearchDatabase = ({ lockedCategory }) => {
             </label>
             <label className="space-y-2">
               <span className="text-sm font-bold text-slate-700">الصورة أو الشعار</span>
-              <span className="flex min-h-28 cursor-pointer items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 text-slate-500 hover:border-emerald-400">
+              <span className="flex min-h-28 cursor-pointer items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 text-slate-500 hover:border-[#2AD5F5]">
                 {preview ? <img src={preview} alt="معاينة" className="h-28 w-full object-contain p-2" /> : <span className="flex items-center gap-2 text-sm font-bold"><ImagePlus size={20} /> اختر صورة</span>}
                 <input type="file" accept="image/*" className="hidden" onChange={handleImage} />
               </span>
             </label>
             {(!editingSource || editingSource.type === "new") && (
               <label className="flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 md:col-span-2">
-                <input type="checkbox" checked={form.is_published} onChange={(e) => setForm({ ...form, is_published: e.target.checked })} className="h-5 w-5 accent-emerald-600" />
+                <input type="checkbox" checked={form.is_published} onChange={(e) => setForm({ ...form, is_published: e.target.checked })} className="h-5 w-5 accent-[#00C9F2]" />
                 <span className="text-sm font-bold text-slate-700">نشر السجل وإظهاره للزوار</span>
               </label>
             )}
@@ -465,7 +465,7 @@ const ManageResearchDatabase = ({ lockedCategory }) => {
 
           <div className="mt-6 flex justify-end gap-3">
             <button type="button" onClick={closeForm} className="rounded-xl border border-slate-200 px-5 py-3 text-sm font-bold text-slate-600">إلغاء</button>
-            <button disabled={saving} className="inline-flex min-w-36 items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-black text-white disabled:opacity-60">
+            <button disabled={saving} className="inline-flex min-w-36 items-center justify-center gap-2 rounded-xl bg-[#00C9F2] px-5 py-3 text-sm font-black text-white disabled:opacity-60">
               {saving && <Loader2 size={17} className="animate-spin" />}{editingId ? "حفظ التعديلات" : "إضافة السجل"}
             </button>
           </div>
@@ -489,33 +489,33 @@ const ManageResearchDatabase = ({ lockedCategory }) => {
       </section>
 
       {loading ? (
-        <div className="flex min-h-56 items-center justify-center rounded-2xl border bg-white text-emerald-700"><Loader2 className="animate-spin" size={30} /></div>
+        <div className="flex min-h-56 items-center justify-center rounded-2xl border bg-white text-[#007A94]"><Loader2 className="animate-spin" size={30} /></div>
       ) : visibleEntries.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-14 text-center text-slate-500">لا توجد سجلات في هذه الفئة.</div>
       ) : (
         <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
           {paginatedEntries.map((entry) => (
             <article key={`${entry.__source?.resource || "new"}-${entry.id}`} className="flex gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-              <div className="grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-xl bg-emerald-50 text-emerald-700">
+              <div className="grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-xl bg-[#ECFCFF] text-[#007A94]">
                 {entry.image_url ? <img src={entry.image_url} alt="" className="h-full w-full object-contain p-1" /> : <Database size={24} />}
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <div>
                     <h2 className="font-black text-slate-900">{entry.title_ar}</h2>
-                    <p className="mt-1 text-xs font-bold text-emerald-700">{categoryLabel(entry.category)}</p>
+                    <p className="mt-1 text-xs font-bold text-[#007A94]">{categoryLabel(entry.category)}</p>
                     <span className="mt-2 inline-flex rounded-full bg-amber-50 px-2.5 py-1 text-[11px] font-black text-amber-700">
                       الترتيب: {entry.display_order}
                     </span>
                   </div>
-                  <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-bold ${entry.is_published ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-500"}`}>
+                  <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-bold ${entry.is_published ? "bg-[#ECFCFF] text-[#007A94]" : "bg-slate-100 text-slate-500"}`}>
                     {entry.is_published ? <Eye size={12} /> : <EyeOff size={12} />}{entry.is_published ? "منشور" : "مسودة"}
                   </span>
                 </div>
-                {entry.country?.nomPays && <div className="mt-3"><span className="inline-flex items-center gap-2 rounded-full border border-emerald-100 bg-emerald-50 px-3 py-1.5 text-xs font-black text-emerald-700">{getCountryFlagUrl(entry.country.nomPays) ? <img src={getCountryFlagUrl(entry.country.nomPays)} alt="" className="h-4 w-6 rounded-sm border border-slate-200 object-cover shadow-sm" /> : <MapPin size={13} />}{entry.country.nomPays}</span></div>}
+                {entry.country?.nomPays && <div className="mt-3"><span className="inline-flex items-center gap-2 rounded-full border border-[#D0F6FF] bg-[#ECFCFF] px-3 py-1.5 text-xs font-black text-[#007A94]">{getCountryFlagUrl(entry.country.nomPays) ? <img src={getCountryFlagUrl(entry.country.nomPays)} alt="" className="h-4 w-6 rounded-sm border border-slate-200 object-cover shadow-sm" /> : <MapPin size={13} />}{entry.country.nomPays}</span></div>}
                 <p className="mt-3 line-clamp-2 text-sm leading-6 text-slate-500">{entry.description_ar || "لا يوجد وصف"}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
-                  <button onClick={() => openEdit(entry)} className="inline-flex items-center gap-1.5 rounded-lg bg-slate-100 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700"><Pencil size={14} /> تعديل</button>
+                  <button onClick={() => openEdit(entry)} className="inline-flex items-center gap-1.5 rounded-lg bg-slate-100 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-[#ECFCFF] hover:text-[#007A94]"><Pencil size={14} /> تعديل</button>
                   <button onClick={() => remove(entry)} className="inline-flex items-center gap-1.5 rounded-lg bg-red-50 px-3 py-2 text-xs font-bold text-red-600 hover:bg-red-100"><Trash2 size={14} /> حذف</button>
                   {entry.url && <a href={entry.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-bold text-slate-500"><ExternalLink size={14} /> الموقع</a>}
                 </div>
@@ -543,7 +543,7 @@ const ManageResearchDatabase = ({ lockedCategory }) => {
               type="button"
               key={page}
               onClick={() => setCurrentPage(page)}
-              className={`h-10 min-w-10 rounded-xl px-3 text-sm font-black ${page === currentPage ? "bg-emerald-600 text-white" : "border border-slate-200 bg-white text-slate-600 hover:border-emerald-300"}`}
+              className={`h-10 min-w-10 rounded-xl px-3 text-sm font-black ${page === currentPage ? "bg-[#00C9F2] text-white" : "border border-slate-200 bg-white text-slate-600 hover:border-[#63E1FA]"}`}
             >
               {page}
             </button>

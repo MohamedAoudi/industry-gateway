@@ -25,7 +25,7 @@ import {
   HandCoins,
   Factory,
 } from "lucide-react";
-import portalLogo from "../../User/assets/images/logos/logo.png";
+import { getPortalLogo, getPortalLogoAlt } from "../../User/assets/portalLogo";
 
 const NavItem = ({
   icon,
@@ -41,12 +41,12 @@ const NavItem = ({
       onClick={onClick}
       className={`w-full relative flex items-center justify-between px-4 py-3.5 rounded-2xl transition-all duration-300 mb-1 ${
         active
-          ? "bg-emerald-50 text-emerald-700 shadow-sm"
-          : "text-slate-700 hover:text-emerald-600 hover:bg-slate-50"
+          ? "bg-[#ECFCFF] text-[#007A94] shadow-sm"
+          : "text-slate-700 hover:text-[#00C9F2] hover:bg-slate-50"
       }`}
     >
       <div className="flex items-center gap-3">
-        <span className={active ? "text-emerald-600" : "text-slate-600"}>
+        <span className={active ? "text-[#00C9F2]" : "text-slate-600"}>
           {React.cloneElement(icon, {
             size: 20,
             strokeWidth: active ? 2.2 : 1.8,
@@ -67,7 +67,7 @@ const NavItem = ({
           size={16}
           className={`transition-transform duration-300 ${
             isOpen ? "rotate-180" : ""
-          } ${active ? "text-emerald-500" : "text-slate-500"}`}
+          } ${active ? "text-[#00C9F2]" : "text-slate-500"}`}
         />
       )}
     </motion.button>
@@ -254,7 +254,7 @@ const AdminSidebar = () => {
       {/* Logo */}
       <div className="border-b border-slate-100 px-4 py-4">
         <Link to="/" className="flex items-center justify-center rounded-2xl bg-white p-2 transition hover:bg-slate-50">
-          <img src={portalLogo} alt={i18n.language === "ar" ? "شعار البوابة" : "Portal logo"} className="h-24 w-auto max-w-full object-contain" />
+          <img src={getPortalLogo(i18n.language, true)} alt={getPortalLogoAlt(i18n.language)} className="h-24 w-auto max-w-full object-contain" />
         </Link>
       </div>
 
@@ -306,15 +306,15 @@ const AdminSidebar = () => {
                       }}
                       className="overflow-hidden"
                     >
-                      <div className="ms-4 border-s-2 border-emerald-100 ps-3 py-2 space-y-1">
+                      <div className="ms-4 border-s-2 border-[#D0F6FF] ps-3 py-2 space-y-1">
                         {item.submenu.map((sub) => (
                           <Link
                             key={sub.path}
                             to={sub.path}
                             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm transition-all duration-200 ${
                               isActive(sub.path)
-                                ? "bg-emerald-50 text-emerald-600 font-semibold"
-                                : "text-slate-600 hover:bg-slate-50 hover:text-emerald-600"
+                                ? "bg-[#ECFCFF] text-[#00C9F2] font-semibold"
+                                : "text-slate-600 hover:bg-slate-50 hover:text-[#00C9F2]"
                             }`}
                           >
                             {sub.icon}
@@ -335,7 +335,7 @@ const AdminSidebar = () => {
       <div className="p-4">
         <div className="bg-slate-50 border border-slate-100 rounded-2xl p-4">
           <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
+            <div className="w-11 h-11 rounded-full bg-[#D0F6FF] text-[#007A94] flex items-center justify-center font-bold">
               AD
             </div>
 
@@ -348,7 +348,7 @@ const AdminSidebar = () => {
 
               <Link
                 to="/admin/profile"
-                className="text-xs text-slate-500 hover:text-emerald-600 transition-colors mt-1"
+                className="text-xs text-slate-500 hover:text-[#00C9F2] transition-colors mt-1"
               >
                 {i18n.language === "ar"
                   ? "تعديل الملف الشخصي"

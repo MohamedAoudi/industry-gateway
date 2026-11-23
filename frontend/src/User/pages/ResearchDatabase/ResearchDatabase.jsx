@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { matchesKeywords } from "../../../utils/keywordSearch";
 import { useTranslation } from "react-i18next";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import {
@@ -107,7 +108,7 @@ const allCategoriesConfig = {
   key: "all",
   labelKey: "menu.database",
   descriptionKey: "database_pages.descriptions.all",
-  endpoints: [...new Set(categoryConfig.flatMap((category) => category.endpoints))],
+  endpoints: [...new Set(categoryConfig.flatMap((category) => category.endpoints)), "/media-items?category=news"],
   icon: Database,
 };
 
@@ -224,7 +225,11 @@ const ResearchDatabase = () => {
         );
         const payload = responses.flatMap((result, sourceIndex) => {
           if (result.status !== "fulfilled") return [];
-          return result.value.map((record) => ({ ...record, __source: sourceIndex }));
+          return result.value.map((record) => ({
+            ...record,
+            __source: sourceIndex,
+            __media: activeCategory.endpoints[sourceIndex].startsWith("/media-items"),
+          }));
         });
 
         if (isMounted) {
@@ -255,7 +260,7 @@ const ResearchDatabase = () => {
       const descriptionAr = record.research_field || record.industry_sector || record.description_ar || "";
       const descriptionEn = record.description_en || "";
 
-      const entityType = record.idCenter
+      const entityType = record.__media ? "media" : record.idCenter
         ? "center"
         : record.idResearcher
           ? "researcher"
@@ -268,13 +273,15 @@ const ResearchDatabase = () => {
         id: `${entityType}-${entityId}`,
         entityType,
         entityId: String(entityId),
+        mediaCategory: record.__media ? record.category : null,
+        searchLocation: record.__media ? [record.location_ar, record.location_en].filter(Boolean).join(" ") : "",
         title: isRtl ? titleAr || titleEn : titleEn || titleAr,
         titleAr,
         titleEn,
         description: isRtl ? descriptionAr || descriptionEn : descriptionEn || descriptionAr,
         descriptionAr,
         descriptionEn,
-        country: record.country?.nomPays || record.pays?.nomPays || record.nomPays || record.country || "",
+        country: record.country?.nomPays || record.pays?.nomPays || record.nomPays || record.country || (record.__media ? record.location_ar || record.location_en : "") || "",
         countryId: record.country?.idPays || record.pays?.idPays || record.country_id || record.idPays || "",
         countryFlag: getCountryFlag(record.country?.nomPays || record.pays?.nomPays || record.nomPays || record.country),
         image: record.image_url || record.photo_url,
@@ -364,9 +371,10 @@ const ResearchDatabase = () => {
     const countryCode = resolveCountryCode(requestedCountry);
 
     return normalizedRecords.filter((record) => {
-      const matchesSearch = !query || [record.title, record.titleAr, record.titleEn, record.description, record.descriptionAr, record.descriptionEn, record.country]
-        .filter(Boolean)
-        .some((value) => String(value).toLocaleLowerCase().includes(query));
+      const matchesSearch = matchesKeywords(
+        [record.title, record.titleAr, record.titleEn, record.description, record.descriptionAr, record.descriptionEn, record.country, record.searchLocation],
+        query,
+      );
       const recordCountry = normalizeCountryName(record.country);
       const recordCountryCode = resolveCountryCode(record.country);
       const matchesCountryId = !requestedCountryId
@@ -440,6 +448,10 @@ const ResearchDatabase = () => {
   }, [selectedRecord]);
 
   const openDetails = (record) => {
+    if (record.entityType === "media") {
+      navigate(`/mediaCenter?${new URLSearchParams({ category: record.mediaCategory || "news", item: record.entityId })}`);
+      return;
+    }
     if (!localStorage.getItem("auth_token")) {
       navigate("/login", {
         state: { from: `${location.pathname}${location.search}` },
@@ -451,26 +463,28 @@ const ResearchDatabase = () => {
 
   return (
     <div dir={isRtl ? "rtl" : "ltr"} className="min-h-screen bg-slate-50">
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-950 px-6 pb-28 pt-20 text-white sm:pb-36 sm:pt-24">
+      <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-[#00313D] to-slate-950 px-6 pb-28 pt-20 text-white sm:pb-36 sm:pt-24">
         <div className="pointer-events-none absolute inset-0 opacity-[0.035] [background-image:linear-gradient(white_1px,transparent_1px),linear-gradient(90deg,white_1px,transparent_1px)] [background-size:48px_48px]" />
-        <div className="pointer-events-none absolute -left-32 top-10 h-80 w-80 rounded-full bg-emerald-400/20 blur-[100px]" />
-        <div className="pointer-events-none absolute -right-40 bottom-0 h-96 w-96 rounded-full bg-teal-400/15 blur-[110px]" />
+        <div className="pointer-events-none absolute -left-32 top-10 h-80 w-80 rounded-full bg-[#2AD5F5]/20 blur-[100px]" />
+        <div className="pointer-events-none absolute -right-40 bottom-0 h-96 w-96 rounded-full bg-[#2AD5F5]/15 blur-[110px]" />
         <div className="pointer-events-none absolute left-1/2 top-1/2 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 rounded-full border-[80px] border-white/[0.015]" />
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400/70 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#2AD5F5]/70 to-transparent" />
 
         <div className="relative mx-auto max-w-7xl text-center">
-          <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-400/10 px-4 py-2 text-xs font-black uppercase tracking-[0.16em] text-emerald-300 backdrop-blur-sm">
+          <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#63E1FA]/20 bg-[#2AD5F5]/10 px-4 py-2 text-xs font-black uppercase tracking-[0.16em] text-[#63E1FA] backdrop-blur-sm">
             <Database size={15} />
             {t("menu.database")}
           </span>
-          <span className="mx-auto mb-6 grid h-16 w-16 place-items-center rounded-2xl border border-white/15 bg-white/[0.08] text-emerald-300 backdrop-blur-sm">
+          <span className="mx-auto mb-6 grid h-16 w-16 place-items-center rounded-2xl border border-white/15 bg-white/[0.08] text-[#63E1FA] backdrop-blur-sm">
             <ActiveIcon size={28} />
           </span>
           <h1 className="mx-auto max-w-5xl text-3xl font-black leading-tight sm:text-4xl lg:text-5xl">
-            {t(activeCategory.labelKey)}
+            {activeCategory.key === "all" ? (t("interface.search_results", { defaultValue: isRtl ? "نتائج البحث" : "Search results" })) : t(activeCategory.labelKey)}
           </h1>
-          <p className="mx-auto mt-5 max-w-3xl text-base leading-8 text-emerald-50/70">
-            {t(activeCategory.descriptionKey)}
+          <p className="mx-auto mt-5 max-w-3xl text-base leading-8 text-[#ECFCFF]/70">
+            {activeCategory.key === "all"
+              ? (t("interface.search_results_across_institutions_specializations_and_published_news", { defaultValue: isRtl ? "نتائج البحث في المؤسسات والتخصصات والأخبار المنشورة." : "Search results across institutions, specializations and published news." }))
+              : t(activeCategory.descriptionKey)}
           </p>
         </div>
       </section>
@@ -484,7 +498,7 @@ const ResearchDatabase = () => {
                 value={search}
                 onChange={(event) => setSearch(event.target.value)}
                 placeholder={t("database_pages.search")}
-                className={`w-full rounded-xl border border-slate-200 bg-slate-50 py-3.5 text-sm text-slate-800 outline-none transition-all focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 ${isRtl ? "pl-4 pr-12" : "pl-12 pr-4"}`}
+                className={`w-full rounded-xl border border-slate-200 bg-slate-50 py-3.5 text-sm text-slate-800 outline-none transition-all focus:border-[#00C9F2] focus:bg-white focus:ring-4 focus:ring-[#00C9F2]/10 ${isRtl ? "pl-4 pr-12" : "pl-12 pr-4"}`}
               />
             </label>
             <div ref={countryMenuRef} className="relative lg:w-72">
@@ -493,12 +507,12 @@ const ResearchDatabase = () => {
                 onClick={() => setIsCountryMenuOpen((open) => !open)}
                 aria-label={t("database_pages.country_filter")}
                 aria-expanded={isCountryMenuOpen}
-                className="flex w-full items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm font-bold text-slate-700 outline-none transition-all hover:bg-white focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10"
+                className="flex w-full items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm font-bold text-slate-700 outline-none transition-all hover:bg-white focus:border-[#00C9F2] focus:ring-4 focus:ring-[#00C9F2]/10"
               >
                 {selectedCountryOption?.flag ? (
                   <img src={selectedCountryOption.flag} alt="" className="h-4 w-6 shrink-0 rounded-sm object-cover shadow-sm" />
                 ) : (
-                  <MapPin size={18} className="shrink-0 text-emerald-600" />
+                  <MapPin size={18} className="shrink-0 text-[#00C9F2]" />
                 )}
                 <span className="min-w-0 flex-1 truncate text-start">
                   {selectedCountryOption?.name || t("database_pages.all_countries")}
@@ -511,9 +525,9 @@ const ResearchDatabase = () => {
                   <button
                     type="button"
                     onClick={() => handleCountryChange("")}
-                    className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-bold transition-colors ${!selectedCountryKey ? "bg-emerald-50 text-emerald-700" : "text-slate-600 hover:bg-slate-50"}`}
+                    className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-bold transition-colors ${!selectedCountryKey ? "bg-[#ECFCFF] text-[#007A94]" : "text-slate-600 hover:bg-slate-50"}`}
                   >
-                    <MapPin size={17} className="shrink-0 text-emerald-600" />
+                    <MapPin size={17} className="shrink-0 text-[#00C9F2]" />
                     <span className="flex-1 text-start">{t("database_pages.all_countries")}</span>
                     {!selectedCountryKey && <Check size={16} />}
                   </button>
@@ -522,7 +536,7 @@ const ResearchDatabase = () => {
                       type="button"
                       key={country.key}
                       onClick={() => handleCountryChange(country.key)}
-                      className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-bold transition-colors ${selectedCountryKey === country.key ? "bg-emerald-50 text-emerald-700" : "text-slate-600 hover:bg-slate-50"}`}
+                      className={`flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-bold transition-colors ${selectedCountryKey === country.key ? "bg-[#ECFCFF] text-[#007A94]" : "text-slate-600 hover:bg-slate-50"}`}
                     >
                       {country.flag ? (
                         <img src={country.flag} alt="" className="h-4 w-6 shrink-0 rounded-sm object-cover shadow-sm" />
@@ -536,21 +550,21 @@ const ResearchDatabase = () => {
                 </div>
               )}
             </div>
-            <span className="shrink-0 rounded-xl bg-emerald-50 px-4 py-3 text-xs font-black text-emerald-700">
+            <span className="shrink-0 rounded-xl bg-[#ECFCFF] px-4 py-3 text-xs font-black text-[#007A94]">
               {filteredRecords.length} {t("database_pages.results")}
             </span>
           </div>
 
           {loading ? (
             <div className="flex min-h-[300px] items-center justify-center rounded-[2rem] border border-slate-200 bg-white">
-              <div className="text-center text-emerald-700">
+              <div className="text-center text-[#007A94]">
                 <Loader2 size={34} className="mx-auto animate-spin" />
                 <p className="mt-4 text-sm font-bold">{t("database_pages.loading")}</p>
               </div>
             </div>
           ) : filteredRecords.length === 0 ? (
             <div className="flex min-h-[320px] flex-col items-center justify-center rounded-[2rem] border border-dashed border-slate-300 bg-white px-6 text-center">
-              <span className="grid h-16 w-16 place-items-center rounded-2xl bg-emerald-50 text-emerald-700">
+              <span className="grid h-16 w-16 place-items-center rounded-2xl bg-[#ECFCFF] text-[#007A94]">
                 <ActiveIcon size={28} />
               </span>
               <h2 className="mt-5 text-xl font-black text-slate-900">
@@ -569,15 +583,15 @@ const ResearchDatabase = () => {
                 <article
                   id={`database-record-${record.id}`}
                   key={record.id}
-                  className={`group flex min-h-[260px] scroll-mt-28 flex-col overflow-hidden rounded-[1.6rem] border bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-[0_20px_50px_rgba(5,150,105,0.1)] ${
-                    isRequestedRecord ? "border-emerald-500 ring-4 ring-emerald-500/15" : "border-slate-200"
+                  className={`group flex min-h-[260px] scroll-mt-28 flex-col overflow-hidden rounded-[1.6rem] border bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#63E1FA] hover:shadow-[0_20px_50px_rgba(0,201,242,0.1)] ${
+                    isRequestedRecord ? "border-[#00C9F2] ring-4 ring-[#00C9F2]/15" : "border-slate-200"
                   }`}
                 >
                   <div className="flex items-start justify-between gap-4">
                     {record.image && !record.image.endsWith("/null") ? (
                       <img src={record.image} alt="" className="h-24 w-24 rounded-2xl border border-slate-100 bg-white object-contain p-2 shadow-sm sm:h-28 sm:w-28" />
                     ) : (
-                      <span className="grid h-24 w-24 place-items-center rounded-2xl bg-emerald-50 text-emerald-700 sm:h-28 sm:w-28">
+                      <span className="grid h-24 w-24 place-items-center rounded-2xl bg-[#ECFCFF] text-[#007A94] sm:h-28 sm:w-28">
                         <ActiveIcon size={34} />
                       </span>
                     )}
@@ -592,14 +606,15 @@ const ResearchDatabase = () => {
                       </span>
                     )}
                   </div>
-                  <h2 className="mt-6 text-xl font-black leading-8 text-slate-900 group-hover:text-emerald-700">
+                  <h2 className="mt-6 text-xl font-black leading-8 text-slate-900 group-hover:text-[#007A94]">
+                    {record.entityType === "media" && <span className="mb-2 block text-xs font-bold text-[#007A94]">{t("interface.news", { defaultValue: isRtl ? "أخبار" : "News" })}</span>}
                     {record.title || t("database_pages.untitled")}
                   </h2>
                   {record.description && <p className="mt-3 line-clamp-3 text-sm leading-7 text-slate-500">{record.description}</p>}
                   <button
                     type="button"
                     onClick={() => openDetails(record)}
-                    className="mt-auto inline-flex items-center gap-2 pt-6 text-xs font-black uppercase tracking-[0.13em] text-emerald-700"
+                    className="mt-auto inline-flex items-center gap-2 pt-6 text-xs font-black uppercase tracking-[0.13em] text-[#007A94]"
                   >
                     {t("database_pages.view")}
                     <ArrowLeft size={14} className={isRtl ? "" : "rotate-180"} />
@@ -618,7 +633,7 @@ const ResearchDatabase = () => {
                 onClick={() => setCurrentPage((page) => page - 1)}
                 className="inline-flex h-10 items-center gap-1 rounded-xl border border-slate-200 px-3 text-sm font-bold text-slate-600 disabled:cursor-not-allowed disabled:opacity-40"
               >
-                <ChevronRight size={17} /> {isRtl ? "السابق" : "Previous"}
+                <ChevronRight size={17} /> {t("interface.previous", { defaultValue: isRtl ? "السابق" : "Previous" })}
               </button>
               {Array.from(
                 { length: Math.min(5, totalPages) },
@@ -628,7 +643,7 @@ const ResearchDatabase = () => {
                   type="button"
                   key={page}
                   onClick={() => setCurrentPage(page)}
-                  className={`h-10 min-w-10 rounded-xl px-3 text-sm font-black ${page === currentPage ? "bg-emerald-600 text-white" : "border border-slate-200 bg-white text-slate-600 hover:border-emerald-300"}`}
+                  className={`h-10 min-w-10 rounded-xl px-3 text-sm font-black ${page === currentPage ? "bg-[#00C9F2] text-white" : "border border-slate-200 bg-white text-slate-600 hover:border-[#63E1FA]"}`}
                 >
                   {page}
                 </button>
@@ -639,7 +654,7 @@ const ResearchDatabase = () => {
                 onClick={() => setCurrentPage((page) => page + 1)}
                 className="inline-flex h-10 items-center gap-1 rounded-xl border border-slate-200 px-3 text-sm font-bold text-slate-600 disabled:cursor-not-allowed disabled:opacity-40"
               >
-                {isRtl ? "التالي" : "Next"} <ChevronLeft size={17} />
+                {t("interface.next", { defaultValue: isRtl ? "التالي" : "Next" })} <ChevronLeft size={17} />
               </button>
             </nav>
           )}
@@ -657,15 +672,15 @@ const ResearchDatabase = () => {
           aria-label={selectedRecord.title}
         >
           <article className="my-auto w-full max-w-3xl overflow-hidden rounded-[1.75rem] bg-white shadow-2xl">
-            <header className="flex items-start justify-between gap-4 border-b border-slate-100 bg-gradient-to-br from-emerald-50 to-white p-6 sm:p-8">
+            <header className="flex items-start justify-between gap-4 border-b border-slate-100 bg-gradient-to-br from-[#ECFCFF] to-white p-6 sm:p-8">
               <div className="flex min-w-0 items-start gap-4">
                 {selectedRecord.image ? (
-                  <img src={selectedRecord.image} alt="" className="h-28 w-28 shrink-0 rounded-2xl border border-emerald-100 bg-white object-contain p-3 shadow-sm sm:h-36 sm:w-36" />
+                  <img src={selectedRecord.image} alt="" className="h-28 w-28 shrink-0 rounded-2xl border border-[#D0F6FF] bg-white object-contain p-3 shadow-sm sm:h-36 sm:w-36" />
                 ) : (
-                  <span className="grid h-28 w-28 shrink-0 place-items-center rounded-2xl bg-emerald-100 text-emerald-700 sm:h-36 sm:w-36"><ActiveIcon size={42} /></span>
+                  <span className="grid h-28 w-28 shrink-0 place-items-center rounded-2xl bg-[#D0F6FF] text-[#007A94] sm:h-36 sm:w-36"><ActiveIcon size={42} /></span>
                 )}
                 <div>
-                  <p className="mb-2 text-xs font-black text-emerald-700">{t(activeCategory.labelKey)}</p>
+                  <p className="mb-2 text-xs font-black text-[#007A94]">{t(activeCategory.labelKey)}</p>
                   <h2 className="text-xl font-black leading-8 text-slate-900 sm:text-2xl">{selectedRecord.title}</h2>
                   {selectedRecord.country && (
                     <p className="mt-2 inline-flex items-center gap-2 text-sm font-bold text-slate-500">
@@ -679,7 +694,7 @@ const ResearchDatabase = () => {
                   )}
                 </div>
               </div>
-              <button type="button" onClick={() => setSelectedRecord(null)} className="shrink-0 rounded-xl border border-slate-200 bg-white p-2.5 text-slate-500 hover:text-slate-900" aria-label={isRtl ? "إغلاق" : "Close"}><X size={20} /></button>
+              <button type="button" onClick={() => setSelectedRecord(null)} className="shrink-0 rounded-xl border border-slate-200 bg-white p-2.5 text-slate-500 hover:text-slate-900" aria-label={t("interface.close", { defaultValue: isRtl ? "إغلاق" : "Close" })}><X size={20} /></button>
             </header>
 
             <div className="space-y-6 p-6 sm:p-8">
@@ -695,7 +710,7 @@ const ResearchDatabase = () => {
               {(selectedRecord.email || selectedRecord.website) && (
                 <div className="flex flex-wrap gap-3 border-t border-slate-100 pt-6">
                   {selectedRecord.email && <a href={`mailto:${selectedRecord.email}`} className="inline-flex items-center gap-2 rounded-xl bg-slate-100 px-4 py-3 text-sm font-bold text-slate-700"><Mail size={17} />{selectedRecord.email}</a>}
-                  {selectedRecord.website && <a href={selectedRecord.website} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-3 text-sm font-black text-white"><ExternalLink size={17} />{isRtl ? "زيارة الموقع" : "Visit website"}</a>}
+                  {selectedRecord.website && <a href={selectedRecord.website} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-xl bg-[#00C9F2] px-4 py-3 text-sm font-black text-white"><ExternalLink size={17} />{t("interface.visit_website", { defaultValue: isRtl ? "زيارة الموقع" : "Visit website" })}</a>}
                 </div>
               )}
             </div>

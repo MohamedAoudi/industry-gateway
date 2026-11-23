@@ -38,7 +38,7 @@ const JoinModal = ({ isOpen, onClose, t, isRtl }) => {
             <div className="mb-10">
               <span className="text-amber-600 font-black text-[10px] uppercase tracking-[4px]">{t('common.innovation_portal')}</span>
               <h3 className="text-4xl font-black text-[#1a1a1a] mt-2 mb-4 leading-none">
-                {isRtl ? "انضم إلى نخبة المبتكرين" : "Join the Innovation Elite"}
+                {t("interface.join_the_innovation_elite", { defaultValue: isRtl ? "انضم إلى نخبة المبتكرين" : "Join the Innovation Elite" })}
               </h3>
               <p className="text-slate-500 font-medium text-lg leading-snug">
                 {t('linking_researchers_page.subtitle')}
@@ -48,14 +48,14 @@ const JoinModal = ({ isOpen, onClose, t, isRtl }) => {
             <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
               <div className="grid md:grid-cols-2 gap-5">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">{isRtl ? "الاسم الكامل" : "Full Name"}</label>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">{t("interface.full_name", { defaultValue: isRtl ? "الاسم الكامل" : "Full Name" })}</label>
                   <div className="relative">
                     <User className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size={18} />
                     <input type="text" className="w-full bg-slate-50 border-none rounded-2xl pl-12 pr-4 py-4 focus:ring-2 ring-amber-500 transition-all outline-none font-bold" placeholder="..." />
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">{isRtl ? "البريد الأكاديمي / المهني" : "Professional Email"}</label>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">{t("interface.professional_email", { defaultValue: isRtl ? "البريد الأكاديمي / المهني" : "Professional Email" })}</label>
                   <div className="relative">
                     <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size={18} />
                     <input type="email" className="w-full bg-slate-50 border-none rounded-2xl pl-12 pr-4 py-4 focus:ring-2 ring-amber-500 transition-all outline-none font-bold" placeholder="name@org.com" />
@@ -65,19 +65,19 @@ const JoinModal = ({ isOpen, onClose, t, isRtl }) => {
 
               <div className="grid md:grid-cols-2 gap-5">
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">{isRtl ? "التخصص التقني" : "Technical Domain"}</label>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">{t("interface.technical_domain", { defaultValue: isRtl ? "التخصص التقني" : "Technical Domain" })}</label>
                   <select className="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 focus:ring-2 ring-amber-500 outline-none font-bold appearance-none cursor-pointer">
                     {expertises.map(ex => <option key={ex}>{ex}</option>)}
                   </select>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">{isRtl ? "المؤسسة" : "Organization"}</label>
+                  <label className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">{t("interface.organization", { defaultValue: isRtl ? "المؤسسة" : "Organization" })}</label>
                   <input type="text" className="w-full bg-slate-50 border-none rounded-2xl px-5 py-4 focus:ring-2 ring-amber-500 outline-none font-bold" />
                 </div>
               </div>
 
               <button className="w-full bg-[#1a1a1a] hover:bg-amber-600 text-white py-5 rounded-2xl font-black uppercase tracking-[3px] flex items-center justify-center gap-4 transition-all shadow-xl shadow-amber-500/10 group mt-4">
-                {isRtl ? "تأكيد التسجيل" : "Confirm Registration"} 
+                {t("interface.confirm_registration", { defaultValue: isRtl ? "تأكيد التسجيل" : "Confirm Registration" })} 
                 <Send size={18} className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
               </button>
             </form>
@@ -119,7 +119,7 @@ const LinkingResearchers = () => {
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             className="flex items-center gap-4 text-amber-600 font-black text-xs uppercase tracking-[5px] mb-2"
           >
-            <Zap size={18} fill="currentColor" /> {isRtl ? "ثورة الربط الصناعي" : "Industrial Linkage Revolution"}
+            <Zap size={18} fill="currentColor" /> {t("interface.industrial_linkage_revolution", { defaultValue: isRtl ? "ثورة الربط الصناعي" : "Industrial Linkage Revolution" })}
           </motion.div>
           
           <div className="grid lg:grid-cols-12 gap-16 items-start">
@@ -224,7 +224,7 @@ const LinkingResearchers = () => {
               <div className="h-2 w-40 bg-amber-500 rounded-full" />
             </div>
             <p className="text-slate-400 font-bold text-xl max-w-md">
-              {isRtl ? "نظام عمل متكامل يضمن انتقال الفكرة من المختبر إلى السوق العالمي." : "A seamless workflow ensuring ideas transition from lab to global markets."}
+              {t("interface.a_seamless_workflow_ensuring_ideas_transition_from_lab_to_global_markets", { defaultValue: isRtl ? "نظام عمل متكامل يضمن انتقال الفكرة من المختبر إلى السوق العالمي." : "A seamless workflow ensuring ideas transition from lab to global markets." })}
             </p>
           </div>
 
@@ -258,7 +258,7 @@ const LinkingResearchers = () => {
           <div className="relative z-10 flex flex-col items-center">
             <Microscope className="text-amber-500 mb-10 animate-bounce" size={60} />
             <h2 className="text-5xl md:text-8xl font-black text-white leading-[0.9] mb-12 tracking-tighter max-w-4xl">
-              {isRtl ? "حول أبحاثك إلى منتجات صناعية عالمية" : "Turn Research into Global Industry"}
+              {t("interface.turn_research_into_global_industry", { defaultValue: isRtl ? "حول أبحاثك إلى منتجات صناعية عالمية" : "Turn Research into Global Industry" })}
             </h2>
             <button 
               onClick={() => setIsModalOpen(true)}

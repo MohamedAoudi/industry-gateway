@@ -27,8 +27,8 @@ const LatestNewsSection = () => {
 
   return (
     <section dir={isRtl ? "rtl" : "ltr"} className="relative overflow-hidden bg-slate-50 py-20 md:py-28">
-      <div className="pointer-events-none absolute -right-40 -top-40 h-96 w-96 rounded-full bg-emerald-100/70 blur-[110px]" />
-      <div className="pointer-events-none absolute -bottom-48 -left-32 h-96 w-96 rounded-full bg-teal-100/60 blur-[110px]" />
+      <div className="pointer-events-none absolute -right-40 -top-40 h-96 w-96 rounded-full bg-[#D0F6FF]/70 blur-[110px]" />
+      <div className="pointer-events-none absolute -bottom-48 -left-32 h-96 w-96 rounded-full bg-[#D0F6FF]/60 blur-[110px]" />
 
       <div className="container relative z-10 mx-auto px-6">
         <motion.header
@@ -39,7 +39,7 @@ const LatestNewsSection = () => {
           className="mb-12 flex flex-col gap-7 md:mb-14 lg:flex-row lg:items-end lg:justify-between"
         >
           <div>
-            <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-emerald-700 shadow-sm">
+            <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#A1EDFF] bg-white px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-[#007A94] shadow-sm">
               <Newspaper size={14} />
               {t("menu.media_center")}
             </span>
@@ -53,7 +53,7 @@ const LatestNewsSection = () => {
 
           <Link
             to="/mediaCenter"
-            className="group inline-flex w-fit items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-black text-slate-800 shadow-sm transition-all hover:border-emerald-300 hover:text-emerald-700 hover:shadow-md"
+            className="group inline-flex w-fit items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-black text-slate-800 shadow-sm transition-all hover:border-[#63E1FA] hover:text-[#007A94] hover:shadow-md"
           >
             {t("latest_news.view_all")}
             <ArrowLeft size={16} className={`transition-transform ${isRtl ? "group-hover:-translate-x-1" : "rotate-180 group-hover:translate-x-1"}`} />
@@ -68,7 +68,7 @@ const LatestNewsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.55, delay: index * 0.09 }}
-              className="group overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-[0_14px_40px_rgba(15,23,42,0.06)] transition-all duration-500 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-[0_24px_55px_rgba(5,150,105,0.13)]"
+              className="group overflow-hidden rounded-[1.75rem] border border-slate-200 bg-white shadow-[0_14px_40px_rgba(15,23,42,0.06)] transition-all duration-500 hover:-translate-y-1 hover:border-[#63E1FA] hover:shadow-[0_24px_55px_rgba(0,201,242,0.13)]"
             >
               <Link to="/mediaCenter" className="flex h-full flex-col">
                 <div className="relative h-56 overflow-hidden bg-slate-200">
@@ -85,13 +85,13 @@ const LatestNewsSection = () => {
                 </div>
 
                 <div className="flex flex-1 flex-col p-6">
-                  <h3 className="text-xl font-black leading-8 text-slate-900 transition-colors group-hover:text-emerald-700">
+                  <h3 className="text-xl font-black leading-8 text-slate-900 transition-colors group-hover:text-[#007A94]">
                     {t(`latest_news.items.n${item.id}.title`)}
                   </h3>
                   <p className="mt-3 line-clamp-3 text-sm leading-7 text-slate-500">
                     {t(`latest_news.items.n${item.id}.description`)}
                   </p>
-                  <span className="mt-auto flex items-center gap-2 pt-6 text-xs font-black uppercase tracking-[0.14em] text-emerald-700">
+                  <span className="mt-auto flex items-center gap-2 pt-6 text-xs font-black uppercase tracking-[0.14em] text-[#007A94]">
                     {t("latest_news.read_more")}
                     <ArrowLeft size={15} className={`transition-transform ${isRtl ? "group-hover:-translate-x-1" : "rotate-180 group-hover:translate-x-1"}`} />
                   </span>

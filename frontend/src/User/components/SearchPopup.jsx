@@ -143,13 +143,13 @@ export const SearchPopupProvider = ({ children }) => {
           >
             <div className="mb-5 flex items-center justify-between gap-4">
               <h2 id="hero-search-title" className="text-lg font-bold">{t("hero.search_btn")}</h2>
-              <button type="button" onClick={() => setIsSearchOpen(false)} aria-label={isRtl ? "إغلاق" : "Close"} className="grid h-10 w-10 place-items-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200"><X size={20} /></button>
+              <button type="button" onClick={() => setIsSearchOpen(false)} aria-label={t("interface.close", { defaultValue: isRtl ? "إغلاق" : "Close" })} className="grid h-10 w-10 place-items-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200"><X size={20} /></button>
             </div>
             <form onSubmit={handleSearch} className="relative flex w-full flex-col items-stretch gap-3">
               
               {/* Champ 1 : Input texte */}
-              <div className="group/field flex min-h-[64px] flex-grow items-center gap-3 rounded-2xl border border-transparent bg-slate-50/90 px-4 py-2.5 transition-all hover:border-slate-200 hover:bg-white focus-within:border-emerald-400/50 focus-within:bg-white focus-within:shadow-[0_0_0_4px_rgba(52,211,153,0.1)]">
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-emerald-50 text-emerald-600 transition-colors group-focus-within/field:bg-emerald-500 group-focus-within/field:text-white">
+              <div className="group/field flex min-h-[64px] flex-grow items-center gap-3 rounded-2xl border border-transparent bg-slate-50/90 px-4 py-2.5 transition-all hover:border-slate-200 hover:bg-white focus-within:border-[#2AD5F5]/50 focus-within:bg-white focus-within:shadow-[0_0_0_4px_rgba(0,201,242,0.1)]">
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[#ECFCFF] text-[#00C9F2] transition-colors group-focus-within/field:bg-[#00C9F2] group-focus-within/field:text-white">
                   <Search size={18} />
                 </span>
                 <div className="flex flex-col text-start w-full min-w-[120px]">
@@ -159,7 +159,7 @@ export const SearchPopupProvider = ({ children }) => {
                     type="text" 
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder={t("hero.search_placeholder", "اسم المؤسسة...")}
+                    placeholder={t("hero.search_placeholder", "بحث")}
                     className="w-full border-none bg-transparent p-0 text-sm font-bold text-slate-800 outline-none placeholder:text-slate-400 focus:ring-0"
                   />
                 </div>
@@ -169,9 +169,9 @@ export const SearchPopupProvider = ({ children }) => {
               <div className="relative md:min-w-[160px]">
                 <div 
                   onClick={() => toggleDropdown('country')}
-                  className={`group/country flex min-h-[64px] h-full cursor-pointer select-none items-center gap-3 rounded-2xl border px-4 py-2.5 transition-all ${activeDropdown === 'country' ? 'border-emerald-400/50 bg-emerald-50/70 shadow-[0_0_0_4px_rgba(52,211,153,0.08)]' : 'border-transparent bg-slate-50/90 hover:border-slate-200 hover:bg-white'}`}
+                  className={`group/country flex min-h-[64px] h-full cursor-pointer select-none items-center gap-3 rounded-2xl border px-4 py-2.5 transition-all ${activeDropdown === 'country' ? 'border-[#2AD5F5]/50 bg-[#ECFCFF]/70 shadow-[0_0_0_4px_rgba(0,201,242,0.08)]' : 'border-transparent bg-slate-50/90 hover:border-slate-200 hover:bg-white'}`}
                 >
-                  <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl transition-colors ${activeDropdown === 'country' ? 'bg-emerald-500 text-white' : 'bg-emerald-50 text-emerald-600'}`}>
+                  <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl transition-colors ${activeDropdown === 'country' ? 'bg-[#00C9F2] text-white' : 'bg-[#ECFCFF] text-[#00C9F2]'}`}>
                     <MapPin size={18} />
                   </span>
                   <div className="flex flex-col text-start w-full">
@@ -182,7 +182,7 @@ export const SearchPopupProvider = ({ children }) => {
                         <img src={currentSelectedCountryObj.flag} alt="" className="w-4 h-3 object-cover rounded-[2px] shadow-sm shrink-0" />
                       )}
                       <span className="truncate text-sm font-bold text-slate-800">
-                        {selectedCountry && currentSelectedCountryObj ? currentSelectedCountryObj.name : t("hero.select_country", "اختر الدولة")}
+                        {selectedCountry && currentSelectedCountryObj ? t(`countries.${currentSelectedCountryObj.code}`, { defaultValue: currentSelectedCountryObj.name }) : t("hero.select_country", "اختر الدولة")}
                       </span>
                     </div>
                   </div>
@@ -202,7 +202,7 @@ export const SearchPopupProvider = ({ children }) => {
                     >
                       <li 
                         onClick={() => { setSelectedCountry(""); setActiveDropdown(null); }}
-                        className={`flex cursor-pointer items-center justify-between rounded-xl px-3 py-2.5 text-sm font-bold transition-colors ${!selectedCountry ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
+                        className={`flex cursor-pointer items-center justify-between rounded-xl px-3 py-2.5 text-sm font-bold transition-colors ${!selectedCountry ? 'bg-[#ECFCFF] text-[#007A94]' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
                       >
                         <span>{t("hero.select_country_all", "كل الدول")}</span>
                         {!selectedCountry && <Check size={16} />}
@@ -211,7 +211,7 @@ export const SearchPopupProvider = ({ children }) => {
                         <li 
                           key={country.code}
                           onClick={() => { setSelectedCountry(country.code); setActiveDropdown(null); }}
-                          className={`flex cursor-pointer items-center justify-between rounded-xl px-3 py-2.5 text-sm font-bold transition-colors ${selectedCountry === country.code ? 'bg-emerald-50 text-emerald-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
+                          className={`flex cursor-pointer items-center justify-between rounded-xl px-3 py-2.5 text-sm font-bold transition-colors ${selectedCountry === country.code ? 'bg-[#ECFCFF] text-[#007A94]' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}`}
                         >
                           <div className="flex items-center gap-2">
                             {country.flag ? (
@@ -219,7 +219,7 @@ export const SearchPopupProvider = ({ children }) => {
                             ) : (
                               <MapPin size={14} className="shrink-0 text-slate-400" />
                             )}
-                            <span className="truncate">{country.name}</span>
+                            <span className="truncate">{t(`countries.${country.code}`, { defaultValue: country.name })}</span>
                           </div>
                           {selectedCountry === country.code && <Check size={16} />}
                         </li>
@@ -234,7 +234,7 @@ export const SearchPopupProvider = ({ children }) => {
                 type="submit" 
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="flex min-h-[64px] shrink-0 items-center justify-center gap-3 rounded-2xl bg-gradient-to-l from-emerald-600 to-teal-500 px-7 py-3.5 text-sm font-extrabold text-white shadow-[0_12px_28px_rgba(5,150,105,0.3)] transition-all hover:from-emerald-500 hover:to-teal-400 hover:shadow-[0_15px_35px_rgba(5,150,105,0.4)]"
+                className="flex min-h-[64px] shrink-0 items-center justify-center gap-3 rounded-2xl bg-gradient-to-l from-[#00C9F2] to-[#00C9F2] px-7 py-3.5 text-sm font-extrabold text-white shadow-[0_12px_28px_rgba(0,201,242,0.3)] transition-all hover:from-[#00C9F2] hover:to-[#2AD5F5] hover:shadow-[0_15px_35px_rgba(0,201,242,0.4)]"
               >
                 <span>{t("hero.search_btn", "بحث")}</span>
                 <span className="grid h-8 w-8 place-items-center rounded-xl bg-white/15">

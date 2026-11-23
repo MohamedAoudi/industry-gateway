@@ -46,13 +46,13 @@ const CountrySlider = () => {
           viewport={{ once: true }}
           className="flex flex-col items-center"
         >
-          <span className="px-4 py-1 rounded-full bg-emerald-50 text-emerald-600 text-sm font-bold mb-4 border border-emerald-100">
+          <span className="px-4 py-1 rounded-full bg-[#ECFCFF] text-[#00C9F2] text-sm font-bold mb-4 border border-[#D0F6FF]">
             {t("home.network_coverage")}
           </span>
           <h2 className="text-3xl md:text-5xl font-black text-slate-900 leading-tight">
             {t("home.countries_title")}
           </h2>
-          <div className="w-24 h-1 bg-emerald-500 mt-6 rounded-full"></div>
+          <div className="w-24 h-1 bg-[#00C9F2] mt-6 rounded-full"></div>
         </motion.div>
       </div>
 

@@ -30,7 +30,7 @@
 //           <h2 className="text-2xl font-black text-slate-900">إدارة الباحثين</h2>
 //           <p className="text-slate-500 text-sm">عرض وإدارة جميع الكفاءات العلمية المسجلة</p>
 //         </div>
-//         <button className="bg-emerald-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-emerald-700 transition-colors">
+//         <button className="bg-[#00C9F2] text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-[#007A94] transition-colors">
 //           + إضافة باحث جديد
 //         </button>
 //       </div>
@@ -50,7 +50,7 @@
 //               <tr key={res.idResearcher} className="hover:bg-slate-50/50 transition-colors">
 //                 <td className="px-6 py-4">
 //                   <div className="flex items-center gap-3">
-//                     <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600">
+//                     <div className="w-10 h-10 bg-[#D0F6FF] rounded-full flex items-center justify-center text-[#00C9F2]">
 //                       <User size={18} />
 //                     </div>
 //                     <span className="font-bold text-slate-700">{res.full_name}</span>
@@ -210,7 +210,7 @@ const handleImportWithAI = async () => {
       <div className="mb-8 flex justify-between items-center">
         <div>
           <h2 className="text-5xl font-black text-slate-900 tracking-tighter">
-              إدارة <span className="text-emerald-600">الباحثين</span>
+              إدارة <span className="text-[#00C9F2]">الباحثين</span>
           </h2>
           <p className="text-slate-900 text-md">عرض وإدارة جميع الكفاءات العلمية المسجلة</p>
           {aiMessage && (
@@ -220,7 +220,7 @@ const handleImportWithAI = async () => {
         <div className="flex flex-col sm:flex-row gap-3 items-center">
           <button 
             onClick={() => setIsModalOpen(true)}
-            className="bg-emerald-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-emerald-700 transition-colors shadow-lg shadow-emerald-200"
+            className="bg-[#00C9F2] text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-[#007A94] transition-colors shadow-lg shadow-[#A1EDFF]"
           >
             + إضافة باحث جديد
           </button>
@@ -251,7 +251,7 @@ const handleImportWithAI = async () => {
               <tr key={res.idResearcher} className="hover:bg-slate-50/50 transition-colors">
                 <td className="px-6 py-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 font-bold">
+                    <div className="w-10 h-10 bg-[#D0F6FF] rounded-full flex items-center justify-center text-[#00C9F2] font-bold">
                       {res.full_name ? res.full_name.charAt(0) : '-'}
                     </div>
                     <span className="font-bold text-slate-700">{res.full_name || 'غير معروف'}</span>
@@ -322,7 +322,7 @@ const handleImportWithAI = async () => {
                   <label className="block text-sm font-bold text-slate-700 mb-2">الاسم الكامل</label>
                   <input 
                     type="text" required
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[#00C9F2] transition-all"
                     placeholder="مثال: أحمد محمد"
                     value={formData.full_name}
                     onChange={(e) => setFormData({...formData, full_name: e.target.value})}
@@ -333,7 +333,7 @@ const handleImportWithAI = async () => {
                   <label className="block text-sm font-bold text-slate-700 mb-2">البريد الإلكتروني</label>
                   <input 
                     type="email" required
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500 transition-all"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[#00C9F2] transition-all"
                     placeholder="email@example.com"
                     value={formData.email}
                     onChange={(e) => setFormData({...formData, email: e.target.value})}
@@ -343,7 +343,7 @@ const handleImportWithAI = async () => {
                 <div>
                   <label className="block text-sm font-bold text-slate-700 mb-2">مجال البحث</label>
                   <select 
-                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-emerald-500 appearance-none cursor-pointer"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-[#00C9F2] appearance-none cursor-pointer"
                     value={formData.research_field}
                     onChange={(e) => setFormData({...formData, research_field: e.target.value})}
                   >
@@ -356,7 +356,7 @@ const handleImportWithAI = async () => {
 
                 <button 
                   type="submit"
-                  className="w-full bg-emerald-600 text-white font-bold py-4 rounded-xl hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-100 mt-2"
+                  className="w-full bg-[#00C9F2] text-white font-bold py-4 rounded-xl hover:bg-[#007A94] transition-all shadow-lg shadow-[#D0F6FF] mt-2"
                 >
                   حفظ البيانات
                 </button>

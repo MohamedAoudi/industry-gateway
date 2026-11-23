@@ -224,7 +224,7 @@ const AdminHeader = () => {
           }}
         >
           <div className="absolute inset-y-0 left-1.5 pr-3 flex items-center pointer-events-none">
-            <Search size={15} className="text-slate-400 group-focus-within:text-emerald-600 transition-colors" />
+            <Search size={15} className="text-slate-400 group-focus-within:text-[#00C9F2] transition-colors" />
           </div>
           <input 
             type="text" 
@@ -233,7 +233,7 @@ const AdminHeader = () => {
             onFocus={() => setSearchFocused(true)}
             onBlur={() => setTimeout(() => setSearchFocused(false), 120)}
             placeholder={i18n.language === 'ar' ? 'ابحث في قائمة الإدارة...' : 'Search admin menu...'}
-            className="w-full bg-slate-100/50 border-none rounded-xl pr-4 pl-9 py-2 text-[11px] font-medium focus:ring-2 focus:ring-emerald-600 focus:bg-white transition-all outline-none"
+            className="w-full bg-slate-100/50 border-none rounded-xl pr-4 pl-9 py-2 text-[11px] font-medium focus:ring-2 focus:ring-[#00C9F2] focus:bg-white transition-all outline-none"
           />
           {searchFocused && menuSearch.trim() && (
             <div className="absolute inset-x-0 top-full z-50 mt-2 max-h-80 overflow-y-auto rounded-2xl border border-slate-100 bg-white p-2 shadow-2xl">
@@ -245,9 +245,9 @@ const AdminHeader = () => {
                     event.preventDefault();
                     goToMenu(item);
                   }}
-                  className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-start text-sm font-bold text-slate-700 transition hover:bg-emerald-50 hover:text-emerald-700"
+                  className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-start text-sm font-bold text-slate-700 transition hover:bg-[#ECFCFF] hover:text-[#007A94]"
                 >
-                  <Search size={15} className="shrink-0 text-emerald-600" />
+                  <Search size={15} className="shrink-0 text-[#00C9F2]" />
                   <span>{i18n.language === 'ar' ? item.ar : item.en}</span>
                 </button>
               )) : (
@@ -266,25 +266,25 @@ const AdminHeader = () => {
           <div className="relative">
             <button 
               onClick={() => setIsOpen(!isOpen)}
-              className="flex items-center gap-3 p-1.5 pr-4 rounded-2xl hover:bg-emerald-600 transition-all border border-transparent hover:border-slate-200"
+              className="flex items-center gap-3 p-1.5 pr-4 rounded-2xl hover:bg-[#00C9F2] transition-all border border-transparent hover:border-slate-200"
             >
               <div className="text-right flex flex-col justify-center">
-                <span className="text-[12px] font-black text-emerald-600 leading-none">
+                <span className="text-[12px] font-black text-[#00C9F2] leading-none">
                   {adminData.prenom} {adminData.nom}
                 </span>
                 <div className="flex items-center justify-end gap-1 mt-1">
-                  <ShieldCheck size={11} className="text-emerald-600" />
+                  <ShieldCheck size={11} className="text-[#00C9F2]" />
                   <span className="text-[9px] font-bold text-slate-900 uppercase tracking-tighter">المشرف الرئيسي</span>
                 </div>
               </div>
 
               {/* الصورة الرمزية بتصميم هندسي */}
               <div className="relative">
-                <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center text-emerald-500 font-black shadow-lg overflow-hidden ring-2 ring-white">
-                  <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-transparent" />
+                <div className="w-10 h-10 rounded-xl bg-slate-900 flex items-center justify-center text-[#00C9F2] font-black shadow-lg overflow-hidden ring-2 ring-white">
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#00C9F2]/20 to-transparent" />
                   {adminData.prenom[0]}{adminData.nom[0] || 'A'}
                 </div>
-                <div className="absolute -bottom-1 -left-1 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full" />
+                <div className="absolute -bottom-1 -left-1 w-3.5 h-3.5 bg-[#00C9F2] border-2 border-white rounded-full" />
               </div>
 
               <ChevronDown size={14} className={`text-slate-400 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />

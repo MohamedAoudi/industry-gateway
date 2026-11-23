@@ -32,7 +32,7 @@ const AddOffer = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <label className="block font-bold mb-2 mr-2">عنوان العرض</label>
-            <input required type="text" className="w-full bg-slate-50 border-none rounded-2xl p-4 outline-none ring-1 ring-slate-200 focus:ring-2 focus:ring-emerald-500" 
+            <input required type="text" className="w-full bg-slate-50 border-none rounded-2xl p-4 outline-none ring-1 ring-slate-200 focus:ring-2 focus:ring-[#00C9F2]" 
               value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} />
           </div>
 
@@ -58,7 +58,7 @@ const AddOffer = () => {
 
           <div>
             <label className="block font-bold mb-2 mr-2">وصف التحدي التقني</label>
-            <textarea required rows="4" className="w-full bg-slate-50 border-none rounded-2xl p-4 outline-none ring-1 ring-slate-200 focus:ring-2 focus:ring-emerald-500"
+            <textarea required rows="4" className="w-full bg-slate-50 border-none rounded-2xl p-4 outline-none ring-1 ring-slate-200 focus:ring-2 focus:ring-[#00C9F2]"
               value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})} />
           </div>
 
@@ -75,7 +75,7 @@ const AddOffer = () => {
             </div>
           </div>
 
-          <button className="w-full bg-[#1a1a1a] text-white py-5 rounded-2xl font-black text-lg hover:bg-emerald-600 transition-all flex items-center justify-center gap-3 shadow-xl">
+          <button className="w-full bg-[#1a1a1a] text-white py-5 rounded-2xl font-black text-lg hover:bg-[#00C9F2] transition-all flex items-center justify-center gap-3 shadow-xl">
             <Send size={20} /> نشر العرض الآن
           </button>
         </form>

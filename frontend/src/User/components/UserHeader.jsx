@@ -13,9 +13,9 @@ import { Link, useLocation } from "react-router-dom";
 import { useSearchPopup } from "./SearchPopup";
 
 import aidsmoLogo from '../assets/images/logos/aidsmo_logo.png';
-import logo from '../assets/images/logos/logo.png';
+import { getPortalLogo, getPortalLogoAlt } from '../assets/portalLogo';
 
-const activeMenuStyle = "!bg-emerald-50 !text-emerald-700 ring-1 ring-emerald-200 [&_span]:!text-emerald-700";
+const activeMenuStyle = "!bg-[#ECFCFF] !text-[#007A94] ring-1 ring-[#A1EDFF] [&_span]:!text-[#007A94]";
 
 const HeaderLink = ({ to, className = "", children, ...props }) => {
   const { pathname, search } = useLocation();
@@ -33,12 +33,12 @@ const SubLinkCard = ({ label, href, icon: Icon = Zap }) => {
   return (
     <Wrapper
       {...(href ? { to: href } : {})}
-      className="group flex items-center gap-3 rounded-xl border border-transparent p-2.5 transition-all duration-200 hover:border-emerald-100 hover:bg-emerald-50/70"
+      className="group flex items-center gap-3 rounded-xl border border-transparent p-2.5 transition-all duration-200 hover:border-[#D0F6FF] hover:bg-[#ECFCFF]/70"
     >
-      <div className="flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors duration-200">
+      <div className="flex-shrink-0 w-7 h-7 flex items-center justify-center rounded-lg bg-[#ECFCFF] text-[#00C9F2] group-hover:bg-[#00C9F2] group-hover:text-white transition-colors duration-200">
         <Icon size={14} />
       </div>
-      <span className="text-[13px] font-semibold text-slate-600 group-hover:text-emerald-900 transition-colors leading-tight">
+      <span className="text-[13px] font-semibold text-slate-600 group-hover:text-[#004C5D] transition-colors leading-tight">
         {t(label)}
       </span>
     </Wrapper>
@@ -71,18 +71,18 @@ const MegaMenu = ({ label, icon: Icon, children, width = "w-[550px]" }) => {
     : portalServices.some(({ to }) => to.split("?")[0].toLowerCase() === pathname.toLowerCase() && !pathname.toLowerCase().includes("researchdatabase"));
   return (
     <div className="relative group">
-      <button className={`flex items-center gap-2 whitespace-nowrap rounded-xl px-1.5 py-2.5 text-[13px] font-bold text-slate-700 transition-all duration-200 hover:bg-emerald-50 hover:text-emerald-700 ${isActive ? activeMenuStyle : ""}`}>
+      <button className={`flex items-center gap-2 whitespace-nowrap rounded-xl px-1.5 py-2.5 text-[13px] font-bold text-slate-700 transition-all duration-200 hover:bg-[#ECFCFF] hover:text-[#007A94] ${isActive ? activeMenuStyle : ""}`}>
         {Icon && (
-          <span className="grid h-7 w-7 place-items-center rounded-lg bg-emerald-50 text-emerald-600 ring-1 ring-emerald-100 transition-colors group-hover:bg-emerald-600 group-hover:text-white">
+          <span className="grid h-7 w-7 place-items-center rounded-lg bg-[#ECFCFF] text-[#00C9F2] ring-1 ring-[#D0F6FF] transition-colors group-hover:bg-[#00C9F2] group-hover:text-white">
             <Icon size={14} />
           </span>
         )}
         <span>{t(`menu.${label}`)}</span>
-        <ChevronDown size={12} className="text-slate-400 group-hover:rotate-180 group-hover:text-emerald-600 transition-all duration-300" />
+        <ChevronDown size={12} className="text-slate-400 group-hover:rotate-180 group-hover:text-[#00C9F2] transition-all duration-300" />
       </button>
       <div className={`absolute top-full ltr:left-0 rtl:right-0 ${width} opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-3 group-hover:translate-y-0 transition-all duration-300 z-50 pt-3`}>
         <div className="relative grid grid-cols-2 gap-1.5 overflow-hidden rounded-[1.5rem] border border-white bg-white/95 p-4 shadow-[0_24px_65px_rgba(15,23,42,0.18)] backdrop-blur-2xl">
-          <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400 to-transparent" />
+          <div className="absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent via-[#2AD5F5] to-transparent" />
           {children}
         </div>
       </div>
@@ -94,7 +94,7 @@ const NavDropdownNews = ({ label, children }) => {
   const { t } = useTranslation();
   return (
     <div className="relative group">
-      <button className="flex items-center gap-1.5 px-3 py-2 text-[14px] font-semibold text-slate-700 hover:text-emerald-600 transition-all duration-200">
+      <button className="flex items-center gap-1.5 px-3 py-2 text-[14px] font-semibold text-slate-700 hover:text-[#00C9F2] transition-all duration-200">
         <span>{t(`menu.${label}`)}</span>
         <ChevronDown size={11} className="opacity-40 group-hover:rotate-180 transition-transform duration-300" />
       </button>
@@ -169,7 +169,7 @@ const UserHeader = () => {
       {/* 1. TOP HEADER */}
       <div className={`flex w-full items-center justify-between border-b border-white/60 bg-white/90 px-4 backdrop-blur-2xl transition-all duration-300 motion-reduce:transition-none min-[1700px]:hidden ${isScrolled ? "h-16 rounded-2xl shadow-md" : "h-20 rounded-none shadow-[0_1px_0_rgba(15,23,42,0.04)]"}`}>
         <div className="flex-shrink-0">
-          <img src={logo} alt="Logo Left" className={`w-auto object-contain transition-all duration-300 motion-reduce:transition-none ${isScrolled ? "h-12" : "h-16"}`} />
+          <img src={getPortalLogo(i18n.language)} alt={getPortalLogoAlt(i18n.language)} className={`w-auto max-w-[min(32vw,18rem)] object-contain transition-all duration-300 motion-reduce:transition-none ${isScrolled ? "h-12" : "h-16"}`} />
         </div>
         
         <div className="flex items-center gap-4">
@@ -179,18 +179,18 @@ const UserHeader = () => {
               placeholder={t('search')} 
               className="bg-transparent border-none text-[13px] outline-none w-64 focus:w-72 transition-all duration-300 px-1 text-slate-700 placeholder:text-slate-400" 
             />
-            <Search size={15} className="text-slate-400 transition-colors group-focus-within:text-emerald-600" />
+            <Search size={15} className="text-slate-400 transition-colors group-focus-within:text-[#00C9F2]" />
           </div>
         </div>
 
         <div className="flex items-center gap-4 flex-shrink-0">
           <div className="flex rounded-xl border border-slate-200/60 bg-slate-100/80 p-1">
-            {['ar', 'en'].map(lng => (
+            {['ar', 'en', 'fr'].map(lng => (
               <button 
                 key={lng} 
                 onClick={() => switchLang(lng)} 
                 className={`px-3 py-1 text-[12px] font-bold rounded-lg transition-all duration-200 ${
-                  i18n.language === lng ? "bg-white text-emerald-600 shadow-sm" : "text-slate-600 hover:text-slate-900"
+                  i18n.language === lng ? "bg-white text-[#00C9F2] shadow-sm" : "text-slate-600 hover:text-slate-900"
                 }`}
               >
                 {lng.toUpperCase()}
@@ -203,7 +203,7 @@ const UserHeader = () => {
             onClick={() => setIsMobileMenuOpen((isOpen) => !isOpen)}
             aria-label={isMobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
             aria-expanded={isMobileMenuOpen}
-            className="grid h-10 w-10 place-items-center rounded-xl bg-slate-900 text-white transition-colors hover:bg-emerald-700 min-[1700px]:hidden"
+            className="grid h-10 w-10 place-items-center rounded-xl bg-slate-900 text-white transition-colors hover:bg-[#007A94] min-[1700px]:hidden"
           >
             {isMobileMenuOpen ? <X size={19} /> : <MenuIcon size={19} />}
           </button>
@@ -218,17 +218,17 @@ const UserHeader = () => {
           : "h-20 rounded-none border-slate-100 py-2 shadow-[0_8px_24px_rgba(15,23,42,0.07)]"
         }`}>
           <div className="flex shrink-0 items-center">
-            <img src={logo} alt="Logo" className={`w-auto object-contain transition-all duration-300 motion-reduce:transition-none ${isScrolled ? "h-12" : "h-16"}`} />
+            <img src={getPortalLogo(i18n.language)} alt={getPortalLogoAlt(i18n.language)} className={`w-auto object-contain transition-all duration-300 motion-reduce:transition-none ${isScrolled ? "h-12" : "h-16"}`} />
           </div>
           
           <div className="flex min-w-0 flex-1 items-center justify-center gap-1">
-            <HeaderLink to="/" className="flex h-10 items-center justify-center gap-2 whitespace-nowrap rounded-xl bg-emerald-50 px-3 text-[13px] font-bold text-emerald-600 transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_25px_rgba(5,150,105,0.35)]">
+            <HeaderLink to="/" className="flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-[#ECFCFF] hover:text-[#007A94]">
               <Home size={17} />
               <span>{t("menu.home")}</span>
             </HeaderLink>
             
-            <HeaderLink to="/about" className="flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-emerald-50 hover:text-emerald-700">
-              <Info size={15} className="text-emerald-600" />
+            <HeaderLink to="/about" className="flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-[#ECFCFF] hover:text-[#007A94]">
+              <Info size={15} className="text-[#00C9F2]" />
               {t("menu.about")}
             </HeaderLink>
 
@@ -247,34 +247,34 @@ const UserHeader = () => {
               <HeaderLink to="/researchDatabase?category=experts-specialists"><SubLinkCard icon={UsersRound} label="submenu.database.experts_specialists_database" /></HeaderLink>
             </MegaMenu>
 
-            <HeaderLink to="/mediaCenter" className="flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-emerald-50 hover:text-emerald-700">
-              <Newspaper size={15} className="text-emerald-600" />
+            <HeaderLink to="/mediaCenter" className="flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-[#ECFCFF] hover:text-[#007A94]">
+              <Newspaper size={15} className="text-[#00C9F2]" />
               {t("menu.media_center")}
             </HeaderLink>
 
-            <HeaderLink to="/faq" className="flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-emerald-50 hover:text-emerald-700">
-              <CircleHelp size={15} className="text-emerald-600" />
+            <HeaderLink to="/faq" className="flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-[#ECFCFF] hover:text-[#007A94]">
+              <CircleHelp size={15} className="text-[#00C9F2]" />
               {t("footer.faq")}
             </HeaderLink>
 
-            <HeaderLink to="/contact" className="flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-emerald-50 hover:text-emerald-700">
-              <Mail size={15} className="text-emerald-600" />
+            <HeaderLink to="/contact" className="flex items-center gap-2 whitespace-nowrap rounded-xl px-4 py-2.5 text-[13px] font-bold text-slate-700 transition-all hover:bg-[#ECFCFF] hover:text-[#007A94]">
+              <Mail size={15} className="text-[#00C9F2]" />
               {t("menu.contact")}
             </HeaderLink>
           </div>
 
           <div className="flex shrink-0 items-center gap-3">
-            {showHeaderSearch && <button type="button" onClick={handleOpenSearch} aria-label={t("hero.search_btn")} aria-haspopup="dialog" className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-emerald-100 bg-emerald-50 text-emerald-600 transition-colors hover:bg-emerald-100">
+            {showHeaderSearch && <button type="button" onClick={handleOpenSearch} aria-label={t("hero.search_btn")} aria-haspopup="dialog" className="grid h-9 w-9 shrink-0 place-items-center rounded-lg border border-[#D0F6FF] bg-[#ECFCFF] text-[#00C9F2] transition-colors hover:bg-[#D0F6FF]">
               <Search size={15} />
             </button>}
 
             <div className="flex shrink-0 rounded-xl border border-slate-200/60 bg-slate-100/80 p-1">
-              {['ar', 'en'].map(lng => (
+              {['ar', 'en', 'fr'].map(lng => (
                 <button
                   key={lng}
                   onClick={() => switchLang(lng)}
                   className={`rounded-lg px-2.5 py-1 text-[11px] font-bold transition-all duration-200 ${
-                    i18n.language === lng ? "bg-white text-emerald-600 shadow-sm" : "text-slate-600 hover:text-slate-900"
+                    i18n.language === lng ? "bg-white text-[#00C9F2] shadow-sm" : "text-slate-600 hover:text-slate-900"
                   }`}
                 >
                   {lng.toUpperCase()}
@@ -288,21 +288,21 @@ const UserHeader = () => {
             <div className="flex items-center gap-2 border-slate-200 ltr:ml-1 ltr:border-l ltr:pl-3 rtl:mr-1 rtl:border-r rtl:pr-3">
             {isLoggedIn ? (
               <div className="relative group">
-                <button className="flex items-center gap-2 rounded-xl border border-emerald-100 bg-emerald-50 p-1 ltr:pr-3 rtl:pl-3 transition-colors duration-200 hover:bg-emerald-100">
-                  <div className="w-7 h-7 rounded-lg bg-emerald-600 flex items-center justify-center text-white font-bold text-[11px] shrink-0 shadow-sm">
+                <button className="flex items-center gap-2 rounded-xl border border-[#D0F6FF] bg-[#ECFCFF] p-1 ltr:pr-3 rtl:pl-3 transition-colors duration-200 hover:bg-[#D0F6FF]">
+                  <div className="w-7 h-7 rounded-lg bg-[#00C9F2] flex items-center justify-center text-white font-bold text-[11px] shrink-0 shadow-sm">
                     {userData.prenom.charAt(0).toUpperCase()}{userData.nom.charAt(0).toUpperCase()}
                   </div>
-                  <p className="hidden max-w-40 truncate text-[12px] font-bold text-emerald-900 capitalize sm:block" title={userData.prenom}>
+                  <p className="hidden max-w-40 truncate text-[12px] font-bold text-[#004C5D] capitalize sm:block" title={userData.prenom}>
                     {userData.prenom}
                   </p>
-                  <ChevronDown size={11} className="text-emerald-700/50 group-hover:rotate-180 transition-transform duration-300" />
+                  <ChevronDown size={11} className="text-[#007A94]/50 group-hover:rotate-180 transition-transform duration-300" />
                 </button>
 
                 {/* MENU USER DROPDOWN */}
                 <div className="absolute ltr:right-0 rtl:left-0 mt-2 w-48 bg-white border border-slate-100 rounded-2xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-2 group-hover:translate-y-0 transition-all duration-200 z-50 p-1.5">
                   <HeaderLink
                     to="/profile"
-                    className="flex items-center gap-2.5 px-3 py-2 text-[13px] font-medium text-slate-700 rounded-xl hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
+                    className="flex items-center gap-2.5 px-3 py-2 text-[13px] font-medium text-slate-700 rounded-xl hover:bg-[#ECFCFF] hover:text-[#007A94] transition-colors"
                   >
                     <User size={15} />
                     {t("menu.profile") || "Mon Profil"}
@@ -311,10 +311,10 @@ const UserHeader = () => {
                   {userRole === "superviseur" && (
                     <HeaderLink
                       to="/admin/dashboard"
-                      className="flex items-center gap-2.5 px-3 py-2 text-[13px] font-medium text-slate-700 rounded-xl hover:bg-emerald-50 hover:text-emerald-700 transition-colors"
+                      className="flex items-center gap-2.5 px-3 py-2 text-[13px] font-medium text-slate-700 rounded-xl hover:bg-[#ECFCFF] hover:text-[#007A94] transition-colors"
                     >
                       <LayoutDashboard size={15} />
-                      {i18n.language === "ar" ? "لوحة الإدارة" : "Admin dashboard"}
+                      {t("common.admin_dashboard", { defaultValue: i18n.language === "ar" ? "لوحة الإدارة" : "Admin dashboard" })}
                     </HeaderLink>
                   )}
 
@@ -333,7 +333,7 @@ const UserHeader = () => {
               <HeaderLink
                 to="/login" 
                 aria-label={t("menu.login")}
-                className="group/login flex h-10 w-10 items-center justify-center gap-0 overflow-hidden rounded-xl bg-gradient-to-l from-emerald-600 to-teal-500 px-0 text-[13px] font-bold text-white shadow-[0_8px_20px_rgba(5,150,105,0.25)] transition-all duration-300 hover:w-36 hover:gap-2 hover:px-4 hover:from-emerald-500 hover:to-teal-400 hover:shadow-[0_10px_26px_rgba(5,150,105,0.4)]"
+                className="group/login flex h-10 w-10 items-center justify-center gap-0 overflow-hidden rounded-xl bg-gradient-to-l from-[#00C9F2] to-[#00C9F2] px-0 text-[13px] font-bold text-white shadow-[0_8px_20px_rgba(0,201,242,0.25)] transition-all duration-300 hover:w-36 hover:gap-2 hover:px-4 hover:from-[#00C9F2] hover:to-[#2AD5F5] hover:shadow-[0_10px_26px_rgba(0,201,242,0.4)]"
               >
                 <User size={15} className="shrink-0" />
                 <span className="max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300 group-hover/login:max-w-24 group-hover/login:opacity-100">
@@ -354,21 +354,21 @@ const UserHeader = () => {
       >
         <div className="max-h-[calc(100vh-6rem)] space-y-1 overflow-y-auto p-3" dir={i18n.language === "ar" ? "rtl" : "ltr"}>
           {showHeaderSearch && <button type="button" onClick={handleOpenSearch} aria-haspopup="dialog" className="mb-3 flex w-full items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm font-bold text-slate-600">
-            <Search size={17} className="text-emerald-600" />
+            <Search size={17} className="text-[#00C9F2]" />
             {t("hero.search_btn")}
           </button>}
-          <HeaderLink onClick={() => setIsMobileMenuOpen(false)} to="/" className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-emerald-50">
+          <HeaderLink onClick={() => setIsMobileMenuOpen(false)} to="/" className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-[#ECFCFF]">
             <Home size={17} />
             {t("menu.home")}
           </HeaderLink>
           <HeaderLink onClick={() => setIsMobileMenuOpen(false)} to="/about" className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50">
-            <Info size={17} className="text-emerald-600" />
+            <Info size={17} className="text-[#00C9F2]" />
             {t("menu.about")}
           </HeaderLink>
 
           <details className="group/mobile rounded-xl open:bg-slate-50">
             <summary className="flex cursor-pointer list-none items-center justify-between rounded-xl px-4 py-3 text-sm font-bold text-slate-700">
-              <span className="flex items-center gap-3"><Layers size={17} className="text-emerald-600" />{t("menu.services")}</span>
+              <span className="flex items-center gap-3"><Layers size={17} className="text-[#00C9F2]" />{t("menu.services")}</span>
               <ChevronDown size={15} className="text-slate-400 transition-transform group-open/mobile:rotate-180" />
             </summary>
             <div className="space-y-1 px-2 pb-2">
@@ -378,7 +378,7 @@ const UserHeader = () => {
 
           <details className="group/mobile rounded-xl open:bg-slate-50">
             <summary className="flex cursor-pointer list-none items-center justify-between rounded-xl px-4 py-3 text-sm font-bold text-slate-700">
-              <span className="flex items-center gap-3"><Database size={17} className="text-emerald-600" />{t("menu.database")}</span>
+              <span className="flex items-center gap-3"><Database size={17} className="text-[#00C9F2]" />{t("menu.database")}</span>
               <ChevronDown size={15} className="text-slate-400 transition-transform group-open/mobile:rotate-180" />
             </summary>
             <div className="space-y-1 px-2 pb-2">
@@ -394,27 +394,27 @@ const UserHeader = () => {
           </details>
 
           <HeaderLink onClick={() => setIsMobileMenuOpen(false)} to="/mediaCenter" className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50">
-            <Newspaper size={17} className="text-emerald-600" />
+            <Newspaper size={17} className="text-[#00C9F2]" />
             {t("menu.media_center")}
           </HeaderLink>
           <HeaderLink onClick={() => setIsMobileMenuOpen(false)} to="/faq" className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50">
-            <CircleHelp size={17} className="text-emerald-600" />
+            <CircleHelp size={17} className="text-[#00C9F2]" />
             {t("footer.faq")}
           </HeaderLink>
           <HeaderLink onClick={() => setIsMobileMenuOpen(false)} to="/contact" className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-slate-50">
-            <Mail size={17} className="text-emerald-600" />
+            <Mail size={17} className="text-[#00C9F2]" />
             {t("menu.contact")}
           </HeaderLink>
           {isLoggedIn && (
             <>
-              <HeaderLink onClick={() => setIsMobileMenuOpen(false)} to="/profile" className="mt-2 flex items-center gap-3 rounded-xl bg-emerald-50 px-4 py-3 text-sm font-bold text-emerald-800">
+              <HeaderLink onClick={() => setIsMobileMenuOpen(false)} to="/profile" className="mt-2 flex items-center gap-3 rounded-xl bg-[#ECFCFF] px-4 py-3 text-sm font-bold text-[#006176]">
                 <User size={17} />
                 {t("menu.profile")}
               </HeaderLink>
               {userRole === "superviseur" && (
-                <HeaderLink onClick={() => setIsMobileMenuOpen(false)} to="/admin/dashboard" className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-emerald-50 hover:text-emerald-700">
+                <HeaderLink onClick={() => setIsMobileMenuOpen(false)} to="/admin/dashboard" className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-slate-700 hover:bg-[#ECFCFF] hover:text-[#007A94]">
                   <LayoutDashboard size={17} />
-                  {i18n.language === "ar" ? "لوحة الإدارة" : "Admin dashboard"}
+                  {t("common.admin_dashboard", { defaultValue: i18n.language === "ar" ? "لوحة الإدارة" : "Admin dashboard" })}
                 </HeaderLink>
               )}
               <button onClick={handleLogout} className="flex w-full items-center gap-3 rounded-xl px-4 py-3 text-sm font-bold text-red-600 hover:bg-red-50">
@@ -424,7 +424,7 @@ const UserHeader = () => {
             </>
           )}
           {!isLoggedIn && (
-            <HeaderLink onClick={() => setIsMobileMenuOpen(false)} to="/login" className="mt-2 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-l from-emerald-600 to-teal-500 px-4 py-3 text-sm font-bold text-white shadow-[0_8px_20px_rgba(5,150,105,0.25)] transition-all hover:from-emerald-500 hover:to-teal-400">
+            <HeaderLink onClick={() => setIsMobileMenuOpen(false)} to="/login" className="mt-2 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-l from-[#00C9F2] to-[#00C9F2] px-4 py-3 text-sm font-bold text-white shadow-[0_8px_20px_rgba(0,201,242,0.25)] transition-all hover:from-[#00C9F2] hover:to-[#2AD5F5]">
               <User size={16} />
               {t("menu.login")}
             </HeaderLink>

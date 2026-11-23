@@ -1,9 +1,22 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import { register } from 'swiper/element';
+import fr from './locales/fr.json';
+
+const supportedLanguages = ['ar', 'en', 'fr'];
+const savedLanguage = localStorage.getItem('language');
+const initialLanguage = supportedLanguages.includes(savedLanguage) ? savedLanguage : 'ar';
+const syncLanguage = (language) => {
+  document.documentElement.lang = language;
+  document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
+  localStorage.setItem('language', language);
+};
+syncLanguage(initialLanguage);
+i18n.on('languageChanged', syncLanguage);
 
 i18n.use(initReactI18next).init({
   resources: {
+    fr: { translation: fr },
     ar: {
       translation: {
         contact: "اتصل بنا",
@@ -56,7 +69,7 @@ i18n.use(initReactI18next).init({
 
         hero: {
           title: "بوابة ربط الصناعة",
-          search_placeholder: "اسم المؤسسة...",
+          search_placeholder: "بحث",
           search_label: "ابحث عن",
           search_btn: "بحث",
           country_label: "الدولة",
@@ -483,7 +496,7 @@ i18n.use(initReactI18next).init({
 
         hero: {
           title: "A gateway connecting industry",
-          search_placeholder: "Institution name...",
+          search_placeholder: "Search",
           search_label: "Search for",
           search_btn: "Search",
           country_label: "Country",
@@ -851,7 +864,8 @@ i18n.use(initReactI18next).init({
       }
     }
   },
-  lng: "ar",
+  lng: initialLanguage,
+  supportedLngs: supportedLanguages,
   fallbackLng: "en",
   interpolation: { escapeValue: false }
 })

@@ -13,7 +13,7 @@
 //   const [updating, setUpdating] = useState(false);
 
 //   const statuses = {
-//     open: { label: "مفتوح", color: "text-emerald-600", bg: "bg-emerald-50", icon: <CheckCircle2 size={14} /> },
+//     open: { label: "مفتوح", color: "text-[#00C9F2]", bg: "bg-[#ECFCFF]", icon: <CheckCircle2 size={14} /> },
 //     closed: { label: "مغلق", color: "text-slate-500", bg: "bg-slate-50", icon: <Clock size={14} /> },
 //     pending: { label: "معلق", color: "text-amber-600", bg: "bg-amber-50", icon: <AlertCircle size={14} /> }
 //   };
@@ -54,7 +54,7 @@
 //               <button
 //                 key={key}
 //                 onClick={() => handleUpdate(key)}
-//                 className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-bold text-slate-600 hover:bg-emerald-50 hover:text-emerald-600 transition-colors"
+//                 className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-[13px] font-bold text-slate-600 hover:bg-[#ECFCFF] hover:text-[#00C9F2] transition-colors"
 //               >
 //                 {val.icon} {val.label}
 //               </button>
@@ -99,10 +99,10 @@
 //       {/* Header WOW Area */}
 //       <div className="max-w-7xl mx-auto mb-12 flex justify-between items-end">
 //         <div>
-//           <div className="flex items-center gap-2 text-emerald-600 font-bold text-sm mb-2">
+//           <div className="flex items-center gap-2 text-[#00C9F2] font-bold text-sm mb-2">
 //             <LayoutGrid size={18} /> لوحة التحكم الإدارية
 //           </div>
-//           <h2 className="text-5xl font-black text-slate-900 tracking-tighter">إدارة <span className="text-emerald-600">العروض</span></h2>
+//           <h2 className="text-5xl font-black text-slate-900 tracking-tighter">إدارة <span className="text-[#00C9F2]">العروض</span></h2>
 //         </div>
 //         <div className="bg-white px-6 py-4 rounded-[24px] border border-slate-100 shadow-sm text-center">
 //           <span className="block text-3xl font-black text-slate-900">{offers.length}</span>
@@ -120,15 +120,15 @@
 //               initial={{ opacity: 0, scale: 0.9 }}
 //               animate={{ opacity: 1, scale: 1 }}
 //               exit={{ opacity: 0, scale: 0.9 }}
-//               className="group bg-white rounded-[40px] p-8 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-emerald-100/40 transition-all duration-500"
+//               className="group bg-white rounded-[40px] p-8 border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-[#D0F6FF]/40 transition-all duration-500"
 //             >
 //               <div className="flex justify-between items-start mb-8">
 //                 <div className="flex items-center gap-5">
-//                   <div className="w-16 h-16 bg-slate-900 rounded-[22px] flex items-center justify-center text-white text-2xl font-black shadow-lg group-hover:bg-emerald-600 transition-colors">
+//                   <div className="w-16 h-16 bg-slate-900 rounded-[22px] flex items-center justify-center text-white text-2xl font-black shadow-lg group-hover:bg-[#00C9F2] transition-colors">
 //                     {offer.company?.company_name?.charAt(0)}
 //                   </div>
 //                   <div>
-//                     <h3 className="text-2xl font-black text-slate-800 mb-1 group-hover:text-emerald-700 transition-colors">{offer.title}</h3>
+//                     <h3 className="text-2xl font-black text-slate-800 mb-1 group-hover:text-[#007A94] transition-colors">{offer.title}</h3>
 //                     <div className="flex items-center gap-2 text-slate-400 font-bold text-sm">
 //                       <Building2 size={14} /> {offer.company?.company_name}
 //                     </div>
@@ -147,15 +147,15 @@
 
 //               <div className="flex flex-wrap gap-3 mb-8">
 //                 <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 rounded-xl text-slate-600 font-bold text-xs">
-//                   <Tag size={14} className="text-emerald-600" /> {offer.field}
+//                   <Tag size={14} className="text-[#00C9F2]" /> {offer.field}
 //                 </div>
 //                 <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 rounded-xl text-slate-600 font-bold text-xs">
-//                   <Calendar size={14} className="text-emerald-600" /> {offer.deadline}
+//                   <Calendar size={14} className="text-[#00C9F2]" /> {offer.deadline}
 //                 </div>
 //               </div>
 
 //               <div className="flex items-center justify-between pt-6 border-t border-slate-50">
-//                 <button className="flex items-center gap-2 text-emerald-600 font-black text-sm group-hover:mr-2 transition-all">
+//                 <button className="flex items-center gap-2 text-[#00C9F2] font-black text-sm group-hover:mr-2 transition-all">
 //                   عرض التفاصيل <ChevronRight size={20} />
 //                 </button>
 //                 <button 
@@ -209,7 +209,7 @@
 //   const [updating, setUpdating] = useState(false);
 
 //   const statuses = {
-//     open: { label: "مفتوح", color: "text-emerald-600", bg: "bg-emerald-50", icon: <CheckCircle2 size={14} /> },
+//     open: { label: "مفتوح", color: "text-[#00C9F2]", bg: "bg-[#ECFCFF]", icon: <CheckCircle2 size={14} /> },
 //     closed: { label: "مغلق", color: "text-rose-600", bg: "bg-rose-50", icon: <Clock size={14} /> },
 //     pending: { label: "معلق", color: "text-amber-600", bg: "bg-amber-50", icon: <AlertCircle size={14} /> }
 //   };
@@ -294,16 +294,16 @@
 //   };
 
 //   return (
-//     <div className="p-6 md:p-12 bg-[#F8FAFC] min-h-screen font-sans selection:bg-emerald-100 selection:text-emerald-900" dir="rtl">
+//     <div className="p-6 md:p-12 bg-[#F8FAFC] min-h-screen font-sans selection:bg-[#D0F6FF] selection:text-[#004C5D]" dir="rtl">
 //       {/* Navbar Style Header */}
 //       <div className="max-w-7xl mx-auto mb-16 flex flex-col md:flex-row justify-between items-center gap-8">
 //         <div className="text-center md:text-right">
-//           <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full text-xs font-black tracking-widest uppercase mb-4 border border-emerald-100/50">
-//             <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
+//           <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#ECFCFF] text-[#00C9F2] rounded-full text-xs font-black tracking-widest uppercase mb-4 border border-[#D0F6FF]/50">
+//             <div className="w-1.5 h-1.5 bg-[#00C9F2] rounded-full animate-pulse" />
 //             لوحة التحكم المركزية
 //           </div>
 //           <h2 className="text-5xl md:text-6xl font-black text-slate-900 tracking-[ -0.04em] leading-[1.1]">
-//             إدارة <span className="text-transparent bg-clip-text bg-gradient-to-l from-emerald-600 to-emerald-400">العروض</span>
+//             إدارة <span className="text-transparent bg-clip-text bg-gradient-to-l from-[#00C9F2] to-[#2AD5F5]">العروض</span>
 //           </h2>
 //         </div>
 
@@ -313,7 +313,7 @@
 //             <span className="text-4xl font-black text-slate-900 leading-none">{offers.length}</span>
 //             <span className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-1">عرض نشط</span>
 //           </div>
-//           <button className="flex items-center gap-2 bg-slate-900 text-white px-6 py-4 rounded-2xl font-bold text-sm shadow-xl shadow-slate-200 hover:bg-emerald-600 transition-all transform hover:-translate-y-1">
+//           <button className="flex items-center gap-2 bg-slate-900 text-white px-6 py-4 rounded-2xl font-bold text-sm shadow-xl shadow-slate-200 hover:bg-[#00C9F2] transition-all transform hover:-translate-y-1">
 //             <Plus size={18} /> عرض جديد
 //           </button>
 //         </div>
@@ -330,17 +330,17 @@
 //               animate={{ opacity: 1, y: 0 }}
 //               exit={{ opacity: 0, scale: 0.95 }}
 //               transition={{ duration: 0.4, delay: index * 0.05 }}
-//               className="group relative bg-white rounded-[48px] border border-slate-200/60 p-1 hover:border-emerald-200 transition-all duration-500 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_4px_6px_-2px_rgba(0,0,0,0.05)] hover:shadow-[0_40px_80px_-15px_rgba(16,185,129,0.12)]"
+//               className="group relative bg-white rounded-[48px] border border-slate-200/60 p-1 hover:border-[#A1EDFF] transition-all duration-500 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_4px_6px_-2px_rgba(0,0,0,0.05)] hover:shadow-[0_40px_80px_-15px_rgba(0,201,242,0.12)]"
 //             >
 //               <div className="p-8 md:p-10">
 //                 <div className="flex flex-col sm:flex-row justify-between items-start gap-6 mb-10">
 //                   <div className="flex items-center gap-6">
 //                     <div className="relative w-20 h-20 bg-slate-50 rounded-[28px] flex items-center justify-center border border-slate-100 group-hover:bg-white group-hover:scale-105 transition-all duration-500 overflow-hidden shadow-inner">
-//                       <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent" />
+//                       <div className="absolute inset-0 bg-gradient-to-br from-[#00C9F2]/5 to-transparent" />
 //                       <span className="text-3xl font-black text-slate-900 relative z-10">{offer.company?.company_name?.charAt(0)}</span>
 //                     </div>
 //                     <div>
-//                       <h3 className="text-2xl font-black text-slate-900 mb-2 group-hover:text-emerald-600 transition-colors duration-300">{offer.title}</h3>
+//                       <h3 className="text-2xl font-black text-slate-900 mb-2 group-hover:text-[#00C9F2] transition-colors duration-300">{offer.title}</h3>
 //                       <div className="flex items-center gap-2 text-slate-400 font-bold text-sm">
 //                         <Building2 size={16} className="text-slate-300" />
 //                         <span>{offer.company?.company_name}</span>
@@ -359,12 +359,12 @@
 //                 </p>
 
 //                 <div className="grid grid-cols-2 gap-4 mb-10">
-//                   <div className="flex items-center gap-3 px-5 py-4 bg-slate-50/80 rounded-3xl border border-slate-100 group-hover:bg-white group-hover:border-emerald-100 transition-all">
-//                     <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm text-emerald-600"><Tag size={18} /></div>
+//                   <div className="flex items-center gap-3 px-5 py-4 bg-slate-50/80 rounded-3xl border border-slate-100 group-hover:bg-white group-hover:border-[#D0F6FF] transition-all">
+//                     <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm text-[#00C9F2]"><Tag size={18} /></div>
 //                     <span className="text-sm font-bold text-slate-700">{offer.field}</span>
 //                   </div>
-//                   <div className="flex items-center gap-3 px-5 py-4 bg-slate-50/80 rounded-3xl border border-slate-100 group-hover:bg-white group-hover:border-emerald-100 transition-all">
-//                     <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm text-emerald-600"><Calendar size={18} /></div>
+//                   <div className="flex items-center gap-3 px-5 py-4 bg-slate-50/80 rounded-3xl border border-slate-100 group-hover:bg-white group-hover:border-[#D0F6FF] transition-all">
+//                     <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-sm text-[#00C9F2]"><Calendar size={18} /></div>
 //                     <span className="text-sm font-bold text-slate-700">{offer.deadline}</span>
 //                   </div>
 //                 </div>
@@ -372,7 +372,7 @@
 //                 <div className="flex items-center justify-between pt-8 border-t border-slate-100">
 //                   <button className="group/btn flex items-center gap-2 text-slate-900 font-black text-sm transition-all">
 //                     <span className="group-hover/btn:ml-2 transition-all">التفاصيل الكاملة</span>
-//                     <div className="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center group-hover/btn:bg-emerald-600 transition-all">
+//                     <div className="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center group-hover/btn:bg-[#00C9F2] transition-all">
 //                       <ChevronRight size={18} />
 //                     </div>
 //                   </button>
@@ -436,10 +436,10 @@ const PAGE_SIZE = 8;
 const statusThemes = {
   open: {
     bg: "#ffffff",
-    border: "border-emerald-100",
-    accent: "bg-emerald-600",
-    text: "text-emerald-600",
-    lightBg: "bg-emerald-50/50",
+    border: "border-[#D0F6FF]",
+    accent: "bg-[#00C9F2]",
+    text: "text-[#00C9F2]",
+    lightBg: "bg-[#ECFCFF]/50",
     label: "مفتوح"
   },
   closed: {
@@ -541,7 +541,7 @@ const ManageOffers = () => {
   return (
     <div className="p-8 bg-[#F8FAFC] min-h-screen font-sans" dir="rtl">
       <div className=" mx-auto mb-16 flex justify-between items-center">
-        <h2 className="text-5xl font-black text-slate-900 tracking-tighter">إدارة <span className="text-emerald-600">العروض</span></h2>
+        <h2 className="text-5xl font-black text-slate-900 tracking-tighter">إدارة <span className="text-[#00C9F2]">العروض</span></h2>
         <div className="bg-white p-4 rounded-3xl shadow-sm border border-slate-100 px-8 text-center">
           <span className="block text-2xl font-black text-slate-900">{offers.length}</span>
           <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">عرض متاح</span>

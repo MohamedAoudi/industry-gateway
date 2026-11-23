@@ -11,6 +11,15 @@ const getTextDirection = (value) => (
 );
 
 const copy = {
+  fr: {
+    title: "Assistant du portail industriel", status: "Connecté aux données du portail",
+    welcome: "Bonjour ! Posez vos questions sur le portail, les chercheurs, les entreprises, les centres de recherche ou nos services.",
+    placeholder: "Votre question...", send: "Envoyer", open: "Ouvrir l’assistant", close: "Fermer l’assistant",
+    error: "L’assistant est temporairement indisponible. Veuillez réessayer.",
+    tooShort: "Saisissez une question contenant au moins deux lettres ou chiffres.",
+    source: "Voir les détails", note: "Je réponds aux questions concernant le portail et ses données publiées.",
+    suggestions: ["Trouver un chercheur en intelligence artificielle", "Afficher les entreprises industrielles", "Comment créer un compte ?"]
+  },
   ar: {
     title: "مساعد بوابة الصناعة",
     status: "متصل ببيانات البوابة",
@@ -43,9 +52,9 @@ const copy = {
 
 const ChatbotWidget = () => {
   const reduceMotion = useReducedMotion();
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const isRtl = i18n.dir() === "rtl";
-  const locale = isRtl ? "ar" : "en";
+  const locale = ["ar", "en", "fr"].includes(i18n.language) ? i18n.language : "en";
   const text = copy[locale];
   const [isOpen, setIsOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
@@ -150,7 +159,7 @@ const ChatbotWidget = () => {
               : "sm:h-[min(620px,calc(100dvh-120px))] sm:w-[390px]"
           }`}
         >
-          <header className="relative shrink-0 overflow-hidden bg-gradient-to-br from-emerald-700 via-emerald-600 to-teal-500 px-4 py-3.5 text-white sm:px-5 sm:py-4">
+          <header className="relative shrink-0 overflow-hidden bg-gradient-to-br from-[#007A94] via-[#00C9F2] to-[#00C9F2] px-4 py-3.5 text-white sm:px-5 sm:py-4">
             <div className="absolute -right-8 -top-10 h-28 w-28 rounded-full bg-white/10" />
             <div className="relative flex items-center gap-3">
               <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-white/15 ring-1 ring-white/20">
@@ -158,8 +167,8 @@ const ChatbotWidget = () => {
               </span>
               <div className="min-w-0 flex-1">
                 <h2 className="truncate text-sm font-black">{text.title}</h2>
-                <p className="mt-1 flex items-center gap-1.5 text-[11px] font-semibold text-emerald-50/80">
-                  <span className="h-2 w-2 rounded-full bg-lime-300 shadow-[0_0_8px_rgba(190,242,100,0.9)]" />
+                <p className="mt-1 flex items-center gap-1.5 text-[11px] font-semibold text-[#ECFCFF]/80">
+                  <span className="h-2 w-2 rounded-full bg-[#63E1FA] shadow-[0_0_8px_rgba(0,201,242,0.9)]" />
                   {text.status}
                 </p>
               </div>
@@ -167,11 +176,11 @@ const ChatbotWidget = () => {
                 type="button"
                 onClick={() => setIsExpanded((current) => !current)}
                 aria-label={isExpanded
-                  ? (isRtl ? "تصغير نافذة الشات" : "Reduce chat")
-                  : (isRtl ? "تكبير نافذة الشات" : "Enlarge chat")}
+                  ? (t("interface.reduce_chat", { defaultValue: isRtl ? "تصغير نافذة الشات" : "Reduce chat" }))
+                  : (t("interface.enlarge_chat", { defaultValue: isRtl ? "تكبير نافذة الشات" : "Enlarge chat" }))}
                 title={isExpanded
-                  ? (isRtl ? "تصغير نافذة الشات" : "Reduce chat")
-                  : (isRtl ? "تكبير نافذة الشات" : "Enlarge chat")}
+                  ? (t("interface.reduce_chat", { defaultValue: isRtl ? "تصغير نافذة الشات" : "Reduce chat" }))
+                  : (t("interface.enlarge_chat", { defaultValue: isRtl ? "تكبير نافذة الشات" : "Enlarge chat" }))}
                 className="hidden h-9 w-9 place-items-center rounded-xl bg-white/10 transition hover:bg-white/20 sm:grid"
               >
                 {isExpanded ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
@@ -188,7 +197,7 @@ const ChatbotWidget = () => {
                 <div className={message.role === "assistant" ? "w-full space-y-2 sm:max-w-[88%]" : "max-w-[88%]"}>
                   <div dir={getTextDirection(message.text)} className={`whitespace-pre-line rounded-2xl px-4 py-3 text-start text-[13px] leading-6 shadow-sm ${
                     message.role === "user"
-                      ? "rounded-ee-md bg-emerald-600 font-semibold text-white"
+                      ? "rounded-ee-md bg-[#00C9F2] font-semibold text-white"
                       : message.error
                         ? "rounded-es-md border border-red-100 bg-red-50 text-red-700"
                         : message.validation
@@ -197,23 +206,23 @@ const ChatbotWidget = () => {
                           ? "rounded-es-md border border-amber-100 bg-amber-50 text-amber-900"
                           : "rounded-es-md border border-slate-100 bg-white text-slate-700"
                   }`}>
-                    {message.role === "assistant" && !message.error && <Sparkles size={13} className="mb-1 inline text-emerald-500" />}{" "}
+                    {message.role === "assistant" && !message.error && <Sparkles size={13} className="mb-1 inline text-[#00C9F2]" />}{" "}
                     {message.text}
                   </div>
 
                   {message.sources?.length > 0 && (
                     <div className="space-y-2">
                       {message.sources.map((source, index) => (
-                        <Link dir={getTextDirection(source.title)} key={`${source.type}-${source.title}-${index}`} to={source.path || "/"} onClick={() => setIsOpen(false)} className="group block overflow-hidden rounded-xl border border-slate-200 bg-white p-3 text-start shadow-sm transition hover:border-emerald-300 hover:shadow-md">
+                        <Link dir={getTextDirection(source.title)} key={`${source.type}-${source.title}-${index}`} to={source.path || "/"} onClick={() => setIsOpen(false)} className="group block overflow-hidden rounded-xl border border-slate-200 bg-white p-3 text-start shadow-sm transition hover:border-[#63E1FA] hover:shadow-md">
                           <div className="flex items-start justify-between gap-2">
                             <div className="min-w-0">
                               <p className="line-clamp-2 break-words text-xs font-black leading-5 text-slate-800">{source.title}</p>
-                              {source.meta && <p className="mt-0.5 text-[10px] font-bold text-emerald-600">{source.meta}</p>}
+                              {source.meta && <p className="mt-0.5 text-[10px] font-bold text-[#00C9F2]">{source.meta}</p>}
                             </div>
-                            <ExternalLink size={13} className="mt-1 shrink-0 text-slate-400 transition group-hover:text-emerald-600" />
+                            <ExternalLink size={13} className="mt-1 shrink-0 text-slate-400 transition group-hover:text-[#00C9F2]" />
                           </div>
                           {source.description && <p className="mt-1 line-clamp-1 text-[11px] leading-5 text-slate-500 sm:line-clamp-2">{source.description}</p>}
-                          <span className="mt-1.5 inline-block text-[10px] font-black text-emerald-700">{text.source}</span>
+                          <span className="mt-1.5 inline-block text-[10px] font-black text-[#007A94]">{text.source}</span>
                         </Link>
                       ))}
                     </div>
@@ -222,7 +231,7 @@ const ChatbotWidget = () => {
                   {message.suggestions?.length > 0 && message.id === messages[messages.length - 1]?.id && (
                     <div className="custom-scrollbar flex gap-1.5 overflow-x-auto pb-1 pt-1 sm:flex-wrap sm:overflow-visible">
                       {message.suggestions.map((suggestion) => (
-                        <button dir={getTextDirection(suggestion)} key={suggestion} type="button" onClick={() => ask(suggestion)} disabled={isLoading} className="shrink-0 rounded-full border border-emerald-200 bg-white px-3 py-1.5 text-[10px] font-bold text-emerald-700 transition hover:border-emerald-500 hover:bg-emerald-50 disabled:opacity-50">
+                        <button dir={getTextDirection(suggestion)} key={suggestion} type="button" onClick={() => ask(suggestion)} disabled={isLoading} className="shrink-0 rounded-full border border-[#A1EDFF] bg-white px-3 py-1.5 text-[10px] font-bold text-[#007A94] transition hover:border-[#00C9F2] hover:bg-[#ECFCFF] disabled:opacity-50">
                           {suggestion}
                         </button>
                       ))}
@@ -234,9 +243,9 @@ const ChatbotWidget = () => {
 
             {isLoading && (
               <div className="flex justify-start">
-                <div className="flex items-center gap-2 rounded-2xl rounded-es-md border border-slate-100 bg-white px-4 py-3 text-emerald-600 shadow-sm">
+                <div className="flex items-center gap-2 rounded-2xl rounded-es-md border border-slate-100 bg-white px-4 py-3 text-[#00C9F2] shadow-sm">
                   <LoaderCircle size={16} className="animate-spin" />
-                  <span className="flex gap-1"><i className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400" /><i className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400 [animation-delay:150ms]" /><i className="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-400 [animation-delay:300ms]" /></span>
+                  <span className="flex gap-1"><i className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#2AD5F5]" /><i className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#2AD5F5] [animation-delay:150ms]" /><i className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#2AD5F5] [animation-delay:300ms]" /></span>
                 </div>
               </div>
             )}
@@ -258,9 +267,9 @@ const ChatbotWidget = () => {
                 }}
                 maxLength={500}
                 placeholder={text.placeholder}
-                className="max-h-24 min-h-11 min-w-0 flex-1 resize-none rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-base leading-5 text-slate-800 outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 sm:text-xs"
+                className="max-h-24 min-h-11 min-w-0 flex-1 resize-none rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-base leading-5 text-slate-800 outline-none transition focus:border-[#00C9F2] focus:bg-white focus:ring-4 focus:ring-[#00C9F2]/10 sm:text-xs"
               />
-              <button type="submit" disabled={!input.trim() || isLoading} aria-label={text.send} className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-emerald-600 text-white shadow-lg shadow-emerald-600/20 transition hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-40">
+              <button type="submit" disabled={!input.trim() || isLoading} aria-label={text.send} className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-[#00C9F2] text-white shadow-lg shadow-[#00C9F2]/20 transition hover:bg-[#007A94] disabled:cursor-not-allowed disabled:opacity-40">
                 {isLoading ? <LoaderCircle size={17} className="animate-spin" /> : <Send size={17} className={isRtl ? "-scale-x-100" : ""} />}
               </button>
             </form>
@@ -274,7 +283,7 @@ const ChatbotWidget = () => {
         onClick={() => setIsOpen((current) => !current)}
         aria-expanded={isOpen}
         aria-label={isOpen ? text.close : text.open}
-        className={`group relative isolate h-14 w-14 place-items-center rounded-[1.25rem] border border-white/30 text-white shadow-[0_8px_30px_rgba(5,150,105,0.4),inset_0_1px_0_rgba(255,255,255,0.3)] transition-all hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(5,150,105,0.55)] motion-reduce:transform-none ${isRtl ? "ml-auto" : "mr-auto"} ${isOpen ? "hidden bg-slate-800 sm:grid" : "grid bg-gradient-to-br from-emerald-400 via-emerald-600 to-teal-800"}`}
+        className={`group relative isolate h-14 w-14 place-items-center rounded-[1.25rem] border border-white/30 text-white shadow-[0_8px_30px_rgba(0,201,242,0.4),inset_0_1px_0_rgba(255,255,255,0.3)] transition-all hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(0,201,242,0.55)] motion-reduce:transform-none ${isRtl ? "ml-auto" : "mr-auto"} ${isOpen ? "hidden bg-slate-800 sm:grid" : "grid bg-gradient-to-br from-[#2AD5F5] via-[#00C9F2] to-[#006176]"}`}
       >
         {isOpen ? <X size={23} /> : (
           <>
@@ -291,7 +300,7 @@ const ChatbotWidget = () => {
               aria-hidden="true"
               animate={reduceMotion ? {} : { opacity: [0.55, 1, 0.55], scale: [0.85, 1.15, 0.85] }}
               transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute -right-1 -top-1 grid h-5 w-5 place-items-center rounded-full border border-white/80 bg-teal-950 text-emerald-200 shadow-sm"
+              className="absolute -right-1 -top-1 grid h-5 w-5 place-items-center rounded-full border border-white/80 bg-[#00313D] text-[#A1EDFF] shadow-sm"
             >
               <Sparkles size={12} />
             </motion.span>

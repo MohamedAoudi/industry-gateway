@@ -27,7 +27,7 @@ import {
 } from "recharts";
 import apiAdmin from "../../../api/apiAdmin";
 
-const chartColors = ["#059669", "#2563eb", "#7c3aed", "#d97706", "#e11d48", "#0891b2"];
+const chartColors = ["#00C9F2", "#2563eb", "#7c3aed", "#d97706", "#e11d48", "#0891b2"];
 
 const emptyStats = {
   research_innovation_ai: 0,
@@ -72,7 +72,7 @@ const DashboardOverview = () => {
       label: t("submenu.database.research_innovation_ai_centers"),
       icon: FlaskConical,
       href: "/admin/research-database/research-innovation-ai",
-      style: "bg-emerald-50 text-emerald-700",
+      style: "bg-[#ECFCFF] text-[#007A94]",
     },
     {
       key: "universities_academic_institutions",
@@ -130,18 +130,18 @@ const DashboardOverview = () => {
 
   return (
     <div dir={isRtl ? "rtl" : "ltr"} className="mx-auto max-w-[1500px] space-y-7 pb-10">
-      <section className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-900 p-7 text-white shadow-xl sm:p-9">
-        <div className="pointer-events-none absolute -left-20 -top-24 h-72 w-72 rounded-full bg-emerald-400/15 blur-3xl" />
+      <section className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-slate-950 via-[#00313D] to-slate-900 p-7 text-white shadow-xl sm:p-9">
+        <div className="pointer-events-none absolute -left-20 -top-24 h-72 w-72 rounded-full bg-[#2AD5F5]/15 blur-3xl" />
         <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
           <div>
-            <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-emerald-300/20 bg-emerald-400/10 px-4 py-2 text-xs font-black text-emerald-200">
+            <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-[#63E1FA]/20 bg-[#2AD5F5]/10 px-4 py-2 text-xs font-black text-[#A1EDFF]">
               <LayoutDashboard size={15} />
               {isRtl ? "لوحة الإدارة" : "Admin dashboard"}
             </span>
             <h1 className="text-3xl font-black sm:text-4xl">
               {isRtl ? "نظرة عامة على البوابة" : "Portal overview"}
             </h1>
-            <p className="mt-3 max-w-2xl text-sm leading-7 text-emerald-50/70">
+            <p className="mt-3 max-w-2xl text-sm leading-7 text-[#ECFCFF]/70">
               {isRtl
                 ? "إحصائيات حقيقية ومحدثة لمحتوى قاعدة البيانات والجهات المشاركة في المنصة."
                 : "Live statistics for database content and organizations participating in the platform."}
@@ -177,7 +177,7 @@ const DashboardOverview = () => {
           <Link
             key={key}
             to={href}
-            className="group flex min-h-40 flex-col justify-between rounded-[1.6rem] border border-slate-200 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-emerald-300 hover:shadow-lg"
+            className="group flex min-h-40 flex-col justify-between rounded-[1.6rem] border border-slate-200 bg-white p-6 shadow-sm transition duration-300 hover:-translate-y-1 hover:border-[#63E1FA] hover:shadow-lg"
           >
             <div className="flex items-start justify-between gap-4">
               <span className={`grid h-12 w-12 place-items-center rounded-2xl ${style}`}><Icon size={23} /></span>
@@ -189,7 +189,7 @@ const DashboardOverview = () => {
               <strong className="block text-3xl font-black text-slate-900">
                 {loading ? <span className="inline-block h-8 w-16 animate-pulse rounded-lg bg-slate-100" /> : Number(stats[key] || 0).toLocaleString()}
               </strong>
-              <p className="mt-2 text-sm font-bold leading-6 text-slate-500 group-hover:text-emerald-700">{label}</p>
+              <p className="mt-2 text-sm font-bold leading-6 text-slate-500 group-hover:text-[#007A94]">{label}</p>
             </div>
           </Link>
         ))}
@@ -256,7 +256,7 @@ const DashboardOverview = () => {
       <section className="grid gap-6 lg:grid-cols-[1.5fr_1fr]">
         <div className="rounded-[1.75rem] border border-slate-200 bg-white p-6 shadow-sm sm:p-7">
           <div className="mb-7 flex items-center gap-3">
-            <span className="grid h-11 w-11 place-items-center rounded-xl bg-emerald-50 text-emerald-700"><Database size={21} /></span>
+            <span className="grid h-11 w-11 place-items-center rounded-xl bg-[#ECFCFF] text-[#007A94]"><Database size={21} /></span>
             <div>
               <h2 className="text-xl font-black text-slate-900">{isRtl ? "توزيع محتوى قاعدة البيانات" : "Database content distribution"}</h2>
               <p className="mt-1 text-xs text-slate-500">{isRtl ? "مقارنة مباشرة بين الأقسام" : "Direct comparison between sections"}</p>
@@ -272,7 +272,7 @@ const DashboardOverview = () => {
                     <span className="text-slate-900">{loading ? "—" : value.toLocaleString()}</span>
                   </div>
                   <div className="h-2 overflow-hidden rounded-full bg-slate-100">
-                    <div className="h-full rounded-full bg-gradient-to-r from-emerald-500 to-teal-400 transition-all duration-700" style={{ width: loading ? "0%" : `${Math.max(value ? 4 : 0, (value / maxValue) * 100)}%` }} />
+                    <div className="h-full rounded-full bg-gradient-to-r from-[#00C9F2] to-[#2AD5F5] transition-all duration-700" style={{ width: loading ? "0%" : `${Math.max(value ? 4 : 0, (value / maxValue) * 100)}%` }} />
                   </div>
                 </div>
               );
@@ -298,13 +298,13 @@ const DashboardOverview = () => {
 const SummaryBadge = ({ value, label }) => (
   <div className="min-w-32 rounded-2xl border border-white/15 bg-white/10 px-5 py-3 backdrop-blur-sm">
     <strong className="block text-2xl font-black">{Number(value || 0).toLocaleString()}</strong>
-    <span className="text-[10px] font-bold text-emerald-100/70">{label}</span>
+    <span className="text-[10px] font-bold text-[#D0F6FF]/70">{label}</span>
   </div>
 );
 
 const QuickLink = ({ to, icon: Icon, label }) => (
-  <Link to={to} className="group flex items-center gap-3 rounded-2xl border border-slate-100 bg-slate-50 p-4 text-sm font-black text-slate-700 transition hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700">
-    <span className="grid h-10 w-10 place-items-center rounded-xl bg-white text-emerald-600 shadow-sm"><Icon size={19} /></span>
+  <Link to={to} className="group flex items-center gap-3 rounded-2xl border border-slate-100 bg-slate-50 p-4 text-sm font-black text-slate-700 transition hover:border-[#A1EDFF] hover:bg-[#ECFCFF] hover:text-[#007A94]">
+    <span className="grid h-10 w-10 place-items-center rounded-xl bg-white text-[#00C9F2] shadow-sm"><Icon size={19} /></span>
     <span>{label}</span>
   </Link>
 );

@@ -1,0 +1,623 @@
+{
+  "contact": "Contactez-nous",
+  "search": "Rechercher...",
+  "login": "Connexion",
+  "common": {
+    "innovation_portal": "Portail de l’innovation",
+    "join_network": "Rejoindre le réseau",
+    "no_fees_required": "Inscription gratuite",
+    "confirm_registration": "Confirmer l’inscription",
+    "admin_dashboard": "Tableau de bord",
+    "close": "Fermer",
+    "previous": "Précédent",
+    "next": "Suivant"
+  },
+  "about_platform": {
+    "title": "À propos",
+    "subtitle": "Une vision ambitieuse pour un avenir industriel arabe intégré",
+    "description_platform": "Le portail de liaison entre l’industrie, la recherche scientifique et l’innovation est une initiative de l’Organisation arabe pour le développement industriel, la normalisation et les mines. Il rapproche les entreprises industrielles des établissements de recherche et des centres d’innovation et relie les connaissances scientifiques aux applications industrielles.",
+    "description_vision": "Devenir la référence régionale pour rapprocher l’industrie de la recherche et de l’innovation, soutenir la transformation numérique et bâtir un écosystème arabe d’innovation industrielle fondé sur la coopération et les partenariats stratégiques.",
+    "description_mission": "Développer la coopération entre les entreprises industrielles, les centres de recherche et d’innovation et les universités grâce à une plateforme numérique intégrée donnant accès aux données, aux connaissances et aux possibilités de partenariat, afin de renforcer la compétitivité de l’industrie arabe et la transition vers une économie durable fondée sur la connaissance.",
+    "about": {
+      "title": "Qui sommes-nous ?",
+      "description_about": "Le portail de liaison entre l’industrie et les établissements de recherche scientifique et d’innovation",
+      "description_about1": " est une initiative ",
+      "description_about2": "de l’Organisation arabe pour le développement industriel, la normalisation et les mines",
+      "description_about3": ", destinée à renforcer l’intégration entre le secteur industriel, les établissements de recherche scientifique et les centres d’innovation. Il rapproche les connaissances scientifiques des applications industrielles grâce à un espace de partage d’informations et de mise en relation des acteurs de l’industrie, de la technologie et de la recherche et développement."
+    },
+    "vision": {
+      "title": "Notre vision",
+      "description_vision": "Devenir la première référence régionale pour relier l’industrie aux établissements de recherche scientifique et d’innovation, soutenir la transformation numérique et bâtir un écosystème arabe intégré d’innovation industrielle fondé sur la coopération et les partenariats stratégiques."
+    },
+    "mission": {
+      "title": "Notre mission",
+      "description_mission": "Développer et coordonner la coopération entre les entreprises industrielles, les centres de recherche et d’innovation et les universités grâce à une plateforme numérique intégrée. Elle donne accès aux données, aux connaissances et aux possibilités de partenariat, facilite les échanges et contribue à la compétitivité de l’industrie arabe et à une économie durable fondée sur la connaissance."
+    },
+    "goals": {
+      "title": "Nos objectifs",
+      "g1": "Accompagner la transformation numérique et encourager l’adoption des technologies modernes dans le secteur industriel arabe.",
+      "g2": "Soutenir le transfert de technologies, développer la recherche appliquée et renforcer les partenariats public-privé dans l’innovation.",
+      "g3": "Relier les résultats de l’enseignement, de la recherche et du développement aux systèmes de production et développer l’écosystème d’innovation industrielle.",
+      "g4": "Rapprocher l’industrie des établissements de recherche scientifique, des universités, des centres d’excellence et d’intelligence artificielle.",
+      "g5": "Promouvoir la transformation numérique des entreprises industrielles, l’entrepreneuriat numérique et le commerce électronique.",
+      "g6": "Créer une base de données commune des projets de recherche et des innovations industrielles et mettre en relation les investisseurs et les organismes de financement."
+    },
+    "contact": {
+      "title": "Contactez-nous",
+      "description": "Nous accueillons les questions et suggestions des entreprises industrielles, des centres de recherche, des universités, des chercheurs et des acteurs de l’innovation.",
+      "info": {
+        "email": "id@aidsmo.org",
+        "phone": "+212 537274500",
+        "address": "Angle avenue de France et rue des Pas, B.P. 8019 – Nations Unies – Agdal, Rabat 10102, Royaume du Maroc",
+        "adress": "Angle avenue de France et rue des Pas, B.P. 8019 – Nations Unies – Agdal, Rabat 10102, Royaume du Maroc"
+      }
+    }
+  },
+  "hero": {
+    "title": "Relier l’industrie",
+    "title1": "à la recherche scientifique et à l’innovation",
+    "badge": "La plateforme arabe pour l’innovation et la recherche scientifique",
+    "search_placeholder": "Recherche",
+    "search_label": "Rechercher",
+    "search_btn": "Rechercher",
+    "country_label": "Pays",
+    "select_country": "Choisir un pays",
+    "select_country_all": "Tous les pays",
+    "description": "Une plateforme arabe intégrée pour renforcer la coopération entre l’industrie et les établissements de recherche scientifique et d’innovation, ",
+    "description1": "au service du développement industriel durable et d’une économie fondée sur la connaissance."
+  },
+  "stats": {
+    "title": "Le portail en chiffres",
+    "subtitle": "Des données actualisées sur la recherche scientifique et l’innovation dans le monde arabe",
+    "coverage_title": "Des données couvrant 21 pays arabes",
+    "live_data": "Données actualisées du portail",
+    "entries": "fiches",
+    "load_error": "Les statistiques sont temporairement indisponibles",
+    "factories": "Usines inscrites",
+    "researchers": "Chercheurs et innovateurs",
+    "countries": "Pays arabes",
+    "solutions": "Solutions technologiques",
+    "research_innovation_ai": "Centres de recherche scientifique, d’innovation et d’IA",
+    "universities_academic_institutions": "Universités et établissements académiques et scientifiques",
+    "incubators_technology_labs": "Incubateurs, pôles technologiques et laboratoires",
+    "programs_initiatives_strategies": "Programmes, initiatives et stratégies",
+    "industrial_property_patents": "Offices de propriété industrielle et de brevets",
+    "experts_specialists": "Répertoire des experts et spécialistes"
+  },
+  "about_sections": {
+    "goals": {
+      "subtitle": "Nos objectifs stratégiques",
+      "title": "Construire l’avenir, étape par étape.",
+      "g1": "Développer les connaissances et l’innovation locales",
+      "g1_desc": "Intégrer les technologies modernes aux industries locales pour renforcer l’autonomie et la compétitivité arabes.",
+      "g2": "Valoriser la recherche scientifique",
+      "g2_desc": "Aider les entrepreneurs à transformer les recherches de laboratoire en solutions industrielles concrètes.",
+      "g3": "Renforcer l’intégration économique arabe",
+      "g3_desc": "Créer un réseau solide entre les établissements de recherche et les usines pour favoriser la croissance et les échanges technologiques.",
+      "g4": "Développer l’écosystème d’innovation industrielle",
+      "g4_desc": "Relier l’enseignement, la recherche et le développement aux systèmes de production pour accélérer les applications industrielles.",
+      "g5": "Soutenir la transformation numérique et l’entrepreneuriat",
+      "g5_desc": "Accompagner les entreprises et les entrepreneurs dans l’adoption des technologies numériques et de modèles économiques compétitifs.",
+      "g6": "Créer une base de connaissances arabe commune",
+      "g6_desc": "Faciliter l’accès à des données fiables sur les projets de recherche, les innovations et les possibilités d’investissement.",
+      "count_label": "Des objectifs pour un avenir industriel arabe plus innovant"
+    }
+  },
+  "success_stories": {
+    "title": "Des résultats concrets",
+    "subtitle": "Des projets pionniers qui rapprochent la recherche de laboratoire des réalités industrielles.",
+    "tag": "Laboratoire de réussites",
+    "read_more": "Découvrir le témoignage",
+    "stories": {
+      "one": {
+        "title": "Dessalement de l’eau par nanotechnologie",
+        "partner": "KSU × Société Naqi",
+        "desc": "Des nanomembranes améliorent l’efficacité de 40 % tout en réduisant les coûts énergétiques."
+      },
+      "two": {
+        "title": "L’IA dans les lignes de production",
+        "partner": "Groupe industriel arabe × Centre Thakaa",
+        "desc": "Des systèmes de vision artificielle anticipent les pannes et réduisent les coûts de maintenance de 30 %."
+      },
+      "three": {
+        "title": "Des biocarburants issus des déchets",
+        "partner": "UCA × Bio-Energy Corp",
+        "desc": "Transformer les déchets agricoles en énergie propre pour réduire les émissions de carbone."
+      }
+    }
+  },
+  "linking_researchers_page": {
+    "title": "Le pont de l’innovation",
+    "subtitle": "Une plateforme qui relie les connaissances académiques aux applications industrielles.",
+    "description": "Un écosystème pour transformer les défis industriels complexes en possibilités d’innovation.",
+    "sections": {
+      "for_researchers": {
+        "title": "Pour les chercheurs et innovateurs",
+        "point1": "Présenter les recherches et les brevets aux entreprises.",
+        "point2": "Accéder au financement industriel des projets de développement.",
+        "point3": "Tester les prototypes dans des environnements de production réels.",
+        "point4": "Accéder aux données techniques précises du secteur industriel."
+      },
+      "for_industry": {
+        "title": "Pour les acteurs industriels",
+        "point1": "Résoudre les problèmes techniques grâce à l’expertise scientifique.",
+        "point2": "Réduire les coûts de R&D grâce à des collaborations ciblées.",
+        "point3": "Accéder à des solutions innovantes exclusives.",
+        "point4": "Construire des partenariats durables avec les centres de recherche."
+      }
+    },
+    "extra": {
+      "db_title": "Une base de données intelligente",
+      "db_desc": "Un moteur de recherche qui rapproche l’expertise scientifique des besoins industriels.",
+      "secure_title": "Protection de la propriété intellectuelle",
+      "secure_desc": "Un environnement sécurisé pour préserver les droits de propriété intellectuelle."
+    },
+    "process_steps": {
+      "title": "Le parcours de collaboration",
+      "label1": "Analyse",
+      "step1": "Créer votre profil et publier vos compétences ou vos besoins.",
+      "label2": "Mise en relation",
+      "step2": "Trouver un partenaire adapté à votre expertise et à vos besoins.",
+      "label3": "Réalisation",
+      "step3": "Conclure les accords de coopération et lancer le développement commun."
+    }
+  },
+  "menu": {
+    "home": "Accueil",
+    "about": "À propos",
+    "services": "Services du portail",
+    "database": "Base de données",
+    "media_center": "Espace médias",
+    "communication_cooperation": "Coopération",
+    "contact": "Contact",
+    "login": "Connexion",
+    "register": "Inscription",
+    "profile": "Mon profil",
+    "logout": "Déconnexion"
+  },
+  "companies": {
+    "title": "Entreprises industrielles",
+    "subtitle": "Découvrez les entreprises partenaires",
+    "view_all": "Voir toutes les entreprises",
+    "industrial_companies": "Entreprises industrielles",
+    "business_directory": "Annuaire des entreprises",
+    "applications_to_join": "Demandes d’adhésion"
+  },
+  "footer": {
+    "download_app": "Télécharger l’application",
+    "support": "Assistance",
+    "actions": "Liens utiles",
+    "sitemap": "Plan du site",
+    "social_media": "Réseaux sociaux",
+    "customer_service": "Service utilisateurs",
+    "faq": "Questions fréquentes",
+    "add_request": "Ajouter une demande",
+    "add_factory": "Ajouter une usine",
+    "add_ad": "Ajouter une annonce",
+    "login": "Connexion",
+    "rights_reserved": "Tous droits réservés à l’OADIM",
+    "privacy": "Politique de confidentialité",
+    "terms": "Conditions d’utilisation",
+    "email_us": "Écrivez-nous",
+    "call_us": "Appelez-nous",
+    "location": "Adresse",
+    "location_value": "Rabat, Royaume du Maroc",
+    "site": "Site officiel",
+    "need_help": "Besoin d’aide ?",
+    "open_ticket": "Contacter l’assistance",
+    "description": "Renforcer l’intégration industrielle arabe en rapprochant la recherche et l’industrie."
+  },
+  "contact_page": {
+    "eyebrow": "À votre écoute",
+    "title": "Construisons des liens de coopération",
+    "subtitle": "Contactez l’équipe du portail pour vos questions, suggestions et projets de coopération entre l’industrie, la recherche et l’innovation.",
+    "info_title": "Coordonnées",
+    "email_title": "Adresse e-mail",
+    "phone_title": "Téléphone",
+    "website_title": "Site officiel",
+    "address_title": "Adresse",
+    "hours_title": "Horaires",
+    "hours_value": "Du lundi au vendredi, de 08 h 30 à 15 h 30",
+    "map": {
+      "eyebrow": "Notre localisation",
+      "title": "Nous trouver sur la carte",
+      "subtitle": "Siège de l’Organisation arabe pour le développement industriel, la normalisation et les mines à Rabat, au Maroc.",
+      "iframe_title": "Localisation de l’Organisation arabe pour le développement industriel, la normalisation et les mines"
+    },
+    "form": {
+      "eyebrow": "Envoyer un message",
+      "title": "Comment pouvons-nous vous aider ?",
+      "subtitle": "Remplissez le formulaire pour préparer votre message à l’équipe de l’organisation.",
+      "name": "Nom complet",
+      "name_placeholder": "Votre nom complet",
+      "email": "Adresse e-mail",
+      "phone": "Téléphone",
+      "subject": "Objet du message",
+      "message": "Message",
+      "message_placeholder": "Décrivez votre demande ou votre question...",
+      "send": "Envoyer le message",
+      "notice": "L’envoi ouvre votre application de messagerie habituelle.",
+      "prepared": "Votre message est prêt. Terminez son envoi dans votre application de messagerie.",
+      "subjects": {
+        "general": "Renseignement général",
+        "partnership": "Coopération et partenariat",
+        "technical": "Assistance technique",
+        "media": "Médias et communication",
+        "research-innovation-ai": "Centres de recherche, d’innovation et d’IA",
+        "universities": "Universités et établissements académiques et scientifiques",
+        "incubators-technology-labs": "Incubateurs, pôles technologiques et laboratoires",
+        "programs-initiatives-strategies": "Programmes, initiatives et stratégies",
+        "industrial-property-patents": "Offices de propriété industrielle et de brevets",
+        "experts-specialists": "Experts et spécialistes",
+        "supporting-bodies": "Organismes de soutien à la recherche et à l’innovation",
+        "industrial-institutions": "Entreprises industrielles"
+      }
+    }
+  },
+  "about_page": {
+    "eyebrow": "Une plateforme arabe pour la recherche et l’industrie",
+    "identity_title": "Du savoir à un impact industriel durable",
+    "identity_subtitle": "Un espace commun pour rapprocher la recherche et l’innovation des besoins de l’industrie arabe.",
+    "direction_eyebrow": "Notre orientation stratégique",
+    "direction_title": "Une vision claire et une mission porteuse de résultats",
+    "goals_eyebrow": "Nos priorités",
+    "pillars": {
+      "research": "Recherche scientifique",
+      "innovation": "Innovation",
+      "industry": "Industrie"
+    },
+    "cta": {
+      "title": "Une idée ou un projet de coopération ?",
+      "subtitle": "Contactez notre équipe et rejoignez un écosystème arabe qui relie les connaissances aux capacités industrielles.",
+      "action": "Contactez-nous"
+    }
+  },
+  "services_section": {
+    "title": "Innovation industrielle",
+    "subtitle": "Des services numériques intégrés pour transformer les connaissances et la recherche en partenariats, solutions et possibilités industrielles.",
+    "discover": "Découvrir le service",
+    "descriptions": {
+      "linking": "Un espace de coopération pour rapprocher chercheurs, innovateurs et entreprises industrielles.",
+      "database": "Un accès organisé aux recherches, technologies et solutions prêtes à être appliquées dans l’industrie.",
+      "workshops": "Des rencontres pour échanger les expériences et développer les compétences spécialisées.",
+      "marketing": "Accompagner les innovations et les résultats de recherche vers les investisseurs et les marchés."
+    },
+    "items": [
+      {
+        "title": "Relier la recherche, l’industrie et le financement",
+        "description": "Mettre en relation chercheurs, entreprises, organismes de soutien et financeurs."
+      },
+      {
+        "title": "Base de données des acteurs de l’industrie et de l’innovation",
+        "description": "Découvrir les établissements, les compétences et les ressources de l’écosystème arabe."
+      },
+      {
+        "title": "Coopération, partenariat et intégration",
+        "description": "Construire des partenariats durables entre la recherche et l’industrie."
+      },
+      {
+        "title": "Programmes et initiatives communs",
+        "description": "Suivre les programmes et initiatives qui soutiennent l’innovation industrielle."
+      },
+      {
+        "title": "Transformation numérique et développement technologique",
+        "description": "Accompagner l’adoption des technologies numériques et des solutions innovantes."
+      },
+      {
+        "title": "Résultats de recherche au service de l’industrie",
+        "description": "Valoriser les résultats scientifiques et faciliter leurs applications industrielles."
+      }
+    ]
+  },
+  "registration_guide": {
+    "eyebrow": "Inscription au portail",
+    "title": "Commencez en trois étapes",
+    "subtitle": "Créez votre compte et rejoignez un réseau de chercheurs, d’innovateurs et d’entreprises industrielles sur une plateforme arabe commune.",
+    "step_label": "Étape",
+    "steps": {
+      "step1": {
+        "title": "Choisir Créer un compte",
+        "description": "Ouvrez la page de connexion et choisissez Créer un compte pour afficher le formulaire d’inscription."
+      },
+      "step2": {
+        "title": "Renseigner vos informations",
+        "description": "Indiquez votre nom et votre adresse e-mail, puis choisissez un mot de passe sécurisé."
+      },
+      "step3": {
+        "title": "Confirmer et accéder au portail",
+        "description": "Confirmez votre inscription, puis connectez-vous pour découvrir les services et les possibilités du portail."
+      }
+    },
+    "card": {
+      "title": "Un compte, de nouvelles possibilités",
+      "subtitle": "Une inscription rapide avec vos informations essentielles."
+    },
+    "fields": {
+      "name": "Nom complet",
+      "email": "Adresse e-mail",
+      "password": "Mot de passe"
+    },
+    "benefits": {
+      "b1": "Accéder aux services du portail",
+      "b2": "Échanger avec les chercheurs et les entreprises",
+      "b3": "Suivre les possibilités et les événements"
+    },
+    "cta": "Créer un compte",
+    "login_hint": "Déjà inscrit ? Connectez-vous depuis la même page"
+  },
+  "latest_news": {
+    "title": "Dernières actualités",
+    "subtitle": "Suivez les initiatives, partenariats et événements de la recherche scientifique et de l’innovation industrielle arabes.",
+    "category": "Actualités",
+    "view_all": "Toutes les actualités",
+    "read_more": "Lire la suite",
+    "items": {
+      "n1": {
+        "title": "Lancement d’une initiative arabe pour l’IA dans l’industrie",
+        "description": "Une initiative pour financer les partenariats entre centres de recherche et usines qui adoptent des solutions d’intelligence artificielle."
+      },
+      "n2": {
+        "title": "Accord de transfert de technologies entre universités et usines",
+        "description": "Un accord pour protéger la propriété intellectuelle et faciliter l’application des recherches dans les lignes de production."
+      },
+      "n3": {
+        "title": "Webinaire sur l’énergie durable dans l’industrie arabe",
+        "description": "Experts et investisseurs échangent sur la réduction des émissions grâce aux innovations locales."
+      }
+    }
+  },
+  "database_pages": {
+    "search": "Rechercher dans cette catégorie...",
+    "country_filter": "Filtrer par pays",
+    "all_countries": "Tous les pays",
+    "results": "résultats",
+    "loading": "Chargement des données...",
+    "empty": "Aucune donnée disponible",
+    "empty_description": "Les fiches apparaîtront ici dès leur publication dans la base de données du portail.",
+    "error": "Impossible de charger les données",
+    "untitled": "Sans titre",
+    "view": "Voir les détails",
+    "search_results": "Résultats de recherche",
+    "search_description": "Résultats parmi les établissements, les spécialités et les actualités publiées.",
+    "descriptions": {
+      "all": "Rechercher dans toutes les catégories par nom, description ou pays.",
+      "research": "Découvrez les centres de recherche scientifique, d’innovation et d’intelligence artificielle des pays arabes.",
+      "universities": "Un répertoire des universités et établissements académiques qui soutiennent la recherche et le développement.",
+      "incubators": "Découvrez les incubateurs, pôles technologiques et laboratoires qui transforment les idées en projets.",
+      "programs": "Consultez les programmes, initiatives et stratégies en faveur de l’innovation industrielle.",
+      "patents": "Un répertoire des offices de propriété industrielle et de brevets pour protéger les innovations.",
+      "experts": "Rencontrez les experts, chercheurs et spécialistes des domaines scientifiques et industriels.",
+      "supporting_bodies": "Découvrez les organismes qui financent et soutiennent la recherche scientifique et l’innovation.",
+      "industrial_institutions": "Consultez les entreprises industrielles participantes et découvrez leurs secteurs d’activité."
+    }
+  },
+  "media_page": {
+    "event_link": "Consulter le site de l’événement",
+    "eyebrow": "Au rythme de l’industrie et de l’innovation",
+    "subtitle": "Suivez les actualités, événements, publications, prix et réussites de l’écosystème arabe de recherche et d’innovation industrielle.",
+    "browse": "Consulter la rubrique",
+    "read_more": "Lire la suite",
+    "empty": "Aucun contenu publié dans cette rubrique.",
+    "empty_news": "Aucune actualité publiée de ce type.",
+    "related_news": "Actualités connexes",
+    "organization_news": "Actualités de l’organisation",
+    "all_news": "Toutes les actualités",
+    "publication": "Publication du portail",
+    "open_publication": "Ouvrir la publication",
+    "file_unavailable": "Fichier indisponible",
+    "competition_award": "Concours et prix",
+    "innovation_opportunity": "Une occasion d’innover"
+  },
+  "submenu": {
+    "services": {
+      "linking_researchers_industrial_companies": "Relier les chercheurs à l’industrie",
+      "database_research_technologies_available_industrial_application": "Base de données des recherches et technologies",
+      "joint_workshops_seminars": "Ateliers et séminaires",
+      "supporting_marketing_investment_scientific_research_outputs": "Valorisation des résultats de recherche",
+      "success_stories_from_portal_users": "Témoignages de réussite"
+    },
+    "database": {
+      "scientific_research_innovation_centers": "Centres de recherche scientifique et d’innovation",
+      "centers_excellence_artificial_intelligence": "Centres d’excellence et d’intelligence artificielle",
+      "ministries_higher_education_scientific_research": "Ministères de l’Enseignement supérieur et de la Recherche scientifique",
+      "industrial_property_patent_offices": "Offices de propriété industrielle et de brevets",
+      "supporting_bodies_scientific_research": "Organismes de soutien à la recherche et à l’innovation",
+      "research_innovation_ai_centers": "Centres de recherche, d’innovation et d’IA",
+      "universities_academic_scientific_institutions": "Universités et établissements académiques et scientifiques",
+      "incubators_technology_poles_laboratories": "Incubateurs, pôles technologiques et laboratoires",
+      "programs_initiatives_strategies": "Programmes, initiatives et stratégies",
+      "experts_specialists_database": "Experts et spécialistes",
+      "industrial_institutions": "Entreprises industrielles et de production"
+    },
+    "media_center": {
+      "news": "Actualités",
+      "events": "Événements",
+      "releases": "Publications",
+      "competitions_prizes": "Concours et prix",
+      "success_stories": "Témoignages de réussite"
+    },
+    "communication_cooperation": {
+      "direct_communication_between_researchers_manufacturers": "Échanges directs",
+      "discussion_exchange_ideas": "Échange d’idées",
+      "joint_work_teams": "Équipes de travail communes"
+    }
+  },
+  "sub_submenu": {
+    "scientific_research_database": {
+      "advanced_search_engine": "Recherche avancée",
+      "classifying_research_industry_field": "Classement par secteur industriel",
+      "download_summaries_research_files": "Télécharger les synthèses"
+    },
+    "industry_database": {
+      "participating_companies_industrial_institutions": "Entreprises participantes",
+      "industry_needs_research_technological_solutions": "Besoins de l’industrie",
+      "availabl_opportunities_cooperation_partnership": "Possibilités de partenariat"
+    }
+  },
+  "interface": {
+    "reduce_chat": "Réduire la discussion",
+    "enlarge_chat": "Agrandir la discussion",
+    "close": "Fermer",
+    "available_data_by_arab_country": "Données disponibles par pays arabe",
+    "explore_database_figures_and_content_across_21_arab_countries_then_choose_a_country_to_view_only_its_records": "Explorez les données de 21 pays arabes, puis choisissez un pays pour consulter ses fiches.",
+    "loading_data": "Chargement des données...",
+    "country_data_could_not_be_loaded": "Impossible de charger les données des pays.",
+    "the_arab_platform_for_innovation_and_scientific_research": "La plateforme arabe pour l’innovation et la recherche scientifique",
+    "join_the_innovation_elite": "Rejoignez les acteurs de l’innovation",
+    "full_name": "Nom complet",
+    "professional_email": "Adresse e-mail professionnelle",
+    "technical_domain": "Domaine technique",
+    "organization": "Organisation",
+    "confirm_registration": "Confirmer l’inscription",
+    "industrial_linkage_revolution": "Une nouvelle dynamique de coopération industrielle",
+    "a_seamless_workflow_ensuring_ideas_transition_from_lab_to_global_markets": "Un parcours fluide du laboratoire aux marchés internationaux.",
+    "turn_research_into_global_industry": "Transformez la recherche en applications industrielles",
+    "industrial_collaboration_portal": "Portail de coopération industrielle",
+    "link_your_research": "Valorisez vos recherches",
+    "to_global_industry": "à l’industrie mondiale",
+    "register_now": "S’inscrire",
+    "success": "Réussi !",
+    "error": "Erreur",
+    "registered": "Inscription confirmée !",
+    "failed": "Échec",
+    "industrial_collaboration": "Coopération industrielle",
+    "link_research": "Relier la recherche",
+    "to_global_markets": "aux marchés internationaux",
+    "post_a_challenge": "Publier un défi",
+    "no_published_content_in_this_section": "Aucun contenu publié dans cette rubrique.",
+    "no_published_news_of_this_type": "Aucune actualité publiée de ce type.",
+    "related_news": "Actualités connexes",
+    "organization_news": "Actualités de l’organisation",
+    "portal_publication": "Publication du portail",
+    "open_publication": "Ouvrir la publication",
+    "file_unavailable": "Fichier indisponible",
+    "competition_award": "Concours et prix",
+    "innovation_opportunity": "Une occasion d’innover",
+    "unable_to_load_your_profile": "Impossible de charger votre profil",
+    "profile_updated_successfully": "Profil mis à jour",
+    "unable_to_save_changes": "Impossible d’enregistrer les modifications",
+    "delete": "DELETE",
+    "unable_to_deactivate_the_account": "Impossible de désactiver le compte",
+    "administrator": "Administrateur",
+    "user": "Utilisateur",
+    "admin_dashboard": "Tableau de bord",
+    "account_settings": "Paramètres du compte",
+    "my_profile": "Mon profil",
+    "update_your_name_phone_and_password": "Modifiez votre nom, votre téléphone et votre mot de passe.",
+    "first_name": "Prénom",
+    "last_name": "Nom",
+    "email_address": "Adresse e-mail",
+    "phone_number": "Téléphone",
+    "new_password": "Nouveau mot de passe",
+    "leave_blank_to_keep_your_current_password": "Laissez vide pour conserver votre mot de passe actuel",
+    "show_or_hide_password": "Afficher ou masquer le mot de passe",
+    "confirm_new_password": "Confirmer le nouveau mot de passe",
+    "save_changes": "Enregistrer",
+    "delete_account": "Supprimer le compte",
+    "deleting_the_account_will_stop_access_and_sign_in_to_the_portal": "La suppression du compte empêchera tout accès au portail.",
+    "delete_my_account": "Supprimer mon compte",
+    "confirm_account_deletion": "Confirmer la suppression du compte",
+    "you_will_be_signed_out_and_lose_access_to_the_account_type_delete_below_to_confirm": "Vous serez déconnecté et perdrez l’accès au compte. Saisissez « DELETE » pour confirmer.",
+    "confirmation_word": "Mot de confirmation",
+    "type_delete": "Saisissez DELETE",
+    "cancel": "Annuler",
+    "confirm_deletion": "Confirmer la suppression",
+    "search_results": "Résultats de recherche",
+    "search_results_across_institutions_specializations_and_published_news": "Résultats parmi les établissements, les spécialités et les actualités publiées.",
+    "news": "Actualités",
+    "previous": "Précédent",
+    "next": "Suivant",
+    "visit_website": "Visiter le site",
+    "search_the_entire_site": "Rechercher sur tout le site",
+    "search_site_pages_the_database_researchers_industrial_institutions_and_media_content": "Recherchez parmi les pages du site, les chercheurs, les établissements industriels et les contenus médiatiques.",
+    "enter_at_least_two_characters": "Saisissez au moins deux caractères.",
+    "search": "Rechercher...",
+    "search_results_for": "Résultats pour",
+    "results": "résultats",
+    "all": "Tous",
+    "search_failed": "La recherche a échoué",
+    "check_that_the_server_is_running_and_try_again": "Vérifiez la connexion au serveur et réessayez.",
+    "enter_a_search_term": "Saisissez votre recherche",
+    "no_matching_results": "Aucun résultat correspondant",
+    "try_another_or_shorter_phrase": "Essayez une autre expression ou une recherche plus courte.",
+    "workshop_ai_applications_in_factory_maintenance": "Atelier : applications de l’IA à la maintenance industrielle",
+    "interactive_workshop": "Atelier interactif",
+    "online": "En ligne",
+    "open_for_registration": "Inscriptions ouvertes",
+    "joint_seminar_future_of_green_hydrogen_in_the_me": "Séminaire : l’avenir de l’hydrogène vert au Moyen-Orient",
+    "scientific_seminar": "Séminaire scientifique",
+    "in_person_dubai": "En présentiel – Dubaï",
+    "limited_seats": "Places limitées",
+    "training_energy_efficiency_in_nano_industries": "Formation : efficacité énergétique dans les nano-industries",
+    "training_course": "Formation",
+    "hybrid": "Hybride",
+    "sold_out": "Complet",
+    "joint_workshops": "Ateliers communs",
+    "scientific_seminars": "et séminaires scientifiques",
+    "knowledge_bridges_connecting_top_researchers_and_industry_leaders_to_exchange_expertise_and_solve_contemporary_technical_challenges": "Des rencontres entre chercheurs et industriels pour partager leurs compétences et résoudre les défis techniques actuels.",
+    "beneficiaries": "Bénéficiaires",
+    "annual_workshops": "Ateliers annuels",
+    "participating_countries": "Pays participants",
+    "speaker": "Intervenant",
+    "register": "S’inscrire",
+    "want_to_host_a_joint_seminar": "Vous souhaitez organiser un séminaire commun ?",
+    "we_re_always_looking_for_experts_to_share_industrial_insights_join_our_network_of_speakers_today": "Partagez votre expertise industrielle en rejoignant notre réseau d’intervenants.",
+    "apply_as_a_speaker": "Devenir intervenant"
+  },
+  "auth": {
+    "create_account": "Créer un compte",
+    "login_description": "Saisissez vos identifiants pour continuer",
+    "register_description": "Commencez votre parcours avec nous",
+    "email_login": "Ou connectez-vous par e-mail",
+    "email_register": "Ou créez un compte par e-mail",
+    "no_account": "Vous n’avez pas de compte ? ",
+    "have_account": "Vous avez déjà un compte ? ",
+    "account_type": "Type de compte",
+    "select_account_type": "Choisir un type de compte",
+    "types": {
+      "regular": "Compte standard",
+      "factory": "Usine",
+      "industrial_company": "Entreprise industrielle",
+      "production_company": "Entreprise de production",
+      "expert": "Expert ou spécialiste",
+      "funding_entity": "Organisme de financement",
+      "other": "Autre"
+    },
+    "fields": {
+      "organization_name": "Nom de l’établissement",
+      "activity_field": "Secteur d’activité",
+      "products": "Principaux produits",
+      "country": "Pays",
+      "registration_number": "Numéro d’immatriculation",
+      "production_capacity": "Capacité de production",
+      "specialty": "Spécialité",
+      "years_experience": "Années d’expérience",
+      "funding_scope": "Domaines de financement",
+      "funding_programs": "Programmes de financement",
+      "other_type": "Votre fonction ou type de compte"
+    }
+  },
+  "countries": {
+    "jo": "Jordanie",
+    "ae": "Émirats arabes unis",
+    "bh": "Bahreïn",
+    "tn": "Tunisie",
+    "dz": "Algérie",
+    "dj": "Djibouti",
+    "sa": "Arabie saoudite",
+    "sd": "Soudan",
+    "sy": "Syrie",
+    "so": "Somalie",
+    "iq": "Irak",
+    "om": "Oman",
+    "ps": "Palestine",
+    "qa": "Qatar",
+    "kw": "Koweït",
+    "lb": "Liban",
+    "ly": "Libye",
+    "eg": "Égypte",
+    "ma": "Maroc",
+    "mr": "Mauritanie",
+    "ye": "Yémen"
+  }
+}

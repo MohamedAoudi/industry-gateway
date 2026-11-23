@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 const accountTypes = [
   { value: "regular", label: "حساب عادي" },
   { value: "factory", label: "مصنع" },
@@ -47,7 +49,7 @@ const fieldsByType = {
   ],
 };
 
-const defaultInputClass = "w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-3.5 outline-none transition-all focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10";
+const defaultInputClass = "w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-3.5 outline-none transition-all focus:border-[#00C9F2] focus:bg-white focus:ring-4 focus:ring-[#00C9F2]/10";
 
 export const emptyRegistrationForm = {
   nomComplet: "",
@@ -58,6 +60,7 @@ export const emptyRegistrationForm = {
 };
 
 const RegistrationProfileFields = ({ formData, setFormData, inputClass = defaultInputClass, required = true }) => {
+  const { t } = useTranslation();
   const selectedFields = fieldsByType[formData.account_type] || [];
 
   const changeProfileField = (name, value) => {
@@ -68,18 +71,18 @@ const RegistrationProfileFields = ({ formData, setFormData, inputClass = default
   };
 
   return (
-    <div className="space-y-4 rounded-2xl border border-emerald-100 bg-emerald-50/50 p-4">
+    <div className="space-y-4 rounded-2xl border border-[#D0F6FF] bg-[#ECFCFF]/50 p-4">
       <label className="block">
-        <span className="mb-2 block text-sm font-bold text-slate-700">نوع الحساب *</span>
+        <span className="mb-2 block text-sm font-bold text-slate-700">{t("auth.account_type", { defaultValue: "نوع الحساب" })} *</span>
         <select
           className={inputClass}
           value={formData.account_type}
           onChange={(event) => setFormData({ ...formData, account_type: event.target.value, profile_data: {} })}
           required={required}
         >
-          <option value="">اختر نوع الحساب</option>
+          <option value="">{t("auth.select_account_type", { defaultValue: "اختر نوع الحساب" })}</option>
           {accountTypes.map((type) => (
-            <option key={type.value} value={type.value}>{type.label}</option>
+            <option key={type.value} value={type.value}>{t(`auth.types.${type.value}`, { defaultValue: type.label })}</option>
           ))}
         </select>
       </label>
@@ -88,12 +91,12 @@ const RegistrationProfileFields = ({ formData, setFormData, inputClass = default
         <div className="grid gap-4 sm:grid-cols-2">
           {selectedFields.map((field) => (
             <label key={field.name} className="block">
-              <span className="mb-2 block text-sm font-bold text-slate-700">{field.label} *</span>
+              <span className="mb-2 block text-sm font-bold text-slate-700">{t(`auth.fields.${field.name}`, { defaultValue: field.label })} *</span>
               <input
                 type={field.type || "text"}
                 min={field.min}
                 className={inputClass}
-                placeholder={field.placeholder}
+                placeholder={t(`auth.fields.${field.name}`, { defaultValue: field.placeholder })}
                 value={formData.profile_data?.[field.name] || ""}
                 onChange={(event) => changeProfileField(field.name, event.target.value)}
                 required

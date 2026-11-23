@@ -77,29 +77,29 @@ const ContactPage = () => {
 
   return (
     <div dir={isRtl ? "rtl" : "ltr"} className="min-h-screen overflow-hidden bg-slate-50">
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-950 pb-28 pt-20 text-white sm:pb-36 sm:pt-24">
+      <section className="relative overflow-hidden bg-gradient-to-br from-slate-950 via-[#00313D] to-slate-950 pb-28 pt-20 text-white sm:pb-36 sm:pt-24">
         <div className="pointer-events-none absolute inset-0 opacity-[0.035] [background-image:linear-gradient(white_1px,transparent_1px),linear-gradient(90deg,white_1px,transparent_1px)] [background-size:48px_48px]" />
-        <div className="pointer-events-none absolute -left-32 top-10 h-80 w-80 rounded-full bg-emerald-400/20 blur-[100px]" />
-        <div className="pointer-events-none absolute -right-40 bottom-0 h-96 w-96 rounded-full bg-teal-400/15 blur-[110px]" />
+        <div className="pointer-events-none absolute -left-32 top-10 h-80 w-80 rounded-full bg-[#2AD5F5]/20 blur-[100px]" />
+        <div className="pointer-events-none absolute -right-40 bottom-0 h-96 w-96 rounded-full bg-[#2AD5F5]/15 blur-[110px]" />
         <div className="pointer-events-none absolute left-1/2 top-1/2 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 rounded-full border-[80px] border-white/[0.015]" />
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400/70 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#2AD5F5]/70 to-transparent" />
 
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mb-8 flex items-center gap-2 text-xs font-bold text-emerald-100/70">
+          <div className="mb-8 flex items-center gap-2 text-xs font-bold text-[#D0F6FF]/70">
             <Link to="/" className="transition-colors hover:text-white">{t("menu.home")}</Link>
             <DirectionIcon size={13} />
             <span className="text-white">{t("menu.contact")}</span>
           </div>
 
           <div className="max-w-3xl">
-            <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-emerald-300/25 bg-white/10 px-4 py-2 text-xs font-black uppercase tracking-[0.16em] text-emerald-100 backdrop-blur-sm">
+            <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#63E1FA]/25 bg-white/10 px-4 py-2 text-xs font-black uppercase tracking-[0.16em] text-[#D0F6FF] backdrop-blur-sm">
               <Sparkles size={14} />
               {t("contact_page.eyebrow")}
             </span>
             <h1 className="text-4xl font-black leading-tight sm:text-5xl lg:text-6xl">
               {t("contact_page.title")}
             </h1>
-            <p className="mt-5 max-w-2xl text-base leading-8 text-emerald-50/75 sm:text-lg">
+            <p className="mt-5 max-w-2xl text-base leading-8 text-[#ECFCFF]/75 sm:text-lg">
               {t("contact_page.subtitle")}
             </p>
           </div>
@@ -108,10 +108,10 @@ const ContactPage = () => {
 
       <main className="relative mx-auto -mt-16 max-w-7xl px-4 pb-20 sm:-mt-20 sm:px-6 lg:px-8">
         <div className="grid overflow-hidden rounded-[2rem] border border-slate-200 bg-white shadow-[0_28px_80px_rgba(15,23,42,0.12)] lg:grid-cols-12">
-          <aside className="relative overflow-hidden bg-emerald-50 p-6 sm:p-9 lg:col-span-5 lg:p-10">
-            <div className="pointer-events-none absolute -bottom-24 -right-24 h-64 w-64 rounded-full border-[42px] border-emerald-100" />
+          <aside className="relative overflow-hidden bg-[#ECFCFF] p-6 sm:p-9 lg:col-span-5 lg:p-10">
+            <div className="pointer-events-none absolute -bottom-24 -right-24 h-64 w-64 rounded-full border-[42px] border-[#D0F6FF]" />
             <div className="relative">
-              <span className="grid h-12 w-12 place-items-center rounded-2xl bg-emerald-600 text-white shadow-lg shadow-emerald-600/20">
+              <span className="grid h-12 w-12 place-items-center rounded-2xl bg-[#00C9F2] text-white shadow-lg shadow-[#00C9F2]/20">
                 <MessageSquareText size={22} />
               </span>
               <h2 className="mt-6 text-2xl font-black text-slate-900 sm:text-3xl">
@@ -128,9 +128,9 @@ const ContactPage = () => {
                     href={href}
                     target={external ? "_blank" : undefined}
                     rel={external ? "noreferrer" : undefined}
-                    className="group flex items-center gap-4 rounded-2xl border border-emerald-100 bg-white p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:border-emerald-300 hover:shadow-md"
+                    className="group flex items-center gap-4 rounded-2xl border border-[#D0F6FF] bg-white p-4 shadow-sm transition-all hover:-translate-y-0.5 hover:border-[#63E1FA] hover:shadow-md"
                   >
-                    <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-emerald-100 text-emerald-700 transition-colors group-hover:bg-emerald-600 group-hover:text-white">
+                    <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-[#D0F6FF] text-[#007A94] transition-colors group-hover:bg-[#00C9F2] group-hover:text-white">
                       <Icon size={18} />
                     </span>
                     <span className={`min-w-0 flex-1 ${isRtl ? "text-right" : "text-left"}`}>
@@ -142,12 +142,12 @@ const ContactPage = () => {
                         {value}
                       </span>
                     </span>
-                    {external && <ExternalLink size={15} className="text-slate-300 group-hover:text-emerald-600" />}
+                    {external && <ExternalLink size={15} className="text-slate-300 group-hover:text-[#00C9F2]" />}
                   </a>
                 ))}
               </div>
 
-              <div className="mt-7 flex items-start gap-3 rounded-2xl border border-emerald-200 bg-emerald-100/70 p-4 text-emerald-900">
+              <div className="mt-7 flex items-start gap-3 rounded-2xl border border-[#A1EDFF] bg-[#D0F6FF]/70 p-4 text-[#004C5D]">
                 <Clock3 size={18} className="mt-0.5 shrink-0" />
                 <div>
                   <p className="text-xs font-black uppercase tracking-[0.12em]">{t("contact_page.hours_title")}</p>
@@ -155,8 +155,8 @@ const ContactPage = () => {
                 </div>
               </div>
 
-              <div className="mt-7 flex items-start gap-4 border-t border-emerald-200 pt-7">
-                <MapPin size={20} className="mt-1 shrink-0 text-emerald-700" />
+              <div className="mt-7 flex items-start gap-4 border-t border-[#A1EDFF] pt-7">
+                <MapPin size={20} className="mt-1 shrink-0 text-[#007A94]" />
                 <div>
                   <p className="text-xs font-black uppercase tracking-[0.12em] text-slate-400">{t("contact_page.address_title")}</p>
                   <p className="mt-2 text-sm font-semibold leading-6 text-slate-700">
@@ -169,7 +169,7 @@ const ContactPage = () => {
 
           <section className="p-6 sm:p-9 lg:col-span-7 lg:p-10 xl:p-12">
             <div className="mb-8">
-              <span className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.16em] text-emerald-600">
+              <span className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.16em] text-[#00C9F2]">
                 <Send size={14} />
                 {t("contact_page.form.eyebrow")}
               </span>
@@ -183,16 +183,16 @@ const ContactPage = () => {
               <div className="grid gap-5 sm:grid-cols-2">
                 <label className="block">
                   <span className="mb-2 block text-xs font-black text-slate-700">{t("contact_page.form.name")} *</span>
-                  <span className="group flex items-center rounded-xl border border-slate-200 bg-slate-50 px-4 transition-all focus-within:border-emerald-500 focus-within:bg-white focus-within:ring-4 focus-within:ring-emerald-500/10">
-                    <UserRound size={17} className="shrink-0 text-slate-400 group-focus-within:text-emerald-600" />
+                  <span className="group flex items-center rounded-xl border border-slate-200 bg-slate-50 px-4 transition-all focus-within:border-[#00C9F2] focus-within:bg-white focus-within:ring-4 focus-within:ring-[#00C9F2]/10">
+                    <UserRound size={17} className="shrink-0 text-slate-400 group-focus-within:text-[#00C9F2]" />
                     <input required name="name" value={formData.name} onChange={handleChange} placeholder={t("contact_page.form.name_placeholder")} className="w-full border-0 bg-transparent px-3 py-3.5 text-sm text-slate-800 outline-none placeholder:text-slate-400" />
                   </span>
                 </label>
 
                 <label className="block">
                   <span className="mb-2 block text-xs font-black text-slate-700">{t("contact_page.form.email")} *</span>
-                  <span className="group flex items-center rounded-xl border border-slate-200 bg-slate-50 px-4 transition-all focus-within:border-emerald-500 focus-within:bg-white focus-within:ring-4 focus-within:ring-emerald-500/10">
-                    <Mail size={17} className="shrink-0 text-slate-400 group-focus-within:text-emerald-600" />
+                  <span className="group flex items-center rounded-xl border border-slate-200 bg-slate-50 px-4 transition-all focus-within:border-[#00C9F2] focus-within:bg-white focus-within:ring-4 focus-within:ring-[#00C9F2]/10">
+                    <Mail size={17} className="shrink-0 text-slate-400 group-focus-within:text-[#00C9F2]" />
                     <input required type="email" name="email" value={formData.email} onChange={handleChange} placeholder="name@example.com" className="w-full border-0 bg-transparent px-3 py-3.5 text-sm text-slate-800 outline-none placeholder:text-slate-400" />
                   </span>
                 </label>
@@ -201,15 +201,15 @@ const ContactPage = () => {
               <div className="grid gap-5 sm:grid-cols-2">
                 <label className="block">
                   <span className="mb-2 block text-xs font-black text-slate-700">{t("contact_page.form.phone")}</span>
-                  <span className="group flex items-center rounded-xl border border-slate-200 bg-slate-50 px-4 transition-all focus-within:border-emerald-500 focus-within:bg-white focus-within:ring-4 focus-within:ring-emerald-500/10">
-                    <Phone size={17} className="shrink-0 text-slate-400 group-focus-within:text-emerald-600" />
+                  <span className="group flex items-center rounded-xl border border-slate-200 bg-slate-50 px-4 transition-all focus-within:border-[#00C9F2] focus-within:bg-white focus-within:ring-4 focus-within:ring-[#00C9F2]/10">
+                    <Phone size={17} className="shrink-0 text-slate-400 group-focus-within:text-[#00C9F2]" />
                     <input type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder="+212 ..." className="w-full border-0 bg-transparent px-3 py-3.5 text-sm text-slate-800 outline-none placeholder:text-slate-400" />
                   </span>
                 </label>
 
                 <label className="block">
                   <span className="mb-2 block text-xs font-black text-slate-700">{t("contact_page.form.subject")} *</span>
-                  <select required name="subject" value={formData.subject} onChange={handleChange} className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm text-slate-800 outline-none transition-all focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10">
+                  <select required name="subject" value={formData.subject} onChange={handleChange} className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm text-slate-800 outline-none transition-all focus:border-[#00C9F2] focus:bg-white focus:ring-4 focus:ring-[#00C9F2]/10">
                     <option value="general">{t("contact_page.form.subjects.general")}</option>
                     <option value="partnership">{t("contact_page.form.subjects.partnership")}</option>
                     <option value="technical">{t("contact_page.form.subjects.technical")}</option>
@@ -228,11 +228,11 @@ const ContactPage = () => {
 
               <label className="block">
                 <span className="mb-2 block text-xs font-black text-slate-700">{t("contact_page.form.message")} *</span>
-                <textarea required rows="6" name="message" value={formData.message} onChange={handleChange} placeholder={t("contact_page.form.message_placeholder")} className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm leading-6 text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10" />
+                <textarea required rows="6" name="message" value={formData.message} onChange={handleChange} placeholder={t("contact_page.form.message_placeholder")} className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm leading-6 text-slate-800 outline-none transition-all placeholder:text-slate-400 focus:border-[#00C9F2] focus:bg-white focus:ring-4 focus:ring-[#00C9F2]/10" />
               </label>
 
               {isPrepared && (
-                <div className="flex items-center gap-3 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm font-semibold text-emerald-800">
+                <div className="flex items-center gap-3 rounded-xl border border-[#A1EDFF] bg-[#ECFCFF] p-4 text-sm font-semibold text-[#006176]">
                   <CheckCircle2 size={19} className="shrink-0" />
                   {t("contact_page.form.prepared")}
                 </div>
@@ -240,7 +240,7 @@ const ContactPage = () => {
 
               <div className="flex flex-col gap-4 pt-1 sm:flex-row sm:items-center sm:justify-between">
                 <p className="max-w-sm text-xs leading-5 text-slate-400">{t("contact_page.form.notice")}</p>
-                <button type="submit" className="group inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 px-6 py-3.5 text-sm font-black text-white shadow-lg shadow-emerald-600/20 transition-all hover:-translate-y-0.5 hover:shadow-xl">
+                <button type="submit" className="group inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#00C9F2] to-[#00C9F2] px-6 py-3.5 text-sm font-black text-white shadow-lg shadow-[#00C9F2]/20 transition-all hover:-translate-y-0.5 hover:shadow-xl">
                   {t("contact_page.form.send")}
                   <Send size={16} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5" />
                 </button>
@@ -252,7 +252,7 @@ const ContactPage = () => {
         <section className="mt-8 overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-3 shadow-[0_20px_60px_rgba(15,23,42,0.09)] sm:p-4">
           <div className="flex flex-col gap-4 px-3 pb-5 pt-3 sm:flex-row sm:items-end sm:justify-between sm:px-5 sm:pb-6 sm:pt-4">
             <div>
-              <span className="mb-2 inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.16em] text-emerald-600">
+              <span className="mb-2 inline-flex items-center gap-2 text-xs font-black uppercase tracking-[0.16em] text-[#00C9F2]">
                 <MapPin size={15} />
                 {t("contact_page.map.eyebrow")}
               </span>

@@ -31,7 +31,7 @@ import {
 } from "lucide-react";
 
 import aidsmoLogo from "../assets/images/logos/aidsmo_logo.png";
-import portalLogo from "../assets/images/logos/logo.png";
+import { getPortalLogo, getPortalLogoAlt } from "../assets/portalLogo";
 
 const XIcon = ({ size = 18 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -105,7 +105,7 @@ const UserFooter = () => {
   const ContactItem = ({ icon: Icon, label, children, href }) => {
     const content = (
       <>
-        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-emerald-50 text-emerald-700">
+        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[#ECFCFF] text-[#007A94]">
           <Icon size={18} />
         </span>
         <span className="min-w-0">
@@ -116,7 +116,7 @@ const UserFooter = () => {
     );
 
     return href ? (
-      <a href={href} className="group flex min-w-0 items-center gap-3 px-5 py-4 transition-colors hover:bg-emerald-50/60">
+      <a href={href} className="group flex min-w-0 items-center gap-3 px-5 py-4 transition-colors hover:bg-[#ECFCFF]/60">
         {content}
       </a>
     ) : (
@@ -132,9 +132,9 @@ const UserFooter = () => {
         <Link
           to={item.to}
           onClick={inPopup ? () => setActiveGroup(null) : undefined}
-          className={`group flex items-start gap-3 py-2 text-sm font-medium leading-6 transition-colors ${inPopup ? "rounded-xl px-3 text-slate-700 hover:bg-emerald-50 hover:text-emerald-800" : "text-emerald-50/70 hover:text-white"}`}
+          className={`group flex items-start gap-3 py-2 text-sm font-medium leading-6 transition-colors ${inPopup ? "rounded-xl px-3 text-slate-700 hover:bg-[#ECFCFF] hover:text-[#006176]" : "text-[#ECFCFF]/70 hover:text-white"}`}
         >
-          <Icon size={15} className={`mt-1 shrink-0 ${inPopup ? "text-emerald-600" : "text-emerald-300"}`} />
+          <Icon size={15} className={`mt-1 shrink-0 ${inPopup ? "text-[#00C9F2]" : "text-[#63E1FA]"}`} />
           <span>{t(item.label)}</span>
           <ArrowRight
             size={13}
@@ -148,14 +148,14 @@ const UserFooter = () => {
   };
 
   return (
-    <footer dir={isRtl ? "rtl" : "ltr"} className="relative mt-auto overflow-hidden bg-gradient-to-br from-slate-950 via-emerald-950 to-slate-950 pt-16 text-white">
+    <footer dir={isRtl ? "rtl" : "ltr"} className="relative mt-auto overflow-hidden bg-gradient-to-br from-slate-950 via-[#00313D] to-slate-950 pt-16 text-white">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute inset-0 opacity-[0.035] [background-image:linear-gradient(white_1px,transparent_1px),linear-gradient(90deg,white_1px,transparent_1px)] [background-size:48px_48px]" />
-        <div className="absolute -left-32 top-10 h-80 w-80 rounded-full bg-emerald-400/20 blur-[100px]" />
-        <div className="absolute -right-40 bottom-0 h-96 w-96 rounded-full bg-teal-400/15 blur-[110px]" />
+        <div className="absolute -left-32 top-10 h-80 w-80 rounded-full bg-[#2AD5F5]/20 blur-[100px]" />
+        <div className="absolute -right-40 bottom-0 h-96 w-96 rounded-full bg-[#2AD5F5]/15 blur-[110px]" />
         <div className="absolute left-1/2 top-1/2 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 rounded-full border-[80px] border-white/[0.015]" />
       </div>
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-emerald-400/70 to-transparent" />
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#2AD5F5]/70 to-transparent" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_20px_55px_rgba(15,23,42,0.14)]">
@@ -176,18 +176,18 @@ const UserFooter = () => {
           <div className="lg:col-span-5">
             <div className="inline-flex items-center gap-4 rounded-2xl border border-white/10 bg-white/[0.06] p-3 backdrop-blur-sm">
               <Link to="/" aria-label={t("menu.home")} className="rounded-xl bg-white p-2 transition-transform hover:scale-105">
-                <img src={portalLogo} alt="Industry Gateway" className="h-14 w-auto object-contain" />
+                <img src={getPortalLogo(i18n.language, true)} alt={getPortalLogoAlt(i18n.language)} className="h-14 w-auto max-w-full object-contain" />
               </Link>
               <span className="h-12 w-px bg-white/15" />
               <a href="https://www.aidsmo.org" target="_blank" rel="noreferrer" aria-label="AIDSMO" className="grid h-[4.5rem] w-[4.5rem] shrink-0 place-items-center rounded-xl bg-white p-1.5 shadow-sm transition-transform hover:scale-105">
                 <img src={aidsmoLogo} alt="AIDSMO" className="h-full w-full object-contain" />
               </a>
             </div>
-            <p className="mt-6 max-w-md text-sm leading-7 text-emerald-50/65">
+            <p className="mt-6 max-w-md text-sm leading-7 text-[#ECFCFF]/65">
               {t("footer.description")}
             </p>
             <div className="mt-6">
-              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-emerald-50/50">
+              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#ECFCFF]/50">
                 {t("footer.social_media")}
               </p>
               <div className="mt-3 flex items-center gap-3">
@@ -196,7 +196,7 @@ const UserFooter = () => {
                     key={label}
                     aria-label={label}
                     title={label}
-                    className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-white/[0.06] text-emerald-200"
+                    className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-white/[0.06] text-[#A1EDFF]"
                   >
                     <Icon size={18} />
                   </span>
@@ -208,7 +208,7 @@ const UserFooter = () => {
           <div className="lg:col-span-7 lg:ps-12">
             <div>
               <h3 className="mb-4 flex items-center gap-3 text-xs font-black uppercase tracking-[0.2em] text-white">
-                <span className="h-px w-8 bg-emerald-400" />
+                <span className="h-px w-8 bg-[#2AD5F5]" />
                 {t("footer.sitemap")}
               </h3>
               <ul className="grid gap-x-10 sm:grid-cols-2">
@@ -224,11 +224,11 @@ const UserFooter = () => {
                     type="button"
                     onClick={() => setActiveGroup(title)}
                     aria-haspopup="dialog"
-                    className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-start text-sm font-bold text-white transition-colors hover:border-emerald-400/50 hover:bg-white/10"
+                    className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-start text-sm font-bold text-white transition-colors hover:border-[#2AD5F5]/50 hover:bg-white/10"
                   >
-                    <Icon size={16} className="shrink-0 text-emerald-300" />
+                    <Icon size={16} className="shrink-0 text-[#63E1FA]" />
                     {t(title)}
-                    <ArrowRight size={15} className={`ms-auto shrink-0 text-emerald-300 ${isRtl ? "rotate-180" : ""}`} />
+                    <ArrowRight size={15} className={`ms-auto shrink-0 text-[#63E1FA] ${isRtl ? "rotate-180" : ""}`} />
                   </button>
                 ))}
               </div>
@@ -237,7 +237,7 @@ const UserFooter = () => {
         </div>
 
         <div className="flex flex-col items-center justify-between gap-4 border-t border-white/10 py-6 text-center md:flex-row md:text-start">
-          <p className="text-xs font-medium text-emerald-50/50">
+          <p className="text-xs font-medium text-[#ECFCFF]/50">
             {currentYear} AIDSMO — {t("footer.rights_reserved")}
           </p>
         </div>

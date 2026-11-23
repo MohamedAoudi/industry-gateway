@@ -121,8 +121,8 @@ const MinistriesHigherEducationScientificResearch = () => {
     <div className="min-h-screen bg-[#f8fafc] text-slate-900 antialiased" dir={isAr ? "rtl" : "ltr"}>
       
       {/* HERO BANNER */}
-      <div className="relative bg-emerald-600 text-white overflow-hidden pt-24 pb-28 px-6">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,#047857,transparent_50%)] opacity-30" />
+      <div className="relative bg-[#00C9F2] text-white overflow-hidden pt-24 pb-28 px-6">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,#007A94,transparent_50%)] opacity-30" />
         <div className="max-w-6xl mx-auto relative z-10 text-center md:text-start">
           <motion.h1 initial={{ opacity: 0, y: 15 }} animate={{ opacity: 1, y: 0 }} className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
             {isAr ? "وزارات التعليم العالي والبحث العلمي" : "Ministries of Higher Education and Scientific Research"}
@@ -139,7 +139,7 @@ const MinistriesHigherEducationScientificResearch = () => {
           <div className="flex-1 relative">
             <Search className={`absolute ${isAr ? 'right-4' : 'left-4'} top-4 h-5 w-5 text-slate-400`} />
             <input
-              className={`w-full ${isAr ? 'pr-12 pl-4' : 'pl-12 pr-4'} py-3.5 rounded-2xl bg-slate-50/50 border border-slate-100 focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/5 outline-none transition-all text-sm font-medium`}
+              className={`w-full ${isAr ? 'pr-12 pl-4' : 'pl-12 pr-4'} py-3.5 rounded-2xl bg-slate-50/50 border border-slate-100 focus:border-[#00C9F2] focus:bg-white focus:ring-4 focus:ring-[#00C9F2]/5 outline-none transition-all text-sm font-medium`}
               placeholder={isAr ? "ابحث عن اسم المركز أو الكلمات المفتاحية..." : "Search centers by name..."}
               value={search}
               onChange={(e) => { setSearch(e.target.value); setPage(1); }}
@@ -154,7 +154,7 @@ const MinistriesHigherEducationScientificResearch = () => {
               {currentCountryObj && getFlagUrlByName(currentCountryObj.nomPays) ? (
                 <img src={getFlagUrlByName(currentCountryObj.nomPays)} alt="" className="w-6 h-4 object-cover rounded-sm border border-white" />
               ) : (
-                <Globe size={18} className="text-slate-400 group-hover:text-emerald-600 transition-colors" />
+                <Globe size={18} className="text-slate-400 group-hover:text-[#00C9F2] transition-colors" />
               )}
               <span className="truncate">{currentCountryObj ? currentCountryObj.nomPays : (isAr ? "اختر الدولة" : "Filter by Country")}</span>
             </div>
@@ -176,13 +176,13 @@ const MinistriesHigherEducationScientificResearch = () => {
               <div className="max-h-[380px] overflow-y-auto p-3 space-y-1">
                 <button
                   onClick={() => { setSelectedCountry(""); setPage(1); setIsModalOpen(false); }}
-                  className={`w-full p-3.5 rounded-2xl flex items-center justify-between transition-all ${selectedCountry === "" ? "bg-emerald-50 text-emerald-950 font-bold" : "hover:bg-slate-50 text-slate-700"}`}
+                  className={`w-full p-3.5 rounded-2xl flex items-center justify-between transition-all ${selectedCountry === "" ? "bg-[#ECFCFF] text-[#00313D] font-bold" : "hover:bg-slate-50 text-slate-700"}`}
                 >
                   <div className="flex items-center gap-3">
                     <span className="text-lg">🌍</span>
                     <span className="text-sm font-semibold">{isAr ? "جميع البلدان" : "All Countries"}</span>
                   </div>
-                  <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-all ${selectedCountry === "" ? "border-emerald-600 bg-emerald-600 text-white" : "border-slate-200 bg-white"}`}>
+                  <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-all ${selectedCountry === "" ? "border-[#00C9F2] bg-[#00C9F2] text-white" : "border-slate-200 bg-white"}`}>
                     {selectedCountry === "" && <Check size={11} strokeWidth={3} />}
                   </div>
                 </button>
@@ -194,13 +194,13 @@ const MinistriesHigherEducationScientificResearch = () => {
                     <button
                       key={c.idPays}
                       onClick={() => { setSelectedCountry(c.idPays); setPage(1); setIsModalOpen(false); }}
-                      className={`w-full p-3.5 rounded-2xl flex items-center justify-between transition-all ${isSelected ? "bg-emerald-50 text-emerald-950 font-bold" : "hover:bg-slate-50 text-slate-700"}`}
+                      className={`w-full p-3.5 rounded-2xl flex items-center justify-between transition-all ${isSelected ? "bg-[#ECFCFF] text-[#00313D] font-bold" : "hover:bg-slate-50 text-slate-700"}`}
                     >
                       <div className="flex items-center gap-3">
                         {flagUrl ? <img src={flagUrl} alt="" className="w-6 h-4 object-cover rounded-sm border border-slate-100" /> : <div className="w-6 h-4 bg-slate-100 rounded-sm flex items-center justify-center text-xs">🏳</div>}
                         <span className="text-sm font-semibold">{c.nomPays}</span>
                       </div>
-                      <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-all flex-shrink-0 ${isSelected ? "border-emerald-600 bg-emerald-600 text-white" : "border-slate-300 bg-white"}`}>
+                      <div className={`w-5 h-5 rounded-full border flex items-center justify-center transition-all flex-shrink-0 ${isSelected ? "border-[#00C9F2] bg-[#00C9F2] text-white" : "border-slate-300 bg-white"}`}>
                         {isSelected && <Check size={11} strokeWidth={3} />}
                       </div>
                     </button>
@@ -252,7 +252,7 @@ const MinistriesHigherEducationScientificResearch = () => {
                         {cardFlagUrl ? (
                           <img src={cardFlagUrl} alt="" className="w-3.5 h-2.5 object-cover rounded-xs" />
                         ) : (
-                          <Globe size={11} className="text-emerald-600" />
+                          <Globe size={11} className="text-[#00C9F2]" />
                         )}
                         <span>{center.pays?.nomPays || "Global"}</span>
                       </div>
@@ -260,7 +260,7 @@ const MinistriesHigherEducationScientificResearch = () => {
 
                     {/* Content Box */}
                     <div className="p-5 space-y-2.5">
-                      <h2 className="text-lg font-bold text-slate-900 group-hover:text-emerald-600 transition-colors line-clamp-1">
+                      <h2 className="text-lg font-bold text-slate-900 group-hover:text-[#00C9F2] transition-colors line-clamp-1">
                         {isAr ? center.titre_ar : center.titre_en}
                       </h2>
                       {/* <p className="text-slate-500 text-sm font-normal leading-relaxed line-clamp-3">
@@ -274,7 +274,7 @@ const MinistriesHigherEducationScientificResearch = () => {
                     <button
                       type="button"
                       onClick={() => setSelectedCenter(center)}
-                      className="inline-flex items-center gap-1 text-xs font-bold text-emerald-600 hover:text-emerald-700 bg-emerald-50/40 hover:bg-emerald-50 w-full justify-center py-2.5 rounded-xl transition-all"
+                      className="inline-flex items-center gap-1 text-xs font-bold text-[#00C9F2] hover:text-[#007A94] bg-[#ECFCFF]/40 hover:bg-[#ECFCFF] w-full justify-center py-2.5 rounded-xl transition-all"
                     >
                       <span>{isAr ? "عرض التفاصيل" : "View Details"}</span>
                       <ChevronRight size={12} />
@@ -364,7 +364,7 @@ const MinistriesHigherEducationScientificResearch = () => {
                             href={selectedCenter.url}
                             target="_blank"
                             rel="noreferrer"
-                            className="mt-1 inline-flex items-center gap-2 bg-emerald-600 text-white px-3 py-2 rounded-md font-semibold hover:opacity-95"
+                            className="mt-1 inline-flex items-center gap-2 bg-[#00C9F2] text-white px-3 py-2 rounded-md font-semibold hover:opacity-95"
                           >
                             {isAr ? "الموقع" : "Visit Website"}
                             <ExternalLink size={14} />
@@ -396,7 +396,7 @@ const MinistriesHigherEducationScientificResearch = () => {
             <button
               key={i + 1}
               onClick={() => setPage(i + 1)}
-              className={`w-10 h-10 rounded-xl text-xs font-bold transition-all ${page === i + 1 ? "bg-emerald-600 text-white shadow-md shadow-emerald-600/15" : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"}`}
+              className={`w-10 h-10 rounded-xl text-xs font-bold transition-all ${page === i + 1 ? "bg-[#00C9F2] text-white shadow-md shadow-[#00C9F2]/15" : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"}`}
             >
               {i + 1}
             </button>

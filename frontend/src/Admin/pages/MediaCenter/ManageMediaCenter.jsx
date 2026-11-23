@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { CalendarDays, ChevronLeft, ChevronRight, Eye, EyeOff, FileUp, ImagePlus, Loader2, Pencil, Plus, Trash2, X } from "lucide-react";
 import toast, { Toaster } from "react-hot-toast";
 import apiAdmin from "../../../api/apiAdmin";
+import { arabCountries as countries } from "../../../data/arabCountries";
 
 const categories = [
   { value: "news", label: "أخبار" },
@@ -11,7 +12,7 @@ const categories = [
   { value: "stories", label: "قصص نجاح" },
 ];
 const emptyForm = { category: "news", news_type: "organization", title_ar: "", title_en: "", description_ar: "", description_en: "", event_date: "", location_ar: "", location_en: "", organization_ar: "", organization_en: "", external_url: "", is_published: true, image: null, pdf: null, pdf_thumbnail: null };
-const fieldClass = "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10";
+const fieldClass = "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-[#00C9F2] focus:ring-4 focus:ring-[#00C9F2]/10";
 const maxPdfSize = 20 * 1024 * 1024;
 
 const createPdfThumbnail = async (file) => {
@@ -54,13 +55,13 @@ const AdminPdfCover = ({ item }) => {
   }, [item.id, item.pdf_thumbnail]);
 
   if (!coverUrl) {
-    return <div className="grid h-28 w-20 shrink-0 place-items-center rounded-xl bg-emerald-50 text-emerald-700"><FileUp size={24} /></div>;
+    return <div className="grid h-28 w-20 shrink-0 place-items-center rounded-xl bg-[#ECFCFF] text-[#007A94]"><FileUp size={24} /></div>;
   }
 
   return (
     <div className="relative h-28 w-20 shrink-0 [perspective:700px]">
       <span className="absolute bottom-0 left-2 right-0 h-3 rounded-[50%] bg-slate-950/25 blur-sm" />
-      <span className="absolute inset-y-1 -left-1 w-2 rounded-l bg-gradient-to-r from-emerald-950 to-emerald-700" />
+      <span className="absolute inset-y-1 -left-1 w-2 rounded-l bg-gradient-to-r from-[#00313D] to-[#007A94]" />
       <span className="absolute inset-0 overflow-hidden rounded-r-md border border-slate-200 bg-white shadow-[7px_9px_16px_rgba(15,23,42,0.24)] [transform:rotateY(-10deg)] [transform-origin:left_center]">
         <img src={coverUrl} alt="" className="h-full w-full object-contain object-top" />
         <span className="absolute inset-0 bg-gradient-to-r from-slate-950/10 via-transparent to-white/10" />
@@ -80,7 +81,6 @@ const ManageMediaCenter = ({ lockedCategory }) => {
   const [form, setForm] = useState(emptyForm);
   const [preview, setPreview] = useState(null);
   const [pdfName, setPdfName] = useState("");
-  const [countries, setCountries] = useState([]);
   const [page, setPage] = useState(1);
   const pageSize = category === "news" ? 6 : 2;
   const totalPages = Math.max(1, Math.ceil(items.length / pageSize));
@@ -95,11 +95,6 @@ const ManageMediaCenter = ({ lockedCategory }) => {
     finally { setLoading(false); }
   };
   useEffect(() => { loadItems(); }, [category]);
-  useEffect(() => {
-    apiAdmin.get("/pays")
-      .then(({ data }) => setCountries(Array.isArray(data) ? data : (data.data ?? [])))
-      .catch(() => setCountries([]));
-  }, []);
   useEffect(() => { if (lockedCategory) setCategory(lockedCategory); }, [lockedCategory]);
   useEffect(() => { setPage(1); }, [category]);
 
@@ -153,28 +148,28 @@ const ManageMediaCenter = ({ lockedCategory }) => {
     <div dir="rtl" className="mx-auto max-w-7xl space-y-6">
       <Toaster position="top-center" />
       <header className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:flex-row lg:items-center lg:justify-between">
-        <div><p className="text-sm font-bold text-emerald-700">المركز الإعلامي</p><h1 className="mt-2 text-2xl font-black text-slate-900">{activeCategory ? `إدارة ${activeCategory.label}` : "إدارة المركز الإعلامي"}</h1><p className="mt-2 text-sm text-slate-500">إضافة وتعديل ونشر محتوى هذا القسم بشكل مستقل.</p></div>
-        <button onClick={openCreate} className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-black text-white"><Plus size={18} /> إضافة محتوى</button>
+        <div><p className="text-sm font-bold text-[#007A94]">المركز الإعلامي</p><h1 className="mt-2 text-2xl font-black text-slate-900">{activeCategory ? `إدارة ${activeCategory.label}` : "إدارة المركز الإعلامي"}</h1><p className="mt-2 text-sm text-slate-500">إضافة وتعديل ونشر محتوى هذا القسم بشكل مستقل.</p></div>
+        <button onClick={openCreate} className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#00C9F2] px-5 py-3 text-sm font-black text-white"><Plus size={18} /> إضافة محتوى</button>
       </header>
       {!lockedCategory && <nav className="grid gap-2 rounded-2xl border border-slate-200 bg-white p-2 shadow-sm sm:grid-cols-2 lg:grid-cols-5">
-        {categories.map((item) => <button key={item.value} onClick={() => setCategory(item.value)} className={`rounded-xl px-4 py-3 text-sm font-black ${category === item.value ? "bg-emerald-600 text-white" : "text-slate-500 hover:bg-emerald-50"}`}>{item.label}</button>)}
+        {categories.map((item) => <button key={item.value} onClick={() => setCategory(item.value)} className={`rounded-xl px-4 py-3 text-sm font-black ${category === item.value ? "bg-[#00C9F2] text-white" : "text-slate-500 hover:bg-[#ECFCFF]"}`}>{item.label}</button>)}
       </nav>}
-      {loading ? <div className="flex min-h-64 items-center justify-center rounded-2xl bg-white text-emerald-700"><Loader2 className="animate-spin" size={30} /></div> : items.length === 0 ? <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-14 text-center text-slate-500">لا يوجد محتوى في هذا القسم.</div> : (
+      {loading ? <div className="flex min-h-64 items-center justify-center rounded-2xl bg-white text-[#007A94]"><Loader2 className="animate-spin" size={30} /></div> : items.length === 0 ? <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-14 text-center text-slate-500">لا يوجد محتوى في هذا القسم.</div> : (
         <div className="grid gap-4 lg:grid-cols-2">
           {paginatedItems.map((item) => <article key={item.id} className="flex gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-            {item.category === "releases" ? <AdminPdfCover item={item} /> : <div className="grid h-20 w-24 shrink-0 place-items-center overflow-hidden rounded-xl bg-emerald-50 text-emerald-700">{item.image_url ? <img src={item.image_url} alt="" className="h-full w-full object-cover" /> : <CalendarDays size={24} />}</div>}
-            <div className="min-w-0 flex-1"><div className="flex justify-between gap-2"><h2 className="font-black text-slate-900">{item.title_ar}</h2><span className={`shrink-0 rounded-full px-2 py-1 text-[10px] font-bold ${item.is_published ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-500"}`}>{item.is_published ? <Eye size={12} /> : <EyeOff size={12} />}</span></div>{item.category === "news" && <span className="mt-2 inline-flex rounded-full bg-teal-50 px-2.5 py-1 text-[11px] font-black text-teal-700">{item.news_type === "related" ? "أخبار ذات علاقة" : "أخبار المنظمة"}</span>}<p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-500">{item.description_ar || "بدون وصف"}</p><div className="mt-4 flex flex-wrap gap-2">{item.category === "releases" && item.pdf && <button type="button" onClick={() => viewPdf(item)} className="inline-flex items-center gap-2 rounded-lg bg-emerald-50 px-3 py-2 text-xs font-black text-emerald-700 hover:bg-emerald-100"><Eye size={15} /> عرض PDF</button>}<button onClick={() => openEdit(item)} className="rounded-lg bg-slate-100 p-2 text-slate-600 hover:text-emerald-700"><Pencil size={15} /></button><button onClick={() => remove(item)} className="rounded-lg bg-red-50 p-2 text-red-600"><Trash2 size={15} /></button></div></div>
+            {item.category === "releases" ? <AdminPdfCover item={item} /> : <div className="grid h-20 w-24 shrink-0 place-items-center overflow-hidden rounded-xl bg-[#ECFCFF] text-[#007A94]">{item.image_url ? <img src={item.image_url} alt="" className="h-full w-full object-cover" /> : <CalendarDays size={24} />}</div>}
+            <div className="min-w-0 flex-1"><div className="flex justify-between gap-2"><h2 className="font-black text-slate-900">{item.title_ar}</h2><span className={`shrink-0 rounded-full px-2 py-1 text-[10px] font-bold ${item.is_published ? "bg-[#ECFCFF] text-[#007A94]" : "bg-slate-100 text-slate-500"}`}>{item.is_published ? <Eye size={12} /> : <EyeOff size={12} />}</span></div>{item.category === "news" && <span className="mt-2 inline-flex rounded-full bg-[#ECFCFF] px-2.5 py-1 text-[11px] font-black text-[#007A94]">{item.news_type === "related" ? "أخبار ذات علاقة" : "أخبار المنظمة"}</span>}<p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-500">{item.description_ar || "بدون وصف"}</p><div className="mt-4 flex flex-wrap gap-2">{item.category === "releases" && item.pdf && <button type="button" onClick={() => viewPdf(item)} className="inline-flex items-center gap-2 rounded-lg bg-[#ECFCFF] px-3 py-2 text-xs font-black text-[#007A94] hover:bg-[#D0F6FF]"><Eye size={15} /> عرض PDF</button>}<button onClick={() => openEdit(item)} className="rounded-lg bg-slate-100 p-2 text-slate-600 hover:text-[#007A94]"><Pencil size={15} /></button><button onClick={() => remove(item)} className="rounded-lg bg-red-50 p-2 text-red-600"><Trash2 size={15} /></button></div></div>
           </article>)}
         </div>
       )}
       {!loading && items.length > pageSize && <Pagination page={page} totalPages={totalPages} onChange={setPage} />}
       {showForm && <div onMouseDown={(e) => e.target === e.currentTarget && closeForm()} className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-slate-950/60 p-4 backdrop-blur-sm"><form onSubmit={submit} className="my-auto w-full max-w-4xl rounded-2xl bg-white p-6 shadow-2xl"><div className="mb-6 flex justify-between"><h2 className="text-xl font-black">{editingId ? "تعديل المحتوى" : "إضافة محتوى"}</h2><button type="button" onClick={closeForm}><X /></button></div><div className="grid gap-5 md:grid-cols-2">
-        {lockedCategory ? <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3"><span className="text-xs font-bold text-emerald-600">القسم</span><p className="mt-1 text-sm font-black text-emerald-900">{activeCategory?.label}</p></div> : <Field label="القسم *"><select className={fieldClass} value={form.category} onChange={(e) => { setForm({ ...form, category: e.target.value, news_type: "organization", organization_ar: "", organization_en: "", image: null, pdf: null, pdf_thumbnail: null }); setPreview(null); setPdfName(""); }}>{categories.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</select></Field>}
+        {lockedCategory ? <div className="rounded-xl border border-[#A1EDFF] bg-[#ECFCFF] px-4 py-3"><span className="text-xs font-bold text-[#00C9F2]">القسم</span><p className="mt-1 text-sm font-black text-[#004C5D]">{activeCategory?.label}</p></div> : <Field label="القسم *"><select className={fieldClass} value={form.category} onChange={(e) => { setForm({ ...form, category: e.target.value, news_type: "organization", organization_ar: "", organization_en: "", image: null, pdf: null, pdf_thumbnail: null }); setPreview(null); setPdfName(""); }}>{categories.map((item) => <option key={item.value} value={item.value}>{item.label}</option>)}</select></Field>}
         {form.category === "news" && <Field label="نوع الخبر *"><select className={fieldClass} value={form.news_type} onChange={(e) => setForm({ ...form, news_type: e.target.value })}><option value="organization">أخبار المنظمة</option><option value="related">أخبار ذات علاقة</option></select></Field>}
         <Field label="التاريخ"><input type="datetime-local" className={fieldClass} value={form.event_date} onChange={(e) => setForm({ ...form, event_date: e.target.value })} /></Field>
         <Field label="العنوان بالعربية *"><input className={fieldClass} required value={form.title_ar} onChange={(e) => setForm({ ...form, title_ar: e.target.value })} /></Field><Field label="العنوان بالإنجليزية"><input dir="ltr" className={fieldClass} value={form.title_en} onChange={(e) => setForm({ ...form, title_en: e.target.value })} /></Field>
         <Field label="الوصف بالعربية"><textarea rows="4" className={fieldClass} value={form.description_ar} onChange={(e) => setForm({ ...form, description_ar: e.target.value })} /></Field><Field label="الوصف بالإنجليزية"><textarea dir="ltr" rows="4" className={fieldClass} value={form.description_en} onChange={(e) => setForm({ ...form, description_en: e.target.value })} /></Field>
-        {form.category === "competitions" ? <Field label="الدولة"><select className={fieldClass} value={form.location_ar} onChange={(e) => setForm({ ...form, location_ar: e.target.value, location_en: e.target.value })}><option value="">بدون دولة</option>{form.location_ar && !countries.some((country) => country.nomPays === form.location_ar) && <option value={form.location_ar}>{form.location_ar}</option>}{countries.map((country) => <option key={country.idPays} value={country.nomPays}>{country.nomPays}</option>)}</select></Field> : <><Field label="المكان بالعربية"><input className={fieldClass} value={form.location_ar} onChange={(e) => setForm({ ...form, location_ar: e.target.value })} /></Field><Field label="المكان بالإنجليزية"><input dir="ltr" className={fieldClass} value={form.location_en} onChange={(e) => setForm({ ...form, location_en: e.target.value })} /></Field></>}
+        {["news", "competitions"].includes(form.category) ? <Field label={form.category === "news" ? "الدولة (اختياري)" : "الدولة"}><select className={fieldClass} value={form.location_ar} onChange={(e) => setForm({ ...form, location_ar: e.target.value, location_en: countries.find((country) => country.nomPays === e.target.value)?.nameEn || e.target.value })}><option value="">بدون دولة</option>{form.location_ar && !countries.some((country) => country.nomPays === form.location_ar) && <option value={form.location_ar}>{form.location_ar}</option>}{countries.map((country) => <option key={country.code} value={country.nomPays}>{country.nomPays}</option>)}</select></Field> : <><Field label="المكان بالعربية"><input className={fieldClass} value={form.location_ar} onChange={(e) => setForm({ ...form, location_ar: e.target.value })} /></Field><Field label="المكان بالإنجليزية"><input dir="ltr" className={fieldClass} value={form.location_en} onChange={(e) => setForm({ ...form, location_en: e.target.value })} /></Field></>}
         {form.category === "competitions" && <><Field label="المنظمة بالعربية"><input className={fieldClass} placeholder="يمكن إضافتها مع الدولة أو بدونها" value={form.organization_ar} onChange={(e) => setForm({ ...form, organization_ar: e.target.value })} /></Field><Field label="المنظمة بالإنجليزية"><input dir="ltr" className={fieldClass} placeholder="Organization name" value={form.organization_en} onChange={(e) => setForm({ ...form, organization_en: e.target.value })} /></Field></>}
         <Field label="رابط خارجي"><input dir="ltr" type="url" className={fieldClass} value={form.external_url} onChange={(e) => setForm({ ...form, external_url: e.target.value })} /></Field>
         {form.category === "releases" ? (
@@ -183,16 +178,16 @@ const ManageMediaCenter = ({ lockedCategory }) => {
               <span className="flex gap-2 text-sm font-bold text-slate-500"><FileUp size={19} /> {pdfName || "اختر ملف PDF"}</span>
               <input type="file" accept=".pdf,application/pdf" required={!editingId} className="hidden" onChange={async (e) => { const file = e.target.files?.[0] ?? null; if (file && file.size > maxPdfSize) { toast.error("حجم ملف PDF يجب ألا يتجاوز 20 ميغابايت"); e.target.value = ""; setForm({ ...form, pdf: null, pdf_thumbnail: null }); setPdfName(""); return; } if (!file) { setForm({ ...form, pdf: null, pdf_thumbnail: null }); setPdfName(""); return; } setPdfName("جاري تجهيز الغلاف..."); try { const thumbnail = await createPdfThumbnail(file); setForm({ ...form, pdf: file, pdf_thumbnail: thumbnail }); setPdfName(file.name); } catch { e.target.value = ""; setForm({ ...form, pdf: null, pdf_thumbnail: null }); setPdfName(""); toast.error("تعذر استخراج الصفحة الأولى من ملف PDF"); } }} />
             </label>
-            {editingId && pdfName && items.find((item) => item.id === editingId)?.pdf && <button type="button" onClick={() => viewPdf(items.find((item) => item.id === editingId))} className="mt-2 inline-flex items-center gap-2 text-xs font-black text-emerald-700 hover:text-emerald-900"><Eye size={15} /> عرض ملف PDF المحفوظ</button>}
+            {editingId && pdfName && items.find((item) => item.id === editingId)?.pdf && <button type="button" onClick={() => viewPdf(items.find((item) => item.id === editingId))} className="mt-2 inline-flex items-center gap-2 text-xs font-black text-[#007A94] hover:text-[#004C5D]"><Eye size={15} /> عرض ملف PDF المحفوظ</button>}
           </Field>
         ) : (
           <Field label={form.category === "competitions" ? "شعار المسابقة أو الجائزة" : "الصورة"}><label className="flex h-28 cursor-pointer items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-slate-200 bg-slate-50">{preview ? <img src={preview} alt="" className="h-full w-full object-contain" /> : <span className="flex gap-2 text-sm font-bold text-slate-500"><ImagePlus size={19} /> {form.category === "competitions" ? "اختر شعاراً" : "اختر صورة"}</span>}<input type="file" accept="image/*" className="hidden" onChange={(e) => { const file = e.target.files?.[0] ?? null; setForm({ ...form, image: file }); setPreview(file ? URL.createObjectURL(file) : null); }} /></label></Field>
         )}
-        <label className="flex items-center gap-3 rounded-xl bg-slate-50 px-4 py-3"><input type="checkbox" checked={form.is_published} onChange={(e) => setForm({ ...form, is_published: e.target.checked })} className="h-5 w-5 accent-emerald-600" /><span className="text-sm font-bold">نشر المحتوى للزوار</span></label>
-      </div><div className="mt-6 flex justify-end gap-3"><button type="button" onClick={closeForm} className="rounded-xl border px-5 py-3 text-sm font-bold">إلغاء</button><button disabled={saving} className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 text-sm font-black text-white">{saving && <Loader2 size={17} className="animate-spin" />} حفظ</button></div></form></div>}
+        <label className="flex items-center gap-3 rounded-xl bg-slate-50 px-4 py-3"><input type="checkbox" checked={form.is_published} onChange={(e) => setForm({ ...form, is_published: e.target.checked })} className="h-5 w-5 accent-[#00C9F2]" /><span className="text-sm font-bold">نشر المحتوى للزوار</span></label>
+      </div><div className="mt-6 flex justify-end gap-3"><button type="button" onClick={closeForm} className="rounded-xl border px-5 py-3 text-sm font-bold">إلغاء</button><button disabled={saving} className="inline-flex items-center gap-2 rounded-xl bg-[#00C9F2] px-6 py-3 text-sm font-black text-white">{saving && <Loader2 size={17} className="animate-spin" />} حفظ</button></div></form></div>}
     </div>
   );
 };
 const Field = ({ label, children }) => <label className="space-y-2"><span className="text-sm font-bold text-slate-700">{label}</span>{children}</label>;
-const Pagination = ({ page, totalPages, onChange }) => <nav className="flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"><button disabled={page === 1} onClick={() => onChange(page - 1)} className="rounded-xl border border-slate-200 p-2.5 text-slate-600 disabled:opacity-40"><ChevronRight size={18} /></button>{Array.from({ length: totalPages }, (_, index) => index + 1).map((number) => <button key={number} onClick={() => onChange(number)} className={`h-10 min-w-10 rounded-xl px-3 text-sm font-black ${page === number ? "bg-emerald-600 text-white" : "border border-slate-200 text-slate-600"}`}>{number}</button>)}<button disabled={page === totalPages} onClick={() => onChange(page + 1)} className="rounded-xl border border-slate-200 p-2.5 text-slate-600 disabled:opacity-40"><ChevronLeft size={18} /></button></nav>;
+const Pagination = ({ page, totalPages, onChange }) => <nav className="flex items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm"><button disabled={page === 1} onClick={() => onChange(page - 1)} className="rounded-xl border border-slate-200 p-2.5 text-slate-600 disabled:opacity-40"><ChevronRight size={18} /></button>{Array.from({ length: totalPages }, (_, index) => index + 1).map((number) => <button key={number} onClick={() => onChange(number)} className={`h-10 min-w-10 rounded-xl px-3 text-sm font-black ${page === number ? "bg-[#00C9F2] text-white" : "border border-slate-200 text-slate-600"}`}>{number}</button>)}<button disabled={page === totalPages} onClick={() => onChange(page + 1)} className="rounded-xl border border-slate-200 p-2.5 text-slate-600 disabled:opacity-40"><ChevronLeft size={18} /></button></nav>;
 export default ManageMediaCenter;

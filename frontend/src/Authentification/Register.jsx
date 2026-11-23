@@ -47,7 +47,7 @@ const Register = () => {
                 <form onSubmit={handleRegister} className="space-y-5">
                     <input 
                         type="text" 
-                        placeholder="الاسم الكامل"
+                        placeholder={t("registration_guide.fields.name")}
                         required
                         className="w-full px-5 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none"
                         onChange={(e) => setFormData({...formData, nomComplet: e.target.value})}
@@ -55,23 +55,23 @@ const Register = () => {
                     <RegistrationProfileFields formData={formData} setFormData={setFormData} />
                     <input 
                         type="email" 
-                        placeholder="بريد إلكتروني"
+                        placeholder={t("registration_guide.fields.email")}
                         required
                         className="w-full px-5 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none"
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
                     />
                     <input 
                         type="password" 
-                        placeholder="كلمة المرور"
+                        placeholder={t("registration_guide.fields.password")}
                         required
                         className="w-full px-5 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none"
                         onChange={(e) => setFormData({...formData, password: e.target.value})}
                     />
                     <button 
                         disabled={loading}
-                        className={`w-full bg-emerald-600 hover:bg-emerald-700 font-bold py-3 rounded-xl transition-all ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90'}`}
+                        className={`w-full bg-[#00C9F2] hover:bg-[#007A94] font-bold py-3 rounded-xl transition-all ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90'}`}
                     >
-                        {loading ? "Chargement..." : "سجل الآن"}
+                        {loading ? t("database_pages.loading") : t("menu.register")}
                     </button>
                 </form>
             </div>

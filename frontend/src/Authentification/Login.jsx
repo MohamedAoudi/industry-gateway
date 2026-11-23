@@ -74,7 +74,7 @@
 //                             onChange={(e) => setFormData({...formData, password: e.target.value})}
 //                         />
 //                     </div>
-//                     <button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-blue-200 transition-all transform hover:-translate-y-0.5 active:scale-95">
+//                     <button type="submit" className="w-full bg-[#00C9F2] hover:bg-[#007A94] text-white font-bold py-3 rounded-xl shadow-lg shadow-blue-200 transition-all transform hover:-translate-y-0.5 active:scale-95">
 //                         تسجيل الدخول
 //                     </button>
 //                 </form>
@@ -168,7 +168,7 @@
 //                             onChange={(e) => setFormData({...formData, password: e.target.value})}
 //                         />
 //                     </div>
-//                     <button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl shadow-lg shadow-emerald-100 transition-all transform hover:-translate-y-0.5 active:scale-95">
+//                     <button type="submit" className="w-full bg-[#00C9F2] hover:bg-[#007A94] text-white font-bold py-3 rounded-xl shadow-lg shadow-[#D0F6FF] transition-all transform hover:-translate-y-0.5 active:scale-95">
 //                         تسجيل الدخول
 //                     </button>
 //                 </form>
@@ -178,7 +178,7 @@
 //                     <p className="text-slate-600 mb-2">ليس لديك حساب؟</p>
 //                     <Link 
 //                         to="/register" 
-//                         className="text-emerald-600 font-bold hover:text-emerald-700 transition-colors underline-offset-4 hover:underline"
+//                         className="text-[#00C9F2] font-bold hover:text-[#007A94] transition-colors underline-offset-4 hover:underline"
 //                     >
 //                         إنشاء حساب جديد
 //                     </Link>
@@ -361,9 +361,9 @@ const Auth = () => {
 
     if (deactivatedAccount) {
         return (
-            <div dir="rtl" className="relative flex min-h-screen w-full items-start justify-center overflow-x-hidden bg-emerald-600/50 px-4 py-8 sm:px-6 sm:py-12">
+            <div dir="rtl" className="relative flex min-h-screen w-full items-start justify-center overflow-x-hidden bg-[#00C9F2]/50 px-4 py-8 sm:px-6 sm:py-12">
                 <div className="absolute inset-0 z-0">
-                    <div className="absolute left-[-10%] top-[-10%] h-[40%] w-[40%] rounded-full bg-emerald-600/20 blur-[120px]" />
+                    <div className="absolute left-[-10%] top-[-10%] h-[40%] w-[40%] rounded-full bg-[#00C9F2]/20 blur-[120px]" />
                     <div className="absolute bottom-[-10%] right-[-10%] h-[40%] w-[40%] rounded-full bg-blue-600/20 blur-[120px]" />
                 </div>
                 <div className="relative z-10 w-full max-w-xl rounded-[2rem] border border-white/20 bg-white/95 p-7 shadow-[0_20px_50px_rgba(0,0,0,0.2)] backdrop-blur-xl sm:p-10">
@@ -379,9 +379,9 @@ const Auth = () => {
                         </label>
                         <label className="block">
                             <span className="mb-2 block text-sm font-bold text-slate-700">رسالتك إلى الإدارة *</span>
-                            <textarea required rows="5" value={reactivationMessage} onChange={(event) => setReactivationMessage(event.target.value)} placeholder="اشرح طلبك لإعادة تفعيل الحساب..." className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm leading-7 text-slate-800 outline-none focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10" />
+                            <textarea required rows="5" value={reactivationMessage} onChange={(event) => setReactivationMessage(event.target.value)} placeholder="اشرح طلبك لإعادة تفعيل الحساب..." className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm leading-7 text-slate-800 outline-none focus:border-[#00C9F2] focus:ring-4 focus:ring-[#00C9F2]/10" />
                         </label>
-                        <button className="w-full rounded-xl bg-emerald-600 px-6 py-3.5 text-sm font-black text-white hover:bg-emerald-700">التواصل مع الإدارة</button>
+                        <button className="w-full rounded-xl bg-[#00C9F2] px-6 py-3.5 text-sm font-black text-white hover:bg-[#007A94]">التواصل مع الإدارة</button>
                         <button type="button" onClick={() => { setDeactivatedAccount(null); setReactivationMessage(''); }} className="w-full rounded-xl border border-slate-200 px-6 py-3 text-sm font-bold text-slate-600 hover:bg-slate-50">العودة إلى تسجيل الدخول</button>
                     </form>
                 </div>
@@ -390,11 +390,11 @@ const Auth = () => {
     }
 
     return (
-        <div className="relative min-h-screen w-full flex items-start justify-center overflow-x-hidden bg-emerald-600/50 px-4 py-8 sm:px-6 sm:py-12">
+        <div className="relative min-h-screen w-full flex items-start justify-center overflow-x-hidden bg-[#00C9F2]/50 px-4 py-8 sm:px-6 sm:py-12">
             
             {/* --- ARRIÈRE-PLAN ANIMÉ (Background) --- */}
             <div className="absolute inset-0 z-0">
-                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-emerald-600/20 blur-[120px] animate-pulse"></div>
+                <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-[#00C9F2]/20 blur-[120px] animate-pulse"></div>
                 <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-blue-600/20 blur-[120px] animate-pulse" style={{ animationDelay: '2s' }}></div>
             </div>
 
@@ -405,10 +405,10 @@ const Auth = () => {
                 <div className="pt-12 pb-6 px-10 text-center">
 
                     <h2 className="text-4xl font-black text-slate-900 mb-2 tracking-tight">
-                        {isLogin ? "تسجيل الدخول" : "إنشاء حساب"}
+                        {isLogin ? t("menu.login") : t("auth.create_account", { defaultValue: "إنشاء حساب" })}
                     </h2>
                     <p className="text-slate-500 font-medium">
-                        {isLogin ? "يرجى إدخال بياناتك للمتابعة" : "ابدأ رحلتك معنا اليوم"}
+                        {isLogin ? t("auth.login_description", { defaultValue: "يرجى إدخال بياناتك للمتابعة" }) : t("auth.register_description", { defaultValue: "ابدأ رحلتك معنا اليوم" })}
                     </p>
                 </div>
 
@@ -422,17 +422,17 @@ const Auth = () => {
                     <div ref={googleButtonRef} className="flex min-h-11 w-full items-center justify-center" />
                     <div className="flex items-center gap-3 text-xs font-bold text-slate-400">
                         <span className="h-px flex-1 bg-slate-200" />
-                        <span>{isLogin ? "أو تسجيل الدخول بالبريد الإلكتروني" : "أو إنشاء حساب بالبريد الإلكتروني"}</span>
+                        <span>{isLogin ? t("auth.email_login", { defaultValue: "أو تسجيل الدخول بالبريد الإلكتروني" }) : t("auth.email_register", { defaultValue: "أو إنشاء حساب بالبريد الإلكتروني" })}</span>
                         <span className="h-px flex-1 bg-slate-200" />
                     </div>
                     
                     {/* Champ Nom Complet (Mode Register) */}
                     <div className={`transition-all duration-500 overflow-hidden ${!isLogin ? 'max-h-24 opacity-100 scale-100' : 'max-h-0 opacity-0 scale-95'}`}>
-                        <label className="block text-sm font-bold text-slate-700 mb-2 mr-1 rtl:text-right">الاسم الكامل</label>
+                        <label className="block text-sm font-bold text-slate-700 mb-2 mr-1 rtl:text-right">{t("registration_guide.fields.name")}</label>
                         <input 
                             type="text" 
-                            className="w-full px-6 py-4 rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 outline-none transition-all placeholder:text-slate-400"
-                            placeholder="مثال: محمد أحمد"
+                            className="w-full px-6 py-4 rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:ring-4 focus:ring-[#00C9F2]/10 focus:border-[#00C9F2] outline-none transition-all placeholder:text-slate-400"
+                            placeholder={t("contact_page.form.name_placeholder")}
                             value={formData.nomComplet}
                             onChange={(e) => setFormData({...formData, nomComplet: e.target.value})}
                             required={!isLogin}
@@ -445,10 +445,10 @@ const Auth = () => {
 
                     {/* Email */}
                     <div>
-                        <label className="block text-sm font-bold text-slate-700 mb-2 mr-1 rtl:text-right">البريد الإلكتروني</label>
+                        <label className="block text-sm font-bold text-slate-700 mb-2 mr-1 rtl:text-right">{t("registration_guide.fields.email")}</label>
                         <input 
                             type="email" 
-                            className="w-full px-6 py-4 rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 outline-none transition-all placeholder:text-slate-400"
+                            className="w-full px-6 py-4 rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:ring-4 focus:ring-[#00C9F2]/10 focus:border-[#00C9F2] outline-none transition-all placeholder:text-slate-400"
                             placeholder="mail@example.com"
                             value={formData.email}
                             onChange={(e) => setFormData({...formData, email: e.target.value})}
@@ -458,10 +458,10 @@ const Auth = () => {
 
                     {/* Password */}
                     <div>
-                        <label className="block text-sm font-bold text-slate-700 mb-2 mr-1 rtl:text-right">كلمة المرور</label>
+                        <label className="block text-sm font-bold text-slate-700 mb-2 mr-1 rtl:text-right">{t("registration_guide.fields.password")}</label>
                         <input 
                             type="password" 
-                            className="w-full px-6 py-4 rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500 outline-none transition-all placeholder:text-slate-400"
+                            className="w-full px-6 py-4 rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:ring-4 focus:ring-[#00C9F2]/10 focus:border-[#00C9F2] outline-none transition-all placeholder:text-slate-400"
                             placeholder="••••••••"
                             value={formData.password}
                             onChange={(e) => setFormData({...formData, password: e.target.value})}
@@ -473,24 +473,24 @@ const Auth = () => {
                     <button 
                         type="submit" 
                         disabled={loading}
-                        className="w-full group relative flex items-center justify-center px-8 py-4 bg-emerald-600 hover:bg-emerald-600 text-white font-bold rounded-2xl shadow-xl transition-all duration-300 transform hover:-translate-y-1 active:scale-95 disabled:opacity-50 overflow-hidden"
+                        className="w-full group relative flex items-center justify-center px-8 py-4 bg-[#00C9F2] hover:bg-[#00C9F2] text-white font-bold rounded-2xl shadow-xl transition-all duration-300 transform hover:-translate-y-1 active:scale-95 disabled:opacity-50 overflow-hidden"
                     >
                         <span className="relative z-10">
-                            {loading ? "..." : (isLogin ? "دخول" : "تأكيد التسجيل")}
+                            {loading ? "..." : (isLogin ? t("menu.login") : t("common.confirm_registration"))}
                         </span>
-                        <div className="absolute inset-0 bg-gradient-to-r from-emerald-600 to-teal-500 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        <div className="absolute inset-0 bg-gradient-to-r from-[#00C9F2] to-[#00C9F2] opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     </button>
 
                     {/* Switcher Mode */}
                     <div className="text-center pt-4">
                         <p className="text-slate-500 text-sm font-medium">
-                            {isLogin ? "ليس لديك حساب؟" : "لديك حساب بالفعل؟"}
+                            {isLogin ? t("auth.no_account", { defaultValue: "ليس لديك حساب؟" }) : t("auth.have_account", { defaultValue: "لديك حساب بالفعل؟" })}
                             <button 
                                 type="button"
                                 onClick={toggleMode}
-                                className="mr-2 text-emerald-600 font-bold hover:text-emerald-700 transition-colors"
+                                className="mr-2 text-[#00C9F2] font-bold hover:text-[#007A94] transition-colors"
                             >
-                                {isLogin ? "إنشاء حساب جديد" : "تسجيل الدخول"}
+                                {isLogin ? t("auth.create_account", { defaultValue: "إنشاء حساب جديد" }) : t("menu.login")}
                             </button>
                         </p>
                     </div>

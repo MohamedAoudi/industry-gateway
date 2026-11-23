@@ -53,7 +53,7 @@ const emptyForm = {
   profile_data: {},
 };
 
-const fieldClass = "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-emerald-500 focus:ring-4 focus:ring-emerald-500/10";
+const fieldClass = "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-[#00C9F2] focus:ring-4 focus:ring-[#00C9F2]/10";
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
@@ -190,11 +190,11 @@ const ManageUsers = () => {
 
       <header className="flex flex-col gap-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm lg:flex-row lg:items-center lg:justify-between">
         <div>
-          <div className="mb-2 flex items-center gap-2 text-sm font-bold text-emerald-700"><UsersRound size={18} /> إدارة النظام</div>
+          <div className="mb-2 flex items-center gap-2 text-sm font-bold text-[#007A94]"><UsersRound size={18} /> إدارة النظام</div>
           <h1 className="text-2xl font-black text-slate-900">إدارة المستخدمين</h1>
           <p className="mt-2 text-sm text-slate-500">إضافة المستخدمين وتعديل بياناتهم وصلاحياتهم.</p>
         </div>
-        <button type="button" onClick={openCreate} className="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-black text-white shadow-lg shadow-emerald-600/20 hover:bg-emerald-700"><Plus size={18} /> إضافة مستخدم</button>
+        <button type="button" onClick={openCreate} className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#00C9F2] px-5 py-3 text-sm font-black text-white shadow-lg shadow-[#00C9F2]/20 hover:bg-[#007A94]"><Plus size={18} /> إضافة مستخدم</button>
       </header>
 
       <section className="grid gap-4 sm:grid-cols-3">
@@ -219,7 +219,7 @@ const ManageUsers = () => {
 
       <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
         {loading ? (
-          <div className="flex min-h-64 items-center justify-center text-emerald-700"><Loader2 size={30} className="animate-spin" /></div>
+          <div className="flex min-h-64 items-center justify-center text-[#007A94]"><Loader2 size={30} className="animate-spin" /></div>
         ) : users.length === 0 ? (
           <div className="p-14 text-center text-slate-500">لا يوجد مستخدمون مطابقون للبحث.</div>
         ) : (
@@ -233,7 +233,7 @@ const ManageUsers = () => {
                   <tr key={user.idUtilisateur} className="hover:bg-slate-50/70">
                     <td className="p-4">
                       <div className="flex items-center gap-3">
-                        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-emerald-50 font-black text-emerald-700">{user.prenomUtilisateur?.[0]}{user.nomUtilisateur?.[0]}</span>
+                        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-[#ECFCFF] font-black text-[#007A94]">{user.prenomUtilisateur?.[0]}{user.nomUtilisateur?.[0]}</span>
                         <div><p className="font-black text-slate-900">{user.prenomUtilisateur} {user.nomUtilisateur}</p><p className="mt-1 text-xs text-slate-500" dir="ltr">{user.email}</p></div>
                       </div>
                     </td>
@@ -255,11 +255,11 @@ const ManageUsers = () => {
                     <td className="p-4 text-slate-600" dir="ltr">{user.telephone || "—"}</td>
                     <td className="p-4">
                       <div className="flex flex-col items-start gap-2">
-                        <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold ${user.role === "superviseur" ? "bg-amber-50 text-amber-700" : "bg-emerald-50 text-emerald-700"}`}>{user.role === "superviseur" ? <ShieldCheck size={13} /> : <UserRound size={13} />}{user.role === "superviseur" ? "مدير" : "مستخدم"}</span>
-                        <span className={`inline-flex rounded-full px-3 py-1 text-[11px] font-black ${user.is_active !== false ? "bg-emerald-50 text-emerald-700" : "bg-red-50 text-red-700"}`}>{user.is_active !== false ? "نشط" : "معطل"}</span>
+                        <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold ${user.role === "superviseur" ? "bg-amber-50 text-amber-700" : "bg-[#ECFCFF] text-[#007A94]"}`}>{user.role === "superviseur" ? <ShieldCheck size={13} /> : <UserRound size={13} />}{user.role === "superviseur" ? "مدير" : "مستخدم"}</span>
+                        <span className={`inline-flex rounded-full px-3 py-1 text-[11px] font-black ${user.is_active !== false ? "bg-[#ECFCFF] text-[#007A94]" : "bg-red-50 text-red-700"}`}>{user.is_active !== false ? "نشط" : "معطل"}</span>
                       </div>
                     </td>
-                    <td className="p-4"><div className="flex justify-center gap-2"><button type="button" onClick={() => openEdit(user)} className="rounded-lg bg-slate-100 p-2.5 text-slate-600 hover:bg-emerald-50 hover:text-emerald-700" title="تعديل"><Pencil size={16} /></button><button type="button" onClick={() => remove(user)} className="rounded-lg bg-red-50 p-2.5 text-red-600 hover:bg-red-100" title="حذف"><Trash2 size={16} /></button></div></td>
+                    <td className="p-4"><div className="flex justify-center gap-2"><button type="button" onClick={() => openEdit(user)} className="rounded-lg bg-slate-100 p-2.5 text-slate-600 hover:bg-[#ECFCFF] hover:text-[#007A94]" title="تعديل"><Pencil size={16} /></button><button type="button" onClick={() => remove(user)} className="rounded-lg bg-red-50 p-2.5 text-red-600 hover:bg-red-100" title="حذف"><Trash2 size={16} /></button></div></td>
                   </tr>
                 ))}
               </tbody>
@@ -271,7 +271,7 @@ const ManageUsers = () => {
       {!loading && meta.last_page > 1 && (
         <nav className="flex flex-wrap items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
           <button disabled={page === 1} onClick={() => setPage((current) => current - 1)} className="rounded-xl border border-slate-200 p-2.5 text-slate-600 disabled:opacity-40"><ChevronRight size={18} /></button>
-          {pageNumbers.map((number) => <button key={number} onClick={() => setPage(number)} className={`h-10 min-w-10 rounded-xl px-3 text-sm font-black ${page === number ? "bg-emerald-600 text-white" : "border border-slate-200 text-slate-600"}`}>{number}</button>)}
+          {pageNumbers.map((number) => <button key={number} onClick={() => setPage(number)} className={`h-10 min-w-10 rounded-xl px-3 text-sm font-black ${page === number ? "bg-[#00C9F2] text-white" : "border border-slate-200 text-slate-600"}`}>{number}</button>)}
           <button disabled={page === meta.last_page} onClick={() => setPage((current) => current + 1)} className="rounded-xl border border-slate-200 p-2.5 text-slate-600 disabled:opacity-40"><ChevronLeft size={18} /></button>
         </nav>
       )}
@@ -297,7 +297,7 @@ const ManageUsers = () => {
                 />
               </div>
             </div>
-            <div className="mt-7 flex justify-end gap-3 border-t border-slate-100 pt-6"><button type="button" onClick={closeForm} className="rounded-xl border border-slate-200 px-5 py-3 text-sm font-bold text-slate-600">إلغاء</button><button disabled={saving} className="inline-flex min-w-36 items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-3 text-sm font-black text-white disabled:opacity-60">{saving && <Loader2 size={17} className="animate-spin" />}{editingId ? "حفظ التعديلات" : "إضافة المستخدم"}</button></div>
+            <div className="mt-7 flex justify-end gap-3 border-t border-slate-100 pt-6"><button type="button" onClick={closeForm} className="rounded-xl border border-slate-200 px-5 py-3 text-sm font-bold text-slate-600">إلغاء</button><button disabled={saving} className="inline-flex min-w-36 items-center justify-center gap-2 rounded-xl bg-[#00C9F2] px-5 py-3 text-sm font-black text-white disabled:opacity-60">{saving && <Loader2 size={17} className="animate-spin" />}{editingId ? "حفظ التعديلات" : "إضافة المستخدم"}</button></div>
           </form>
         </div>
       )}
@@ -305,7 +305,7 @@ const ManageUsers = () => {
   );
 };
 
-const SummaryCard = ({ icon: Icon, label, value }) => <article className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><span className="grid h-12 w-12 place-items-center rounded-xl bg-emerald-50 text-emerald-700"><Icon size={22} /></span><div><p className="text-2xl font-black text-slate-900">{value}</p><p className="mt-1 text-xs font-bold text-slate-500">{label}</p></div></article>;
+const SummaryCard = ({ icon: Icon, label, value }) => <article className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm"><span className="grid h-12 w-12 place-items-center rounded-xl bg-[#ECFCFF] text-[#007A94]"><Icon size={22} /></span><div><p className="text-2xl font-black text-slate-900">{value}</p><p className="mt-1 text-xs font-bold text-slate-500">{label}</p></div></article>;
 const FormField = ({ label, children }) => <label className="space-y-2"><span className="text-sm font-bold text-slate-700">{label}</span>{children}</label>;
 
 export default ManageUsers;

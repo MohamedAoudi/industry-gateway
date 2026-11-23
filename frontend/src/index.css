@@ -1,3 +1,5 @@
+@config "../tailwind.config.js";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -18,6 +20,44 @@
 
 .site-menu {
   font-family: "Tajawal", "Cairo", Tahoma, Arial, sans-serif;
+}
+
+/* Justify prose consistently in both RTL and LTR layouts. */
+#root :where(p, blockquote, dd, article li, main li) {
+  text-align: justify;
+  text-align-last: start;
+  text-justify: inter-word;
+}
+
+#root .hero-description {
+  text-align: center;
+  text-align-last: auto;
+}
+
+.hero-title-line {
+  animation: hero-title-reveal 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.45s both;
+}
+
+.hero-title-line-delayed {
+  animation-delay: 0.7s;
+}
+
+.hero-title-accent {
+  background-image: linear-gradient(to left, #63E1FA, #A1EDFF, #A5F3FC);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@keyframes hero-title-reveal {
+  from { opacity: 0; transform: translateY(18px); filter: blur(5px); }
+  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-title-line {
+    animation: none;
+  }
 }
 
 @keyframes fade {
@@ -55,7 +95,7 @@
 .stats-swiper .swiper-pagination-bullet-active {
   width: 28px;
   border-radius: 999px;
-  background: #059669;
+  background: #00C9F2;
 }
 
 .flags-swiper .swiper-wrapper {
@@ -71,18 +111,18 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #059669; 
+  background-color: #00C9F2; 
   border-radius: 20px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: #047857; 
+  background-color: #007A94; 
 } */
 
 /* Firefox */
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: #059669 transparent;
+  scrollbar-color: #00C9F2 transparent;
 }
 
 
@@ -96,10 +136,10 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #059669;
+  background-color: #00C9F2;
   border-radius: 20px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #059669;
+  background-color: #00C9F2;
 }

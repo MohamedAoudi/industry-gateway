@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import apiAdmin, { setAuthSession } from "../api/apiAdmin";
 import RegistrationProfileFields, { emptyRegistrationForm } from "./RegistrationProfileFields";
 
-const inputClass = "w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm outline-none transition focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10";
+const inputClass = "w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#00C9F2] focus:bg-white focus:ring-4 focus:ring-[#00C9F2]/10";
 
 let googleIdentityScriptPromise;
 
@@ -146,23 +146,23 @@ const RegistrationModal = ({ open, onClose }) => {
       aria-label="إنشاء حساب جديد"
     >
       <div className="mx-auto w-full max-w-3xl overflow-hidden rounded-[2rem] border border-white/20 bg-white shadow-2xl">
-        <header className="relative overflow-hidden bg-gradient-to-l from-emerald-700 to-teal-600 px-6 py-7 text-white sm:px-8">
+        <header className="relative overflow-hidden bg-gradient-to-l from-[#007A94] to-[#00C9F2] px-6 py-7 text-white sm:px-8">
           <div className="pointer-events-none absolute -left-12 -top-20 h-48 w-48 rounded-full bg-white/10" />
           <button type="button" onClick={onClose} disabled={saving} className="absolute left-5 top-5 rounded-xl bg-white/10 p-2 text-white transition hover:bg-white/20 disabled:opacity-50" aria-label="إغلاق">
             <X size={20} />
           </button>
           <span className="grid h-12 w-12 place-items-center rounded-2xl bg-white/15"><UserRoundPlus size={23} /></span>
           <h2 className="mt-4 text-2xl font-black">إنشاء حساب جديد</h2>
-          <p className="mt-2 text-sm text-emerald-50/80">اختر نوع حسابك وأدخل معلوماتك للانضمام إلى البوابة.</p>
+          <p className="mt-2 text-sm text-[#ECFCFF]/80">اختر نوع حسابك وأدخل معلوماتك للانضمام إلى البوابة.</p>
         </header>
 
         {registered ? (
           <div className="p-8 text-center sm:p-12">
-            <CheckCircle2 size={58} className="mx-auto text-emerald-600" />
+            <CheckCircle2 size={58} className="mx-auto text-[#00C9F2]" />
             <h3 className="mt-5 text-2xl font-black text-slate-900">تم إنشاء الحساب بنجاح</h3>
             <p className="mt-3 text-sm leading-7 text-slate-500">يمكنك الآن تسجيل الدخول باستعمال بريدك الإلكتروني وكلمة المرور.</p>
             <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
-              <Link to="/login" onClick={onClose} className="rounded-xl bg-emerald-600 px-6 py-3.5 text-sm font-black text-white hover:bg-emerald-700">تسجيل الدخول</Link>
+              <Link to="/login" onClick={onClose} className="rounded-xl bg-[#00C9F2] px-6 py-3.5 text-sm font-black text-white hover:bg-[#007A94]">تسجيل الدخول</Link>
               <button type="button" onClick={onClose} className="rounded-xl border border-slate-200 px-6 py-3.5 text-sm font-bold text-slate-600 hover:bg-slate-50">العودة إلى الصفحة الرئيسية</button>
             </div>
           </div>
@@ -197,7 +197,7 @@ const RegistrationModal = ({ open, onClose }) => {
 
             <div className="flex flex-col-reverse gap-3 border-t border-slate-100 pt-5 sm:flex-row sm:justify-end">
               <button type="button" onClick={onClose} disabled={saving} className="rounded-xl border border-slate-200 px-5 py-3 text-sm font-bold text-slate-600 disabled:opacity-50">إلغاء</button>
-              <button disabled={saving} className="inline-flex min-w-40 items-center justify-center gap-2 rounded-xl bg-emerald-600 px-6 py-3 text-sm font-black text-white hover:bg-emerald-700 disabled:opacity-60">
+              <button disabled={saving} className="inline-flex min-w-40 items-center justify-center gap-2 rounded-xl bg-[#00C9F2] px-6 py-3 text-sm font-black text-white hover:bg-[#007A94] disabled:opacity-60">
                 {saving && <Loader2 size={17} className="animate-spin" />}
                 {saving ? "جارٍ إنشاء الحساب..." : "إنشاء الحساب"}
               </button>
