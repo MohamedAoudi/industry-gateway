@@ -58,7 +58,6 @@ const CoreGoals = () => {
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {goals.map((goal, index) => {
             const Icon = goal.icon;
-            const isFeatured = index === 0 || index === 5;
 
             return (
               <motion.article
@@ -67,24 +66,16 @@ const CoreGoals = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.55, delay: index * 0.07 }}
-                className={`group relative min-h-[310px] overflow-hidden rounded-[1.75rem] border p-7 transition-all duration-500 hover:-translate-y-1 sm:p-8 ${
-                  isFeatured
-                    ? "border-[#2AD5F5]/25 bg-gradient-to-br from-[#00C9F2] to-[#007A94] shadow-[0_22px_60px_rgba(0,201,242,0.16)]"
-                    : "border-white/10 bg-white/[0.045] hover:border-[#2AD5F5]/30 hover:bg-white/[0.075]"
-                }`}
+                className="group relative min-h-[310px] overflow-hidden rounded-[1.75rem] border border-[#2AD5F5]/25 bg-gradient-to-br from-[#00C9F2] to-[#007A94] p-7 shadow-[0_22px_60px_rgba(0,201,242,0.16)] transition-all duration-500 hover:-translate-y-1 sm:p-8"
               >
                 <div className="pointer-events-none absolute -bottom-16 -right-16 h-44 w-44 rounded-full border-[35px] border-white/[0.035] transition-transform duration-700 group-hover:scale-125" />
 
                 <div className="relative flex h-full flex-col">
                   <div className="flex items-start justify-between gap-5">
-                    <span className={`grid h-[3.25rem] w-[3.25rem] place-items-center rounded-2xl border ${
-                      isFeatured
-                        ? "border-white/20 bg-white/15 text-white"
-                        : "border-[#2AD5F5]/15 bg-[#2AD5F5]/10 text-[#63E1FA]"
-                    }`}>
+                    <span className="grid h-[3.25rem] w-[3.25rem] place-items-center rounded-2xl border border-white/20 bg-white/15 text-white">
                       <Icon size={23} strokeWidth={1.8} />
                     </span>
-                    <span className={`text-4xl font-black leading-none ${isFeatured ? "text-white/25" : "text-white/[0.08]"}`}>
+                    <span className="text-4xl font-black leading-none text-white/25">
                       {goal.number}
                     </span>
                   </div>
@@ -93,14 +84,12 @@ const CoreGoals = () => {
                     <h3 className="text-xl font-black leading-8 text-white sm:text-2xl">
                       {goal.title}
                     </h3>
-                    <p className={`mt-4 text-sm leading-7 ${isFeatured ? "text-[#ECFCFF]/80" : "text-slate-400"}`}>
+                    <p className="mt-4 text-sm leading-7 text-[#ECFCFF]/80">
                       {goal.description}
                     </p>
                   </div>
 
-                  <div className={`mt-7 flex items-center gap-2 text-xs font-black uppercase tracking-[0.15em] ${
-                    isFeatured ? "text-white/70" : "text-[#63E1FA]/70"
-                  }`}>
+                  <div className="mt-7 flex items-center gap-2 text-xs font-black uppercase tracking-[0.15em] text-white/70">
                     <span className="h-px w-8 bg-current transition-all duration-300 group-hover:w-12" />
                     <ArrowUpRight size={14} className={isRtl ? "-rotate-90" : ""} />
                   </div>

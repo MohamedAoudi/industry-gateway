@@ -27,7 +27,7 @@ export const registrationLabels = {
   license_number: label('رقم الرخصة', 'License number', 'Numéro d’autorisation'), license_type: label('نوع الرخصة', 'License type', 'Type d’autorisation'), license_expiry: label('تاريخ انتهاء الرخصة', 'License expiry date', 'Date d’expiration de l’autorisation'),
   responsible_position: label('صفة المسؤول', 'Representative’s position', 'Fonction du responsable'), city: label('المدينة', 'City', 'Ville'), landline: label('الهاتف الثابت', 'Landline', 'Téléphone fixe'), fax: label('فاكس', 'Fax', 'Fax'),
   facebook: label('فيسبوك', 'Facebook', 'Facebook'), linkedin: label('لينكدإن', 'LinkedIn', 'LinkedIn'), twitter: label('تويتر / إكس', 'Twitter / X', 'Twitter / X'), instagram: label('إنستغرام', 'Instagram', 'Instagram'),
-  referral_source: label('كيف تعرفت على المنصة؟', 'How did you hear about the portal?', 'Comment avez-vous connu le portail ?'), user_category: label('تصنيف المستخدم', 'User classification', 'Catégorie d’utilisateur'),
+  referral_source: label('كيف تعرفت على البوابة؟', 'How did you hear about the portal?', 'Comment avez-vous connu le portail ?'), user_category: label('تصنيف المستخدم', 'User classification', 'Catégorie d’utilisateur'),
   products: label('المنتجات / نشاط المنشأة', 'Products / establishment activity', 'Produits / activité de l’établissement'), production_capacity: label('الطاقة الإنتاجية', 'Production capacity', 'Capacité de production'),
   funding_scope: label('نطاق التمويل', 'Funding scope', 'Domaines de financement'), funding_programs: label('برامج التمويل', 'Funding programs', 'Programmes de financement'),
 };
