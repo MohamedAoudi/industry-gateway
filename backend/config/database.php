@@ -31,6 +31,22 @@ return [
     */
 
     'connections' => [
+        'apip_mysql' => [
+            'driver' => 'mysql',
+            'host' => env('APIP_DB_HOST', '127.0.0.1'),
+            'port' => env('APIP_DB_PORT', '13307'),
+            'database' => env('APIP_DB_DATABASE', 'apip'),
+            'username' => env('APIP_DB_USERNAME', ''),
+            'password' => env('APIP_DB_PASSWORD_B64') ? base64_decode(env('APIP_DB_PASSWORD_B64')) : env('APIP_DB_PASSWORD', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'strict' => true,
+            'options' => extension_loaded('pdo_mysql') ? [
+                PDO::ATTR_TIMEOUT => 10,
+                (PHP_VERSION_ID >= 80500 ? Mysql::ATTR_INIT_COMMAND : PDO::MYSQL_ATTR_INIT_COMMAND) => 'SET SESSION TRANSACTION READ ONLY',
+            ] : [],
+        ],
 
         'sqlite' => [
             'driver' => 'sqlite',

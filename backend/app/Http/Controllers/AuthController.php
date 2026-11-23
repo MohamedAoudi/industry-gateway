@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Support\RegistrationProfiles;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -14,30 +15,15 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
-        $accountTypes = ['regular', 'factory', 'industrial_company', 'production_company', 'expert', 'funding_entity', 'other'];
-        $requiredProfileFields = [
-            'factory' => ['organization_name', 'activity_field', 'products', 'country'],
-            'industrial_company' => ['organization_name', 'activity_field', 'registration_number', 'country'],
-            'production_company' => ['organization_name', 'products', 'production_capacity', 'country'],
-            'expert' => ['specialty', 'years_experience', 'organization_name', 'country'],
-            'funding_entity' => ['organization_name', 'funding_scope', 'funding_programs', 'country'],
-            'other' => ['other_type', 'organization_name', 'activity_field', 'country'],
-        ];
-
+        RegistrationProfiles::prepare($request);
         $rules = [
-            'nomComplet' => ['required', 'string', 'min:3', 'max:200'],
+            'nomComplet' => ['nullable', 'string', 'max:200'],
             'email' => ['required', 'email', 'max:100', 'unique:users,email'],
-            'password' => ['required', 'string', 'min:6'],
-            'account_type' => ['required', Rule::in($accountTypes)],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'account_type' => ['required', Rule::in(array_keys(RegistrationProfiles::REQUIRED))],
             'profile_data' => ['present', 'array'],
+            ...RegistrationProfiles::rules($request),
         ];
-
-        foreach (array_unique(array_merge(...array_values($requiredProfileFields))) as $field) {
-            $rules["profile_data.{$field}"] = ['nullable', 'string', 'max:255'];
-        }
-        foreach ($requiredProfileFields[$request->input('account_type')] ?? [] as $field) {
-            $rules["profile_data.{$field}"] = ['required', 'string', 'max:255'];
-        }
 
         $data = $request->validate($rules, [
             'account_type.required' => 'يرجى اختيار نوع الحساب.',
@@ -47,7 +33,8 @@ class AuthController extends Controller
         ]);
 
         try {
-            $nomComplet = trim($data['nomComplet']);
+            $profile = RegistrationProfiles::profile($request, $data);
+            $nomComplet = trim($profile['full_name'] ?? $profile['authorized_person'] ?? $profile['organization_name'] ?? $data['nomComplet'] ?? '') ?: 'Portal member';
 
             // On cherche le dernier espace pour mieux séparer (ex: "Jean De La Fontaine")
             // Prénom: "Jean De La", Nom: "Fontaine"
@@ -62,13 +49,18 @@ class AuthController extends Controller
             }
 
             $user = User::create([
-                'prenomUtilisateur' => $prenomUtilisateur,
-                'nomUtilisateur' => $nomUtilisateur,
+                'prenomUtilisateur' => Str::limit($prenomUtilisateur, 100, ''),
+                'nomUtilisateur' => Str::limit($nomUtilisateur, 100, ''),
                 'email' => $data['email'],
                 'password' => bcrypt($data['password']),
                 'role' => 'user',
                 'account_type' => $data['account_type'],
-                'profile_data' => $data['profile_data'] ?? [],
+                'profile_data' => $profile,
+                'is_active' => false,
+                'registration_status' => 'pending',
+                'telephone' => $profile['phone'] ?? null,
+                'entite' => $profile['organization_name'] ?? null,
+                'position' => $profile['current_position'] ?? $profile['responsible_position'] ?? null,
             ]);
 
             // Assure-toi que cette méthode existe dans ton modèle User
@@ -77,7 +69,7 @@ class AuthController extends Controller
             }
 
             return response()->json([
-                'message' => 'تم إنشاء الحساب بنجاح',
+                'message' => 'تم استلام طلب التسجيل. حسابك بانتظار موافقة الإدارة قبل تسجيل الدخول.',
                 'user' => $user,
             ], 201);
 
@@ -129,8 +121,17 @@ class AuthController extends Controller
                 'role' => 'user',
                 'account_type' => 'regular',
                 'profile_data' => [],
+                'is_active' => false,
+                'registration_status' => 'pending',
             ]
         );
+
+        if ($user->registration_status === 'pending') {
+            return response()->json([
+                'code' => 'ACCOUNT_PENDING_APPROVAL',
+                'message' => 'حسابك بانتظار موافقة الإدارة. لا يمكنك تسجيل الدخول حتى تتم الموافقة على طلبك.',
+            ], 403);
+        }
 
         if ($user->is_active === false) {
             return response()->json([
@@ -167,6 +168,13 @@ class AuthController extends Controller
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
             return response()->json(['message' => 'Identifiants invalides'], 401);
+        }
+
+        if ($user->registration_status === 'pending') {
+            return response()->json([
+                'code' => 'ACCOUNT_PENDING_APPROVAL',
+                'message' => 'حسابك بانتظار موافقة الإدارة. لا يمكنك تسجيل الدخول حتى تتم الموافقة على طلبك.',
+            ], 403);
         }
 
         if ($user->is_active === false) {

@@ -16,11 +16,13 @@ import {
 import toast, { Toaster } from "react-hot-toast";
 import apiAdmin from "../../../api/apiAdmin";
 import RegistrationProfileFields from "../../../Authentification/RegistrationProfileFields";
+import { buildAdminUserPayload, registrationLabels, registrationTypes } from "../../../data/registrationProfiles";
 
 const accountTypeLabels = {
+  ...Object.fromEntries(registrationTypes.map(type => [type.value, type.label.ar])),
   regular: "حساب عادي",
   factory: "مصنع",
-  industrial_company: "شركة صناعية",
+  industrial_company: "مؤسسة صناعية",
   production_company: "شركة إنتاجية",
   expert: "خبير ومختص",
   funding_entity: "جهة تمويلية",
@@ -28,6 +30,7 @@ const accountTypeLabels = {
 };
 
 const profileFieldLabels = {
+  ...Object.fromEntries(Object.entries(registrationLabels).map(([key, value]) => [key, value.ar])),
   organization_name: "اسم الجهة",
   activity_field: "مجال النشاط",
   products: "المنتجات",
@@ -48,12 +51,25 @@ const emptyForm = {
   password: "",
   role: "user",
   is_active: true,
+  registration_status: 'approved',
   telephone: "",
   account_type: "",
   profile_data: {},
 };
 
 const fieldClass = "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-[#00C9F2] focus:ring-4 focus:ring-[#00C9F2]/10";
+
+const downloadUserFile = async (user, kind) => {
+  try {
+    const { data } = await apiAdmin.get(`/users/${user.idUtilisateur}/files/${kind}`, { responseType: 'blob' });
+    const url = URL.createObjectURL(data);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = user.profile_data[`${kind}_name`] || `${kind}.pdf`;
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  } catch { toast.error('تعذر تنزيل الملف'); }
+};
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
@@ -63,6 +79,8 @@ const ManageUsers = () => {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [role, setRole] = useState("");
+  const [status, setStatus] = useState("");
+  const [approvingId, setApprovingId] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [showForm, setShowForm] = useState(false);
@@ -78,7 +96,7 @@ const ManageUsers = () => {
     setLoading(true);
     try {
       const { data } = await apiAdmin.get("/admin/users", {
-        params: { page, per_page: 10, search: debouncedSearch || undefined, role: role || undefined },
+        params: { page, per_page: 10, search: debouncedSearch || undefined, role: role || undefined, status: status || undefined },
       });
       setUsers(data.data ?? []);
       setMeta(data.meta ?? { current_page: 1, last_page: 1, total: 0 });
@@ -92,11 +110,11 @@ const ManageUsers = () => {
 
   useEffect(() => {
     loadUsers();
-  }, [page, debouncedSearch, role]);
+  }, [page, debouncedSearch, role, status]);
 
   useEffect(() => {
     setPage(1);
-  }, [debouncedSearch, role]);
+  }, [debouncedSearch, role, status]);
 
   const pageNumbers = useMemo(() => Array.from(
     { length: Math.min(5, meta.last_page) },
@@ -118,6 +136,7 @@ const ManageUsers = () => {
       password: "",
       role: user.role ?? "user",
       is_active: user.is_active !== false,
+      registration_status: user.registration_status || 'approved',
       telephone: user.telephone ?? "",
       account_type: user.account_type ?? "",
       profile_data: user.profile_data ?? {},
@@ -149,12 +168,12 @@ const ManageUsers = () => {
   const submit = async (event) => {
     event.preventDefault();
     setSaving(true);
-    const payload = { ...form };
-    if (editingId && !payload.password) delete payload.password;
+    const payload = buildAdminUserPayload(form);
 
     try {
       if (editingId) {
-        await apiAdmin.put(`/admin/users/${editingId}`, payload);
+        payload.append('_method', 'PUT');
+        await apiAdmin.post(`/admin/users/${editingId}`, payload);
         toast.success("تم تحديث المستخدم بنجاح");
       } else {
         await apiAdmin.post("/admin/users", payload);
@@ -184,6 +203,17 @@ const ManageUsers = () => {
     }
   };
 
+  const approveUser = async (user) => {
+    setApprovingId(user.idUtilisateur);
+    try {
+      await apiAdmin.patch(`/admin/users/${user.idUtilisateur}/approve`);
+      toast.success('تم قبول طلب التسجيل وتفعيل الحساب');
+      if (status === 'pending' && users.length === 1 && page > 1) setPage(current => current - 1);
+      else await loadUsers();
+    } catch (error) { toast.error(error.response?.data?.message || 'تعذر قبول طلب التسجيل'); }
+    finally { setApprovingId(null); }
+  };
+
   return (
     <div dir="rtl" className="mx-auto max-w-7xl space-y-6">
       <Toaster position="top-center" />
@@ -197,14 +227,15 @@ const ManageUsers = () => {
         <button type="button" onClick={openCreate} className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#00C9F2] px-5 py-3 text-sm font-black text-white shadow-lg shadow-[#00C9F2]/20 hover:bg-[#007A94]"><Plus size={18} /> إضافة مستخدم</button>
       </header>
 
-      <section className="grid gap-4 sm:grid-cols-3">
+      <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <SummaryCard icon={UsersRound} label="جميع الحسابات" value={summary.total} />
         <SummaryCard icon={UserRound} label="المستخدمون" value={summary.users} />
         <SummaryCard icon={ShieldCheck} label="المديرون" value={summary.supervisors} />
+        <SummaryCard icon={UserRound} label="طلبات بانتظار الموافقة" value={summary.pending || 0} />
       </section>
 
       <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-        <div className="grid gap-4 md:grid-cols-[1fr_220px]">
+        <div className="grid gap-4 md:grid-cols-[1fr_200px_200px]">
           <label className="relative">
             <Search size={18} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400" />
             <input value={search} onChange={(e) => setSearch(e.target.value)} className={`${fieldClass} pr-11`} placeholder="البحث بالاسم أو البريد أو بيانات الحساب..." />
@@ -213,6 +244,12 @@ const ManageUsers = () => {
             <option value="">جميع الصلاحيات</option>
             <option value="user">مستخدم</option>
             <option value="superviseur">مدير</option>
+          </select>
+          <select aria-label="حالة طلب التسجيل" value={status} onChange={event => setStatus(event.target.value)} className={fieldClass}>
+            <option value="">جميع الحالات</option>
+            <option value="pending">بانتظار الموافقة</option>
+            <option value="approved">مقبول ونشط</option>
+            <option value="inactive">معطل</option>
           </select>
         </div>
       </section>
@@ -243,7 +280,7 @@ const ManageUsers = () => {
                       </span>
                       {Object.keys(user.profile_data || {}).length > 0 && (
                         <dl className="mt-3 grid gap-1.5 text-xs">
-                          {Object.entries(user.profile_data).map(([key, value]) => (
+                          {Object.entries(user.profile_data).filter(([key]) => !['cv_path', 'cv_name', 'logo_path', 'logo_name', 'attachment_path', 'attachment_name'].includes(key)).map(([key, value]) => (
                             <div key={key} className="flex gap-2">
                               <dt className="shrink-0 font-bold text-slate-500">{profileFieldLabels[key] || key}:</dt>
                               <dd className="text-slate-700">{value || "—"}</dd>
@@ -251,12 +288,20 @@ const ManageUsers = () => {
                           ))}
                         </dl>
                       )}
+                      {['cv', 'logo', 'attachment'].filter(kind => user.profile_data?.[`${kind}_path`]).map(kind => (
+                        <button key={kind} type="button" onClick={() => downloadUserFile(user, kind)} className="mt-3 block text-xs font-bold text-[#007A94] hover:underline">
+                          {kind === 'cv' ? 'Télécharger PDF — السيرة الذاتية' : kind === 'logo' ? 'تنزيل الشعار' : 'تنزيل المرفقات (PDF)'}
+                        </button>
+                      ))}
                     </td>
                     <td className="p-4 text-slate-600" dir="ltr">{user.telephone || "—"}</td>
                     <td className="p-4">
                       <div className="flex flex-col items-start gap-2">
                         <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold ${user.role === "superviseur" ? "bg-amber-50 text-amber-700" : "bg-[#ECFCFF] text-[#007A94]"}`}>{user.role === "superviseur" ? <ShieldCheck size={13} /> : <UserRound size={13} />}{user.role === "superviseur" ? "مدير" : "مستخدم"}</span>
-                        <span className={`inline-flex rounded-full px-3 py-1 text-[11px] font-black ${user.is_active !== false ? "bg-[#ECFCFF] text-[#007A94]" : "bg-red-50 text-red-700"}`}>{user.is_active !== false ? "نشط" : "معطل"}</span>
+                        <span className={`inline-flex rounded-full px-3 py-1 text-[11px] font-black ${user.registration_status === 'pending' ? 'bg-amber-50 text-amber-800' : user.is_active !== false ? "bg-[#ECFCFF] text-[#007A94]" : "bg-red-50 text-red-700"}`}>{user.registration_status === 'pending' ? 'بانتظار الموافقة' : user.is_active !== false ? "نشط" : "معطل"}</span>
+                        {user.registration_status === 'pending' && <button type="button" disabled={approvingId !== null} onClick={() => approveUser(user)} className="inline-flex items-center gap-2 rounded-xl bg-[#007A94] px-3 py-2 text-xs font-bold text-white hover:bg-[#006176] disabled:opacity-50">
+                          {approvingId === user.idUtilisateur ? <Loader2 size={14} className="animate-spin" /> : <ShieldCheck size={14} />} قبول التسجيل
+                        </button>}
                       </div>
                     </td>
                     <td className="p-4"><div className="flex justify-center gap-2"><button type="button" onClick={() => openEdit(user)} className="rounded-lg bg-slate-100 p-2.5 text-slate-600 hover:bg-[#ECFCFF] hover:text-[#007A94]" title="تعديل"><Pencil size={16} /></button><button type="button" onClick={() => remove(user)} className="rounded-lg bg-red-50 p-2.5 text-red-600 hover:bg-red-100" title="حذف"><Trash2 size={16} /></button></div></td>
@@ -286,7 +331,7 @@ const ManageUsers = () => {
               <FormField label="البريد الإلكتروني *"><input dir="ltr" type="email" className={fieldClass} required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} /></FormField>
               <FormField label={editingId ? "كلمة مرور جديدة" : "كلمة المرور *"}><div className="relative"><KeyRound size={17} className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400" /><input dir="ltr" type="password" minLength="8" className={`${fieldClass} pr-11`} required={!editingId} value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder={editingId ? "اتركها فارغة دون تغيير" : "8 أحرف على الأقل"} /></div></FormField>
               <FormField label="الصلاحية *"><select className={fieldClass} required value={form.role} onChange={(e) => setForm({ ...form, role: e.target.value })}><option value="user">مستخدم</option><option value="superviseur">مدير</option></select></FormField>
-              <FormField label="حالة الحساب *"><select className={fieldClass} value={form.is_active ? "1" : "0"} onChange={(e) => setForm({ ...form, is_active: e.target.value === "1" })}><option value="1">نشط</option><option value="0">معطل</option></select></FormField>
+              <FormField label="حالة الحساب *"><select className={fieldClass} value={form.is_active ? "1" : "0"} onChange={(e) => setForm({ ...form, is_active: e.target.value === "1" })}><option value="1">مقبول ونشط</option><option value="0">{form.registration_status === 'pending' ? 'بانتظار الموافقة' : 'معطل'}</option></select></FormField>
               <FormField label="رقم الهاتف"><input dir="ltr" className={fieldClass} value={form.telephone} onChange={(e) => setForm({ ...form, telephone: e.target.value })} /></FormField>
               <div className="md:col-span-2">
                 <RegistrationProfileFields

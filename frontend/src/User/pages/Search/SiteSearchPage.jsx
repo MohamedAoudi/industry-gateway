@@ -149,10 +149,11 @@ const SiteSearchPage = () => {
 };
 
 const SearchResultCard = ({ result, isRtl }) => {
+  const { i18n } = useTranslation();
   const config = resultTypes[result.type] || resultTypes.page;
   const Icon = config.icon;
-  const title = isRtl ? result.title_ar || result.title_en : result.title_en || result.title_ar;
-  const description = isRtl ? result.description_ar || result.description_en : result.description_en || result.description_ar;
+  const title = result[`title_${i18n.language}`] || (isRtl ? result.title_ar || result.title_en : result.title_en || result.title_ar);
+  const description = result[`description_${i18n.language}`] || (isRtl ? result.description_ar || result.description_en : result.description_en || result.description_ar);
 
   return (
     <Link to={result.path} className="group flex min-h-48 gap-4 rounded-[1.5rem] border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-[#63E1FA] hover:shadow-lg">

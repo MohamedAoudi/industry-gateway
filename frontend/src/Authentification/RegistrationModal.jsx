@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { CheckCircle2, Loader2, UserRoundPlus, X } from "lucide-react";
-import { Link } from "react-router-dom";
 import apiAdmin, { setAuthSession } from "../api/apiAdmin";
-import RegistrationProfileFields, { emptyRegistrationForm } from "./RegistrationProfileFields";
+import { emptyRegistrationForm } from "./RegistrationProfileFields";
+import PublicRegistrationFields from "./PublicRegistrationFields";
+import { buildRegistrationPayload, pendingRegistrationMessage } from "../data/registrationProfiles";
 
 const inputClass = "w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3.5 text-sm outline-none transition focus:border-[#00C9F2] focus:bg-white focus:ring-4 focus:ring-[#00C9F2]/10";
 
@@ -26,6 +28,7 @@ const loadGoogleIdentityScript = () => {
 };
 
 const RegistrationModal = ({ open, onClose }) => {
+  const { i18n } = useTranslation();
   const [form, setForm] = useState(emptyRegistrationForm);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -83,6 +86,11 @@ const RegistrationModal = ({ open, onClose }) => {
               setAuthSession(response.data);
               window.location.assign("/");
             } catch (requestError) {
+              if (requestError.response?.data?.code === 'ACCOUNT_PENDING_APPROVAL') {
+                setRegistered(true);
+                setSaving(false);
+                return;
+              }
               setError(requestError.response?.data?.message || "تعذر تسجيل الدخول باستخدام Google.");
               setSaving(false);
             }
@@ -121,7 +129,7 @@ const RegistrationModal = ({ open, onClose }) => {
     setError("");
 
     try {
-      await apiAdmin.post("/register", form);
+      await apiAdmin.post("/register", buildRegistrationPayload(form));
       setRegistered(true);
       setForm(emptyRegistrationForm);
     } catch (requestError) {
@@ -159,10 +167,9 @@ const RegistrationModal = ({ open, onClose }) => {
         {registered ? (
           <div className="p-8 text-center sm:p-12">
             <CheckCircle2 size={58} className="mx-auto text-[#00C9F2]" />
-            <h3 className="mt-5 text-2xl font-black text-slate-900">تم إنشاء الحساب بنجاح</h3>
-            <p className="mt-3 text-sm leading-7 text-slate-500">يمكنك الآن تسجيل الدخول باستعمال بريدك الإلكتروني وكلمة المرور.</p>
+            <h3 className="mt-5 text-2xl font-black text-slate-900">{i18n.language === 'fr' ? 'Demande reçue' : i18n.language === 'en' ? 'Request received' : 'تم استلام طلب التسجيل'}</h3>
+            <p className="mt-3 text-sm leading-7 text-slate-500">{pendingRegistrationMessage(i18n.language)}</p>
             <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
-              <Link to="/login" onClick={onClose} className="rounded-xl bg-[#00C9F2] px-6 py-3.5 text-sm font-black text-white hover:bg-[#007A94]">تسجيل الدخول</Link>
               <button type="button" onClick={onClose} className="rounded-xl border border-slate-200 px-6 py-3.5 text-sm font-bold text-slate-600 hover:bg-slate-50">العودة إلى الصفحة الرئيسية</button>
             </div>
           </div>
@@ -178,22 +185,7 @@ const RegistrationModal = ({ open, onClose }) => {
               <span className="h-px flex-1 bg-slate-200" />
             </div>
 
-            <div className="grid gap-5 sm:grid-cols-2">
-              <label className="space-y-2 sm:col-span-2">
-                <span className="text-sm font-bold text-slate-700">الاسم الكامل *</span>
-                <input className={inputClass} value={form.nomComplet} onChange={(event) => setForm({ ...form, nomComplet: event.target.value })} placeholder="مثال: محمد أحمد" required />
-              </label>
-              <label className="space-y-2">
-                <span className="text-sm font-bold text-slate-700">البريد الإلكتروني *</span>
-                <input dir="ltr" type="email" className={inputClass} value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} placeholder="mail@example.com" required />
-              </label>
-              <label className="space-y-2">
-                <span className="text-sm font-bold text-slate-700">كلمة المرور *</span>
-                <input dir="ltr" type="password" minLength={6} className={inputClass} value={form.password} onChange={(event) => setForm({ ...form, password: event.target.value })} placeholder="6 أحرف على الأقل" required />
-              </label>
-            </div>
-
-            <RegistrationProfileFields formData={form} setFormData={setForm} inputClass={inputClass} />
+            <PublicRegistrationFields formData={form} setFormData={setForm} inputClass={inputClass} />
 
             <div className="flex flex-col-reverse gap-3 border-t border-slate-100 pt-5 sm:flex-row sm:justify-end">
               <button type="button" onClick={onClose} disabled={saving} className="rounded-xl border border-slate-200 px-5 py-3 text-sm font-bold text-slate-600 disabled:opacity-50">إلغاء</button>

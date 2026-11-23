@@ -213,7 +213,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import apiAdmin, { setAuthSession } from '../api/apiAdmin';
 import { useLocation } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
-import RegistrationProfileFields, { emptyRegistrationForm } from './RegistrationProfileFields';
+import { emptyRegistrationForm } from './RegistrationProfileFields';
+import PublicRegistrationFields from './PublicRegistrationFields';
+import { buildRegistrationPayload, pendingRegistrationMessage } from '../data/registrationProfiles';
 
 let googleIdentityScriptPromise;
 
@@ -244,7 +246,7 @@ const Auth = () => {
     const [reactivationMessage, setReactivationMessage] = useState('');
     const googleButtonRef = useRef(null);
     
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     useEffect(() => {
         if (deactivatedAccount) return undefined;
@@ -271,7 +273,9 @@ const Auth = () => {
                             setAuthSession(response.data);
                             window.location.href = response.data.user.role === 'superviseur' ? '/admin/dashboard' : '/';
                         } catch (requestError) {
-                            if (requestError.response?.data?.code === 'ACCOUNT_DEACTIVATED') {
+                            if (requestError.response?.data?.code === 'ACCOUNT_PENDING_APPROVAL') {
+                                setError(pendingRegistrationMessage(i18n.language));
+                            } else if (requestError.response?.data?.code === 'ACCOUNT_DEACTIVATED') {
                                 setDeactivatedAccount({ email: requestError.response.data.email || '' });
                             } else {
                                 setError(requestError.response?.data?.message || 'تعذر تسجيل الدخول باستخدام Google.');
@@ -331,13 +335,15 @@ const Auth = () => {
                     window.location.href = response.data.user.role === 'superviseur' ? '/admin/dashboard' : returnTo;
                 }
             } else {
-                const response = await apiAdmin.post('/register', formData);
-                alert(response.data.message || "تم إنشاء الحساب بنجاح");
+                const response = await apiAdmin.post('/register', buildRegistrationPayload(formData));
+                alert(pendingRegistrationMessage(i18n.language));
                 setIsLogin(true);
                 setFormData(emptyRegistrationForm);
             }
         } catch (err) {
-            if (err.response?.data?.code === 'ACCOUNT_DEACTIVATED') {
+            if (err.response?.data?.code === 'ACCOUNT_PENDING_APPROVAL') {
+                setError(pendingRegistrationMessage(i18n.language));
+            } else if (err.response?.data?.code === 'ACCOUNT_DEACTIVATED') {
                 setDeactivatedAccount({ email: formData.email });
                 setError('');
             } else {
@@ -426,23 +432,7 @@ const Auth = () => {
                         <span className="h-px flex-1 bg-slate-200" />
                     </div>
                     
-                    {/* Champ Nom Complet (Mode Register) */}
-                    <div className={`transition-all duration-500 overflow-hidden ${!isLogin ? 'max-h-24 opacity-100 scale-100' : 'max-h-0 opacity-0 scale-95'}`}>
-                        <label className="block text-sm font-bold text-slate-700 mb-2 mr-1 rtl:text-right">{t("registration_guide.fields.name")}</label>
-                        <input 
-                            type="text" 
-                            className="w-full px-6 py-4 rounded-2xl bg-slate-50 border border-slate-200 focus:bg-white focus:ring-4 focus:ring-[#00C9F2]/10 focus:border-[#00C9F2] outline-none transition-all placeholder:text-slate-400"
-                            placeholder={t("contact_page.form.name_placeholder")}
-                            value={formData.nomComplet}
-                            onChange={(e) => setFormData({...formData, nomComplet: e.target.value})}
-                            required={!isLogin}
-                        />
-                    </div>
-
-                    {!isLogin && (
-                        <RegistrationProfileFields formData={formData} setFormData={setFormData} />
-                    )}
-
+                    {isLogin ? <>
                     {/* Email */}
                     <div>
                         <label className="block text-sm font-bold text-slate-700 mb-2 mr-1 rtl:text-right">{t("registration_guide.fields.email")}</label>
@@ -468,6 +458,8 @@ const Auth = () => {
                             required
                         />
                     </div>
+
+                    </> : <PublicRegistrationFields formData={formData} setFormData={setFormData} inputClass="w-full rounded-2xl border border-slate-200 bg-slate-50 px-5 py-3.5 outline-none focus:border-[#00C9F2] focus:ring-4 focus:ring-[#00C9F2]/10" />}
 
                     {/* Bouton d'action */}
                     <button 

@@ -46,6 +46,10 @@ apiAdmin.interceptors.request.use((config) => {
 apiAdmin.interceptors.response.use(
   (response) => response,
   (error) => {
+    if (error.response?.status === 403 && ['ACCOUNT_PENDING_APPROVAL', 'ACCOUNT_DEACTIVATED'].includes(error.response?.data?.code) && localStorage.getItem('auth_token')) {
+      clearAuthSession();
+      if (window.location.pathname !== '/login') window.location.assign('/login');
+    }
     if (error.response?.status === 401) {
       clearAuthSession();
 

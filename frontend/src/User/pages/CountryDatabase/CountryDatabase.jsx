@@ -141,6 +141,14 @@ const CountryDatabase = () => {
   const selectedCountry = countries.find((country) => country.code === selectedCode);
 
   const [records, setRecords] = useState([]);
+  const [industrialCountries, setIndustrialCountries] = useState(null);
+  useEffect(() => {
+    let mounted = true;
+    apiAdmin.get('/industrial-institutions/countries').then(({ data }) => {
+      if (mounted && data.source === 'apip') setIndustrialCountries(data.data || []);
+    }).catch(() => {});
+    return () => { mounted = false; };
+  }, []);
   const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
 
@@ -201,30 +209,35 @@ const CountryDatabase = () => {
     };
   }, []);
 
-  const countryCounts = useMemo(
-    () =>
-      records.reduce((counts, record) => {
-        if (record.countryCode) {
-          counts[record.countryCode] = (counts[record.countryCode] || 0) + 1;
-        }
-        return counts;
-      }, {}),
-    [records]
-  );
+  const countryCounts = useMemo(() => {
+    const counts = records.reduce((result, record) => {
+      if (industrialCountries !== null && record.category === 'industrial-institutions') return result;
+      if (record.countryCode) result[record.countryCode] = (result[record.countryCode] || 0) + 1;
+      return result;
+    }, {});
+    for (const country of industrialCountries || []) {
+      if (country.code) counts[country.code] = (counts[country.code] || 0) + country.total;
+    }
+    return counts;
+  }, [records, industrialCountries]);
 
   const countryRecords = useMemo(
     () => records.filter((record) => !selectedCode || record.countryCode === selectedCode),
     [records, selectedCode]
   );
 
-  const categoryCounts = useMemo(
-    () =>
-      countryRecords.reduce((counts, record) => {
-        counts[record.category] = (counts[record.category] || 0) + 1;
-        return counts;
-      }, {}),
-    [countryRecords]
-  );
+  const categoryCounts = useMemo(() => {
+    const counts = countryRecords.reduce((result, record) => {
+      result[record.category] = (result[record.category] || 0) + 1;
+      return result;
+    }, {});
+    if (industrialCountries !== null) {
+      counts['industrial-institutions'] = industrialCountries
+        .filter(country => !selectedCode || country.code === selectedCode)
+        .reduce((total, country) => total + country.total, 0);
+    }
+    return counts;
+  }, [countryRecords, industrialCountries, selectedCode]);
 
   const selectedCountryName = useMemo(
     () =>

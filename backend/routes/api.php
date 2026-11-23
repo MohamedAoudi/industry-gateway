@@ -63,6 +63,9 @@ Route::post('/register-company', [registerCompanyController::class, 'registerCom
 Route::get('/researchers', [ResearcherController::class, 'index']);
 
 Route::get('/companies', [CompanyController::class, 'index']);
+Route::get('/industrial-institutions', [\App\Http\Controllers\IndustrialInstitutionController::class, 'index']);
+Route::get('/industrial-institutions/countries', [\App\Http\Controllers\IndustrialInstitutionController::class, 'countries']);
+Route::get('/industrial-institutions/{id}', [\App\Http\Controllers\IndustrialInstitutionController::class, 'show'])->whereNumber('id');
 Route::get('/companies/pending', [CompanyController::class, 'getPendingRequests']);
 Route::put('/companies/{id}/status', [CompanyController::class, 'updateStatus']);
 Route::delete('/companies/{id}', [CompanyController::class, 'destroy']);
@@ -76,11 +79,13 @@ Route::post('/researchers/import-ai', [AIResearcherController::class, 'import'])
 Route::post('/companies/import-ai', [AICompanieController::class, 'importCompanie']);
 
 // Routes privées (Nécessitent un Token valide dans le Header)
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum', \App\Http\Middleware\EnsureAccountIsActive::class])->group(function () {
 
     Route::get('/admin/users', [UserManagementController::class, 'index']);
     Route::post('/admin/users', [UserManagementController::class, 'store']);
     Route::put('/admin/users/{user}', [UserManagementController::class, 'update']);
+    Route::patch('/admin/users/{user}/approve', [UserManagementController::class, 'approve']);
+    Route::get('/users/{user}/files/{kind}', [UserManagementController::class, 'downloadProfileFile']);
     Route::delete('/admin/users/{user}', [UserManagementController::class, 'destroy']);
 
     Route::get('/media-items/admin', [MediaItemController::class, 'adminIndex']);

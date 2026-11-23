@@ -2,6 +2,8 @@
 !backend/storage/app/public/**
 !backend/public/storage/
 !backend/public/storage/**
+backend/storage/app/private/
+.local/
 
 **/.env
 **/.env.*

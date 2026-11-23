@@ -34,6 +34,8 @@ it('allows a supervisor to list and create users', function () {
         'account_type' => 'industrial_company',
         'profile_data' => [
             'organization_name' => 'Industry Member',
+            'legal_form' => 'LLC', 'authorized_person' => 'Test Member', 'responsible_position' => 'Director',
+            'address' => 'Test address', 'city' => 'Rabat', 'phone' => '+212600000001',
             'activity_field' => 'Machinery',
             'registration_number' => 'RC-2026',
             'country' => 'Morocco',
@@ -78,6 +80,7 @@ it('allows a supervisor to update all custom user data', function () {
         'telephone' => '+212600000001',
         'account_type' => 'expert',
         'profile_data' => [
+            'full_name' => 'Expert Member', 'phone' => '+212600000001',
             'specialty' => 'Artificial intelligence',
             'years_experience' => '12',
             'organization_name' => 'Research Lab',

@@ -129,12 +129,27 @@ class SiteSearchController extends Controller
                 'path' => '/mediaCenter',
             ]);
 
+        $apipCompanies = collect();
+        if (config('apip.enabled')) {
+            try {
+                $apipCompanies = collect(app(\App\Services\ApipCompanyDirectory::class)->paginate(['q' => $term, 'per_page' => 10])->items())
+                    ->map(fn (array $company) => [
+                        'id' => 'apip-company-'.$company['id'], 'type' => 'company', 'category' => 'industrial-institutions',
+                        'title_ar' => $company['title_ar'], 'title_en' => $company['title_en'], 'title_fr' => $company['title_fr'],
+                        'description_ar' => $company['description_ar'], 'description_en' => $company['description_en'], 'description_fr' => $company['description_fr'],
+                        'country' => $company['country'], 'image_url' => $company['image_url'],
+                        'path' => '/researchDatabase?'.http_build_query(['category' => 'industrial-institutions', 'q' => $term, 'entity' => 'apip_company', 'entity_id' => $company['id']]),
+                    ]);
+            } catch (\Throwable $exception) { report($exception); }
+        }
+
         $results = collect()
             ->concat($databaseEntries)
             ->concat($centers)
             ->concat($researchers)
             ->concat($companies)
             ->concat($mediaItems)
+            ->concat($apipCompanies)
             ->values();
 
         return response()->json([

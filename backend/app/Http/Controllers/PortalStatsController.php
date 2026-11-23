@@ -18,6 +18,12 @@ class PortalStatsController extends Controller
             ->where('category', $category)
             ->count();
 
+        $industrialCount = Company::where('status', 'approved')->count() + $countNew('industrial-institutions');
+        if (config('apip.enabled')) {
+            try { $industrialCount = app(\App\Services\ApipCompanyDirectory::class)->count(); }
+            catch (\Throwable $exception) { report($exception); }
+        }
+
         return response()->json([
             'research_innovation_ai' => Center::whereIn('idTypeCenter', [1, 2])->count()
                 + $countNew('research-innovation-ai'),
@@ -31,8 +37,7 @@ class PortalStatsController extends Controller
                 + $countNew('experts-specialists'),
             'supporting_bodies' => Center::where('idTypeCenter', 5)->count()
                 + $countNew('supporting-bodies'),
-            'industrial_institutions' => Company::where('status', 'approved')->count()
-                + $countNew('industrial-institutions'),
+            'industrial_institutions' => $industrialCount,
             'arab_countries' => Pays::count(),
         ]);
     }

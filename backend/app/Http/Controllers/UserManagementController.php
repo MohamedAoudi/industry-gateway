@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Support\RegistrationProfiles;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -16,6 +18,7 @@ class UserManagementController extends Controller
         $validated = $request->validate([
             'search' => ['nullable', 'string', 'max:100'],
             'role' => ['nullable', Rule::in(['user', 'superviseur'])],
+            'status' => ['nullable', Rule::in(['pending', 'approved', 'inactive'])],
             'per_page' => ['nullable', 'integer', 'min:1', 'max:100'],
         ]);
 
@@ -31,6 +34,10 @@ class UserManagementController extends Controller
                 });
             })
             ->when($validated['role'] ?? null, fn ($query, $role) => $query->where('role', $role))
+            ->when($validated['status'] ?? null, function ($query, $status) {
+                if ($status === 'pending') $query->where('registration_status', 'pending');
+                else $query->where('registration_status', 'approved')->where('is_active', $status === 'approved');
+            })
             ->orderByDesc('idUtilisateur')
             ->paginate($validated['per_page'] ?? 10);
 
@@ -46,6 +53,7 @@ class UserManagementController extends Controller
                 'total' => User::count(),
                 'users' => User::where('role', 'user')->count(),
                 'supervisors' => User::where('role', 'superviseur')->count(),
+                'pending' => User::where('registration_status', 'pending')->count(),
             ],
         ]);
     }
@@ -84,6 +92,7 @@ class UserManagementController extends Controller
 
         if (array_key_exists('is_active', $data)) {
             $data['deactivated_at'] = $data['is_active'] ? null : ($user->deactivated_at ?? now());
+            if ($data['is_active']) $data['registration_status'] = 'approved';
         }
 
         $user->update($data);
@@ -93,6 +102,14 @@ class UserManagementController extends Controller
         }
 
         return response()->json(['message' => 'تم تحديث المستخدم بنجاح', 'data' => $user->fresh()]);
+    }
+
+    public function approve(Request $request, User $user)
+    {
+        $this->authorizeAdministrator($request);
+        abort_unless($user->registration_status === 'pending', 422, 'هذا الحساب لا ينتظر الموافقة.');
+        $user->update(['registration_status' => 'approved', 'is_active' => true, 'deactivated_at' => null]);
+        return response()->json(['message' => 'تم قبول طلب التسجيل وتفعيل الحساب.', 'data' => $user->fresh()]);
     }
 
     public function destroy(Request $request, User $user)
@@ -120,15 +137,8 @@ class UserManagementController extends Controller
 
     private function validatedUserData(Request $request, ?User $user = null, bool $passwordRequired = false): array
     {
-        $accountTypes = ['regular', 'factory', 'industrial_company', 'production_company', 'expert', 'funding_entity', 'other'];
-        $requiredProfileFields = [
-            'factory' => ['organization_name', 'activity_field', 'products', 'country'],
-            'industrial_company' => ['organization_name', 'activity_field', 'registration_number', 'country'],
-            'production_company' => ['organization_name', 'products', 'production_capacity', 'country'],
-            'expert' => ['specialty', 'years_experience', 'organization_name', 'country'],
-            'funding_entity' => ['organization_name', 'funding_scope', 'funding_programs', 'country'],
-            'other' => ['other_type', 'organization_name', 'activity_field', 'country'],
-        ];
+        RegistrationProfiles::prepare($request);
+        $accountTypes = array_keys(RegistrationProfiles::REQUIRED);
 
         $rules = [
             'prenomUtilisateur' => ['required', 'string', 'max:100'],
@@ -149,17 +159,26 @@ class UserManagementController extends Controller
             'profile_data' => ['nullable', 'present_if:role,user', 'array'],
         ];
 
-        foreach (array_unique(array_merge(...array_values($requiredProfileFields))) as $field) {
-            $rules["profile_data.{$field}"] = ['nullable', 'string', 'max:255'];
-        }
-        foreach ($requiredProfileFields[$request->input('account_type')] ?? [] as $field) {
-            $rules["profile_data.{$field}"] = ['required', 'string', 'max:255'];
-        }
+        $rules = [...$rules, ...RegistrationProfiles::rules($request)];
 
-        return $request->validate($rules, [
+        $data = $request->validate($rules, [
             'account_type.required_if' => 'يرجى اختيار نوع حساب المستخدم.',
             'profile_data.required_if' => 'يرجى إدخال بيانات نوع الحساب.',
             'profile_data.*.required' => 'يرجى تعبئة جميع بيانات نوع الحساب.',
         ]);
+        $data['profile_data'] = RegistrationProfiles::profile($request, $data, $user?->profile_data ?? []);
+        if (array_key_exists('phone', $data['profile_data'])) $data['telephone'] = $data['profile_data']['phone'];
+        if (array_key_exists('organization_name', $data['profile_data'])) $data['entite'] = $data['profile_data']['organization_name'];
+        unset($data['cv_file'], $data['organization_logo'], $data['organization_attachment']);
+        return $data;
+    }
+
+    public function downloadProfileFile(Request $request, User $user, string $kind)
+    {
+        abort_unless($request->user()?->is($user) || $request->user()?->role === 'superviseur', 403);
+        abort_unless(in_array($kind, ['cv', 'logo', 'attachment'], true), 404);
+        $path = $user->profile_data[$kind.'_path'] ?? null;
+        abort_unless($path && Storage::disk('local')->exists($path), 404);
+        return Storage::disk('local')->download($path, $user->profile_data[$kind.'_name'] ?? basename($path));
     }
 }

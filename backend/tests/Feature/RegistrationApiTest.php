@@ -12,6 +12,7 @@ it('registers every supported account type with its custom profile', function (s
         'nomComplet' => 'Portal Member',
         'email' => $email,
         'password' => 'password123',
+        'password_confirmation' => 'password123',
         'account_type' => $accountType,
         'profile_data' => $profile,
     ])->assertCreated()
@@ -31,6 +32,8 @@ it('registers every supported account type with its custom profile', function (s
     ]],
     'industrial company' => ['industrial_company', [
         'organization_name' => 'Industry Co',
+        'legal_form' => 'LLC', 'authorized_person' => 'Test Member', 'responsible_position' => 'Director',
+        'address' => 'Test address', 'city' => 'Rabat', 'phone' => '+212600000001',
         'activity_field' => 'Automotive',
         'registration_number' => 'RC-123',
         'country' => 'Morocco',
@@ -42,6 +45,7 @@ it('registers every supported account type with its custom profile', function (s
         'country' => 'Egypt',
     ]],
     'expert' => ['expert', [
+        'full_name' => 'Expert Member', 'phone' => '+212600000001',
         'specialty' => 'Artificial intelligence',
         'years_experience' => '8',
         'organization_name' => 'Innovation Lab',
@@ -66,6 +70,7 @@ it('requires the custom fields that belong to the selected account type', functi
         'nomComplet' => 'Factory Member',
         'email' => 'missing-profile@example.test',
         'password' => 'password123',
+        'password_confirmation' => 'password123',
         'account_type' => 'factory',
         'profile_data' => [
             'organization_name' => 'Factory',

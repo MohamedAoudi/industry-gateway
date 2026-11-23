@@ -97,8 +97,7 @@ const categoryConfig = [
     labelKey: "submenu.database.industrial_institutions",
     descriptionKey: "database_pages.descriptions.industrial_institutions",
     endpoints: [
-      "/research-database?category=industrial-institutions&per_page=100",
-      "/companies",
+      "/industrial-institutions",
     ],
     icon: Factory,
   },
@@ -108,7 +107,7 @@ const allCategoriesConfig = {
   key: "all",
   labelKey: "menu.database",
   descriptionKey: "database_pages.descriptions.all",
-  endpoints: [...new Set(categoryConfig.flatMap((category) => category.endpoints)), "/media-items?category=news"],
+  endpoints: [...new Set(categoryConfig.filter(category => category.key !== 'industrial-institutions').flatMap((category) => category.endpoints)), "/companies", "/research-database?category=industrial-institutions&per_page=100", "/media-items?category=news"],
   icon: Database,
 };
 
@@ -195,13 +194,19 @@ const ResearchDatabase = () => {
   const requestedSearch = searchParams.get("q") || "";
   const requestedCountry = searchParams.get("country") || "";
   const requestedCountryId = searchParams.get("country_id") || "";
+  const requestedCountryCode = searchParams.get("country_code") || resolveCountryCode(requestedCountry);
   const requestedEntity = searchParams.get("entity") || "";
   const requestedEntityId = searchParams.get("entity_id") || "";
   const activeCategory = searchableCategoryConfig.find((item) => item.key === requestedCategory) || categoryConfig[0];
   const ActiveIcon = activeCategory.icon;
+  const isRemoteDirectory = activeCategory.key === 'industrial-institutions';
 
   const [records, setRecords] = useState([]);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(requestedSearch);
+  const [directorySearch, setDirectorySearch] = useState(requestedSearch);
+  const [directoryMeta, setDirectoryMeta] = useState({ total: 0, last_page: 1 });
+  const [directoryCountries, setDirectoryCountries] = useState([]);
+  const directoryFocusRef = useRef('');
   const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -213,9 +218,42 @@ const ResearchDatabase = () => {
   const pageSize = 9;
 
   useEffect(() => {
+    const timer = setTimeout(() => setDirectorySearch(search), 300);
+    return () => clearTimeout(timer);
+  }, [search]);
+
+  useEffect(() => {
+    if (!isRemoteDirectory) return;
+    let mounted = true;
+    setLoading(true);
+    setHasError(false);
+    const focusKey = `${requestedEntity}-${requestedEntityId}`;
+    apiAdmin.get('/industrial-institutions', { params: {
+      page: currentPage, per_page: pageSize, q: directorySearch || undefined,
+      country: requestedCountry || undefined, country_id: requestedCountryId || undefined,
+      country_code: requestedCountryCode || undefined, lang: i18n.language,
+      focus_id: requestedEntity === 'apip_company' && requestedEntityId && directoryFocusRef.current !== focusKey ? requestedEntityId : undefined,
+    } }).then(({ data }) => {
+      if (!mounted) return;
+      directoryFocusRef.current = focusKey;
+      setRecords(data.data || []);
+      setDirectoryMeta({ total: data.total || 0, last_page: data.last_page || 1 });
+      setDirectoryCountries(data.countries || []);
+      if (data.current_page && data.current_page !== currentPage) setCurrentPage(data.current_page);
+    }).catch(() => {
+      if (!mounted) return;
+      setRecords([]);
+      setDirectoryMeta({ total: 0, last_page: 1 });
+      setHasError(true);
+    }).finally(() => { if (mounted) setLoading(false); });
+    return () => { mounted = false; };
+  }, [isRemoteDirectory, directorySearch, requestedCountry, requestedCountryId, requestedCountryCode, currentPage, i18n.language, requestedEntity, requestedEntityId]);
+
+  useEffect(() => {
     let isMounted = true;
     setSearch(requestedSearch);
     setHasError(false);
+    if (isRemoteDirectory) return;
 
     const loadRecords = async () => {
       setLoading(true);
@@ -251,7 +289,7 @@ const ResearchDatabase = () => {
     return () => {
       isMounted = false;
     };
-  }, [activeCategory.key, requestedSearch]);
+  }, [activeCategory.key, requestedSearch, isRemoteDirectory]);
 
   const normalizedRecords = useMemo(
     () => records.map((record, index) => {
@@ -260,7 +298,7 @@ const ResearchDatabase = () => {
       const descriptionAr = record.research_field || record.industry_sector || record.description_ar || "";
       const descriptionEn = record.description_en || "";
 
-      const entityType = record.__media ? "media" : record.idCenter
+      const entityType = record.source === 'apip' ? 'apip_company' : record.__media ? "media" : record.idCenter
         ? "center"
         : record.idResearcher
           ? "researcher"
@@ -275,28 +313,33 @@ const ResearchDatabase = () => {
         entityId: String(entityId),
         mediaCategory: record.__media ? record.category : null,
         searchLocation: record.__media ? [record.location_ar, record.location_en].filter(Boolean).join(" ") : "",
-        title: isRtl ? titleAr || titleEn : titleEn || titleAr,
+        title: record.source === 'apip' ? record.title || titleAr || titleEn : isRtl ? titleAr || titleEn : titleEn || titleAr,
         titleAr,
         titleEn,
-        description: isRtl ? descriptionAr || descriptionEn : descriptionEn || descriptionAr,
+        description: i18n.language === 'fr' ? record.description_fr || descriptionEn || descriptionAr : isRtl ? descriptionAr || descriptionEn : descriptionEn || descriptionAr,
         descriptionAr,
         descriptionEn,
         country: record.country?.nomPays || record.pays?.nomPays || record.nomPays || record.country || (record.__media ? record.location_ar || record.location_en : "") || "",
         countryId: record.country?.idPays || record.pays?.idPays || record.country_id || record.idPays || "",
-        countryFlag: getCountryFlag(record.country?.nomPays || record.pays?.nomPays || record.nomPays || record.country),
+        countryFlag: record.country_code ? `https://flagcdn.com/w40/${record.country_code}.png` : getCountryFlag(record.country?.nomPays || record.pays?.nomPays || record.nomPays || record.country),
         image: record.image_url || record.photo_url,
         email: record.email || "",
         website: record.url || "",
+        address: record.address || '',
+        phone: record.phone || '',
         displayOrder: Number(record.display_order ?? 1000),
       };
-    }).sort((first, second) => (
+    }).sort((first, second) => isRemoteDirectory ? 0 : (
       (first.displayOrder - second.displayOrder)
       || first.title.localeCompare(second.title, isRtl ? "ar" : "en")
     )),
-    [activeCategory.key, isRtl, records]
+    [activeCategory.key, isRtl, i18n.language, isRemoteDirectory, records]
   );
 
   const countryOptions = useMemo(() => {
+    if (isRemoteDirectory && directoryCountries.length) return directoryCountries.map(country => ({
+      ...country, key: `id:${country.id}`, flag: country.code ? `https://flagcdn.com/w40/${country.code}.png` : null,
+    }));
     const countries = new Map();
 
     normalizedRecords.forEach((record) => {
@@ -322,7 +365,7 @@ const ResearchDatabase = () => {
     return [...countries.values()].sort((first, second) =>
       first.name.localeCompare(second.name, isRtl ? "ar" : "en")
     );
-  }, [isRtl, normalizedRecords]);
+  }, [isRtl, normalizedRecords, isRemoteDirectory, directoryCountries]);
 
   const selectedCountryKey = useMemo(() => {
     if (!requestedCountry && !requestedCountryId) return "";
@@ -344,8 +387,11 @@ const ResearchDatabase = () => {
     if (!country) {
       nextParams.delete("country");
       nextParams.delete("country_id");
+      nextParams.delete('country_code');
     } else {
       nextParams.set("country", country.name);
+      if (country.code) nextParams.set('country_code', country.code);
+      else nextParams.delete('country_code');
       if (country.id) nextParams.set("country_id", String(country.id));
       else nextParams.delete("country_id");
     }
@@ -366,6 +412,7 @@ const ResearchDatabase = () => {
   }, [isCountryMenuOpen]);
 
   const filteredRecords = useMemo(() => {
+    if (isRemoteDirectory) return normalizedRecords;
     const query = search.trim().toLocaleLowerCase();
     const country = normalizeCountryName(requestedCountry);
     const countryCode = resolveCountryCode(requestedCountry);
@@ -387,10 +434,11 @@ const ResearchDatabase = () => {
       const matchesCountry = matchesCountryId && matchesCountryName;
       return matchesSearch && matchesCountry;
     });
-  }, [normalizedRecords, requestedCountry, requestedCountryId, search]);
+  }, [normalizedRecords, requestedCountry, requestedCountryId, search, isRemoteDirectory]);
 
-  const totalPages = Math.max(1, Math.ceil(filteredRecords.length / pageSize));
-  const paginatedRecords = filteredRecords.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+  const resultCount = isRemoteDirectory ? directoryMeta.total : filteredRecords.length;
+  const totalPages = isRemoteDirectory ? directoryMeta.last_page : Math.max(1, Math.ceil(filteredRecords.length / pageSize));
+  const paginatedRecords = isRemoteDirectory ? filteredRecords : filteredRecords.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -414,12 +462,12 @@ const ResearchDatabase = () => {
     const record = filteredRecords[recordIndex];
     handledFocusRef.current = focusRequest;
     pendingFocusRef.current = record.id;
-    setCurrentPage(Math.floor(recordIndex / pageSize) + 1);
+    if (!isRemoteDirectory) setCurrentPage(Math.floor(recordIndex / pageSize) + 1);
 
     if (localStorage.getItem("auth_token")) {
       setSelectedRecord(record);
     }
-  }, [filteredRecords, loading, requestedEntity, requestedEntityId]);
+  }, [filteredRecords, loading, requestedEntity, requestedEntityId, isRemoteDirectory]);
 
   useEffect(() => {
     if (!pendingFocusRef.current || loading) return;
@@ -551,7 +599,7 @@ const ResearchDatabase = () => {
               )}
             </div>
             <span className="shrink-0 rounded-xl bg-[#ECFCFF] px-4 py-3 text-xs font-black text-[#007A94]">
-              {filteredRecords.length} {t("database_pages.results")}
+              {resultCount} {t("database_pages.results")}
             </span>
           </div>
 
@@ -625,7 +673,7 @@ const ResearchDatabase = () => {
             </div>
           )}
 
-          {!loading && filteredRecords.length > pageSize && (
+          {!loading && resultCount > pageSize && (
             <nav className="mt-8 flex flex-wrap items-center justify-center gap-2 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm" aria-label="Pagination">
               <button
                 type="button"
@@ -698,6 +746,8 @@ const ResearchDatabase = () => {
             </header>
 
             <div className="space-y-6 p-6 sm:p-8">
+              {selectedRecord.address && <p className="text-sm leading-7 text-slate-600"><MapPin size={16} className="me-2 inline" />{selectedRecord.address}</p>}
+              {selectedRecord.phone && <a href={`tel:${selectedRecord.phone}`} dir="ltr" className="inline-flex text-sm font-bold text-[#007A94]">{selectedRecord.phone}</a>}
               {selectedRecord.titleAr && selectedRecord.titleEn && (
                 <div className="grid gap-4 sm:grid-cols-2">
                   <div className="rounded-xl bg-slate-50 p-4"><span className="text-xs font-bold text-slate-400">الاسم بالعربية</span><p className="mt-2 font-bold text-slate-800" dir="rtl">{selectedRecord.titleAr}</p></div>

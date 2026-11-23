@@ -28,6 +28,7 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleAppearance::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,
+            \App\Http\Middleware\EnsureAccountIsActive::class,
         ]);
         
         // 2. Optionnel : Configurer le CORS pour autoriser les cookies du frontend

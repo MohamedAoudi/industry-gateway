@@ -30,6 +30,7 @@ class User extends Authenticatable
         'telephone',
         'account_type',
         'profile_data',
+        'registration_status',
     ];
 
     protected $casts = [
@@ -37,6 +38,8 @@ class User extends Authenticatable
         'is_active' => 'boolean',
         'deactivated_at' => 'datetime',
     ];
+
+    protected $attributes = ['registration_status' => 'approved'];
 
     protected $hidden = [
         'password',

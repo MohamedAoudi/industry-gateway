@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import apiAdmin from '../api/apiAdmin';
 import { useTranslation } from "react-i18next";
-import RegistrationProfileFields, { emptyRegistrationForm } from './RegistrationProfileFields';
+import { emptyRegistrationForm } from './RegistrationProfileFields';
+import PublicRegistrationFields from './PublicRegistrationFields';
+import { buildRegistrationPayload, pendingRegistrationMessage } from '../data/registrationProfiles';
 
 
 const Register = () => {
@@ -10,7 +12,7 @@ const Register = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const navigate = useNavigate();
-    const { t} = useTranslation();
+    const { t, i18n } = useTranslation();
     
 
     const handleRegister = async (e) => {
@@ -22,8 +24,8 @@ const Register = () => {
             // Optionnel : Appel au cookie CSRF si tu utilises Sanctum pour le register aussi
             // await apiAdmin.get('http://localhost:8000/sanctum/csrf-cookie');
 
-            const response = await apiAdmin.post('/register', formData);
-            alert(response.data.message); // Affiche le message de succès du serveur
+            const response = await apiAdmin.post('/register', buildRegistrationPayload(formData));
+            alert(pendingRegistrationMessage(i18n.language)); // Affiche le message de succès du serveur
             navigate('/login'); // Redirige vers la connexion
         } catch (err) {
             // Affiche l'erreur spécifique du serveur
@@ -45,28 +47,7 @@ const Register = () => {
                 )}
 
                 <form onSubmit={handleRegister} className="space-y-5">
-                    <input 
-                        type="text" 
-                        placeholder={t("registration_guide.fields.name")}
-                        required
-                        className="w-full px-5 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none"
-                        onChange={(e) => setFormData({...formData, nomComplet: e.target.value})}
-                    />
-                    <RegistrationProfileFields formData={formData} setFormData={setFormData} />
-                    <input 
-                        type="email" 
-                        placeholder={t("registration_guide.fields.email")}
-                        required
-                        className="w-full px-5 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none"
-                        onChange={(e) => setFormData({...formData, email: e.target.value})}
-                    />
-                    <input 
-                        type="password" 
-                        placeholder={t("registration_guide.fields.password")}
-                        required
-                        className="w-full px-5 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-indigo-500 outline-none"
-                        onChange={(e) => setFormData({...formData, password: e.target.value})}
-                    />
+                    <PublicRegistrationFields formData={formData} setFormData={setFormData} inputClass="w-full rounded-xl border border-slate-200 px-5 py-3 outline-none focus:ring-2 focus:ring-[#00C9F2]" />
                     <button 
                         disabled={loading}
                         className={`w-full bg-[#00C9F2] hover:bg-[#007A94] font-bold py-3 rounded-xl transition-all ${loading ? 'opacity-50 cursor-not-allowed' : 'hover:opacity-90'}`}

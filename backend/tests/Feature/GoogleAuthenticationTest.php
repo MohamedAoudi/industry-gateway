@@ -3,10 +3,11 @@
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
+use Laravel\Sanctum\Sanctum;
 
 uses(RefreshDatabase::class);
 
-it('creates a regular account from a verified Google identity credential', function () {
+it('requires administrator approval for a new verified Google identity', function () {
     config()->set('services.google', [
         'client_id' => 'google-client-id',
     ]);
@@ -28,11 +29,18 @@ it('creates a regular account from a verified Google identity credential', funct
         ->assertJsonPath('client_id', 'google-client-id');
 
     $this->postJson('/api/auth/google/credential', ['credential' => 'signed-google-id-token'])
-        ->assertOk()
-        ->assertJsonPath('user.email', 'google-user@example.test')
-        ->assertJsonPath('user.role', 'user')
-        ->assertJsonStructure(['token']);
+        ->assertForbidden()
+        ->assertJsonPath('code', 'ACCOUNT_PENDING_APPROVAL')
+        ->assertJsonMissingPath('token');
 
     $user = User::where('email', 'google-user@example.test')->firstOrFail();
-    expect($user->account_type)->toBe('regular');
+    expect($user->account_type)->toBe('regular')
+        ->and($user->registration_status)->toBe('pending')
+        ->and($user->is_active)->toBeFalse()
+        ->and($user->tokens()->count())->toBe(0);
+    $admin = User::create(['prenomUtilisateur' => 'Approval', 'nomUtilisateur' => 'Admin', 'email' => 'google-approver@example.test', 'password' => bcrypt('password'), 'role' => 'superviseur']);
+    Sanctum::actingAs($admin);
+    $this->patchJson('/api/admin/users/'.$user->idUtilisateur.'/approve')->assertOk();
+    $this->postJson('/api/auth/google/credential', ['credential' => 'signed-google-id-token'])
+        ->assertOk()->assertJsonPath('user.email', $user->email)->assertJsonStructure(['token']);
 });
