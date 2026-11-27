@@ -84,6 +84,15 @@ const legacySources = {
 
 const normalizeEntry = (record, source, category) => {
   if (source.type === "new") return { ...record, display_order: Number(record.display_order ?? 1000), __source: source };
+  if (source.type === "apip") return {
+    ...record,
+    category: "industrial-institutions",
+    title_ar: record.title_ar || record.title || record.title_en || record.title_fr,
+    country: { nomPays: record.country },
+    display_order: 1000,
+    is_published: true,
+    __source: source,
+  };
 
   const isResearcher = source.type === "researcher";
   const isCompany = source.type === "company";
@@ -121,6 +130,25 @@ const emptyForm = {
 const fieldClass =
   "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-[#00C9F2] focus:ring-4 focus:ring-[#00C9F2]/10";
 
+const loadSourceRecords = async (source, params) => {
+  const requestParams = source.type === "new" ? params : source.type === "apip" ? { per_page: 100, lang: "ar" } : {};
+  const first = await apiAdmin.get(source.list, { params: requestParams, timeout: 20000 });
+  // The disabled APIP endpoint returns local companies, which are already loaded separately.
+  if (source.type === "apip" && first.data?.source !== "apip") return [];
+  const records = first.data?.data ?? first.data ?? [];
+  if (!Array.isArray(records)) return [];
+  const lastPage = Number(first.data?.last_page || 1);
+  for (let page = 2; page <= lastPage; page += 5) {
+    const responses = await Promise.all(
+      Array.from({ length: Math.min(5, lastPage - page + 1) }, (_, index) =>
+        apiAdmin.get(source.list, { params: { ...requestParams, page: page + index }, timeout: 20000 })
+      )
+    );
+    responses.forEach(({ data }) => records.push(...(data.data ?? [])));
+  }
+  return records;
+};
+
 const ManageResearchDatabase = ({ lockedCategory }) => {
   const activeCategory = categories.find((item) => item.value === lockedCategory);
   const [entries, setEntries] = useState([]);
@@ -135,7 +163,45 @@ const ManageResearchDatabase = ({ lockedCategory }) => {
   const [form, setForm] = useState(emptyForm);
   const [preview, setPreview] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [apipEntries, setApipEntries] = useState([]);
+  const [apipPage, setApipPage] = useState(1);
+  const [apipMeta, setApipMeta] = useState({ total: 0, last_page: 1 });
+  const [apipLoading, setApipLoading] = useState(false);
+  const [apipSearch, setApipSearch] = useState("");
+  const showsApip = category === "industrial-institutions" || category === "all";
   const pageSize = 12;
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setApipPage(1);
+      setApipSearch(search.trim());
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [search, category]);
+
+  useEffect(() => {
+    if (!showsApip) {
+      setApipEntries([]);
+      return;
+    }
+    let active = true;
+    const controller = new AbortController();
+    setApipLoading(true);
+    apiAdmin.get("/industrial-institutions", { signal: controller.signal, timeout: 30000, params: {
+      page: apipPage, per_page: pageSize, lang: "ar", q: apipSearch || undefined,
+    } }).then(({ data }) => {
+      if (!active) return;
+      const isApip = data.source === "apip";
+      setApipEntries(isApip ? (data.data || []).map((record) => normalizeEntry(record, { type: "apip", resource: "/industrial-institutions" }, "industrial-institutions")) : []);
+      setApipMeta({ total: isApip ? data.total : 0, last_page: isApip ? data.last_page : 1 });
+    }).catch(() => {
+      if (!active) return;
+      setApipEntries([]);
+      setApipMeta({ total: 0, last_page: 1 });
+      toast.error("تعذر تحميل المؤسسات الصناعية من APIP. تحقق من اتصال قاعدة البيانات.");
+    }).finally(() => { if (active) setApipLoading(false); });
+    return () => { active = false; controller.abort(); };
+  }, [showsApip, apipPage, apipSearch]);
 
   const loadEntries = async () => {
     setLoading(true);
@@ -147,11 +213,14 @@ const ManageResearchDatabase = ({ lockedCategory }) => {
         ...(legacySources[category] ?? []),
       ];
       const responses = await Promise.allSettled(
-        sources.map((source) => apiAdmin.get(source.list, source.type === "new" ? { params } : undefined))
+        sources.map((source) => loadSourceRecords(source, params))
       );
       const records = responses.flatMap((result, index) => {
-        if (result.status !== "fulfilled") return [];
-        const data = result.value.data?.data ?? result.value.data ?? [];
+        if (result.status !== "fulfilled") {
+          toast.error(sources[index].type === "apip" ? "تعذر تحميل المؤسسات الصناعية من APIP. تحقق من اتصال قاعدة البيانات." : "تعذر تحميل بعض سجلات قاعدة البيانات");
+          return [];
+        }
+        const data = result.value;
         return Array.isArray(data)
           ? data.map((record) => normalizeEntry(record, sources[index], category))
           : [];
@@ -488,13 +557,15 @@ const ManageResearchDatabase = ({ lockedCategory }) => {
         </div>
       </section>
 
+      {apipLoading && <div role="status" className="flex items-center justify-center gap-2 rounded-xl border bg-white p-4 text-sm text-[#007A94]"><Loader2 className="animate-spin" size={18} /> جاري تحميل صفحة المؤسسات الصناعية...</div>}
+
       {loading ? (
         <div className="flex min-h-56 items-center justify-center rounded-2xl border bg-white text-[#007A94]"><Loader2 className="animate-spin" size={30} /></div>
-      ) : visibleEntries.length === 0 ? (
+      ) : visibleEntries.length === 0 && apipEntries.length === 0 && !apipLoading ? (
         <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-14 text-center text-slate-500">لا توجد سجلات في هذه الفئة.</div>
       ) : (
         <div className="grid gap-4 lg:grid-cols-2 xl:grid-cols-3">
-          {paginatedEntries.map((entry) => (
+          {[...paginatedEntries, ...apipEntries].map((entry) => (
             <article key={`${entry.__source?.resource || "new"}-${entry.id}`} className="flex gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
               <div className="grid h-16 w-16 shrink-0 place-items-center overflow-hidden rounded-xl bg-[#ECFCFF] text-[#007A94]">
                 {entry.image_url ? <img src={entry.image_url} alt="" className="h-full w-full object-contain p-1" /> : <Database size={24} />}
@@ -515,14 +586,25 @@ const ManageResearchDatabase = ({ lockedCategory }) => {
                 {entry.country?.nomPays && <div className="mt-3"><span className="inline-flex items-center gap-2 rounded-full border border-[#D0F6FF] bg-[#ECFCFF] px-3 py-1.5 text-xs font-black text-[#007A94]">{getCountryFlagUrl(entry.country.nomPays) ? <img src={getCountryFlagUrl(entry.country.nomPays)} alt="" className="h-4 w-6 rounded-sm border border-slate-200 object-cover shadow-sm" /> : <MapPin size={13} />}{entry.country.nomPays}</span></div>}
                 <p className="mt-3 line-clamp-2 text-sm leading-6 text-slate-500">{entry.description_ar || "لا يوجد وصف"}</p>
                 <div className="mt-4 flex flex-wrap gap-2">
-                  <button onClick={() => openEdit(entry)} className="inline-flex items-center gap-1.5 rounded-lg bg-slate-100 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-[#ECFCFF] hover:text-[#007A94]"><Pencil size={14} /> تعديل</button>
-                  <button onClick={() => remove(entry)} className="inline-flex items-center gap-1.5 rounded-lg bg-red-50 px-3 py-2 text-xs font-bold text-red-600 hover:bg-red-100"><Trash2 size={14} /> حذف</button>
-                  {entry.url && <a href={entry.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-bold text-slate-500"><ExternalLink size={14} /> الموقع</a>}
+                  {entry.__source?.type !== "apip" && <button onClick={() => openEdit(entry)} className="inline-flex items-center gap-1.5 rounded-lg bg-slate-100 px-3 py-2 text-xs font-bold text-slate-700 hover:bg-[#ECFCFF] hover:text-[#007A94]"><Pencil size={14} /> تعديل</button>}
+                  {entry.__source?.type !== "apip" && <button onClick={() => remove(entry)} className="inline-flex items-center gap-1.5 rounded-lg bg-red-50 px-3 py-2 text-xs font-bold text-red-600 hover:bg-red-100"><Trash2 size={14} /> حذف</button>}
+                  {entry.__source?.type === "apip" && <span className="self-center text-xs font-bold text-slate-500">APIP · للعرض فقط</span>}{entry.url && <a href={entry.url} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-bold text-slate-500"><ExternalLink size={14} /> الموقع</a>}
                 </div>
               </div>
             </article>
           ))}
         </div>
+      )}
+
+      {showsApip && apipMeta.total > 0 && (
+        <nav className="flex flex-wrap items-center justify-center gap-3 rounded-2xl border border-slate-200 bg-white p-4" aria-label="صفحات مؤسسات APIP">
+          <span className="text-sm font-bold text-slate-600">APIP: {apipMeta.total} مؤسسة · الصفحة {apipPage} من {apipMeta.last_page}</span>
+          <button type="button" disabled={apipLoading || apipPage <= 1} onClick={() => setApipPage((page) => page - 1)} className="rounded-xl border px-3 py-2 text-sm disabled:opacity-40">السابق</button>
+          {Array.from({ length: Math.min(5, apipMeta.last_page) }, (_, index) => Math.min(Math.max(1, apipPage - 2), Math.max(1, apipMeta.last_page - 4)) + index).map((page) => (
+            <button key={page} type="button" disabled={apipLoading} aria-current={page === apipPage ? "page" : undefined} onClick={() => setApipPage(page)} className={`h-10 min-w-10 rounded-xl border px-3 text-sm font-bold disabled:opacity-40 ${page === apipPage ? "bg-[#00C9F2] text-white" : "bg-white text-slate-600"}`}>{page}</button>
+          ))}
+          <button type="button" disabled={apipLoading || apipPage >= apipMeta.last_page} onClick={() => setApipPage((page) => page + 1)} className="rounded-xl border px-3 py-2 text-sm disabled:opacity-40">التالي</button>
+        </nav>
       )}
 
       {!loading && visibleEntries.length > pageSize && (
